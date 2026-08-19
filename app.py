@@ -313,11 +313,9 @@ def login():
 # ============================================================
 # CASHFREE HELPERS
 # ============================================================
-
 def cashfree_headers():
 
     return {
-
         "x-client-id":
             CASHFREE_CLIENT_ID,
 
@@ -332,9 +330,7 @@ def cashfree_headers():
 
         "Accept":
             "application/json"
-
     }
-
 
 # ============================================================
 # ACTIVATE SUBSCRIPTION
