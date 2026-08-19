@@ -980,40 +980,41 @@ window.login = async function() {
 
 
         // -------------------------------------------------
-        // ACTIVE SUBSCRIPTION
-        // -------------------------------------------------
+// SUBSCRIPTION DECISION
+// -------------------------------------------------
 
-        if (
-            subscriptionData.active === true
-        ) {
+if (subscriptionData.active === true) {
 
-            alert(
-                "Login successful!"
-            );
+    console.log(
+        "ACTIVE SUBSCRIPTION FOUND"
+    );
 
+    alert(
+        "Login successful!"
+    );
 
-            window.location.href =
-                "/payment";
+    window.location.href =
+        "/dashboard";
 
-
-            return;
-
-        }
-
-
-        // -------------------------------------------------
-        // NO SUBSCRIPTION
-        // -------------------------------------------------
-
-        alert(
-            "Please choose a plan to continue."
-        );
+    return;
+}
 
 
-        window.location.href =
-            "/payment";
+// -------------------------------------------------
+// NO ACTIVE SUBSCRIPTION / EXPIRED
+// -------------------------------------------------
 
+console.log(
+    "NO ACTIVE SUBSCRIPTION"
+);
 
+alert(
+    "Your subscription is not active. Please choose a plan."
+);
+
+window.location.href =
+    "/payment";
+     
     }
     catch(error) {
 
