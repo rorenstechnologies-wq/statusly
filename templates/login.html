@@ -82,34 +82,26 @@
 
         .bg-circle {
 
-            position:
-                fixed;
+            position: fixed;
 
-            border-radius:
-                50%;
+            border-radius: 50%;
 
-            pointer-events:
-                none;
+            pointer-events: none;
 
-            z-index:
-                0;
+            z-index: 0;
 
         }
 
 
         .circle-one {
 
-            width:
-                360px;
+            width: 330px;
 
-            height:
-                360px;
+            height: 330px;
 
-            top:
-                -160px;
+            top: -150px;
 
-            right:
-                -120px;
+            right: -100px;
 
             background:
                 rgba(15,118,110,.08);
@@ -119,17 +111,13 @@
 
         .circle-two {
 
-            width:
-                300px;
+            width: 270px;
 
-            height:
-                300px;
+            height: 270px;
 
-            bottom:
-                -140px;
+            bottom: -130px;
 
-            left:
-                -120px;
+            left: -110px;
 
             background:
                 rgba(14,116,144,.07);
@@ -143,81 +131,68 @@
 
         .page {
 
-            min-height:
-                100vh;
+            min-height: 100vh;
 
-            display:
-                flex;
+            display: flex;
 
-            align-items:
-                center;
+            align-items: center;
 
-            justify-content:
-                center;
+            justify-content: center;
 
-            padding:
-                24px;
+            padding: 20px;
 
-            position:
-                relative;
+            position: relative;
 
-            z-index:
-                1;
-
-        }
-
-
-        .login-shell {
-
-            width:
-                100%;
-
-            max-width:
-                1040px;
-
-            display:
-                grid;
-
-            grid-template-columns:
-                1fr 1fr;
-
-            background:
-                rgba(255,255,255,.97);
-
-            border:
-                1px solid
-                #e3ecef;
-
-            border-radius:
-                24px;
-
-            overflow:
-                hidden;
-
-            box-shadow:
-                0 25px 70px
-                rgba(15,23,42,.12);
+            z-index: 1;
 
         }
 
 
         /* =====================================================
-           LEFT BRAND PANEL
+           MAIN SHELL
+        ====================================================== */
+
+        .login-shell {
+
+            width: 100%;
+
+            max-width: 950px;
+
+            display: grid;
+
+            grid-template-columns:
+                0.72fr 1.28fr;
+
+            background:
+                rgba(255,255,255,.97);
+
+            border:
+                1px solid #e3ecef;
+
+            border-radius: 22px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 25px 70px
+                rgba(15,23,42,.11);
+
+        }
+
+
+        /* =====================================================
+           LEFT GREEN PANEL
         ====================================================== */
 
         .brand-panel {
 
-            position:
-                relative;
+            position: relative;
 
-            overflow:
-                hidden;
+            overflow: hidden;
 
-            color:
-                white;
+            color: white;
 
-            padding:
-                48px;
+            padding: 30px 27px;
 
             background:
                 linear-gradient(
@@ -231,26 +206,19 @@
 
         .brand-panel::before {
 
-            content:
-                "";
+            content: "";
 
-            position:
-                absolute;
+            position: absolute;
 
-            width:
-                280px;
+            width: 230px;
 
-            height:
-                280px;
+            height: 230px;
 
-            border-radius:
-                50%;
+            border-radius: 50%;
 
-            top:
-                -150px;
+            top: -120px;
 
-            right:
-                -110px;
+            right: -95px;
 
             background:
                 rgba(255,255,255,.08);
@@ -260,26 +228,19 @@
 
         .brand-panel::after {
 
-            content:
-                "";
+            content: "";
 
-            position:
-                absolute;
+            position: absolute;
 
-            width:
-                220px;
+            width: 170px;
 
-            height:
-                220px;
+            height: 170px;
 
-            border-radius:
-                50%;
+            border-radius: 50%;
 
-            bottom:
-                -130px;
+            bottom: -90px;
 
-            left:
-                -100px;
+            left: -75px;
 
             background:
                 rgba(255,255,255,.07);
@@ -289,11 +250,9 @@
 
         .brand-content {
 
-            position:
-                relative;
+            position: relative;
 
-            z-index:
-                2;
+            z-index: 2;
 
         }
 
@@ -304,23 +263,17 @@
 
         .logo-box {
 
-            width:
-                68px;
+            width: 54px;
 
-            height:
-                68px;
+            height: 54px;
 
-            border-radius:
-                17px;
+            border-radius: 14px;
 
-            display:
-                flex;
+            display: flex;
 
-            justify-content:
-                center;
+            justify-content: center;
 
-            align-items:
-                center;
+            align-items: center;
 
             background:
                 rgba(255,255,255,.13);
@@ -329,61 +282,53 @@
                 1px solid
                 rgba(255,255,255,.18);
 
-            margin-bottom:
-                22px;
+            margin-bottom: 16px;
 
         }
 
 
         .logo-box img {
 
-            width:
-                56px;
+            width: 44px;
 
-            height:
-                56px;
+            height: 44px;
 
-            object-fit:
-                contain;
+            object-fit: contain;
 
         }
 
 
+        /* =====================================================
+           BRAND TEXT
+        ====================================================== */
+
         .brand-name {
 
-            font-size:
-                31px;
+            font-size: 25px;
 
-            font-weight:
-                800;
+            font-weight: 800;
 
-            margin-bottom:
-                10px;
+            margin-bottom: 7px;
 
         }
 
 
         .brand-name span {
 
-            opacity:
-                .72;
+            opacity: .72;
 
         }
 
 
         .brand-title {
 
-            font-size:
-                30px;
+            font-size: 22px;
 
-            font-weight:
-                800;
+            font-weight: 800;
 
-            line-height:
-                1.2;
+            line-height: 1.2;
 
-            margin-bottom:
-                14px;
+            margin-bottom: 10px;
 
         }
 
@@ -393,49 +338,41 @@
             color:
                 rgba(255,255,255,.82);
 
-            font-size:
-                14px;
+            font-size: 12px;
 
-            line-height:
-                1.75;
+            line-height: 1.55;
 
-            max-width:
-                430px;
+            max-width: 360px;
 
         }
 
 
         /* =====================================================
-           FEATURES
+           FEATURE LIST
         ====================================================== */
 
         .feature-list {
 
-            margin-top:
-                30px;
+            margin-top: 20px;
 
-            display:
-                grid;
+            display: grid;
 
-            gap:
-                12px;
+            grid-template-columns: 1fr;
+
+            gap: 7px;
 
         }
 
 
         .feature {
 
-            display:
-                flex;
+            display: flex;
 
-            align-items:
-                center;
+            align-items: center;
 
-            gap:
-                11px;
+            gap: 8px;
 
-            font-size:
-                13px;
+            font-size: 11px;
 
             color:
                 rgba(255,255,255,.94);
@@ -445,121 +382,99 @@
 
         .feature-icon {
 
-            width:
-                34px;
+            width: 28px;
 
-            height:
-                34px;
+            height: 28px;
 
-            flex-shrink:
-                0;
+            flex-shrink: 0;
 
-            display:
-                flex;
+            display: flex;
 
-            justify-content:
-                center;
+            justify-content: center;
 
-            align-items:
-                center;
+            align-items: center;
 
-            border-radius:
-                9px;
+            border-radius: 7px;
 
             background:
                 rgba(255,255,255,.12);
+
+            font-size: 13px;
 
         }
 
 
         /* =====================================================
-           RIGHT PANEL
+           RIGHT LOGIN PANEL
         ====================================================== */
 
         .form-panel {
 
-            padding:
-                40px;
+            padding: 38px 44px;
 
-            background:
-                white;
+            background: white;
 
         }
 
 
+        /* =====================================================
+           TOP ROW
+        ====================================================== */
+
         .top-line {
 
-            display:
-                flex;
+            display: flex;
 
-            align-items:
-                center;
+            align-items: center;
 
-            justify-content:
-                space-between;
+            justify-content: space-between;
 
-            gap:
-                10px;
+            gap: 10px;
 
-            margin-bottom:
-                23px;
+            margin-bottom: 21px;
 
         }
 
 
         .security {
 
-            display:
-                inline-flex;
+            display: inline-flex;
 
-            align-items:
-                center;
+            align-items: center;
 
-            gap:
-                6px;
+            gap: 6px;
 
-            padding:
-                7px 11px;
+            padding: 7px 10px;
 
-            border-radius:
-                999px;
+            border-radius: 999px;
 
-            background:
-                #ecfdf5;
+            background: #ecfdf5;
 
-            color:
-                #15803d;
+            color: #15803d;
 
-            font-size:
-                10px;
+            font-size: 10px;
 
-            font-weight:
-                800;
+            font-weight: 800;
 
         }
 
 
         .home-link {
 
-            text-decoration:
-                none;
+            text-decoration: none;
 
-            color:
-                #64748b;
+            color: #64748b;
 
-            font-size:
-                12px;
+            font-size: 12px;
 
-            font-weight:
-                650;
+            font-weight: 650;
 
         }
 
 
         .home-link:hover {
 
-            color:
-                #0f766e;
+            color: #0f766e;
 
         }
 
@@ -570,86 +485,68 @@
 
         .heading {
 
-            margin-bottom:
-                24px;
+            margin-bottom: 22px;
 
         }
 
 
         .heading h1 {
 
-            font-size:
-                30px;
+            font-size: 28px;
 
-            font-weight:
-                800;
+            font-weight: 800;
 
-            margin-bottom:
-                7px;
+            margin-bottom: 7px;
 
         }
 
 
         .heading p {
 
-            color:
-                #64748b;
+            color: #64748b;
 
-            font-size:
-                13px;
+            font-size: 13px;
 
-            line-height:
-                1.6;
+            line-height: 1.6;
 
         }
 
 
         /* =====================================================
-           PLAN BOX
+           SELECTED PLAN
         ====================================================== */
 
         .plan-box {
 
-            display:
-                none;
+            display: none;
 
-            padding:
-                11px 13px;
+            padding: 10px 12px;
 
-            margin-bottom:
-                18px;
+            margin-bottom: 17px;
 
-            border-radius:
-                10px;
+            border-radius: 10px;
 
-            background:
-                #effcf9;
+            background: #effcf9;
 
-            border:
-                1px solid
-                #cdeee7;
+            border: 1px solid #cdeee7;
 
-            color:
-                #115e59;
+            color: #115e59;
 
-            font-size:
-                12px;
+            font-size: 11px;
 
         }
 
 
         .plan-box.show {
 
-            display:
-                block;
+            display: block;
 
         }
 
 
         .plan-box strong {
 
-            font-weight:
-                800;
+            font-weight: 800;
 
         }
 
@@ -660,66 +557,59 @@
 
         .tabs {
 
-            display:
-                grid;
+            display: grid;
 
             grid-template-columns:
                 repeat(3,1fr);
 
-            gap:
-                5px;
+            gap: 4px;
 
-            background:
-                #f1f5f9;
+            background: #f1f5f9;
 
-            padding:
-                5px;
+            padding: 5px;
 
-            border-radius:
-                11px;
+            border-radius: 11px;
 
-            margin-bottom:
-                23px;
+            margin-bottom: 22px;
 
         }
 
 
         .tab {
 
-            border:
-                none;
+            border: none;
 
-            background:
-                transparent;
+            background: transparent;
 
-            color:
-                #64748b;
+            color: #64748b;
 
-            padding:
-                10px 7px;
+            padding: 10px 6px;
 
-            border-radius:
-                8px;
+            border-radius: 8px;
 
-            font-size:
-                11px;
+            font-size: 11px;
 
-            font-weight:
-                750;
+            font-weight: 750;
 
-            cursor:
-                pointer;
+            cursor: pointer;
+
+            transition: .18s ease;
+
+        }
+
+
+        .tab:hover {
+
+            color: #0f766e;
 
         }
 
 
         .tab.active {
 
-            color:
-                #0f766e;
+            color: #0f766e;
 
-            background:
-                white;
+            background: white;
 
             box-shadow:
                 0 2px 8px
@@ -734,16 +624,14 @@
 
         .section {
 
-            display:
-                none;
+            display: none;
 
         }
 
 
         .section.active {
 
-            display:
-                block;
+            display: block;
 
             animation:
                 fade .18s ease;
@@ -754,13 +642,21 @@
         @keyframes fade {
 
             from {
+
                 opacity: 0;
-                transform: translateY(3px);
+
+                transform:
+                    translateY(3px);
+
             }
 
             to {
+
                 opacity: 1;
-                transform: translateY(0);
+
+                transform:
+                    translateY(0);
+
             }
 
         }
@@ -772,75 +668,57 @@
 
         .field {
 
-            margin-bottom:
-                14px;
+            margin-bottom: 13px;
 
         }
 
 
         .field label {
 
-            display:
-                block;
+            display: block;
 
-            margin-bottom:
-                6px;
+            margin-bottom: 6px;
 
-            color:
-                #334155;
+            color: #334155;
 
-            font-size:
-                11px;
+            font-size: 11px;
 
-            font-weight:
-                750;
+            font-weight: 750;
 
         }
 
 
         input {
 
-            width:
-                100%;
+            width: 100%;
 
-            height:
-                46px;
+            height: 45px;
 
             border:
-                1px solid
-                #d9e4e8;
+                1px solid #d9e4e8;
 
-            border-radius:
-                10px;
+            border-radius: 10px;
 
-            padding:
-                0 13px;
+            padding: 0 13px;
 
-            outline:
-                none;
+            outline: none;
 
-            background:
-                #fbfdfe;
+            background: #fbfdfe;
 
-            color:
-                #172033;
+            color: #172033;
 
-            font-size:
-                13px;
+            font-size: 13px;
 
-            transition:
-                .18s ease;
+            transition: .18s ease;
 
         }
 
 
         input:focus {
 
-            border-color:
-                #0f766e;
+            border-color: #0f766e;
 
-            background:
-                white;
+            background: white;
 
             box-shadow:
                 0 0 0 3px
@@ -849,64 +727,55 @@
         }
 
 
+        /* =====================================================
+           PASSWORD
+        ====================================================== */
+
         .password-wrap {
 
-            position:
-                relative;
+            position: relative;
 
         }
 
 
         .password-wrap input {
 
-            padding-right:
-                48px;
+            padding-right: 48px;
 
         }
 
 
         .eye-btn {
 
-            position:
-                absolute;
+            position: absolute;
 
-            top:
-                50%;
+            top: 50%;
 
-            right:
-                7px;
+            right: 7px;
 
             transform:
                 translateY(-50%);
 
-            width:
-                36px;
+            width: 36px;
 
-            height:
-                36px;
+            height: 36px;
 
-            border:
-                none;
+            border: none;
 
-            border-radius:
-                8px;
+            border-radius: 8px;
 
-            background:
-                transparent;
+            background: transparent;
 
-            cursor:
-                pointer;
+            cursor: pointer;
 
-            color:
-                #64748b;
+            color: #64748b;
 
         }
 
 
         .eye-btn:hover {
 
-            background:
-                #f1f5f9;
+            background: #f1f5f9;
 
         }
 
@@ -917,17 +786,13 @@
 
         .main-btn {
 
-            width:
-                100%;
+            width: 100%;
 
-            height:
-                47px;
+            height: 46px;
 
-            border:
-                none;
+            border: none;
 
-            border-radius:
-                10px;
+            border-radius: 10px;
 
             background:
                 linear-gradient(
@@ -936,24 +801,19 @@
                     #0e7490
                 );
 
-            color:
-                white;
+            color: white;
 
-            font-size:
-                13px;
+            font-size: 13px;
 
-            font-weight:
-                800;
+            font-weight: 800;
 
-            cursor:
-                pointer;
+            cursor: pointer;
 
             box-shadow:
                 0 9px 22px
                 rgba(15,118,110,.18);
 
-            transition:
-                .18s ease;
+            transition: .18s ease;
 
         }
 
@@ -965,21 +825,18 @@
 
             box-shadow:
                 0 12px 28px
-                rgba(15,118,110,.24);
+                rgba(15,118,110,.23);
 
         }
 
 
         .main-btn:disabled {
 
-            cursor:
-                not-allowed;
+            cursor: not-allowed;
 
-            opacity:
-                .65;
+            opacity: .65;
 
-            transform:
-                none;
+            transform: none;
 
         }
 
@@ -990,33 +847,26 @@
 
         .loader {
 
-            display:
-                inline-block;
+            display: inline-block;
 
-            width:
-                15px;
+            width: 15px;
 
-            height:
-                15px;
+            height: 15px;
 
             border:
                 2px solid
                 rgba(255,255,255,.4);
 
-            border-top-color:
-                white;
+            border-top-color: white;
 
-            border-radius:
-                50%;
+            border-radius: 50%;
 
             animation:
                 spin .7s linear infinite;
 
-            vertical-align:
-                middle;
+            vertical-align: middle;
 
-            margin-right:
-                7px;
+            margin-right: 7px;
 
         }
 
@@ -1024,8 +874,10 @@
         @keyframes spin {
 
             to {
+
                 transform:
                     rotate(360deg);
+
             }
 
         }
@@ -1037,26 +889,19 @@
 
         .info-box {
 
-            margin-bottom:
-                15px;
+            margin-bottom: 15px;
 
-            padding:
-                12px;
+            padding: 12px;
 
-            border-radius:
-                10px;
+            border-radius: 10px;
 
-            background:
-                #f8fafc;
+            background: #f8fafc;
 
-            color:
-                #64748b;
+            color: #64748b;
 
-            font-size:
-                11px;
+            font-size: 11px;
 
-            line-height:
-                1.6;
+            line-height: 1.6;
 
         }
 
@@ -1067,36 +912,29 @@
 
         #message {
 
-            min-height:
-                20px;
+            min-height: 20px;
 
-            margin-top:
-                12px;
+            margin-top: 11px;
 
-            text-align:
-                center;
+            text-align: center;
 
-            font-size:
-                12px;
+            font-size: 12px;
 
-            font-weight:
-                700;
+            font-weight: 700;
 
         }
 
 
         #message.success {
 
-            color:
-                #15803d;
+            color: #15803d;
 
         }
 
 
         #message.error {
 
-            color:
-                #dc2626;
+            color: #dc2626;
 
         }
 
@@ -1107,215 +945,376 @@
 
         .form-footer {
 
-            margin-top:
-                24px;
+            margin-top: 22px;
 
-            padding-top:
-                17px;
+            padding-top: 15px;
 
             border-top:
-                1px solid
-                #edf2f5;
+                1px solid #edf2f5;
 
-            text-align:
-                center;
+            text-align: center;
 
-            color:
-                #94a3b8;
+            color: #94a3b8;
 
-            font-size:
-                10px;
+            font-size: 10px;
 
-            line-height:
-                1.7;
+            line-height: 1.7;
 
         }
 
 
         .form-footer strong {
 
-            color:
-                #475569;
+            color: #475569;
+
+            font-weight: 750;
+
+        }
+
+
+        .footer-tagline {
+
+            margin-top: 2px;
+
+            color: #0f766e;
+
+            font-size: 10px;
+
+            font-weight: 650;
+
+            letter-spacing: .2px;
 
         }
 
 
         /* =====================================================
-           MOBILE
+           TABLET
         ====================================================== */
 
         @media (max-width: 820px) {
 
             .page {
 
-                padding:
-                    14px;
+                padding: 14px;
+
+                align-items: flex-start;
 
             }
 
 
             .login-shell {
 
-                grid-template-columns:
-                    1fr;
+                display: flex;
 
-                max-width:
-                    470px;
+                flex-direction: column;
 
-            }
+                width: 100%;
 
-
-            .brand-panel {
-
-                padding:
-                    30px 25px;
-
-            }
-
-
-            .brand-title {
-
-                font-size:
-                    24px;
-
-            }
-
-
-            .brand-text {
-
-                font-size:
-                    12px;
-
-            }
-
-
-            .feature-list {
-
-                grid-template-columns:
-                    repeat(2,1fr);
-
-            }
-
-
-            .form-panel {
-
-                padding:
-                    28px 24px;
-
-            }
-
-        }
-
-
-        @media (max-width: 500px) {
-
-            .page {
-
-                align-items:
-                    flex-start;
-
-                padding:
-                    12px;
-
-            }
-
-
-            .login-shell {
+                max-width: 470px;
 
                 margin:
-                    12px 0;
+                    8px auto;
 
-                border-radius:
-                    18px;
+                border-radius: 18px;
 
             }
 
 
+            /* ---------------------------------------------
+               MOBILE GREEN HEADER
+            --------------------------------------------- */
+
             .brand-panel {
 
+                width: 100%;
+
                 padding:
-                    24px 19px;
+                    18px 18px 16px;
+
+            }
+
+
+            .brand-panel::before {
+
+                width: 180px;
+
+                height: 180px;
+
+                top: -110px;
+
+                right: -80px;
+
+            }
+
+
+            .brand-panel::after {
+
+                width: 140px;
+
+                height: 140px;
+
+                bottom: -90px;
+
+                left: -70px;
 
             }
 
 
             .logo-box {
 
-                width:
-                    58px;
+                width: 46px;
 
-                height:
-                    58px;
+                height: 46px;
+
+                margin-bottom: 10px;
 
             }
 
 
             .logo-box img {
 
-                width:
-                    48px;
+                width: 37px;
 
-                height:
-                    48px;
+                height: 37px;
 
             }
 
 
             .brand-name {
 
-                font-size:
-                    25px;
+                font-size: 21px;
+
+                margin-bottom: 4px;
 
             }
 
 
             .brand-title {
 
-                font-size:
-                    21px;
+                font-size: 18px;
+
+                margin-bottom: 6px;
 
             }
 
+
+            .brand-text {
+
+                font-size: 11px;
+
+                line-height: 1.45;
+
+                max-width: none;
+
+            }
+
+
+            /* ---------------------------------------------
+               HIDE FEATURES ON MOBILE
+            --------------------------------------------- */
 
             .feature-list {
 
-                grid-template-columns:
-                    1fr;
+                display: none;
 
             }
 
 
+            /* ---------------------------------------------
+               LOGIN AREA
+            --------------------------------------------- */
+
             .form-panel {
 
+                width: 100%;
+
                 padding:
-                    24px 18px;
+                    24px 18px 20px;
+
+            }
+
+
+            .top-line {
+
+                margin-bottom: 16px;
+
+            }
+
+
+            .heading {
+
+                margin-bottom: 18px;
 
             }
 
 
             .heading h1 {
 
-                font-size:
-                    26px;
+                font-size: 25px;
+
+            }
+
+
+            .heading p {
+
+                font-size: 12px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 500px) {
+
+            .page {
+
+                padding: 8px;
+
+            }
+
+
+            .login-shell {
+
+                margin: 5px auto;
+
+                border-radius: 16px;
+
+            }
+
+
+            /* ---------------------------------------------
+               GREEN SECTION
+            --------------------------------------------- */
+
+            .brand-panel {
+
+                padding:
+                    17px 16px 15px;
+
+            }
+
+
+            .logo-box {
+
+                width: 44px;
+
+                height: 44px;
+
+                border-radius: 12px;
+
+            }
+
+
+            .logo-box img {
+
+                width: 35px;
+
+                height: 35px;
+
+            }
+
+
+            .brand-name {
+
+                font-size: 20px;
+
+            }
+
+
+            .brand-title {
+
+                font-size: 17px;
+
+            }
+
+
+            .brand-text {
+
+                font-size: 10.5px;
+
+                line-height: 1.4;
+
+            }
+
+
+            /* ---------------------------------------------
+               FORM
+            --------------------------------------------- */
+
+            .form-panel {
+
+                padding:
+                    22px 15px 18px;
+
+            }
+
+
+            .heading h1 {
+
+                font-size: 24px;
+
+            }
+
+
+            .heading p {
+
+                font-size: 11px;
 
             }
 
 
             .tabs {
 
-                gap:
-                    3px;
+                gap: 3px;
 
             }
 
 
             .tab {
 
-                font-size:
-                    10px;
+                font-size: 10px;
 
-                padding:
-                    9px 4px;
+                padding: 9px 4px;
+
+            }
+
+
+            input {
+
+                height: 44px;
+
+                font-size: 12px;
+
+            }
+
+
+            .main-btn {
+
+                height: 45px;
+
+                font-size: 12px;
+
+            }
+
+
+            .form-footer {
+
+                margin-top: 18px;
+
+                padding-top: 13px;
+
+                font-size: 9px;
+
+            }
+
+
+            .footer-tagline {
+
+                font-size: 9px;
 
             }
 
@@ -1330,6 +1329,7 @@
 
 
 <div class="bg-circle circle-one"></div>
+
 <div class="bg-circle circle-two"></div>
 
 
@@ -1337,7 +1337,7 @@
 
 
     <!-- =====================================================
-         BRAND AREA
+         BRAND PANEL
     ====================================================== -->
 
     <section class="brand-panel">
@@ -1456,7 +1456,7 @@
 
 
     <!-- =====================================================
-         FORM AREA
+         FORM PANEL
     ====================================================== -->
 
     <section class="form-panel">
@@ -1465,7 +1465,9 @@
         <div class="top-line">
 
             <span class="security">
+
                 🔒 Secure Login
+
             </span>
 
 
@@ -1473,7 +1475,9 @@
                 href="/"
                 class="home-link"
             >
+
                 ← Home
+
             </a>
 
         </div>
@@ -1493,7 +1497,7 @@
 
 
         <!-- =================================================
-             PLAN SELECTED FROM PRICING
+             SELECTED PLAN
         ================================================== -->
 
         <div
@@ -1610,7 +1614,9 @@
                 class="main-btn"
                 onclick="login()"
             >
+
                 Login to Dashboard
+
             </button>
 
 
@@ -1728,7 +1734,9 @@
                 class="main-btn"
                 onclick="register()"
             >
+
                 Create Hospital Account
+
             </button>
 
 
@@ -1736,7 +1744,7 @@
 
 
         <!-- =================================================
-             FORGOT
+             FORGOT PASSWORD
         ================================================== -->
 
         <div
@@ -1747,9 +1755,8 @@
 
             <div class="info-box">
 
-                Enter the email address associated with
-                your hospital account. We will send you a
-                secure password reset link.
+                Enter your registered hospital admin email.
+                We will send you a secure password reset link.
 
             </div>
 
@@ -1775,7 +1782,9 @@
                 class="main-btn"
                 onclick="resetPassword()"
             >
+
                 Send Reset Link
+
             </button>
 
 
@@ -1785,16 +1794,26 @@
         <div id="message"></div>
 
 
+        <!-- =================================================
+             REQUIRED COMPANY FOOTER
+        ================================================== -->
+
         <div class="form-footer">
 
-            Protected by Firebase Authentication.<br>
+            <div>
+                🔐 Protected by Firebase Authentication.
+            </div>
 
-            Developed by ⚡
-            <strong>
-                RORENS Technologies Pvt. Ltd.
-            </strong><br>
+            <div>
+                Developed by ⚡
+                <strong>
+                    RORENS Technologies Pvt. Ltd.
+                </strong>
+            </div>
 
-            Innovation • Technology • Growth
+            <div class="footer-tagline">
+                Innovation • Technology • Growth
+            </div>
 
         </div>
 
@@ -1808,7 +1827,7 @@
 
 
 /* =========================================================
-   FIREBASE
+   FIREBASE IMPORTS
 ========================================================= */
 
 import {
@@ -1881,7 +1900,7 @@ const firebaseConfig = {
 
 
 /* =========================================================
-   INITIALIZE
+   FIREBASE INITIALIZE
 ========================================================= */
 
 const app =
@@ -1903,7 +1922,7 @@ const db =
 
 
 /* =========================================================
-   PLAN
+   PLAN HANDLING
 ========================================================= */
 
 const params =
@@ -1919,9 +1938,13 @@ const urlPlan =
 
 
 const allowedPlans = [
+
     "basic",
+
     "standard",
+
     "premium"
+
 ];
 
 
@@ -1972,6 +1995,7 @@ if (
             "show"
         );
 
+
     document
         .getElementById(
             "planName"
@@ -1983,7 +2007,7 @@ if (
 
 
 /* =========================================================
-   UI
+   SECTION SWITCH
 ========================================================= */
 
 window.showSection =
@@ -2020,22 +2044,34 @@ function(id) {
         );
 
 
-    document
-        .getElementById(
+    const section =
+        document.getElementById(
             id
-        )
-        .classList.add(
-            "active"
         );
 
 
-    document
-        .getElementById(
+    const tab =
+        document.getElementById(
             id + "Tab"
-        )
-        .classList.add(
+        );
+
+
+    if (section) {
+
+        section.classList.add(
             "active"
         );
+
+    }
+
+
+    if (tab) {
+
+        tab.classList.add(
+            "active"
+        );
+
+    }
 
 
     clearMessage();
@@ -2044,7 +2080,7 @@ function(id) {
 
 
 /* =========================================================
-   PASSWORD
+   PASSWORD VISIBILITY
 ========================================================= */
 
 window.togglePassword =
@@ -2132,7 +2168,7 @@ function clearMessage() {
    BUTTON LOADING
 ========================================================= */
 
-function buttonLoading(
+function setButtonLoading(
     button,
     loading,
     normalText,
@@ -2236,7 +2272,7 @@ async function() {
         ) {
 
             showMessage(
-                "Please complete all fields.",
+                "Please complete all registration fields.",
                 "error"
             );
 
@@ -2246,8 +2282,7 @@ async function() {
 
 
         if (
-            password.length <
-            6
+            password.length < 6
         ) {
 
             showMessage(
@@ -2260,7 +2295,7 @@ async function() {
         }
 
 
-        buttonLoading(
+        setButtonLoading(
             button,
             true,
             "Create Hospital Account",
@@ -2286,12 +2321,13 @@ async function() {
             existingHospital.exists()
         ) {
 
-            buttonLoading(
+            setButtonLoading(
                 button,
                 false,
                 "Create Hospital Account",
                 ""
             );
+
 
             showMessage(
                 "This Hospital ID already exists.",
@@ -2353,7 +2389,7 @@ async function() {
         );
 
 
-        buttonLoading(
+        setButtonLoading(
             button,
             false,
             "Create Hospital Account",
@@ -2377,7 +2413,7 @@ async function() {
             "";
 
 
-        showSection(
+        window.showSection(
             "login"
         );
 
@@ -2397,7 +2433,7 @@ async function() {
         );
 
 
-        buttonLoading(
+        setButtonLoading(
             button,
             false,
             "Create Hospital Account",
@@ -2410,7 +2446,7 @@ async function() {
             "auth/email-already-in-use"
         ) {
 
-            showSection(
+            window.showSection(
                 "login"
             );
 
@@ -2531,7 +2567,7 @@ async function() {
         }
 
 
-        buttonLoading(
+        setButtonLoading(
             button,
             true,
             "Login to Dashboard",
@@ -2540,8 +2576,7 @@ async function() {
 
 
         /* =================================================
-           STEP 1
-           FIREBASE AUTHENTICATION
+           1. FIREBASE AUTHENTICATION
         ================================================== */
 
         console.log(
@@ -2562,13 +2597,12 @@ async function() {
 
 
         console.log(
-            "Firebase login successful:",
+            "FIREBASE LOGIN SUCCESS:",
             user.uid
         );
 
 
         /* =================================================
-           STEP 2
            FIREBASE TOKEN
         ================================================== */
 
@@ -2588,8 +2622,7 @@ async function() {
 
 
         /* =================================================
-           STEP 3
-           BACKEND AUTHENTICATION
+           2. BACKEND AUTHENTICATION
         ================================================== */
 
         console.log(
@@ -2625,7 +2658,7 @@ async function() {
 
 
         console.log(
-            "Backend:",
+            "BACKEND LOGIN:",
             backendData
         );
 
@@ -2643,7 +2676,7 @@ async function() {
 
 
         /* =================================================
-           SAVE HOSPITAL INFORMATION
+           SAVE HOSPITAL DATA
         ================================================== */
 
         localStorage.setItem(
@@ -2673,9 +2706,20 @@ async function() {
         );
 
 
+        localStorage.setItem(
+            "firebaseUid",
+            user.uid
+        );
+
+
+        localStorage.setItem(
+            "loginTime",
+            Date.now().toString()
+        );
+
+
         /* =================================================
-           STEP 4
-           CHECK SUBSCRIPTION
+           3. CHECK SUBSCRIPTION
         ================================================== */
 
         console.log(
@@ -2711,7 +2755,7 @@ async function() {
 
 
         console.log(
-            "Subscription:",
+            "SUBSCRIPTION:",
             subscriptionData
         );
 
@@ -2729,22 +2773,6 @@ async function() {
 
 
         /* =================================================
-           SAVE FINAL LOGIN STATE
-        ================================================== */
-
-        localStorage.setItem(
-            "loginTime",
-            Date.now().toString()
-        );
-
-
-        localStorage.setItem(
-            "firebaseUid",
-            user.uid
-        );
-
-
-        /* =================================================
            ACTIVE SUBSCRIPTION
         ================================================== */
 
@@ -2758,7 +2786,7 @@ async function() {
             );
 
 
-            buttonLoading(
+            setButtonLoading(
                 button,
                 false,
                 "Login to Dashboard",
@@ -2797,7 +2825,7 @@ async function() {
         );
 
 
-        buttonLoading(
+        setButtonLoading(
             button,
             false,
             "Login to Dashboard",
@@ -2819,7 +2847,6 @@ async function() {
 
         setTimeout(
             () => {
-
 
                 if (
                     allowedPlans.includes(
@@ -2855,7 +2882,7 @@ async function() {
         );
 
 
-        buttonLoading(
+        setButtonLoading(
             button,
             false,
             "Login to Dashboard",
@@ -2960,7 +2987,7 @@ async function() {
         }
 
 
-        buttonLoading(
+        setButtonLoading(
             button,
             true,
             "Send Reset Link",
@@ -2974,7 +3001,7 @@ async function() {
         );
 
 
-        buttonLoading(
+        setButtonLoading(
             button,
             false,
             "Send Reset Link",
@@ -2983,7 +3010,7 @@ async function() {
 
 
         showMessage(
-            "Password reset link sent to your email.",
+            "Password reset link sent successfully.",
             "success"
         );
 
@@ -2997,7 +3024,7 @@ async function() {
         );
 
 
-        buttonLoading(
+        setButtonLoading(
             button,
             false,
             "Send Reset Link",
@@ -3017,16 +3044,8 @@ async function() {
 
 
 /* =========================================================
-   FIREBASE SESSION
+   FIREBASE PERSISTENT AUTH SESSION
 ========================================================= */
-
-/*
-   Firebase Authentication remembers the signed-in user
-   across page reloads and normal browser restarts using
-   its persistence mechanism.
-
-   We therefore do NOT log the doctor out every minute.
-*/
 
 onAuthStateChanged(
     auth,
