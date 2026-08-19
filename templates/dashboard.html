@@ -3,1356 +3,1505 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>MediQueue Analytics Dashboard</title>
+    <title>MediQueue | Hospital Analytics Dashboard</title>
 
-<!-- ======================================================
-     CHART.JS
-====================================================== -->
+    <!-- =====================================================
+         CHART.JS
+    ====================================================== -->
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <style>
 
-<style>
+        /* =====================================================
+           RESET
+        ====================================================== */
 
-/* =========================================================
-   RESET
-========================================================= */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
 
+        html {
+            scroll-behavior: smooth;
+        }
 
-html {
-    scroll-behavior: smooth;
-}
 
+        body {
 
-body {
+            font-family:
+                Inter,
+                Arial,
+                Helvetica,
+                sans-serif;
 
-    font-family:
-        Inter,
-        Arial,
-        Helvetica,
-        sans-serif;
+            background:
+                #f4f7fb;
 
-    background:
-        #f4f7fb;
+            color:
+                #172033;
 
-    color:
-        #172033;
+            min-height:
+                100vh;
+        }
 
-    min-height:
-        100vh;
 
-}
+        button,
+        input,
+        select {
 
+            font-family:
+                inherit;
+        }
 
-/* =========================================================
-   LAYOUT
-========================================================= */
 
-.app {
+        /* =====================================================
+           APP
+        ====================================================== */
 
-    display:
-        flex;
+        .app {
 
-    min-height:
-        100vh;
+            display:
+                flex;
 
-}
+            min-height:
+                100vh;
+        }
 
 
-/* =========================================================
-   SIDEBAR
-========================================================= */
+        /* =====================================================
+           SIDEBAR
+        ====================================================== */
 
-.sidebar {
+        .sidebar {
 
-    width:
-        250px;
+            width:
+                250px;
 
-    background:
-        #0b1f3a;
+            background:
+                #101828;
 
-    color:
-        white;
+            color:
+                white;
 
-    position:
-        fixed;
+            position:
+                fixed;
 
-    left:
-        0;
+            left:
+                0;
 
-    top:
-        0;
+            top:
+                0;
 
-    bottom:
-        0;
+            bottom:
+                0;
 
-    z-index:
-        1000;
+            z-index:
+                1000;
 
-    padding:
-        22px 16px;
+            overflow-y:
+                auto;
 
-    overflow-y:
-        auto;
+            transition:
+                0.3s;
+        }
 
-}
 
+        .brand {
 
-.logo {
+            height:
+                72px;
 
-    display:
-        flex;
+            display:
+                flex;
 
-    align-items:
-        center;
+            align-items:
+                center;
 
-    gap:
-        10px;
+            gap:
+                10px;
 
-    padding:
-        10px;
+            padding:
+                0 20px;
 
-    margin-bottom:
-        25px;
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.08);
+        }
 
-}
 
+        .brand-icon {
 
-.logo-icon {
+            width:
+                38px;
 
-    width:
-        42px;
+            height:
+                38px;
 
-    height:
-        42px;
+            border-radius:
+                10px;
 
-    border-radius:
-        12px;
+            display:
+                flex;
 
-    display:
-        flex;
+            align-items:
+                center;
 
-    align-items:
-        center;
+            justify-content:
+                center;
 
-    justify-content:
-        center;
+            background:
+                #2563eb;
 
-    background:
-        #1d8cf8;
+            font-size:
+                20px;
+        }
 
-    font-size:
-        22px;
 
-}
+        .brand-text {
 
+            font-size:
+                20px;
 
-.logo-text {
+            font-weight:
+                700;
+        }
 
-    font-size:
-        20px;
 
-    font-weight:
-        700;
+        .brand-text span {
 
-}
+            color:
+                #60a5fa;
+        }
 
 
-.logo-text span {
+        .menu {
 
-    display:
-        block;
+            padding:
+                18px 12px;
+        }
 
-    font-size:
-        11px;
 
-    font-weight:
-        400;
+        .menu-title {
 
-    opacity:
-        .65;
+            color:
+                #667085;
 
-    margin-top:
-        2px;
+            font-size:
+                11px;
 
-}
+            font-weight:
+                700;
 
+            text-transform:
+                uppercase;
 
-/* NAV */
+            letter-spacing:
+                1px;
 
-.nav-title {
+            padding:
+                10px 12px;
+        }
 
-    font-size:
-        11px;
 
-    text-transform:
-        uppercase;
+        .menu button {
 
-    letter-spacing:
-        1px;
+            width:
+                100%;
 
-    color:
-        #8ea5c2;
+            border:
+                0;
 
-    padding:
-        0 12px;
+            background:
+                transparent;
 
-    margin:
-        20px 0 8px;
+            color:
+                #d0d5dd;
 
-}
+            padding:
+                12px;
 
+            border-radius:
+                8px;
 
-.nav-btn {
+            margin-bottom:
+                4px;
 
-    width:
-        100%;
+            text-align:
+                left;
 
-    border:
-        none;
+            cursor:
+                pointer;
 
-    background:
-        transparent;
+            font-size:
+                14px;
 
-    color:
-        #d7e3f3;
+            display:
+                flex;
 
-    padding:
-        13px 14px;
+            align-items:
+                center;
 
-    margin:
-        3px 0;
+            gap:
+                12px;
 
-    border-radius:
-        9px;
+            transition:
+                0.2s;
+        }
 
-    text-align:
-        left;
 
-    cursor:
-        pointer;
+        .menu button:hover {
 
-    font-size:
-        14px;
+            background:
+                #1d2939;
 
-    transition:
-        .2s;
+            color:
+                white;
+        }
 
-}
 
+        .menu button.active {
 
-.nav-btn:hover,
-.nav-btn.active {
+            background:
+                #2563eb;
 
-    background:
-        #15365e;
+            color:
+                white;
+        }
 
-    color:
-        white;
 
-}
+        .menu-icon {
 
+            width:
+                22px;
 
-.nav-btn .icon {
+            text-align:
+                center;
+        }
 
-    width:
-        25px;
 
-    display:
-        inline-block;
+        .sidebar-bottom {
 
-}
+            position:
+                absolute;
 
+            left:
+                12px;
 
-/* SIDEBAR BOTTOM */
+            right:
+                12px;
 
-.sidebar-bottom {
+            bottom:
+                15px;
+        }
 
-    margin-top:
-        30px;
 
-}
+        .logout {
 
+            width:
+                100%;
 
-.logout {
+            border:
+                0;
 
-    background:
-        #d93b3b !important;
+            background:
+                #2b1a1a;
 
-}
+            color:
+                #fca5a5;
 
+            padding:
+                12px;
 
-/* =========================================================
-   MAIN
-========================================================= */
+            border-radius:
+                8px;
 
-.main {
+            cursor:
+                pointer;
 
-    margin-left:
-        250px;
+            font-size:
+                14px;
+        }
 
-    width:
-        calc(100% - 250px);
 
-    min-height:
-        100vh;
+        .logout:hover {
 
-}
+            background:
+                #4c1d1d;
+        }
 
 
-/* =========================================================
-   TOPBAR
-========================================================= */
+        /* =====================================================
+           MOBILE SIDEBAR
+        ====================================================== */
 
-.topbar {
+        .mobile-header {
 
-    height:
-        72px;
+            display:
+                none;
 
-    background:
-        white;
+            height:
+                62px;
 
-    border-bottom:
-        1px solid #e5eaf1;
+            background:
+                white;
 
-    display:
-        flex;
+            border-bottom:
+                1px solid #eaecf0;
 
-    align-items:
-        center;
+            align-items:
+                center;
 
-    justify-content:
-        space-between;
+            justify-content:
+                space-between;
 
-    padding:
-        0 28px;
+            padding:
+                0 16px;
 
-    position:
-        sticky;
+            position:
+                sticky;
 
-    top:
-        0;
+            top:
+                0;
 
-    z-index:
-        900;
+            z-index:
+                900;
+        }
 
-}
 
+        .mobile-menu-btn {
 
-.menu-btn {
+            width:
+                40px;
 
-    display:
-        none;
+            height:
+                40px;
 
-    border:
-        none;
+            border:
+                0;
 
-    background:
-        #eef4fb;
+            background:
+                #f2f4f7;
 
-    width:
-        42px;
+            border-radius:
+                8px;
 
-    height:
-        42px;
+            font-size:
+                20px;
 
-    border-radius:
-        10px;
+            cursor:
+                pointer;
+        }
 
-    font-size:
-        20px;
 
-    cursor:
-        pointer;
+        .mobile-title {
 
-}
+            font-weight:
+                700;
 
+            font-size:
+                17px;
+        }
 
-.top-title h1 {
 
-    font-size:
-        21px;
+        .sidebar-overlay {
 
-}
+            display:
+                none;
 
+            position:
+                fixed;
 
-.top-title p {
+            inset:
+                0;
 
-    font-size:
-        12px;
+            background:
+                rgba(0,0,0,0.45);
 
-    color:
-        #7b8798;
+            z-index:
+                950;
+        }
 
-    margin-top:
-        3px;
 
-}
+        /* =====================================================
+           MAIN
+        ====================================================== */
 
+        .main {
 
-.user-area {
+            margin-left:
+                250px;
 
-    display:
-        flex;
+            width:
+                calc(100% - 250px);
 
-    align-items:
-        center;
+            min-width:
+                0;
+        }
 
-    gap:
-        12px;
 
-}
+        .content {
 
+            padding:
+                26px;
 
-.hospital-name {
+            max-width:
+                1600px;
 
-    font-size:
-        13px;
+            margin:
+                auto;
+        }
 
-    font-weight:
-        600;
 
-    color:
-        #344054;
+        /* =====================================================
+           TOPBAR
+        ====================================================== */
 
-}
+        .topbar {
 
+            display:
+                flex;
 
-.user-avatar {
+            align-items:
+                center;
 
-    width:
-        38px;
+            justify-content:
+                space-between;
 
-    height:
-        38px;
+            gap:
+                20px;
 
-    border-radius:
-        50%;
+            margin-bottom:
+                24px;
 
-    background:
-        #1d8cf8;
+            flex-wrap:
+                wrap;
+        }
 
-    color:
-        white;
 
-    display:
-        flex;
+        .page-title h1 {
 
-    align-items:
-        center;
+            font-size:
+                28px;
 
-    justify-content:
-        center;
+            margin-bottom:
+                5px;
+        }
 
-    font-weight:
-        700;
 
-}
+        .page-title p {
 
+            color:
+                #667085;
 
-/* =========================================================
-   CONTENT
-========================================================= */
+            font-size:
+                14px;
+        }
 
-.content {
 
-    padding:
-        25px;
+        .hospital-badge {
 
-    max-width:
-        1600px;
+            background:
+                white;
 
-    margin:
-        auto;
+            border:
+                1px solid #eaecf0;
 
-}
+            padding:
+                10px 15px;
 
+            border-radius:
+                10px;
 
-/* =========================================================
-   FILTER BAR
-========================================================= */
+            display:
+                flex;
 
-.filter-card {
+            align-items:
+                center;
 
-    background:
-        white;
+            gap:
+                9px;
 
-    border:
-        1px solid #e6ebf2;
+            box-shadow:
+                0 1px 3px
+                rgba(16,24,40,0.05);
+        }
 
-    border-radius:
-        14px;
 
-    padding:
-        18px;
+        .hospital-dot {
 
-    margin-bottom:
-        20px;
+            width:
+                9px;
 
-    box-shadow:
-        0 4px 15px rgba(15, 35, 60, .04);
+            height:
+                9px;
 
-}
+            background:
+                #12b76a;
 
+            border-radius:
+                50%;
+        }
 
-.filter-header {
 
-    display:
-        flex;
+        #hospitalNameDisplay {
 
-    align-items:
-        center;
+            font-weight:
+                600;
+        }
 
-    justify-content:
-        space-between;
 
-    gap:
-        15px;
+        /* =====================================================
+           FILTER CARD
+        ====================================================== */
 
-    margin-bottom:
-        15px;
+        .filter-card {
 
-}
+            background:
+                white;
 
+            border:
+                1px solid #eaecf0;
 
-.filter-header h2 {
+            border-radius:
+                12px;
 
-    font-size:
-        16px;
+            padding:
+                16px;
 
-}
+            margin-bottom:
+                20px;
 
+            box-shadow:
+                0 1px 3px
+                rgba(16,24,40,0.04);
+        }
 
-.refresh-btn {
 
-    border:
-        none;
+        .filter-top {
 
-    background:
-        #eef5ff;
+            display:
+                flex;
 
-    color:
-        #146fd1;
+            justify-content:
+                space-between;
 
-    padding:
-        9px 14px;
+            align-items:
+                center;
 
-    border-radius:
-        8px;
+            gap:
+                15px;
 
-    cursor:
-        pointer;
+            margin-bottom:
+                14px;
 
-    font-weight:
-        600;
+            flex-wrap:
+                wrap;
+        }
 
-}
 
+        .filter-title {
 
-.period-buttons {
+            font-size:
+                15px;
 
-    display:
-        flex;
+            font-weight:
+                700;
+        }
 
-    flex-wrap:
-        wrap;
 
-    gap:
-        8px;
+        .filter-buttons {
 
-}
+            display:
+                flex;
 
+            gap:
+                7px;
 
-.period-btn {
+            flex-wrap:
+                wrap;
+        }
 
-    border:
-        1px solid #dce3ec;
 
-    background:
-        white;
+        .filter-btn {
 
-    color:
-        #536174;
+            border:
+                1px solid #d0d5dd;
 
-    padding:
-        9px 16px;
+            background:
+                white;
 
-    border-radius:
-        8px;
+            color:
+                #344054;
 
-    cursor:
-        pointer;
+            padding:
+                8px 13px;
 
-    font-size:
-        13px;
+            border-radius:
+                7px;
 
-    font-weight:
-        600;
+            cursor:
+                pointer;
 
-}
+            font-size:
+                13px;
+        }
 
 
-.period-btn:hover,
-.period-btn.active {
+        .filter-btn:hover {
 
-    background:
-        #1d8cf8;
+            background:
+                #f9fafb;
+        }
 
-    color:
-        white;
 
-    border-color:
-        #1d8cf8;
+        .filter-btn.active {
 
-}
+            background:
+                #2563eb;
 
+            color:
+                white;
 
-.custom-date {
+            border-color:
+                #2563eb;
+        }
 
-    display:
-        none;
 
-    grid-template-columns:
-        repeat(2, minmax(150px, 1fr));
+        .custom-date-row {
 
-    gap:
-        12px;
+            display:
+                grid;
 
-    margin-top:
-        15px;
+            grid-template-columns:
+                repeat(3, 1fr);
 
-}
+            gap:
+                12px;
+        }
 
 
-.custom-date.show {
+        .date-input label {
 
-    display:
-        grid;
+            display:
+                block;
 
-}
+            font-size:
+                12px;
 
+            font-weight:
+                600;
 
-.date-field label {
+            color:
+                #475467;
 
-    display:
-        block;
+            margin-bottom:
+                5px;
+        }
 
-    font-size:
-        12px;
 
-    font-weight:
-        600;
+        .date-input input {
 
-    color:
-        #667085;
+            width:
+                100%;
 
-    margin-bottom:
-        6px;
+            padding:
+                10px;
 
-}
+            border:
+                1px solid #d0d5dd;
 
+            border-radius:
+                7px;
 
-.date-field input {
+            outline:
+                none;
+        }
 
-    width:
-        100%;
 
-    border:
-        1px solid #d8e0ea;
+        .date-input input:focus {
 
-    border-radius:
-        8px;
+            border-color:
+                #2563eb;
+        }
 
-    padding:
-        10px;
 
-    outline:
-        none;
+        /* =====================================================
+           KPI CARDS
+        ====================================================== */
 
-}
+        .stats-grid {
 
+            display:
+                grid;
 
-.apply-btn {
+            grid-template-columns:
+                repeat(4, 1fr);
 
-    margin-top:
-        12px;
+            gap:
+                16px;
 
-    border:
-        none;
+            margin-bottom:
+                20px;
+        }
 
-    background:
-        #162f50;
 
-    color:
-        white;
+        .stat-card {
 
-    padding:
-        10px 17px;
+            background:
+                white;
 
-    border-radius:
-        8px;
+            border:
+                1px solid #eaecf0;
 
-    cursor:
-        pointer;
+            border-radius:
+                12px;
 
-}
+            padding:
+                18px;
 
+            position:
+                relative;
 
-/* =========================================================
-   KPI CARDS
-========================================================= */
+            overflow:
+                hidden;
 
-.kpi-grid {
+            box-shadow:
+                0 1px 3px
+                rgba(16,24,40,0.04);
+        }
 
-    display:
-        grid;
 
-    grid-template-columns:
-        repeat(4, 1fr);
+        .stat-header {
 
-    gap:
-        16px;
+            display:
+                flex;
 
-    margin-bottom:
-        20px;
+            align-items:
+                center;
 
-}
+            justify-content:
+                space-between;
 
+            margin-bottom:
+                14px;
+        }
 
-.kpi {
 
-    background:
-        white;
+        .stat-label {
 
-    border:
-        1px solid #e6ebf2;
+            color:
+                #667085;
 
-    border-radius:
-        14px;
+            font-size:
+                13px;
 
-    padding:
-        20px;
+            font-weight:
+                500;
+        }
 
-    position:
-        relative;
 
-    overflow:
-        hidden;
+        .stat-icon {
 
-}
+            width:
+                38px;
 
+            height:
+                38px;
 
-.kpi::after {
+            border-radius:
+                9px;
 
-    content:
-        "";
+            display:
+                flex;
 
-    position:
-        absolute;
+            align-items:
+                center;
 
-    right:
-        -25px;
+            justify-content:
+                center;
 
-    top:
-        -25px;
+            font-size:
+                18px;
+        }
 
-    width:
-        90px;
 
-    height:
-        90px;
+        .blue {
+            background: #eff6ff;
+        }
 
-    border-radius:
-        50%;
+        .green {
+            background: #ecfdf3;
+        }
 
-    background:
-        #eef6ff;
+        .purple {
+            background: #f5f3ff;
+        }
 
-}
+        .orange {
+            background: #fff7ed;
+        }
 
 
-.kpi-icon {
+        .stat-value {
 
-    width:
-        42px;
+            font-size:
+                29px;
 
-    height:
-        42px;
+            font-weight:
+                750;
 
-    border-radius:
-        10px;
+            margin-bottom:
+                4px;
+        }
 
-    background:
-        #eaf4ff;
 
-    display:
-        flex;
+        .stat-small {
 
-    align-items:
-        center;
+            color:
+                #667085;
 
-    justify-content:
-        center;
+            font-size:
+                12px;
+        }
 
-    font-size:
-        20px;
 
-    margin-bottom:
-        13px;
+        /* =====================================================
+           GENDER MINI STATS
+        ====================================================== */
 
-}
+        .gender-grid {
 
+            display:
+                grid;
 
-.kpi h3 {
+            grid-template-columns:
+                repeat(3, 1fr);
 
-    font-size:
-        12px;
+            gap:
+                12px;
 
-    color:
-        #7a8797;
+            margin-bottom:
+                20px;
+        }
 
-    font-weight:
-        600;
 
-}
+        .gender-card {
 
+            background:
+                white;
 
-.kpi-value {
+            border:
+                1px solid #eaecf0;
 
-    font-size:
-        28px;
+            border-radius:
+                10px;
 
-    font-weight:
-        750;
+            padding:
+                15px;
 
-    margin-top:
-        5px;
+            display:
+                flex;
 
-}
+            align-items:
+                center;
 
+            gap:
+                12px;
+        }
 
-.kpi small {
 
-    display:
-        block;
+        .gender-icon {
 
-    color:
-        #8a96a6;
+            width:
+                40px;
 
-    margin-top:
-        5px;
+            height:
+                40px;
 
-    font-size:
-        11px;
+            border-radius:
+                50%;
 
-}
+            display:
+                flex;
 
+            align-items:
+                center;
 
-/* =========================================================
-   CHART GRID
-========================================================= */
+            justify-content:
+                center;
 
-.chart-grid {
+            font-size:
+                19px;
 
-    display:
-        grid;
+            background:
+                #f2f4f7;
+        }
 
-    grid-template-columns:
-        repeat(2, 1fr);
 
-    gap:
-        18px;
+        .gender-card strong {
 
-}
+            display:
+                block;
 
+            font-size:
+                20px;
 
-.chart-card {
+            margin-top:
+                2px;
+        }
 
-    background:
-        white;
 
-    border:
-        1px solid #e6ebf2;
+        .gender-card span {
 
-    border-radius:
-        14px;
+            color:
+                #667085;
 
-    padding:
-        20px;
+            font-size:
+                12px;
+        }
 
-    min-height:
-        350px;
 
-}
+        /* =====================================================
+           CHART GRID
+        ====================================================== */
 
+        .chart-grid {
 
-.chart-card.full {
+            display:
+                grid;
 
-    grid-column:
-        1 / -1;
+            grid-template-columns:
+                repeat(2, 1fr);
 
-}
+            gap:
+                20px;
 
+            margin-bottom:
+                20px;
+        }
 
-.chart-head {
 
-    display:
-        flex;
+        .chart-card {
 
-    align-items:
-        center;
+            background:
+                white;
 
-    justify-content:
-        space-between;
+            border:
+                1px solid #eaecf0;
 
-    gap:
-        10px;
+            border-radius:
+                12px;
 
-    margin-bottom:
-        18px;
+            padding:
+                18px;
 
-}
+            min-width:
+                0;
 
+            box-shadow:
+                0 1px 3px
+                rgba(16,24,40,0.04);
+        }
 
-.chart-head h2 {
 
-    font-size:
-        15px;
+        .chart-card.full {
 
-}
+            grid-column:
+                1 / -1;
+        }
 
 
-.chart-head span {
+        .chart-header {
 
-    color:
-        #8b97a7;
+            display:
+                flex;
 
-    font-size:
-        11px;
+            justify-content:
+                space-between;
 
-}
+            align-items:
+                center;
 
+            gap:
+                10px;
 
-.chart-container {
+            margin-bottom:
+                18px;
 
-    position:
-        relative;
+            flex-wrap:
+                wrap;
+        }
 
-    height:
-        270px;
 
-}
+        .chart-title {
 
+            font-size:
+                15px;
 
-/* =========================================================
-   TABLE
-========================================================= */
+            font-weight:
+                700;
+        }
 
-.table-card {
 
-    background:
-        white;
+        .chart-subtitle {
 
-    border:
-        1px solid #e6ebf2;
+            color:
+                #98a2b3;
 
-    border-radius:
-        14px;
+            font-size:
+                12px;
 
-    margin-top:
-        18px;
+            margin-top:
+                3px;
+        }
 
-    overflow:
-        hidden;
 
-}
+        .chart-container {
 
+            position:
+                relative;
 
-.table-head {
+            height:
+                300px;
+        }
 
-    padding:
-        18px;
 
-    border-bottom:
-        1px solid #edf0f4;
+        .chart-container.small {
 
-}
+            height:
+                260px;
+        }
 
 
-.table-head h2 {
+        /* =====================================================
+           TABLE
+        ====================================================== */
 
-    font-size:
-        15px;
+        .table-card {
 
-}
+            background:
+                white;
 
+            border:
+                1px solid #eaecf0;
 
-.table-scroll {
+            border-radius:
+                12px;
 
-    overflow-x:
-        auto;
+            overflow:
+                hidden;
 
-}
+            margin-bottom:
+                20px;
+        }
 
 
-table {
+        .table-header {
 
-    width:
-        100%;
+            padding:
+                18px;
 
-    border-collapse:
-        collapse;
+            border-bottom:
+                1px solid #eaecf0;
+        }
 
-    min-width:
-        700px;
 
-}
+        .table-header h3 {
 
+            font-size:
+                15px;
+        }
 
-th,
-td {
 
-    padding:
-        13px 16px;
+        .table-wrapper {
 
-    border-bottom:
-        1px solid #edf0f4;
+            width:
+                100%;
 
-    text-align:
-        left;
+            overflow-x:
+                auto;
+        }
 
-    font-size:
-        13px;
 
-}
+        table {
 
+            width:
+                100%;
 
-th {
+            border-collapse:
+                collapse;
 
-    background:
-        #f8fafc;
+            min-width:
+                500px;
+        }
 
-    color:
-        #68768a;
 
-    font-size:
-        11px;
+        th,
+        td {
 
-    text-transform:
-        uppercase;
+            padding:
+                13px 18px;
 
-}
+            text-align:
+                left;
 
+            border-bottom:
+                1px solid #f2f4f7;
 
-td {
+            font-size:
+                13px;
+        }
 
-    color:
-        #344054;
 
-}
+        th {
 
+            background:
+                #f9fafb;
 
-/* =========================================================
-   LOADING
-========================================================= */
+            color:
+                #475467;
 
-.loading {
+            font-weight:
+                600;
+        }
 
-    position:
-        fixed;
 
-    inset:
-        0;
+        td {
 
-    background:
-        rgba(255,255,255,.85);
+            color:
+                #344054;
+        }
 
-    z-index:
-        5000;
 
-    display:
-        flex;
+        tr:last-child td {
 
-    align-items:
-        center;
+            border-bottom:
+                0;
+        }
 
-    justify-content:
-        center;
 
-}
+        .rank {
 
+            width:
+                30px;
 
-.loader-box {
+            height:
+                30px;
 
-    text-align:
-        center;
+            display:
+                inline-flex;
 
-}
+            align-items:
+                center;
 
+            justify-content:
+                center;
 
-.loader {
+            border-radius:
+                50%;
 
-    width:
-        42px;
+            background:
+                #eff6ff;
 
-    height:
-        42px;
+            color:
+                #2563eb;
 
-    border:
-        4px solid #e3ebf5;
+            font-weight:
+                700;
+        }
 
-    border-top:
-        4px solid #1d8cf8;
 
-    border-radius:
-        50%;
+        /* =====================================================
+           LOADING
+        ====================================================== */
 
-    animation:
-        spin .8s linear infinite;
+        .loading {
 
-    margin:
-        auto auto 12px;
+            opacity:
+                0.5;
 
-}
+            pointer-events:
+                none;
+        }
 
 
-@keyframes spin {
+        .loading-box {
 
-    to {
-        transform:
-            rotate(360deg);
-    }
+            display:
+                none;
 
-}
+            position:
+                fixed;
 
+            inset:
+                0;
 
-/* =========================================================
-   EMPTY
-========================================================= */
+            z-index:
+                2000;
 
-.empty {
+            background:
+                rgba(255,255,255,0.7);
 
-    text-align:
-        center;
+            align-items:
+                center;
 
-    padding:
-        35px;
+            justify-content:
+                center;
+        }
 
-    color:
-        #8793a3;
 
-}
+        .loading-box.show {
 
+            display:
+                flex;
+        }
 
-/* =========================================================
-   MOBILE
-========================================================= */
 
-@media (max-width: 1100px) {
+        .loader {
 
-    .kpi-grid {
+            width:
+                45px;
 
-        grid-template-columns:
-            repeat(2, 1fr);
+            height:
+                45px;
 
-    }
+            border:
+                4px solid #e5e7eb;
 
-}
+            border-top-color:
+                #2563eb;
 
+            border-radius:
+                50%;
 
-@media (max-width: 800px) {
+            animation:
+                spin 0.8s linear infinite;
+        }
 
-    .sidebar {
 
-        transform:
-            translateX(-100%);
+        @keyframes spin {
 
-        transition:
-            .25s;
+            to {
+                transform:
+                    rotate(360deg);
+            }
+        }
 
-    }
 
+        /* =====================================================
+           EMPTY
+        ====================================================== */
 
-    .sidebar.open {
+        .empty {
 
-        transform:
-            translateX(0);
+            padding:
+                35px;
 
-    }
+            text-align:
+                center;
 
+            color:
+                #98a2b3;
+        }
 
-    .main {
 
-        margin-left:
-            0;
+        /* =====================================================
+           MOBILE
+        ====================================================== */
 
-        width:
-            100%;
+        @media (max-width: 1100px) {
 
-    }
+            .stats-grid {
 
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
 
-    .menu-btn {
+        }
 
-        display:
-            block;
 
-    }
+        @media (max-width: 850px) {
 
+            .sidebar {
 
-    .topbar {
+                transform:
+                    translateX(-100%);
+            }
 
-        padding:
-            0 15px;
 
-    }
+            .sidebar.open {
 
+                transform:
+                    translateX(0);
+            }
 
-    .hospital-name {
 
-        display:
-            none;
+            .sidebar-overlay.show {
 
-    }
+                display:
+                    block;
+            }
 
 
-    .content {
+            .main {
 
-        padding:
-            15px;
+                margin-left:
+                    0;
 
-    }
+                width:
+                    100%;
+            }
 
 
-    .chart-grid {
+            .mobile-header {
 
-        grid-template-columns:
-            1fr;
+                display:
+                    flex;
+            }
 
-    }
 
+            .content {
 
-    .chart-card.full {
+                padding:
+                    18px;
+            }
 
-        grid-column:
-            auto;
 
-    }
+            .chart-grid {
 
+                grid-template-columns:
+                    1fr;
+            }
 
-    .custom-date {
 
-        grid-template-columns:
-            1fr;
+            .chart-card.full {
 
-    }
+                grid-column:
+                    auto;
+            }
 
-}
+        }
 
 
-@media (max-width: 520px) {
+        @media (max-width: 600px) {
 
-    .kpi-grid {
+            .content {
 
-        grid-template-columns:
-            1fr;
+                padding:
+                    14px;
+            }
 
-    }
 
+            .topbar {
 
-    .period-buttons {
+                margin-bottom:
+                    15px;
+            }
 
-        display:
-            grid;
 
-        grid-template-columns:
-            repeat(2, 1fr);
+            .page-title h1 {
 
-    }
+                font-size:
+                    22px;
+            }
 
 
-    .period-btn {
+            .hospital-badge {
 
-        width:
-            100%;
+                width:
+                    100%;
+            }
 
-    }
 
+            .stats-grid {
 
-    .chart-card {
+                grid-template-columns:
+                    1fr 1fr;
 
-        padding:
-            15px;
+                gap:
+                    10px;
+            }
 
-        min-height:
-            320px;
 
-    }
+            .stat-card {
 
+                padding:
+                    14px;
+            }
 
-    .chart-container {
 
-        height:
-            240px;
+            .stat-value {
 
-    }
+                font-size:
+                    24px;
+            }
 
 
-    .top-title h1 {
+            .gender-grid {
 
-        font-size:
-            17px;
+                grid-template-columns:
+                    1fr;
 
-    }
+                gap:
+                    8px;
+            }
 
-}
 
+            .custom-date-row {
 
-/* =========================================================
-   SIDEBAR OVERLAY MOBILE
-========================================================= */
+                grid-template-columns:
+                    1fr;
+            }
 
-.sidebar-overlay {
 
-    display:
-        none;
+            .filter-buttons {
 
-    position:
-        fixed;
+                width:
+                    100%;
+            }
 
-    inset:
-        0;
 
-    background:
-        rgba(0,0,0,.45);
+            .filter-btn {
 
-    z-index:
-        999;
+                flex:
+                    1;
+            }
 
-}
 
+            .chart-card {
 
-.sidebar-overlay.show {
+                padding:
+                    14px;
+            }
 
-    display:
-        block;
 
-}
+            .chart-container {
 
-</style>
+                height:
+                    250px;
+            }
+
+
+            .chart-container.small {
+
+                height:
+                    230px;
+            }
+
+        }
+
+
+    </style>
 
 </head>
 
@@ -1360,713 +1509,926 @@ td {
 <body>
 
 
-<div class="app">
+<!-- =========================================================
+     MOBILE HEADER
+========================================================== -->
 
-
-<!-- ======================================================
-     SIDEBAR
-====================================================== -->
-
-<aside
-    class="sidebar"
-    id="sidebar"
->
-
-    <div class="logo">
-
-        <div class="logo-icon">
-            🏥
-        </div>
-
-        <div class="logo-text">
-
-            MediQueue
-
-            <span>
-                Hospital Management
-            </span>
-
-        </div>
-
-    </div>
-
-
-    <div class="nav-title">
-        Dashboard
-    </div>
-
+<header class="mobile-header">
 
     <button
-        class="nav-btn active"
-        onclick="showDashboard()"
+        class="mobile-menu-btn"
+        onclick="toggleSidebar()"
     >
-
-        <span class="icon">
-            📊
-        </span>
-
-        Analytics
-
+        ☰
     </button>
 
-
-    <button
-        class="nav-btn"
-        onclick="openAppointments()"
-    >
-
-        <span class="icon">
-            📅
-        </span>
-
-        Appointments
-
-    </button>
-
-
-    <button
-        class="nav-btn"
-        onclick="openFollowups()"
-    >
-
-        <span class="icon">
-            🔄
-        </span>
-
-        Follow-ups
-
-    </button>
-
-
-    <button
-        class="nav-btn"
-        onclick="openHospital()"
-    >
-
-        <span class="icon">
-            🏥
-        </span>
-
-        Hospital
-
-    </button>
-
-
-    <div class="nav-title">
-        Account
+    <div class="mobile-title">
+        MediQueue
     </div>
 
-
-    <button
-        class="nav-btn logout"
-        onclick="logout()"
-    >
-
-        <span class="icon">
-            🚪
-        </span>
-
-        Logout
-
-    </button>
-
-</aside>
-
-
-<div
-    class="sidebar-overlay"
-    id="sidebarOverlay"
-    onclick="closeSidebar()"
-></div>
-
-
-<!-- ======================================================
-     MAIN
-====================================================== -->
-
-<main class="main">
-
-
-<header class="topbar">
-
-
-    <div
-        style="display:flex;align-items:center;gap:12px;"
-    >
-
-        <button
-            class="menu-btn"
-            onclick="toggleSidebar()"
-        >
-            ☰
-        </button>
-
-
-        <div class="top-title">
-
-            <h1>
-                Analytics Dashboard
-            </h1>
-
-            <p id="periodText">
-                Today
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <div class="user-area">
-
-        <div
-            class="hospital-name"
-            id="hospitalName"
-        >
-            Hospital
-        </div>
-
-
-        <div
-            class="user-avatar"
-            id="avatar"
-        >
-            H
-        </div>
-
-    </div>
+    <div style="width:40px;"></div>
 
 </header>
 
 
-<div class="content">
+<!-- =========================================================
+     SIDEBAR OVERLAY
+========================================================== -->
+
+<div
+    id="sidebarOverlay"
+    class="sidebar-overlay"
+    onclick="toggleSidebar()"
+></div>
 
 
-<!-- ======================================================
-     FILTER
-====================================================== -->
-
-<section class="filter-card">
+<div class="app">
 
 
-    <div class="filter-header">
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-        <h2>
-            📅 Analytics Period
-        </h2>
-
-
-        <button
-            class="refresh-btn"
-            onclick="loadData()"
-        >
-            ↻ Refresh
-        </button>
-
-    </div>
-
-
-    <div class="period-buttons">
-
-
-        <button
-            class="period-btn active"
-            data-period="today"
-            onclick="setPeriod('today')"
-        >
-            Today
-        </button>
-
-
-        <button
-            class="period-btn"
-            data-period="date"
-            onclick="setPeriod('date')"
-        >
-            Date
-        </button>
-
-
-        <button
-            class="period-btn"
-            data-period="week"
-            onclick="setPeriod('week')"
-        >
-            This Week
-        </button>
-
-
-        <button
-            class="period-btn"
-            data-period="month"
-            onclick="setPeriod('month')"
-        >
-            This Month
-        </button>
-
-
-        <button
-            class="period-btn"
-            data-period="year"
-            onclick="setPeriod('year')"
-        >
-            This Year
-        </button>
-
-
-        <button
-            class="period-btn"
-            data-period="custom"
-            onclick="setPeriod('custom')"
-        >
-            Custom Range
-        </button>
-
-    </div>
-
-
-    <div
-        class="custom-date"
-        id="customDate"
+    <aside
+        id="sidebar"
+        class="sidebar"
     >
 
-        <div class="date-field">
+        <div class="brand">
 
-            <label>
-                From
-            </label>
+            <div class="brand-icon">
+                🏥
+            </div>
 
-            <input
-                type="date"
-                id="fromDate"
-            >
-
-        </div>
-
-
-        <div class="date-field">
-
-            <label>
-                To
-            </label>
-
-            <input
-                type="date"
-                id="toDate"
-            >
-
-        </div>
-
-
-        <button
-            class="apply-btn"
-            onclick="applyCustomRange()"
-        >
-            Apply Range
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- ======================================================
-     KPI
-====================================================== -->
-
-<section class="kpi-grid">
-
-
-    <div class="kpi">
-
-        <div class="kpi-icon">
-            👥
-        </div>
-
-        <h3>
-            TOTAL PATIENTS
-        </h3>
-
-        <div
-            class="kpi-value"
-            id="totalPatients"
-        >
-            0
-        </div>
-
-        <small>
-            Selected period
-        </small>
-
-    </div>
-
-
-    <div class="kpi">
-
-        <div class="kpi-icon">
-            📅
-        </div>
-
-        <h3>
-            APPOINTMENTS
-        </h3>
-
-        <div
-            class="kpi-value"
-            id="totalAppointments"
-        >
-            0
-        </div>
-
-        <small>
-            Bookings in period
-        </small>
-
-    </div>
-
-
-    <div class="kpi">
-
-        <div class="kpi-icon">
-            👨‍⚕️
-        </div>
-
-        <h3>
-            ACTIVE DOCTORS
-        </h3>
-
-        <div
-            class="kpi-value"
-            id="activeDoctors"
-        >
-            0
-        </div>
-
-        <small>
-            Doctors with appointments
-        </small>
-
-    </div>
-
-
-    <div class="kpi">
-
-        <div class="kpi-icon">
-            📈
-        </div>
-
-        <h3>
-            DAILY AVERAGE
-        </h3>
-
-        <div
-            class="kpi-value"
-            id="dailyAverage"
-        >
-            0
-        </div>
-
-        <small>
-            Appointments / day
-        </small>
-
-    </div>
-
-</section>
-
-
-<!-- ======================================================
-     CHARTS
-====================================================== -->
-
-<section class="chart-grid">
-
-
-    <!-- TREND -->
-
-    <div class="chart-card full">
-
-        <div class="chart-head">
-
-            <div>
-
-                <h2>
-                    📈 Patient Appointment Trend
-                </h2>
-
-                <span>
-                    Date-wise / Week-wise / Month-wise
-                </span>
-
+            <div class="brand-text">
+                Medi<span>Queue</span>
             </div>
 
         </div>
 
 
-        <div class="chart-container">
+        <div class="menu">
 
-            <canvas id="trendChart"></canvas>
-
-        </div>
-
-    </div>
+            <div class="menu-title">
+                Main
+            </div>
 
 
-    <!-- GENDER -->
+            <button
+                class="active"
+                onclick="goDashboard()"
+            >
 
-    <div class="chart-card">
+                <span class="menu-icon">
+                    📊
+                </span>
 
-        <div class="chart-head">
+                Dashboard
 
-            <h2>
-                ⚥ Gender Distribution
-            </h2>
-
-            <span>
-                Selected period
-            </span>
-
-        </div>
+            </button>
 
 
-        <div class="chart-container">
+            <button
+                onclick="openAppointments()"
+            >
 
-            <canvas id="genderChart"></canvas>
+                <span class="menu-icon">
+                    📅
+                </span>
 
-        </div>
+                Appointments
 
-    </div>
-
-
-    <!-- AGE -->
-
-    <div class="chart-card">
-
-        <div class="chart-head">
-
-            <h2>
-                👥 Age Distribution
-            </h2>
-
-            <span>
-                Patient age groups
-            </span>
-
-        </div>
+            </button>
 
 
-        <div class="chart-container">
+            <button
+                onclick="openFollowups()"
+            >
 
-            <canvas id="ageChart"></canvas>
+                <span class="menu-icon">
+                    🔄
+                </span>
 
-        </div>
+                Follow-ups
 
-    </div>
-
-
-    <!-- DOCTORS -->
-
-    <div class="chart-card">
-
-        <div class="chart-head">
-
-            <h2>
-                👨‍⚕️ Doctor-wise Patients
-            </h2>
-
-            <span>
-                Selected period
-            </span>
-
-        </div>
+            </button>
 
 
-        <div class="chart-container">
-
-            <canvas id="doctorChart"></canvas>
-
-        </div>
-
-    </div>
+            <div class="menu-title">
+                Management
+            </div>
 
 
-    <!-- LOCATION -->
+            <button
+                onclick="openHospital()"
+            >
 
-    <div class="chart-card">
+                <span class="menu-icon">
+                    🏥
+                </span>
 
-        <div class="chart-head">
+                Hospital
 
-            <h2>
-                📍 Patient Location
-            </h2>
+            </button>
 
-            <span>
-                Address / Village
-            </span>
+
+            <button
+                onclick="openDoctors()"
+            >
+
+                <span class="menu-icon">
+                    👨‍⚕️
+                </span>
+
+                Doctors
+
+            </button>
+
+
+            <button
+                onclick="refreshAnalytics()"
+            >
+
+                <span class="menu-icon">
+                    🔄
+                </span>
+
+                Refresh Data
+
+            </button>
 
         </div>
 
 
-        <div class="chart-container">
+        <div class="sidebar-bottom">
 
-            <canvas id="locationChart"></canvas>
-
-        </div>
-
-    </div>
-
-
-    <!-- TIME -->
-
-    <div class="chart-card full">
-
-        <div class="chart-head">
-
-            <h2>
-                🕐 Appointment Time Distribution
-            </h2>
-
-            <span>
-                Popular appointment slots
-            </span>
+            <button
+                class="logout"
+                onclick="logout()"
+            >
+                🚪 Logout
+            </button>
 
         </div>
 
+    </aside>
 
-        <div class="chart-container">
 
-            <canvas id="timeChart"></canvas>
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main">
+
+
+        <div class="content">
+
+
+            <!-- =================================================
+                 TOPBAR
+            ================================================== -->
+
+            <div class="topbar">
+
+                <div class="page-title">
+
+                    <h1>
+                        Analytics Dashboard
+                    </h1>
+
+                    <p>
+                        Monitor patient activity and hospital performance
+                    </p>
+
+                </div>
+
+
+                <div class="hospital-badge">
+
+                    <span class="hospital-dot"></span>
+
+                    <span id="hospitalNameDisplay">
+                        Loading hospital...
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FILTER
+            ================================================== -->
+
+            <div class="filter-card">
+
+                <div class="filter-top">
+
+                    <div class="filter-title">
+                        📅 Analytics Period
+                    </div>
+
+
+                    <div class="filter-buttons">
+
+                        <button
+                            class="filter-btn"
+                            data-period="today"
+                            onclick="setPeriod('today')"
+                        >
+                            Today
+                        </button>
+
+
+                        <button
+                            class="filter-btn active"
+                            data-period="7"
+                            onclick="setPeriod('7')"
+                        >
+                            7 Days
+                        </button>
+
+
+                        <button
+                            class="filter-btn"
+                            data-period="30"
+                            onclick="setPeriod('30')"
+                        >
+                            30 Days
+                        </button>
+
+
+                        <button
+                            class="filter-btn"
+                            data-period="90"
+                            onclick="setPeriod('90')"
+                        >
+                            90 Days
+                        </button>
+
+
+                        <button
+                            class="filter-btn"
+                            data-period="all"
+                            onclick="setPeriod('all')"
+                        >
+                            All Time
+                        </button>
+
+
+                        <button
+                            class="filter-btn"
+                            data-period="custom"
+                            onclick="setPeriod('custom')"
+                        >
+                            Custom
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="customDateRow"
+                    class="custom-date-row"
+                    style="display:none;"
+                >
+
+                    <div class="date-input">
+
+                        <label>
+                            From
+                        </label>
+
+                        <input
+                            type="date"
+                            id="startDate"
+                        >
+
+                    </div>
+
+
+                    <div class="date-input">
+
+                        <label>
+                            To
+                        </label>
+
+                        <input
+                            type="date"
+                            id="endDate"
+                        >
+
+                    </div>
+
+
+                    <div
+                        class="date-input"
+                        style="display:flex;align-items:end;"
+                    >
+
+                        <button
+                            class="filter-btn active"
+                            style="width:100%;"
+                            onclick="applyCustomDate()"
+                        >
+                            Apply Date Range
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 KPI CARDS
+            ================================================== -->
+
+            <div class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+
+                        <span class="stat-label">
+                            Total Patients
+                        </span>
+
+                        <div class="stat-icon blue">
+                            👥
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="totalPatients"
+                        class="stat-value"
+                    >
+                        0
+                    </div>
+
+                    <div
+                        id="periodText"
+                        class="stat-small"
+                    >
+                        Selected period
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+
+                        <span class="stat-label">
+                            Appointments
+                        </span>
+
+                        <div class="stat-icon green">
+                            📅
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="appointmentsCount"
+                        class="stat-value"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-small">
+                        Scheduled visits
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+
+                        <span class="stat-label">
+                            Doctors
+                        </span>
+
+                        <div class="stat-icon purple">
+                            👨‍⚕️
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="doctorCount"
+                        class="stat-value"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-small">
+                        Active doctors
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-header">
+
+                        <span class="stat-label">
+                            Avg. Daily Patients
+                        </span>
+
+                        <div class="stat-icon orange">
+                            📈
+                        </div>
+
+                    </div>
+
+                    <div
+                        id="averagePatients"
+                        class="stat-value"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-small">
+                        Average per day
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 GENDER
+            ================================================== -->
+
+            <div class="gender-grid">
+
+
+                <div class="gender-card">
+
+                    <div class="gender-icon">
+                        👨
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Male Patients
+                        </span>
+
+                        <strong id="maleCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="gender-card">
+
+                    <div class="gender-icon">
+                        👩
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Female Patients
+                        </span>
+
+                        <strong id="femaleCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="gender-card">
+
+                    <div class="gender-icon">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Other / Unknown
+                        </span>
+
+                        <strong id="otherCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 DATE-WISE MAIN CHART
+            ================================================== -->
+
+            <div class="chart-grid">
+
+
+                <div class="chart-card full">
+
+                    <div class="chart-header">
+
+                        <div>
+
+                            <div class="chart-title">
+                                📈 Patient Visits Over Time
+                            </div>
+
+                            <div class="chart-subtitle">
+                                Date-wise appointment trend
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-container">
+
+                        <canvas
+                            id="dailyChart"
+                        ></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     WEEK-WISE
+                ================================================== -->
+
+                <div class="chart-card">
+
+                    <div class="chart-header">
+
+                        <div>
+
+                            <div class="chart-title">
+                                📆 Week-wise Patients
+                            </div>
+
+                            <div class="chart-subtitle">
+                                Weekly patient volume
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-container">
+
+                        <canvas
+                            id="weeklyChart"
+                        ></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     MONTH-WISE
+                ================================================== -->
+
+                <div class="chart-card">
+
+                    <div class="chart-header">
+
+                        <div>
+
+                            <div class="chart-title">
+                                🗓️ Month-wise Patients
+                            </div>
+
+                            <div class="chart-subtitle">
+                                Monthly patient volume
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-container">
+
+                        <canvas
+                            id="monthlyChart"
+                        ></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     GENDER
+                ================================================== -->
+
+                <div class="chart-card">
+
+                    <div class="chart-header">
+
+                        <div>
+
+                            <div class="chart-title">
+                                👥 Gender Distribution
+                            </div>
+
+                            <div class="chart-subtitle">
+                                Patient demographics
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-container small">
+
+                        <canvas
+                            id="genderChart"
+                        ></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     AGE
+                ================================================== -->
+
+                <div class="chart-card">
+
+                    <div class="chart-header">
+
+                        <div>
+
+                            <div class="chart-title">
+                                🎂 Age Distribution
+                            </div>
+
+                            <div class="chart-subtitle">
+                                Patients by age group
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-container small">
+
+                        <canvas
+                            id="ageChart"
+                        ></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     DOCTORS
+                ================================================== -->
+
+                <div class="chart-card">
+
+                    <div class="chart-header">
+
+                        <div>
+
+                            <div class="chart-title">
+                                👨‍⚕️ Doctor Performance
+                            </div>
+
+                            <div class="chart-subtitle">
+                                Appointments handled by doctor
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-container">
+
+                        <canvas
+                            id="doctorChart"
+                        ></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     TIME
+                ================================================== -->
+
+                <div class="chart-card">
+
+                    <div class="chart-header">
+
+                        <div>
+
+                            <div class="chart-title">
+                                🕐 Appointment Time
+                            </div>
+
+                            <div class="chart-subtitle">
+                                Popular appointment slots
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-container">
+
+                        <canvas
+                            id="timeChart"
+                        ></canvas>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     LOCATION
+                ================================================== -->
+
+                <div class="chart-card full">
+
+                    <div class="chart-header">
+
+                        <div>
+
+                            <div class="chart-title">
+                                📍 Patient Location
+                            </div>
+
+                            <div class="chart-subtitle">
+                                Where your patients are coming from
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-container">
+
+                        <canvas
+                            id="locationChart"
+                        ></canvas>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =================================================
+                 DOCTOR TABLE
+            ================================================== -->
+
+            <div class="table-card">
+
+                <div class="table-header">
+
+                    <h3>
+                        👨‍⚕️ Doctor-wise Appointment Summary
+                    </h3>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Rank
+                                </th>
+
+                                <th>
+                                    Doctor
+                                </th>
+
+                                <th>
+                                    Appointments
+                                </th>
+
+                                <th>
+                                    Share
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="doctorTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
 
         </div>
 
-    </div>
-
-</section>
-
-
-<!-- ======================================================
-     RECENT APPOINTMENTS
-====================================================== -->
-
-<section class="table-card">
-
-
-    <div class="table-head">
-
-        <h2>
-            📋 Recent Appointments
-        </h2>
-
-    </div>
-
-
-    <div class="table-scroll">
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        Patient No
-                    </th>
-
-                    <th>
-                        Patient
-                    </th>
-
-                    <th>
-                        Doctor
-                    </th>
-
-                    <th>
-                        Gender
-                    </th>
-
-                    <th>
-                        Age
-                    </th>
-
-                    <th>
-                        Date
-                    </th>
-
-                    <th>
-                        Time
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody id="appointmentTable">
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</section>
-
+    </main>
 
 </div>
 
-</main>
 
-</div>
-
-
-<!-- ======================================================
+<!-- =========================================================
      LOADING
-====================================================== -->
+========================================================== -->
 
 <div
-    class="loading"
-    id="loading"
+    id="loadingBox"
+    class="loading-box"
 >
 
-    <div class="loader-box">
-
-        <div class="loader"></div>
-
-        <p>
-            Loading hospital analytics...
-        </p>
-
-    </div>
+    <div class="loader"></div>
 
 </div>
 
-
-<!-- ======================================================
-     FIREBASE
-====================================================== -->
 
 <script type="module">
 
 
+/* ============================================================
+   FIREBASE
+============================================================ */
+
+
 import {
+
     initializeApp
+
 }
 from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 
 
 import {
+
     getAuth,
+
     onAuthStateChanged,
+
     signOut
+
 }
 from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
 
-/* ========================================================
+/* ============================================================
    FIREBASE CONFIG
-======================================================== */
+============================================================ */
+
 
 const firebaseConfig = {
 
@@ -2106,29 +2468,77 @@ const auth =
     );
 
 
-/* ========================================================
-   VARIABLES
-======================================================== */
+/* ============================================================
+   GLOBAL VARIABLES
+============================================================ */
+
 
 let currentUser = null;
 
-let allAppointments = [];
+let hospitalId = "";
 
-let selectedPeriod = "today";
+let allDailyData = {};
 
-let customFrom = "";
-
-let customTo = "";
+let selectedPeriod = "7";
 
 let charts = {};
 
 
-/* ========================================================
+/* ============================================================
+   DOM
+============================================================ */
+
+
+const $ = id =>
+    document.getElementById(id);
+
+
+/* ============================================================
+   MOBILE SIDEBAR
+============================================================ */
+
+
+window.toggleSidebar =
+function() {
+
+    $("sidebar")
+        .classList
+        .toggle("open");
+
+    $("sidebarOverlay")
+        .classList
+        .toggle("show");
+
+};
+
+
+/* ============================================================
+   CLOSE SIDEBAR ON MOBILE
+============================================================ */
+
+
+function closeMobileSidebar() {
+
+    $("sidebar")
+        .classList
+        .remove("open");
+
+    $("sidebarOverlay")
+        .classList
+        .remove("show");
+
+}
+
+
+/* ============================================================
    AUTH
-======================================================== */
+============================================================ */
+
 
 onAuthStateChanged(
+
     auth,
+
     async function(user) {
 
         if (!user) {
@@ -2137,7 +2547,6 @@ onAuthStateChanged(
                 "/login-page";
 
             return;
-
         }
 
 
@@ -2147,9 +2556,116 @@ onAuthStateChanged(
 
         try {
 
-            await loadData();
+            showLoading(true);
+
+
+            const token =
+                await user.getIdToken(true);
+
+
+            /* -----------------------------------------------
+               CHECK SUBSCRIPTION
+            ------------------------------------------------ */
+
+
+            const response =
+                await fetch(
+
+                    "/check-subscription",
+
+                    {
+
+                        method:
+                            "POST",
+
+                        headers: {
+
+                            "Authorization":
+                                "Bearer " + token,
+
+                            "Content-Type":
+                                "application/json"
+
+                        }
+
+                    }
+
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                alert(
+                    data.error ||
+                    "Subscription verification failed."
+                );
+
+                window.location.href =
+                    "/login-page";
+
+                return;
+            }
+
+
+            if (
+                data.active !== true
+            ) {
+
+                alert(
+                    "Your subscription is not active."
+                );
+
+                window.location.href =
+                    "/payment";
+
+                return;
+            }
+
+
+            /* -----------------------------------------------
+               UID
+            ------------------------------------------------ */
+
+
+            localStorage.setItem(
+                "uid",
+                user.uid
+            );
+
+
+            /* -----------------------------------------------
+               HOSPITAL ID
+            ------------------------------------------------ */
+
+
+            hospitalId =
+                localStorage.getItem(
+                    "hospitalId"
+                ) ||
+                user.uid;
+
+
+            $("hospitalNameDisplay")
+                .innerText =
+                    localStorage.getItem(
+                        "hospitalName"
+                    ) ||
+                    "Hospital";
+
+
+            /* -----------------------------------------------
+               LOAD ANALYTICS
+            ------------------------------------------------ */
+
+
+            await loadAnalytics();
 
         }
+
         catch(error) {
 
             console.error(
@@ -2162,201 +2678,46 @@ onAuthStateChanged(
 
         }
 
+        finally {
+
+            showLoading(false);
+
+        }
+
     }
+
 );
 
 
-/* ========================================================
-   LOAD DATA
-======================================================== */
-
-window.loadData =
-async function() {
-
-    if (!currentUser) {
-
-        return;
-
-    }
+/* ============================================================
+   LOADING
+============================================================ */
 
 
-    showLoading(true);
+function showLoading(show) {
 
+    if (show) {
 
-    try {
-
-        const token =
-            await currentUser.getIdToken(
-                true
-            );
-
-
-        const uid =
-            currentUser.uid;
-
-
-        localStorage.setItem(
-            "uid",
-            uid
-        );
-
-
-        const response =
-            await fetch(
-
-                "/api/analytics/appointments/" +
-                encodeURIComponent(uid),
-
-                {
-
-                    method:
-                        "GET",
-
-                    headers: {
-
-                        "Authorization":
-                            "Bearer " + token
-
-                    }
-
-                }
-
-            );
-
-
-        const data =
-            await response.json();
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                data.error ||
-                "Analytics request failed"
-            );
-
-        }
-
-
-        if (!data.success) {
-
-            throw new Error(
-                data.error ||
-                "Unable to load analytics"
-            );
-
-        }
-
-
-        allAppointments =
-            Array.isArray(
-                data.appointments
-            )
-            ?
-            data.appointments
-            :
-            [];
-
-
-        await loadHospitalName();
-
-
-        updateDashboard();
-
+        $("loadingBox")
+            .classList
+            .add("show");
 
     }
-    catch(error) {
+    else {
 
-        console.error(
-            "ANALYTICS ERROR:",
-            error
-        );
-
-
-        alert(
-            error.message ||
-            "Unable to load analytics."
-        );
+        $("loadingBox")
+            .classList
+            .remove("show");
 
     }
-    finally {
-
-        showLoading(false);
-
-    }
-
-};
-
-
-/* ========================================================
-   HOSPITAL NAME
-======================================================== */
-
-async function loadHospitalName() {
-
-    let name =
-        localStorage.getItem(
-            "hospitalName"
-        );
-
-
-    if (!name) {
-
-        try {
-
-            const response =
-                await fetch(
-                    "/hospital/" +
-                    currentUser.uid
-                );
-
-
-            if (response.ok) {
-
-                const html =
-                    await response.text();
-
-                /*
-                   Keep localStorage fallback.
-                   Hospital page itself is HTML.
-                */
-
-            }
-
-        }
-        catch(error) {
-
-            console.log(
-                "Hospital name not loaded"
-            );
-
-        }
-
-    }
-
-
-    name =
-        name ||
-        "MediQueue Hospital";
-
-
-    document.getElementById(
-        "hospitalName"
-    ).innerText =
-        name;
-
-
-    document.getElementById(
-        "avatar"
-    ).innerText =
-        name.charAt(0).toUpperCase();
 
 }
 
 
-/* ========================================================
+/* ============================================================
    PERIOD
-======================================================== */
+============================================================ */
+
 
 window.setPeriod =
 function(period) {
@@ -2367,98 +2728,141 @@ function(period) {
 
     document
         .querySelectorAll(
-            ".period-btn"
+            ".filter-btn"
         )
         .forEach(
             button => {
 
-                button.classList.toggle(
-                    "active",
-                    button.dataset.period === period
-                );
+                if (
+                    button.dataset.period ===
+                    period
+                ) {
+
+                    button.classList.add(
+                        "active"
+                    );
+
+                }
+                else {
+
+                    button.classList.remove(
+                        "active"
+                    );
+
+                }
 
             }
         );
 
 
-    const custom =
-        document.getElementById(
-            "customDate"
-        );
-
-
     if (period === "custom") {
 
-        custom.classList.add(
-            "show"
-        );
+        $("customDateRow")
+            .style
+            .display =
+                "grid";
 
         return;
 
     }
 
 
-    custom.classList.remove(
-        "show"
-    );
+    $("customDateRow")
+        .style
+        .display =
+            "none";
 
 
-    updateDashboard();
+    renderFilteredAnalytics();
 
 };
 
 
-/* ========================================================
-   CUSTOM RANGE
-======================================================== */
+/* ============================================================
+   CUSTOM DATE
+============================================================ */
 
-window.applyCustomRange =
+
+window.applyCustomDate =
 function() {
 
-    customFrom =
-        document.getElementById(
-            "fromDate"
-        ).value;
+    const start =
+        $("startDate").value;
+
+    const end =
+        $("endDate").value;
 
 
-    customTo =
-        document.getElementById(
-            "toDate"
-        ).value;
-
-
-    if (!customFrom || !customTo) {
+    if (!start || !end) {
 
         alert(
             "Please select both dates."
         );
 
         return;
-
     }
 
 
-    if (customFrom > customTo) {
+    if (start > end) {
 
         alert(
-            "From date cannot be after To date."
+            "Start date cannot be after end date."
         );
 
         return;
-
     }
 
 
-    updateDashboard();
+    selectedPeriod =
+        "custom";
+
+
+    renderFilteredAnalytics();
 
 };
 
 
-/* ========================================================
-   DATE HELPERS
-======================================================== */
+/* ============================================================
+   GET DATE OBJECT
+============================================================ */
 
-function localDateString(date) {
+
+function parseDate(dateString) {
+
+    if (!dateString) {
+        return null;
+    }
+
+
+    const parts =
+        String(dateString)
+            .split("-");
+
+
+    if (parts.length !== 3) {
+        return null;
+    }
+
+
+    return new Date(
+
+        Number(parts[0]),
+
+        Number(parts[1]) - 1,
+
+        Number(parts[2])
+
+    );
+
+}
+
+
+/* ============================================================
+   FORMAT DATE
+============================================================ */
+
+
+function formatDate(date) {
 
     const year =
         date.getFullYear();
@@ -2467,454 +2871,493 @@ function localDateString(date) {
     const month =
         String(
             date.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
+        )
+        .padStart(2, "0");
 
 
     const day =
         String(
             date.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
+        )
+        .padStart(2, "0");
 
 
-    return (
-        year +
-        "-" +
-        month +
-        "-" +
-        day
-    );
+    return `${year}-${month}-${day}`;
 
 }
 
 
-function parseDate(value) {
-
-    if (!value) {
-
-        return null;
-
-    }
+/* ============================================================
+   GET FILTERED DAILY DATA
+============================================================ */
 
 
-    const parts =
-        String(value)
-            .split("-")
-            .map(Number);
+function getFilteredDailyData() {
 
-
-    if (parts.length !== 3) {
-
-        return null;
-
-    }
-
-
-    const date =
-        new Date(
-            parts[0],
-            parts[1] - 1,
-            parts[2]
+    const entries =
+        Object.entries(
+            allDailyData
         );
 
 
-    date.setHours(
-        0,
-        0,
-        0,
-        0
-    );
+    if (
+        selectedPeriod === "all"
+    ) {
+
+        return entries;
+
+    }
 
 
-    return date;
+    let startDate;
 
-}
-
-
-/* ========================================================
-   GET SELECTED APPOINTMENTS
-======================================================== */
-
-function getFilteredAppointments() {
-
-    const today =
+    let endDate =
         new Date();
 
 
-    today.setHours(
-        0,
-        0,
-        0,
-        0
-    );
-
-
-    let from =
-        new Date(today);
-
-
-    let to =
-        new Date(today);
-
-
-    if (selectedPeriod === "today") {
-
-        from =
-            new Date(today);
-
-        to =
-            new Date(today);
-
-    }
-
-
-    else if (
-        selectedPeriod === "date"
+    if (
+        selectedPeriod === "today"
     ) {
 
-        from =
-            new Date(today);
-
-        to =
-            new Date(today);
+        startDate =
+            new Date();
 
     }
-
-
-    else if (
-        selectedPeriod === "week"
-    ) {
-
-        const day =
-            today.getDay();
-
-
-        const mondayOffset =
-            day === 0
-            ?
-            -6
-            :
-            1 - day;
-
-
-        from =
-            new Date(today);
-
-
-        from.setDate(
-            today.getDate() +
-            mondayOffset
-        );
-
-
-        to =
-            new Date(from);
-
-
-        to.setDate(
-            from.getDate() + 6
-        );
-
-    }
-
-
-    else if (
-        selectedPeriod === "month"
-    ) {
-
-        from =
-            new Date(
-                today.getFullYear(),
-                today.getMonth(),
-                1
-            );
-
-
-        to =
-            new Date(
-                today.getFullYear(),
-                today.getMonth() + 1,
-                0
-            );
-
-    }
-
-
-    else if (
-        selectedPeriod === "year"
-    ) {
-
-        from =
-            new Date(
-                today.getFullYear(),
-                0,
-                1
-            );
-
-
-        to =
-            new Date(
-                today.getFullYear(),
-                11,
-                31
-            );
-
-    }
-
 
     else if (
         selectedPeriod === "custom"
     ) {
 
-        if (!customFrom || !customTo) {
+        const start =
+            $("startDate").value;
+
+        const end =
+            $("endDate").value;
+
+
+        if (!start || !end) {
 
             return [];
 
         }
 
 
-        from =
-            parseDate(
-                customFrom
-            );
+        return entries.filter(
+            ([date]) =>
+                date >= start &&
+                date <= end
+        );
+
+    }
+
+    else {
+
+        startDate =
+            new Date();
 
 
-        to =
-            parseDate(
-                customTo
-            );
+        startDate.setDate(
+
+            startDate.getDate()
+            -
+            Number(
+                selectedPeriod
+            )
+            +
+            1
+
+        );
 
     }
 
 
-    if (!from || !to) {
-
-        return [];
-
-    }
-
-
-    return allAppointments.filter(
-        appointment => {
-
-            const date =
-                parseDate(
-                    appointment.appointment_date
-                );
+    const start =
+        formatDate(
+            startDate
+        );
 
 
-            if (!date) {
+    const end =
+        formatDate(
+            endDate
+        );
 
-                return false;
 
-            }
+    return entries.filter(
 
+        ([date]) =>
+            date >= start &&
+            date <= end
 
-            return (
-                date >= from &&
-                date <= to
-            );
-
-        }
     );
 
 }
 
 
-/* ========================================================
-   UPDATE DASHBOARD
-======================================================== */
+/* ============================================================
+   LOAD ALL ANALYTICS
+============================================================ */
 
-function updateDashboard() {
+
+async function loadAnalytics() {
+
+    if (!hospitalId) {
+
+        console.error(
+            "Hospital ID missing"
+        );
+
+        return;
+    }
+
+
+    showLoading(true);
+
+
+    try {
+
+        const [
+
+            overview,
+
+            gender,
+
+            age,
+
+            doctors,
+
+            daily,
+
+            time,
+
+            location
+
+        ] = await Promise.all([
+
+            fetchJson(
+                `/api/analytics/overview/${hospitalId}`
+            ),
+
+            fetchJson(
+                `/api/analytics/gender/${hospitalId}`
+            ),
+
+            fetchJson(
+                `/api/analytics/age/${hospitalId}`
+            ),
+
+            fetchJson(
+                `/api/analytics/doctors/${hospitalId}`
+            ),
+
+            fetchJson(
+                `/api/analytics/daily/${hospitalId}`
+            ),
+
+            fetchJson(
+                `/api/analytics/time/${hospitalId}`
+            ),
+
+            fetchJson(
+                `/api/analytics/location/${hospitalId}`
+            )
+
+        ]);
+
+
+        allDailyData =
+            daily.data || {};
+
+
+        window.analyticsCache = {
+
+            overview:
+                overview,
+
+            gender:
+                gender.data || {},
+
+            age:
+                age.data || {},
+
+            doctors:
+                doctors.data || {},
+
+            time:
+                time.data || {},
+
+            location:
+                location.data || {}
+
+        };
+
+
+        renderFilteredAnalytics();
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "ANALYTICS ERROR:",
+            error
+        );
+
+        alert(
+            "Unable to load analytics data."
+        );
+
+    }
+
+    finally {
+
+        showLoading(false);
+
+    }
+
+}
+
+
+/* ============================================================
+   FETCH JSON
+============================================================ */
+
+
+async function fetchJson(url) {
+
+    const response =
+        await fetch(url);
+
+
+    const data =
+        await response.json();
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            data.error ||
+            `Request failed: ${response.status}`
+        );
+
+    }
+
+
+    return data;
+
+}
+
+
+/* ============================================================
+   RENDER FILTERED ANALYTICS
+============================================================ */
+
+
+function renderFilteredAnalytics() {
 
     const filtered =
-        getFilteredAppointments();
+        getFilteredDailyData();
 
 
-    updatePeriodText();
+    const dailyObject =
+        Object.fromEntries(
+            filtered
+        );
 
 
-    updateKPIs(
-        filtered
+    renderKPIs(
+        dailyObject
     );
 
 
-    updateTrendChart(
-        filtered
+    renderDailyChart(
+        dailyObject
     );
 
 
-    updateGenderChart(
-        filtered
+    renderWeeklyChart(
+        dailyObject
     );
 
 
-    updateAgeChart(
-        filtered
+    renderMonthlyChart(
+        dailyObject
     );
 
 
-    updateDoctorChart(
-        filtered
-    );
+    renderGenderChart();
 
 
-    updateLocationChart(
-        filtered
-    );
+    renderAgeChart();
 
 
-    updateTimeChart(
-        filtered
-    );
+    renderDoctorChart();
 
 
-    updateTable(
-        filtered
-    );
+    renderTimeChart();
+
+
+    renderLocationChart();
+
+
+    renderDoctorTable();
 
 }
 
 
-/* ========================================================
-   PERIOD TEXT
-======================================================== */
-
-function updatePeriodText() {
-
-    const names = {
-
-        today:
-            "Today",
-
-        date:
-            "Today",
-
-        week:
-            "This Week",
-
-        month:
-            "This Month",
-
-        year:
-            "This Year",
-
-        custom:
-            customFrom +
-            " → " +
-            customTo
-
-    };
-
-
-    document.getElementById(
-        "periodText"
-    ).innerText =
-        names[selectedPeriod] ||
-        "Analytics";
-
-}
-
-
-/* ========================================================
+/* ============================================================
    KPI
-======================================================== */
-
-function updateKPIs(
-    appointments
-) {
-
-    document.getElementById(
-        "totalPatients"
-    ).innerText =
-        appointments.length;
+============================================================ */
 
 
-    document.getElementById(
-        "totalAppointments"
-    ).innerText =
-        appointments.length;
+function renderKPIs(dailyData) {
 
-
-    const doctors =
-        new Set();
-
-
-    appointments.forEach(
-        appointment => {
-
-            if (
-                appointment.doctor_name
-            ) {
-
-                doctors.add(
-                    appointment.doctor_name
-                );
-
-            }
-
-        }
-    );
-
-
-    document.getElementById(
-        "activeDoctors"
-    ).innerText =
-        doctors.size;
+    const total =
+        Object.values(
+            dailyData
+        )
+        .reduce(
+            (sum, value) =>
+                sum + Number(value || 0),
+            0
+        );
 
 
     const dates =
-        new Set();
+        Object.keys(
+            dailyData
+        );
 
 
-    appointments.forEach(
-        appointment => {
+    let days = 1;
 
-            if (
-                appointment.appointment_date
-            ) {
 
-                dates.add(
-                    appointment.appointment_date
+    if (dates.length > 0) {
+
+        const first =
+            parseDate(
+                dates[0]
+            );
+
+        const last =
+            parseDate(
+                dates[dates.length - 1]
+            );
+
+
+        if (first && last) {
+
+            days =
+                Math.max(
+                    1,
+                    Math.round(
+                        (
+                            last - first
+                        )
+                        /
+                        86400000
+                    ) + 1
                 );
 
-            }
-
         }
-    );
+
+    }
 
 
     const average =
-        dates.size
-        ?
-        (
-            appointments.length /
-            dates.size
-        ).toFixed(1)
-        :
-        "0";
+        total / days;
 
 
-    document.getElementById(
-        "dailyAverage"
-    ).innerText =
-        average;
+    $("totalPatients")
+        .innerText =
+            total.toLocaleString();
+
+
+    $("appointmentsCount")
+        .innerText =
+            total.toLocaleString();
+
+
+    $("averagePatients")
+        .innerText =
+            average.toFixed(1);
+
+
+    $("periodText")
+        .innerText =
+            getPeriodLabel();
 
 }
 
 
-/* ========================================================
-   CHART HELPER
-======================================================== */
+/* ============================================================
+   PERIOD LABEL
+============================================================ */
 
-function destroyChart(
-    name
-) {
+
+function getPeriodLabel() {
+
+    if (
+        selectedPeriod ===
+        "today"
+    ) {
+
+        return "Today";
+
+    }
+
+
+    if (
+        selectedPeriod ===
+        "7"
+    ) {
+
+        return "Last 7 days";
+
+    }
+
+
+    if (
+        selectedPeriod ===
+        "30"
+    ) {
+
+        return "Last 30 days";
+
+    }
+
+
+    if (
+        selectedPeriod ===
+        "90"
+    ) {
+
+        return "Last 90 days";
+
+    }
+
+
+    if (
+        selectedPeriod ===
+        "custom"
+    ) {
+
+        return "Custom date range";
+
+    }
+
+
+    return "All time";
+
+}
+
+
+/* ============================================================
+   CHART DESTROY
+============================================================ */
+
+
+function destroyChart(name) {
 
     if (charts[name]) {
 
@@ -2925,66 +3368,30 @@ function destroyChart(
 }
 
 
-/* ========================================================
-   TREND
-======================================================== */
+/* ============================================================
+   DAILY CHART
+============================================================ */
 
-function updateTrendChart(
-    appointments
-) {
+
+function renderDailyChart(data) {
 
     destroyChart(
-        "trend"
+        "daily"
     );
 
 
-    const grouped =
-        {};
+    const entries =
+        Object.entries(data)
+            .sort(
+                ([a], [b]) =>
+                    a.localeCompare(b)
+            );
 
 
-    appointments.forEach(
-        appointment => {
-
-            const date =
-                appointment.appointment_date;
-
-
-            if (!date) {
-
-                return;
-
-            }
-
-
-            grouped[date] =
-                (
-                    grouped[date] ||
-                    0
-                ) + 1;
-
-        }
-    );
-
-
-    const labels =
-        Object.keys(
-            grouped
-        ).sort();
-
-
-    const values =
-        labels.map(
-            date =>
-                grouped[date]
-        );
-
-
-    charts.trend =
+    charts.daily =
         new Chart(
 
-            document.getElementById(
-                "trendChart"
-            ),
+            $("dailyChart"),
 
             {
 
@@ -2994,23 +3401,45 @@ function updateTrendChart(
                 data: {
 
                     labels:
-                        labels,
+                        entries.map(
+                            ([date]) =>
+                                date
+                        ),
 
-                    datasets: [{
+                    datasets: [
 
-                        label:
-                            "Appointments",
+                        {
 
-                        data:
-                            values,
+                            label:
+                                "Patients",
 
-                        tension:
-                            .35,
+                            data:
+                                entries.map(
+                                    ([,value]) =>
+                                        value
+                                ),
 
-                        fill:
-                            true
+                            borderColor:
+                                "#2563eb",
 
-                    }]
+                            backgroundColor:
+                                "rgba(37,99,235,0.10)",
+
+                            fill:
+                                true,
+
+                            tension:
+                                0.35,
+
+                            pointRadius:
+                                3,
+
+                            pointHoverRadius:
+                                6
+
+                        }
+
+                    ]
 
                 },
 
@@ -3047,304 +3476,19 @@ function updateTrendChart(
 
                             }
 
-                        }
+                        },
 
-                    }
-
-                }
-
-            }
-
-        );
-
-}
-
-
-/* ========================================================
-   GENDER
-======================================================== */
-
-function updateGenderChart(
-    appointments
-) {
-
-    destroyChart(
-        "gender"
-    );
-
-
-    const counts = {
-
-        Male:
-            0,
-
-        Female:
-            0,
-
-        Other:
-            0
-
-    };
-
-
-    appointments.forEach(
-        appointment => {
-
-            const gender =
-                String(
-                    appointment.gender ||
-                    ""
-                )
-                .trim()
-                .toLowerCase();
-
-
-            if (gender === "male") {
-
-                counts.Male++;
-
-            }
-
-            else if (
-                gender === "female"
-            ) {
-
-                counts.Female++;
-
-            }
-
-            else {
-
-                counts.Other++;
-
-            }
-
-        }
-    );
-
-
-    charts.gender =
-        new Chart(
-
-            document.getElementById(
-                "genderChart"
-            ),
-
-            {
-
-                type:
-                    "doughnut",
-
-                data: {
-
-                    labels:
-                        Object.keys(
-                            counts
-                        ),
-
-                    datasets: [{
-
-                        data:
-                            Object.values(
-                                counts
-                            )
-
-                    }]
-
-                },
-
-                options: {
-
-                    responsive:
-                        true,
-
-                    maintainAspectRatio:
-                        false,
-
-                    plugins: {
-
-                        legend: {
-
-                            position:
-                                "bottom"
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        );
-
-}
-
-
-/* ========================================================
-   AGE
-======================================================== */
-
-function updateAgeChart(
-    appointments
-) {
-
-    destroyChart(
-        "age"
-    );
-
-
-    const groups = {
-
-        "0-18":
-            0,
-
-        "19-30":
-            0,
-
-        "31-45":
-            0,
-
-        "46-60":
-            0,
-
-        "60+":
-            0,
-
-        "Unknown":
-            0
-
-    };
-
-
-    appointments.forEach(
-        appointment => {
-
-            const age =
-                parseInt(
-                    appointment.age
-                );
-
-
-            if (
-                isNaN(age) ||
-                age <= 0
-            ) {
-
-                groups.Unknown++;
-
-            }
-
-            else if (
-                age <= 18
-            ) {
-
-                groups["0-18"]++;
-
-            }
-
-            else if (
-                age <= 30
-            ) {
-
-                groups["19-30"]++;
-
-            }
-
-            else if (
-                age <= 45
-            ) {
-
-                groups["31-45"]++;
-
-            }
-
-            else if (
-                age <= 60
-            ) {
-
-                groups["46-60"]++;
-
-            }
-
-            else {
-
-                groups["60+"]++;
-
-            }
-
-        }
-    );
-
-
-    charts.age =
-        new Chart(
-
-            document.getElementById(
-                "ageChart"
-            ),
-
-            {
-
-                type:
-                    "bar",
-
-                data: {
-
-                    labels:
-                        Object.keys(
-                            groups
-                        ),
-
-                    datasets: [{
-
-                        label:
-                            "Patients",
-
-                        data:
-                            Object.values(
-                                groups
-                            )
-
-                    }]
-
-                },
-
-                options: {
-
-                    responsive:
-                        true,
-
-                    maintainAspectRatio:
-                        false,
-
-                    scales: {
-
-                        y: {
-
-                            beginAtZero:
-                                true,
+                        x: {
 
                             ticks: {
 
-                                precision:
-                                    0
+                                maxTicksLimit:
+                                    12
 
                             }
 
                         }
 
-                    },
-
-                    plugins: {
-
-                        legend: {
-
-                            display:
-                                false
-
-                        }
-
                     }
 
                 }
@@ -3356,61 +3500,106 @@ function updateAgeChart(
 }
 
 
-/* ========================================================
-   DOCTOR
-======================================================== */
+/* ============================================================
+   WEEKLY GROUPING
+============================================================ */
 
-function updateDoctorChart(
-    appointments
-) {
+
+function getWeekStart(date) {
+
+    const d =
+        new Date(date);
+
+
+    const day =
+        d.getDay();
+
+
+    const diff =
+        day === 0
+            ? -6
+            : 1 - day;
+
+
+    d.setDate(
+        d.getDate() + diff
+    );
+
+
+    d.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+
+    return d;
+
+}
+
+
+function renderWeeklyChart(data) {
 
     destroyChart(
-        "doctor"
+        "weekly"
     );
 
 
-    const doctors =
-        {};
+    const weekly = {};
 
 
-    appointments.forEach(
-        appointment => {
+    Object.entries(data)
+        .forEach(
+            ([date, count]) => {
 
-            const doctor =
-                appointment.doctor_name ||
-                "Unknown";
+                const d =
+                    parseDate(
+                        date
+                    );
 
 
-            doctors[doctor] =
-                (
-                    doctors[doctor] ||
-                    0
-                ) + 1;
+                if (!d) {
+                    return;
+                }
 
-        }
-    );
+
+                const weekStart =
+                    getWeekStart(
+                        d
+                    );
+
+
+                const key =
+                    formatDate(
+                        weekStart
+                    );
+
+
+                weekly[key] =
+                    (
+                        weekly[key] ||
+                        0
+                    )
+                    +
+                    Number(count || 0);
+
+            }
+        );
 
 
     const entries =
-        Object.entries(
-            doctors
-        )
-        .sort(
-            (a, b) =>
-                b[1] - a[1]
-        )
-        .slice(
-            0,
-            10
-        );
+        Object.entries(weekly)
+            .sort(
+                ([a], [b]) =>
+                    a.localeCompare(b)
+            );
 
 
-    charts.doctor =
+    charts.weekly =
         new Chart(
 
-            document.getElementById(
-                "doctorChart"
-            ),
+            $("weeklyChart"),
 
             {
 
@@ -3421,20 +3610,572 @@ function updateDoctorChart(
 
                     labels:
                         entries.map(
-                            x => x[0]
+                            ([date]) =>
+                                "Week " + date
                         ),
 
-                    datasets: [{
+                    datasets: [
 
-                        label:
-                            "Appointments",
+                        {
 
-                        data:
-                            entries.map(
-                                x => x[1]
-                            )
+                            label:
+                                "Patients",
 
-                    }]
+                            data:
+                                entries.map(
+                                    ([,count]) =>
+                                        count
+                                ),
+
+                            backgroundColor:
+                                "#2563eb",
+
+                            borderRadius:
+                                6
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
+
+                    plugins: {
+
+                        legend: {
+
+                            display:
+                                false
+
+                        }
+
+                    },
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero:
+                                true,
+
+                            ticks: {
+
+                                precision:
+                                    0
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+}
+
+
+/* ============================================================
+   MONTHLY
+============================================================ */
+
+
+function renderMonthlyChart(data) {
+
+    destroyChart(
+        "monthly"
+    );
+
+
+    const monthly = {};
+
+
+    Object.entries(data)
+        .forEach(
+            ([date, count]) => {
+
+                const month =
+                    String(date)
+                        .substring(
+                            0,
+                            7
+                        );
+
+
+                monthly[month] =
+                    (
+                        monthly[month] ||
+                        0
+                    )
+                    +
+                    Number(count || 0);
+
+            }
+        );
+
+
+    const entries =
+        Object.entries(monthly)
+            .sort(
+                ([a], [b]) =>
+                    a.localeCompare(b)
+            );
+
+
+    charts.monthly =
+        new Chart(
+
+            $("monthlyChart"),
+
+            {
+
+                type:
+                    "bar",
+
+                data: {
+
+                    labels:
+                        entries.map(
+                            ([month]) =>
+                                month
+                        ),
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Patients",
+
+                            data:
+                                entries.map(
+                                    ([,count]) =>
+                                        count
+                                ),
+
+                            backgroundColor:
+                                "#7c3aed",
+
+                            borderRadius:
+                                6
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
+
+                    plugins: {
+
+                        legend: {
+
+                            display:
+                                false
+
+                        }
+
+                    },
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero:
+                                true,
+
+                            ticks: {
+
+                                precision:
+                                    0
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+}
+
+
+/* ============================================================
+   GENDER
+============================================================ */
+
+
+function renderGenderChart() {
+
+    destroyChart(
+        "gender"
+    );
+
+
+    const data =
+        window.analyticsCache
+            ?.gender || {};
+
+
+    let male =
+        0;
+
+    let female =
+        0;
+
+    let other =
+        0;
+
+
+    Object.entries(data)
+        .forEach(
+            ([key, value]) => {
+
+                const gender =
+                    key
+                        .toLowerCase()
+                        .trim();
+
+
+                if (
+                    gender === "male"
+                ) {
+
+                    male +=
+                        Number(value);
+
+                }
+
+                else if (
+                    gender === "female"
+                ) {
+
+                    female +=
+                        Number(value);
+
+                }
+
+                else {
+
+                    other +=
+                        Number(value);
+
+                }
+
+            }
+        );
+
+
+    $("maleCount")
+        .innerText =
+            male;
+
+
+    $("femaleCount")
+        .innerText =
+            female;
+
+
+    $("otherCount")
+        .innerText =
+            other;
+
+
+    charts.gender =
+        new Chart(
+
+            $("genderChart"),
+
+            {
+
+                type:
+                    "doughnut",
+
+                data: {
+
+                    labels: [
+
+                        "Male",
+
+                        "Female",
+
+                        "Other"
+
+                    ],
+
+                    datasets: [
+
+                        {
+
+                            data: [
+
+                                male,
+
+                                female,
+
+                                other
+
+                            ],
+
+                            backgroundColor: [
+
+                                "#2563eb",
+
+                                "#ec4899",
+
+                                "#94a3b8"
+
+                            ],
+
+                            borderWidth:
+                                0
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
+
+                    cutout:
+                        "65%"
+
+                }
+
+            }
+
+        );
+
+}
+
+
+/* ============================================================
+   AGE
+============================================================ */
+
+
+function renderAgeChart() {
+
+    destroyChart(
+        "age"
+    );
+
+
+    const data =
+        window.analyticsCache
+            ?.age || {};
+
+
+    const order = [
+
+        "0-18",
+
+        "19-30",
+
+        "31-45",
+
+        "46-60",
+
+        "60+",
+
+        "Unknown"
+
+    ];
+
+
+    const values =
+        order.map(
+            key =>
+                Number(
+                    data[key] || 0
+                )
+        );
+
+
+    charts.age =
+        new Chart(
+
+            $("ageChart"),
+
+            {
+
+                type:
+                    "bar",
+
+                data: {
+
+                    labels:
+                        order,
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Patients",
+
+                            data:
+                                values,
+
+                            backgroundColor:
+                                "#16a34a",
+
+                            borderRadius:
+                                6
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
+
+                    plugins: {
+
+                        legend: {
+
+                            display:
+                                false
+
+                        }
+
+                    },
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero:
+                                true,
+
+                            ticks: {
+
+                                precision:
+                                    0
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+}
+
+
+/* ============================================================
+   DOCTORS
+============================================================ */
+
+
+function renderDoctorChart() {
+
+    destroyChart(
+        "doctor"
+    );
+
+
+    const data =
+        window.analyticsCache
+            ?.doctors || {};
+
+
+    const entries =
+        Object.entries(data)
+            .sort(
+                ([,a], [,b]) =>
+                    Number(b) -
+                    Number(a)
+            );
+
+
+    const limited =
+        entries.slice(
+            0,
+            10
+        );
+
+
+    charts.doctor =
+        new Chart(
+
+            $("doctorChart"),
+
+            {
+
+                type:
+                    "bar",
+
+                data: {
+
+                    labels:
+                        limited.map(
+                            ([name]) =>
+                                name
+                        ),
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Appointments",
+
+                            data:
+                                limited.map(
+                                    ([,count]) =>
+                                        count
+                                ),
+
+                            backgroundColor:
+                                "#0891b2",
+
+                            borderRadius:
+                                6
+
+                        }
+
+                    ]
 
                 },
 
@@ -3487,180 +4228,31 @@ function updateDoctorChart(
 }
 
 
-/* ========================================================
-   LOCATION
-======================================================== */
-
-function updateLocationChart(
-    appointments
-) {
-
-    destroyChart(
-        "location"
-    );
-
-
-    const locations =
-        {};
-
-
-    appointments.forEach(
-        appointment => {
-
-            const location =
-                appointment.address ||
-                "Unknown";
-
-
-            locations[location] =
-                (
-                    locations[location] ||
-                    0
-                ) + 1;
-
-        }
-    );
-
-
-    const entries =
-        Object.entries(
-            locations
-        )
-        .sort(
-            (a, b) =>
-                b[1] - a[1]
-        )
-        .slice(
-            0,
-            8
-        );
-
-
-    charts.location =
-        new Chart(
-
-            document.getElementById(
-                "locationChart"
-            ),
-
-            {
-
-                type:
-                    "bar",
-
-                data: {
-
-                    labels:
-                        entries.map(
-                            x => x[0]
-                        ),
-
-                    datasets: [{
-
-                        label:
-                            "Patients",
-
-                        data:
-                            entries.map(
-                                x => x[1]
-                            )
-
-                    }]
-
-                },
-
-                options: {
-
-                    responsive:
-                        true,
-
-                    maintainAspectRatio:
-                        false,
-
-                    plugins: {
-
-                        legend: {
-
-                            display:
-                                false
-
-                        }
-
-                    },
-
-                    scales: {
-
-                        y: {
-
-                            beginAtZero:
-                                true
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        );
-
-}
-
-
-/* ========================================================
+/* ============================================================
    TIME
-======================================================== */
+============================================================ */
 
-function updateTimeChart(
-    appointments
-) {
+
+function renderTimeChart() {
 
     destroyChart(
         "time"
     );
 
 
-    const times =
-        {};
-
-
-    appointments.forEach(
-        appointment => {
-
-            const time =
-                appointment.appointment_time ||
-                "Unknown";
-
-
-            times[time] =
-                (
-                    times[time] ||
-                    0
-                ) + 1;
-
-        }
-    );
+    const data =
+        window.analyticsCache
+            ?.time || {};
 
 
     const entries =
-        Object.entries(
-            times
-        )
-        .sort(
-            (a, b) =>
-                a[0].localeCompare(
-                    b[0]
-                )
-        );
+        Object.entries(data);
 
 
     charts.time =
         new Chart(
 
-            document.getElementById(
-                "timeChart"
-            ),
+            $("timeChart"),
 
             {
 
@@ -3671,20 +4263,32 @@ function updateTimeChart(
 
                     labels:
                         entries.map(
-                            x => x[0]
+                            ([time]) =>
+                                time
                         ),
 
-                    datasets: [{
+                    datasets: [
 
-                        label:
-                            "Appointments",
+                        {
 
-                        data:
-                            entries.map(
-                                x => x[1]
-                            )
+                            label:
+                                "Appointments",
 
-                    }]
+                            data:
+                                entries.map(
+                                    ([,count]) =>
+                                        count
+                                ),
+
+                            backgroundColor:
+                                "#f59e0b",
+
+                            borderRadius:
+                                6
+
+                        }
+
+                    ]
 
                 },
 
@@ -3734,55 +4338,172 @@ function updateTimeChart(
 }
 
 
-/* ========================================================
-   TABLE
-======================================================== */
+/* ============================================================
+   LOCATION
+============================================================ */
 
-function updateTable(
-    appointments
-) {
+
+function renderLocationChart() {
+
+    destroyChart(
+        "location"
+    );
+
+
+    const data =
+        window.analyticsCache
+            ?.location || {};
+
+
+    const entries =
+        Object.entries(data)
+            .slice(
+                0,
+                10
+            );
+
+
+    charts.location =
+        new Chart(
+
+            $("locationChart"),
+
+            {
+
+                type:
+                    "bar",
+
+                data: {
+
+                    labels:
+                        entries.map(
+                            ([location]) =>
+                                location
+                        ),
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Patients",
+
+                            data:
+                                entries.map(
+                                    ([,count]) =>
+                                        count
+                                ),
+
+                            backgroundColor:
+                                "#9333ea",
+
+                            borderRadius:
+                                6
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
+
+                    plugins: {
+
+                        legend: {
+
+                            display:
+                                false
+
+                        }
+
+                    },
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero:
+                                true,
+
+                            ticks: {
+
+                                precision:
+                                    0
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+}
+
+
+/* ============================================================
+   DOCTOR TABLE
+============================================================ */
+
+
+function renderDoctorTable() {
+
+    const data =
+        window.analyticsCache
+            ?.doctors || {};
+
+
+    const entries =
+        Object.entries(data)
+            .sort(
+                ([,a], [,b]) =>
+                    Number(b) -
+                    Number(a)
+            );
+
+
+    const total =
+        entries.reduce(
+
+            (sum, [,value]) =>
+                sum +
+                Number(value || 0),
+
+            0
+
+        );
+
 
     const tbody =
-        document.getElementById(
-            "appointmentTable"
-        );
+        $("doctorTable");
 
 
     tbody.innerHTML =
         "";
 
 
-    const latest =
-        [...appointments]
-        .sort(
-            (a, b) =>
-                String(
-                    b.appointment_date || ""
-                )
-                .localeCompare(
-                    String(
-                        a.appointment_date || ""
-                    )
-                )
-        )
-        .slice(
-            0,
-            10
-        );
-
-
-    if (!latest.length) {
+    if (!entries.length) {
 
         tbody.innerHTML = `
 
             <tr>
 
                 <td
-                    colspan="7"
+                    colspan="4"
                     class="empty"
                 >
-                    No appointments found
-                    for this period.
+                    No doctor data available.
                 </td>
 
             </tr>
@@ -3790,12 +4511,24 @@ function updateTable(
         `;
 
         return;
-
     }
 
 
-    latest.forEach(
-        appointment => {
+    entries.forEach(
+
+        ([doctor, count], index) => {
+
+            const share =
+                total
+                    ? (
+                        Number(count)
+                        /
+                        total
+                        *
+                        100
+                    ).toFixed(1)
+                    : "0.0";
+
 
             const row =
                 document.createElement(
@@ -3806,45 +4539,23 @@ function updateTable(
             row.innerHTML = `
 
                 <td>
-                    ${escapeHTML(
-                        appointment.patient_no
-                    )}
+
+                    <span class="rank">
+                        ${index + 1}
+                    </span>
+
                 </td>
 
                 <td>
-                    ${escapeHTML(
-                        appointment.patient_name
-                    )}
+                    ${escapeHtml(doctor)}
                 </td>
 
                 <td>
-                    ${escapeHTML(
-                        appointment.doctor_name
-                    )}
+                    ${Number(count).toLocaleString()}
                 </td>
 
                 <td>
-                    ${escapeHTML(
-                        appointment.gender
-                    )}
-                </td>
-
-                <td>
-                    ${escapeHTML(
-                        appointment.age
-                    )}
-                </td>
-
-                <td>
-                    ${escapeHTML(
-                        appointment.appointment_date
-                    )}
-                </td>
-
-                <td>
-                    ${escapeHTML(
-                        appointment.appointment_time
-                    )}
+                    ${share}%
                 </td>
 
             `;
@@ -3855,55 +4566,84 @@ function updateTable(
             );
 
         }
+
     );
 
 }
 
 
-/* ========================================================
-   HTML ESCAPE
-======================================================== */
+/* ============================================================
+   ESCAPE HTML
+============================================================ */
 
-function escapeHTML(
-    value
-) {
 
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
+function escapeHtml(value) {
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
 
-/* ========================================================
+/* ============================================================
+   REFRESH
+============================================================ */
+
+
+window.refreshAnalytics =
+async function() {
+
+    await loadAnalytics();
+
+};
+
+
+/* ============================================================
    NAVIGATION
-======================================================== */
+============================================================ */
+
+
+window.goDashboard =
+function() {
+
+    closeMobileSidebar();
+
+    window.scrollTo(
+        0,
+        0
+    );
+
+};
+
 
 window.openAppointments =
 function() {
 
     const uid =
-        currentUser?.uid ||
         localStorage.getItem(
             "uid"
         );
@@ -3915,7 +4655,6 @@ function() {
             "/login-page";
 
         return;
-
     }
 
 
@@ -3930,7 +4669,6 @@ window.openFollowups =
 function() {
 
     const uid =
-        currentUser?.uid ||
         localStorage.getItem(
             "uid"
         );
@@ -3942,7 +4680,6 @@ function() {
             "/login-page";
 
         return;
-
     }
 
 
@@ -3956,26 +4693,30 @@ function() {
 window.openHospital =
 function() {
 
+    /*
+       We keep your existing dashboard
+       hospital editing route.
+    */
+
     window.location.href =
         "/temp-dash";
 
 };
 
 
-window.showDashboard =
+window.openDoctors =
 function() {
 
-    window.scrollTo(
-        0,
-        0
-    );
+    window.location.href =
+        "/temp-dash";
 
 };
 
 
-/* ========================================================
+/* ============================================================
    LOGOUT
-======================================================== */
+============================================================ */
+
 
 window.logout =
 async function() {
@@ -3991,11 +4732,9 @@ async function() {
             "uid"
         );
 
-
         localStorage.removeItem(
             "hospitalId"
         );
-
 
         localStorage.removeItem(
             "hospitalName"
@@ -4006,9 +4745,11 @@ async function() {
             "/login-page";
 
     }
+
     catch(error) {
 
         console.error(
+            "LOGOUT ERROR:",
             error
         );
 
@@ -4021,77 +4762,32 @@ async function() {
 };
 
 
-/* ========================================================
-   MOBILE SIDEBAR
-======================================================== */
-
-window.toggleSidebar =
-function() {
-
-    document
-        .getElementById(
-            "sidebar"
-        )
-        .classList.add(
-            "open"
-        );
+/* ============================================================
+   DEFAULT
+============================================================ */
 
 
-    document
-        .getElementById(
-            "sidebarOverlay"
-        )
-        .classList.add(
-            "show"
-        );
+window.addEventListener(
 
-};
+    "resize",
 
+    function() {
 
-window.closeSidebar =
-function() {
+        if (
+            window.innerWidth > 850
+        ) {
 
-    document
-        .getElementById(
-            "sidebar"
-        )
-        .classList.remove(
-            "open"
-        );
+            closeMobileSidebar();
 
+        }
 
-    document
-        .getElementById(
-            "sidebarOverlay"
-        )
-        .classList.remove(
-            "show"
-        );
+    }
 
-};
-
-
-/* ========================================================
-   LOADING
-======================================================== */
-
-function showLoading(
-    show
-) {
-
-    document.getElementById(
-        "loading"
-    ).style.display =
-        show
-        ?
-        "flex"
-        :
-        "none";
-
-}
+);
 
 
 </script>
+
 
 </body>
 
