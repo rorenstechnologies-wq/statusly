@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Statusly - Hospital Analytics</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f7fb;
+
+            color: #1f2937;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            background: linear-gradient(
+                135deg,
+                #004792,
+                #0077cc
+            );
+
+            color: white;
+
+            padding: 18px 30px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+
+            font-size: 24px;
+        }
+
+        .header span {
+            font-size: 14px;
+
+            opacity: 0.9;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+            max-width: 1400px;
+
+            margin: auto;
+
+            padding: 25px;
+        }
+
+        /* =========================
+           CARDS
+        ========================= */
+
+        .cards {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 5px 20px rgba(
+                    0,
+                    0,
+                    0,
+                    0.06
+                );
+        }
+
+        .card-title {
+            font-size: 14px;
+
+            color: #6b7280;
+
+            margin-bottom: 10px;
+        }
+
+        .card-value {
+            font-size: 30px;
+
+            font-weight: bold;
+
+            color: #004792;
+        }
+
+        /* =========================
+           CHART GRID
+        ========================= */
+
+        .charts {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 25px;
+        }
+
+        .chart-card {
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 5px 20px rgba(
+                    0,
+                    0,
+                    0,
+                    0.06
+                );
+        }
+
+        .chart-card h3 {
+            margin-top: 0;
+
+            margin-bottom: 20px;
+
+            font-size: 18px;
+        }
+
+        .chart-container {
+            position: relative;
+
+            height: 320px;
+        }
+
+        /* =========================
+           LOADING
+        ========================= */
+
+        #loading {
+            text-align: center;
+
+            padding: 40px;
+
+            font-size: 18px;
+
+            color: #6b7280;
+        }
+
+        /* =========================
+           ERROR
+        ========================= */
+
+        #error {
+            display: none;
+
+            background: #fee2e2;
+
+            color: #991b1b;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            margin-bottom: 20px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media(max-width: 900px) {
+
+            .cards {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .charts {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media(max-width: 550px) {
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ======================================================
+     HEADER
+====================================================== -->
+
+<div class="header">
+
+    <h1>
+        📊 Hospital Analytics
+    </h1>
+
+    <span id="hospitalIdDisplay">
+        Loading...
+    </span>
+
+</div>
+
+
+<!-- ======================================================
+     MAIN
+====================================================== -->
+
+<div class="container">
+
+
+    <div id="error"></div>
+
+
+    <div id="loading">
+        Loading analytics...
+    </div>
+
+
+    <!-- ==================================================
+         SUMMARY CARDS
+    ================================================== -->
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Total Patients
+            </div>
+
+            <div
+                class="card-value"
+                id="totalPatients">
+                -
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Today's Appointments
+            </div>
+
+            <div
+                class="card-value"
+                id="todayAppointments">
+                -
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Male Patients
+            </div>
+
+            <div
+                class="card-value"
+                id="malePatients">
+                -
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Female Patients
+            </div>
+
+            <div
+                class="card-value"
+                id="femalePatients">
+                -
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         CHARTS
+    ================================================== -->
+
+    <div class="charts">
+
+
+        <!-- GENDER -->
+
+        <div class="chart-card">
+
+            <h3>
+                Gender Distribution
+            </h3>
+
+            <div class="chart-container">
+
+                <canvas
+                    id="genderChart">
+                </canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- AGE -->
+
+        <div class="chart-card">
+
+            <h3>
+                Age Distribution
+            </h3>
+
+            <div class="chart-container">
+
+                <canvas
+                    id="ageChart">
+                </canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- DOCTORS -->
+
+        <div class="chart-card">
+
+            <h3>
+                Appointments by Doctor
+            </h3>
+
+            <div class="chart-container">
+
+                <canvas
+                    id="doctorChart">
+                </canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- DAILY -->
+
+        <div class="chart-card">
+
+            <h3>
+                Daily Appointments
+            </h3>
+
+            <div class="chart-container">
+
+                <canvas
+                    id="dailyChart">
+                </canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- TIME -->
+
+        <div class="chart-card">
+
+            <h3>
+                Appointment Time
+            </h3>
+
+            <div class="chart-container">
+
+                <canvas
+                    id="timeChart">
+                </canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- LOCATION -->
+
+        <div class="chart-card">
+
+            <h3>
+                Patient Locations
+            </h3>
+
+            <div class="chart-container">
+
+                <canvas
+                    id="locationChart">
+                </canvas>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // =====================================================
+    // GET HOSPITAL ID
+    // =====================================================
+
+    const pathParts =
+        window.location.pathname.split("/");
+
+    let hospitalId =
+        pathParts[pathParts.length - 1];
+
+
+    /*
+     * If analytics.html is opened directly,
+     * you can also use:
+     *
+     * analytics.html?hospital_id=XXXXX
+     */
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    if (params.get("hospital_id")) {
+
+        hospitalId =
+            params.get("hospital_id");
+
+    }
+
+
+    document.getElementById(
+        "hospitalIdDisplay"
+    ).textContent =
+        "Hospital: " + hospitalId;
+
+
+    // =====================================================
+    // CHART STORAGE
+    // =====================================================
+
+    let charts = {};
+
+
+    // =====================================================
+    // API HELPER
+    // =====================================================
+
+    async function getAPI(url) {
+
+        const response =
+            await fetch(url);
+
+        if (!response.ok) {
+
+            throw new Error(
+                "API Error: " +
+                response.status
+            );
+
+        }
+
+        return await response.json();
+
+    }
+
+
+    // =====================================================
+    // LOAD ANALYTICS
+    // =====================================================
+
+    async function loadAnalytics() {
+
+        try {
+
+            document.getElementById(
+                "loading"
+            ).style.display =
+                "block";
+
+
+            // ---------------------------------------------
+            // OVERVIEW
+            // ---------------------------------------------
+
+            const overview =
+                await getAPI(
+                    `/api/analytics/overview/${hospitalId}`
+                );
+
+
+            if (!overview.success) {
+
+                throw new Error(
+                    overview.error ||
+                    "Overview failed"
+                );
+
+            }
+
+
+            document.getElementById(
+                "totalPatients"
+            ).textContent =
+                overview.total_patients;
+
+
+            document.getElementById(
+                "todayAppointments"
+            ).textContent =
+                overview.today_appointments;
+
+
+            document.getElementById(
+                "malePatients"
+            ).textContent =
+                overview.male;
+
+
+            document.getElementById(
+                "femalePatients"
+            ).textContent =
+                overview.female;
+
+
+            // ---------------------------------------------
+            // OTHER APIs
+            // ---------------------------------------------
+
+            const [
+                gender,
+                age,
+                doctors,
+                daily,
+                time,
+                location
+            ] = await Promise.all([
+
+                getAPI(
+                    `/api/analytics/gender/${hospitalId}`
+                ),
+
+                getAPI(
+                    `/api/analytics/age/${hospitalId}`
+                ),
+
+                getAPI(
+                    `/api/analytics/doctors/${hospitalId}`
+                ),
+
+                getAPI(
+                    `/api/analytics/daily/${hospitalId}`
+                ),
+
+                getAPI(
+                    `/api/analytics/time/${hospitalId}`
+                ),
+
+                getAPI(
+                    `/api/analytics/location/${hospitalId}`
+                )
+
+            ]);
+
+
+            // ---------------------------------------------
+            // CREATE CHARTS
+            // ---------------------------------------------
+
+            createGenderChart(
+                gender.data
+            );
+
+
+            createAgeChart(
+                age.data
+            );
+
+
+            createDoctorChart(
+                doctors.data.doctors
+            );
+
+
+            createDailyChart(
+                daily.data
+            );
+
+
+            createTimeChart(
+                time.data
+            );
+
+
+            createLocationChart(
+                location.data.locations
+            );
+
+
+            document.getElementById(
+                "loading"
+            ).style.display =
+                "none";
+
+
+        } catch (error) {
+
+            console.error(
+                error
+            );
+
+
+            document.getElementById(
+                "loading"
+            ).style.display =
+                "none";
+
+
+            const errorBox =
+                document.getElementById(
+                    "error"
+                );
+
+
+            errorBox.style.display =
+                "block";
+
+
+            errorBox.textContent =
+                error.message;
+
+        }
+
+    }
+
+
+    // =====================================================
+    // GENDER CHART
+    // =====================================================
+
+    function createGenderChart(data) {
+
+        const labels =
+            Object.keys(data);
+
+        const values =
+            Object.values(data);
+
+
+        charts.gender =
+            new Chart(
+
+                document.getElementById(
+                    "genderChart"
+                ),
+
+                {
+
+                    type: "doughnut",
+
+                    data: {
+
+                        labels: labels,
+
+                        datasets: [{
+
+                            data: values
+
+                        }]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false
+
+                    }
+
+                }
+
+            );
+
+    }
+
+
+    // =====================================================
+    // AGE CHART
+    // =====================================================
+
+    function createAgeChart(data) {
+
+        const labels =
+            Object.keys(data);
+
+        const values =
+            Object.values(data);
+
+
+        charts.age =
+            new Chart(
+
+                document.getElementById(
+                    "ageChart"
+                ),
+
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels: labels,
+
+                        datasets: [{
+
+                            label:
+                                "Patients",
+
+                            data: values
+
+                        }]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero: true
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+    }
+
+
+    // =====================================================
+    // DOCTOR CHART
+    // =====================================================
+
+    function createDoctorChart(data) {
+
+        const labels =
+            data.map(
+                item => item[0]
+            );
+
+        const values =
+            data.map(
+                item => item[1]
+            );
+
+
+        charts.doctors =
+            new Chart(
+
+                document.getElementById(
+                    "doctorChart"
+                ),
+
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels: labels,
+
+                        datasets: [{
+
+                            label:
+                                "Appointments",
+
+                            data: values
+
+                        }]
+
+                    },
+
+                    options: {
+
+                        indexAxis: "y",
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+
+                            x: {
+
+                                beginAtZero: true
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+    }
+
+
+    // =====================================================
+    // DAILY CHART
+    // =====================================================
+
+    function createDailyChart(data) {
+
+        const labels =
+            Object.keys(data);
+
+        const values =
+            Object.values(data);
+
+
+        charts.daily =
+            new Chart(
+
+                document.getElementById(
+                    "dailyChart"
+                ),
+
+                {
+
+                    type: "line",
+
+                    data: {
+
+                        labels: labels,
+
+                        datasets: [{
+
+                            label:
+                                "Appointments",
+
+                            data: values,
+
+                            tension: 0.3
+
+                        }]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero: true
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+    }
+
+
+    // =====================================================
+    // TIME CHART
+    // =====================================================
+
+    function createTimeChart(data) {
+
+        const labels =
+            Object.keys(data);
+
+        const values =
+            Object.values(data);
+
+
+        charts.time =
+            new Chart(
+
+                document.getElementById(
+                    "timeChart"
+                ),
+
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels: labels,
+
+                        datasets: [{
+
+                            label:
+                                "Appointments",
+
+                            data: values
+
+                        }]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        scales: {
+
+                            y: {
+
+                                beginAtZero: true
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+    }
+
+
+    // =====================================================
+    // LOCATION CHART
+    // =====================================================
+
+    function createLocationChart(data) {
+
+        const labels =
+            data.map(
+                item => item[0]
+            );
+
+        const values =
+            data.map(
+                item => item[1]
+            );
+
+
+        charts.location =
+            new Chart(
+
+                document.getElementById(
+                    "locationChart"
+                ),
+
+                {
+
+                    type: "bar",
+
+                    data: {
+
+                        labels: labels,
+
+                        datasets: [{
+
+                            label:
+                                "Patients",
+
+                            data: values
+
+                        }]
+
+                    },
+
+                    options: {
+
+                        indexAxis: "y",
+
+                        responsive: true,
+
+                        maintainAspectRatio: false
+
+                    }
+
+                }
+
+            );
+
+    }
+
+
+    // =====================================================
+    // START
+    // =====================================================
+
+    loadAnalytics();
+
+</script>
+
+
+</body>
+
+</html>
