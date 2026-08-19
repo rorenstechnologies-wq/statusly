@@ -73,7 +73,7 @@
 
 
         /* =====================================================
-           TOP NAVIGATION
+           TOP BAR
         ===================================================== */
 
         .topbar {
@@ -348,7 +348,7 @@
 
             display: flex;
 
-            align-items: center;
+            align-items: flex-start;
 
             justify-content: space-between;
 
@@ -371,13 +371,35 @@
         }
 
 
-        .section-title span {
+        .section-subtitle {
+
+            margin-top: 2px;
+
+            color: #7b8790;
 
             font-size: 11px;
 
-            color: #89949d;
+            line-height: 1.4;
+
+        }
+
+
+        .doctor-count {
+
+            font-size: 11px;
+
+            color: #168558;
+
+            background: #ecf9f3;
+
+            padding:
+                5px 8px;
+
+            border-radius: 20px;
 
             white-space: nowrap;
+
+            font-weight: 700;
 
         }
 
@@ -631,7 +653,7 @@
 
             flex-direction: column;
 
-            gap: 5px;
+            gap: 6px;
 
         }
 
@@ -653,7 +675,32 @@
         }
 
 
-        .doctor-detail span:last-child {
+        .doctor-detail-icon {
+
+            width: 20px;
+
+            min-width: 20px;
+
+            height: 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #f4f7f9;
+
+            border-radius: 6px;
+
+            font-size: 10px;
+
+        }
+
+
+        .doctor-detail-text {
+
+            padding-top: 1px;
 
             overflow-wrap: anywhere;
 
@@ -787,13 +834,6 @@
             font-size: 11px;
 
             line-height: 1.7;
-
-        }
-
-
-        .footer-powered {
-
-            color: #8a949d;
 
         }
 
@@ -1097,7 +1137,7 @@
 
 
                     <p>
-                        Hospital information & doctor availability
+                        Hospital information and doctor timings
                     </p>
 
 
@@ -1111,7 +1151,7 @@
 
                 <span class="live-dot"></span>
 
-                Hospital Information Live
+                Hospital Information Available
 
             </div>
 
@@ -1127,14 +1167,17 @@
         <div class="section-title">
 
 
-            <h2>
-                Today's Information
-            </h2>
+            <div>
 
+                <h2>
+                    Today's Information
+                </h2>
 
-            <span>
-                Updated
-            </span>
+                <p class="section-subtitle">
+                    Hospital timings and today's status
+                </p>
+
+            </div>
 
 
         </div>
@@ -1147,21 +1190,17 @@
 
             <div class="info-card">
 
-
                 <div class="info-icon">
                     📅
                 </div>
-
 
                 <div class="info-label">
                     Date
                 </div>
 
-
                 <div class="info-value">
                     {{ hospital.date }}
                 </div>
-
 
             </div>
 
@@ -1171,21 +1210,17 @@
 
             <div class="info-card">
 
-
                 <div class="info-icon">
                     🕐
                 </div>
 
-
                 <div class="info-label">
-                    Opens
+                    Hospital Opens
                 </div>
-
 
                 <div class="info-value">
                     {{ hospital.open_time }}
                 </div>
-
 
             </div>
 
@@ -1195,21 +1230,17 @@
 
             <div class="info-card">
 
-
                 <div class="info-icon">
                     🕘
                 </div>
 
-
                 <div class="info-label">
-                    Closes
+                    Hospital Closes
                 </div>
-
 
                 <div class="info-value">
                     {{ hospital.close_time }}
                 </div>
-
 
             </div>
 
@@ -1219,23 +1250,19 @@
 
             <div class="info-card">
 
-
                 <div class="info-icon">
                     ✓
                 </div>
 
-
                 <div class="info-label">
-                    Status
+                    Hospital Status
                 </div>
-
 
                 <div class="info-value status-open">
 
                     Open / Active
 
                 </div>
-
 
             </div>
 
@@ -1251,9 +1278,17 @@
         <div class="section-title">
 
 
-            <h2>
-                About Hospital
-            </h2>
+            <div>
+
+                <h2>
+                    About Hospital
+                </h2>
+
+                <p class="section-subtitle">
+                    Information about this hospital
+                </p>
+
+            </div>
 
 
         </div>
@@ -1261,35 +1296,41 @@
 
         <section class="about-card">
 
-
             <p>
 
                 {{ hospital.info }}
 
             </p>
 
-
         </section>
 
 
 
         <!-- =================================================
-             DOCTORS
+             TODAY'S DOCTORS
         ================================================== -->
 
         <div class="section-title">
 
 
-            <h2>
-                Available Doctors
-            </h2>
+            <div>
+
+                <h2>
+                    Today's Doctors
+                </h2>
+
+                <p class="section-subtitle">
+                    Doctors available today and their OPD timings
+                </p>
+
+            </div>
 
 
-            <span>
+            <span class="doctor-count">
 
                 {{ hospital.doctors|length }}
 
-                doctors
+                available
 
             </span>
 
@@ -1342,18 +1383,18 @@
                     <div class="doctor-details">
 
 
-                        <!-- OPD -->
+                        <!-- OPD TIME -->
 
                         <div class="doctor-detail">
 
-                            <span>
+                            <span class="doctor-detail-icon">
                                 🕐
                             </span>
 
+                            <span class="doctor-detail-text">
 
-                            <span>
+                                <strong>OPD Time:</strong>
 
-                                OPD:
                                 {{ doctor.opd_time }}
 
                             </span>
@@ -1362,19 +1403,20 @@
 
 
 
-                        <!-- DOCTOR INFO -->
+                        <!-- DOCTOR INFORMATION -->
 
                         {% if doctor.doctor_info %}
 
 
                         <div class="doctor-detail">
 
-                            <span>
+                            <span class="doctor-detail-icon">
                                 ℹ️
                             </span>
 
+                            <span class="doctor-detail-text">
 
-                            <span>
+                                <strong>Doctor Information:</strong>
 
                                 {{ doctor.doctor_info }}
 
@@ -1406,7 +1448,7 @@
 
         <div class="empty-state">
 
-            No doctors are currently listed.
+            No doctors are available today.
 
         </div>
 
@@ -1463,7 +1505,7 @@
         <footer class="footer">
 
 
-            <div class="footer-powered">
+            <div>
 
                 Powered by
 
