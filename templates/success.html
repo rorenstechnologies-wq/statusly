@@ -121,7 +121,7 @@
         }
 
 
-        .live-status {
+        .confirmed-status {
 
             display: flex;
 
@@ -144,7 +144,7 @@
         }
 
 
-        .live-dot {
+        .confirmed-dot {
 
             width: 7px;
 
@@ -184,7 +184,7 @@
 
             width: 100%;
 
-            max-width: 460px;
+            max-width: 480px;
 
             background: #ffffff;
 
@@ -193,7 +193,7 @@
 
             border-radius: 20px;
 
-            padding: 28px 20px;
+            padding: 28px 18px;
 
             text-align: center;
 
@@ -201,8 +201,7 @@
                 0 8px 30px
                 rgba(16, 24, 40, 0.07);
 
-            animation:
-                cardIn 0.6s ease;
+            animation: cardIn .6s ease;
 
         }
 
@@ -242,7 +241,7 @@
 
             height: 78px;
 
-            margin: 0 auto 18px;
+            margin: 0 auto 17px;
 
             border-radius: 50%;
 
@@ -263,8 +262,7 @@
 
             font-weight: 800;
 
-            animation:
-                successPop .7s ease .15s both;
+            animation: successPop .7s ease .15s both;
 
         }
 
@@ -297,21 +295,18 @@
 
 
         /* =====================================================
-           TEXT
+           SUCCESS TEXT
         ===================================================== */
 
         .success-card h1 {
 
             color: #168558;
 
-            font-size: 23px;
+            font-size: 22px;
 
             line-height: 1.3;
 
-            margin-bottom: 8px;
-
-            animation:
-                textIn .6s ease .25s both;
+            margin-bottom: 7px;
 
         }
 
@@ -320,7 +315,7 @@
 
             color: #273b4d;
 
-            font-size: 17px;
+            font-size: 16px;
 
             font-weight: 700;
 
@@ -343,45 +338,122 @@
 
 
         /* =====================================================
-           HOSPITAL
+           APPOINTMENT DETAILS
         ===================================================== */
 
-        .hospital-box {
+        .details-box {
 
-            background: #f6f9fb;
+            text-align: left;
+
+            background: #f7fafb;
 
             border:
-                1px solid #e5eaee;
+                1px solid #e3e9ed;
 
-            border-radius: 12px;
+            border-radius: 15px;
 
-            padding: 13px;
+            overflow: hidden;
 
-            margin-bottom: 20px;
+            margin-top: 10px;
 
         }
 
 
-        .hospital-label {
+        .details-heading {
 
-            color: #89949d;
+            padding:
+                13px 14px;
+
+            background: #f1f7f5;
+
+            border-bottom:
+                1px solid #e2e9e6;
+
+            color: #244052;
+
+            font-size: 13px;
+
+            font-weight: 750;
+
+        }
+
+
+        .detail-row {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 11px;
+
+            padding:
+                13px 14px;
+
+            border-bottom:
+                1px solid #e8edef;
+
+        }
+
+
+        .detail-row:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        .detail-icon {
+
+            width: 36px;
+
+            height: 36px;
+
+            min-width: 36px;
+
+            border-radius: 9px;
+
+            background: #eaf7f2;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 17px;
+
+        }
+
+
+        .detail-content {
+
+            min-width: 0;
+
+            flex: 1;
+
+        }
+
+
+        .detail-label {
+
+            color: #8a969f;
 
             font-size: 9px;
 
             text-transform: uppercase;
 
-            letter-spacing: .5px;
+            letter-spacing: .4px;
 
             font-weight: 700;
-
-            margin-bottom: 3px;
 
         }
 
 
-        .hospital-name {
+        .detail-value {
 
-            color: #20364a;
+            margin-top: 2px;
+
+            color: #1e3345;
 
             font-size: 14px;
 
@@ -392,53 +464,50 @@
         }
 
 
-        /* =====================================================
-           BUTTON
-        ===================================================== */
+        .doctor-specialization {
 
-        .back-btn {
+            margin-top: 2px;
 
-            width: 100%;
+            color: #168b61;
 
-            min-height: 48px;
+            font-size: 11px;
 
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #123f63,
-                    #0d6b5f
-                );
-
-            color: #ffffff;
-
-            border-radius: 11px;
-
-            font-size: 14px;
-
-            font-weight: 750;
-
-            text-decoration: none;
-
-            transition:
-                transform .15s ease,
-                box-shadow .15s ease;
-
-            box-shadow:
-                0 5px 14px
-                rgba(18, 63, 99, .16);
+            font-weight: 650;
 
         }
 
 
-        .back-btn:active {
+        /* =====================================================
+           IMPORTANT MESSAGE
+        ===================================================== */
 
-            transform: scale(.98);
+        .confirmation-note {
+
+            margin-top: 16px;
+
+            padding: 12px 13px;
+
+            background: #fff9e9;
+
+            border:
+                1px solid #f2e5bd;
+
+            border-radius: 11px;
+
+            color: #765f22;
+
+            font-size: 11px;
+
+            line-height: 1.55;
+
+            text-align: left;
+
+        }
+
+
+        .confirmation-note strong {
+
+            color: #624d15;
 
         }
 
@@ -482,7 +551,7 @@
 
 
         /* =====================================================
-           DESKTOP
+           TABLET / DESKTOP
         ===================================================== */
 
         @media (min-width: 600px) {
@@ -500,7 +569,7 @@
             .success-card {
 
                 padding:
-                    40px 35px;
+                    38px 35px;
 
             }
 
@@ -526,7 +595,7 @@
 
 
         /* =====================================================
-           VERY SMALL PHONES
+           SMALL PHONES
         ===================================================== */
 
         @media (max-width: 360px) {
@@ -542,7 +611,7 @@
             .success-card {
 
                 padding:
-                    24px 15px;
+                    24px 13px;
 
                 border-radius: 16px;
 
@@ -563,6 +632,13 @@
                 height: 68px;
 
                 font-size: 32px;
+
+            }
+
+
+            .detail-value {
+
+                font-size: 13px;
 
             }
 
@@ -603,9 +679,9 @@
         </div>
 
 
-        <div class="live-status">
+        <div class="confirmed-status">
 
-            <span class="live-dot"></span>
+            <span class="confirmed-dot"></span>
 
             Confirmed
 
@@ -626,7 +702,7 @@
         <div class="success-card">
 
 
-            <!-- SUCCESS ICON -->
+            <!-- SUCCESS -->
 
             <div class="success-icon">
 
@@ -634,9 +710,6 @@
 
             </div>
 
-
-
-            <!-- MAIN MESSAGE -->
 
             <h1>
 
@@ -655,27 +728,178 @@
             <p class="message">
 
                 Your appointment has been successfully booked.
-                Please visit the hospital at your scheduled time.
+                Please keep these details with you when you visit
+                the hospital.
 
             </p>
 
 
 
-            <!-- HOSPITAL -->
+            <!-- =================================================
+                 APPOINTMENT DETAILS
+            ================================================== -->
 
-            <div class="hospital-box">
+            <div class="details-box">
 
 
-                <div class="hospital-label">
+                <div class="details-heading">
 
-                    Hospital
+                    📋 Your Appointment Details
 
                 </div>
 
 
-                <div class="hospital-name">
 
-                    {{ hospital_name }}
+                <!-- HOSPITAL -->
+
+                <div class="detail-row">
+
+
+                    <div class="detail-icon">
+
+                        🏥
+
+                    </div>
+
+
+                    <div class="detail-content">
+
+
+                        <div class="detail-label">
+
+                            Hospital
+
+                        </div>
+
+
+                        <div class="detail-value">
+
+                            {{ hospital_name }}
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- DOCTOR -->
+
+                <div class="detail-row">
+
+
+                    <div class="detail-icon">
+
+                        👨‍⚕️
+
+                    </div>
+
+
+                    <div class="detail-content">
+
+
+                        <div class="detail-label">
+
+                            Doctor
+
+                        </div>
+
+
+                        <div class="detail-value">
+
+                            Dr. {{ doctor_name }}
+
+                        </div>
+
+
+                        {% if specialization %}
+
+                        <div class="doctor-specialization">
+
+                            {{ specialization }}
+
+                        </div>
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- DATE -->
+
+                <div class="detail-row">
+
+
+                    <div class="detail-icon">
+
+                        📅
+
+                    </div>
+
+
+                    <div class="detail-content">
+
+
+                        <div class="detail-label">
+
+                            Appointment Date
+
+                        </div>
+
+
+                        <div class="detail-value">
+
+                            {{ appointment_date }}
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- TIME -->
+
+                <div class="detail-row">
+
+
+                    <div class="detail-icon">
+
+                        🕐
+
+                    </div>
+
+
+                    <div class="detail-content">
+
+
+                        <div class="detail-label">
+
+                            Appointment Time
+
+                        </div>
+
+
+                        <div class="detail-value">
+
+                            {{ appointment_time }}
+
+                        </div>
+
+
+                    </div>
+
 
                 </div>
 
@@ -684,16 +908,19 @@
 
 
 
-            <!-- BACK BUTTON -->
+            <!-- =================================================
+                 PATIENT MESSAGE
+            ================================================== -->
 
-            <a
-                class="back-btn"
-                href="/"
-            >
+            <div class="confirmation-note">
 
-                ← Back to Home
+                <strong>Important:</strong>
 
-            </a>
+                Please arrive at the hospital a little before
+                your appointment time and show these details
+                at the reception.
+
+            </div>
 
 
         </div>
