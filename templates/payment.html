@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Choose Plan - Statusly</title>
+
+    <!-- Cashfree Production Web SDK -->
+    <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #004792, #0077cc);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            text-align: center;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .user-info {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .plans {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            width: 270px;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .card h2 {
+            margin-top: 0;
+        }
+
+        .price {
+            font-size: 32px;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #004792;
+        }
+
+        .duration {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .select-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 7px;
+            background: #004792;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .select-btn:hover {
+            background: #003366;
+        }
+
+        .select-btn:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        #loader {
+            display: none;
+            margin-top: 25px;
+            color: white;
+            font-weight: bold;
+        }
+
+        #error {
+            display: none;
+            margin-top: 20px;
+            background: #ffdddd;
+            color: #990000;
+            padding: 12px;
+            border-radius: 8px;
+            word-break: break-word;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Select Your Plan</h1>
+
+    <div class="user-info" id="userInfo">
+        Checking Firebase login...
+    </div>
+
+    <div class="plans">
+
+        <div class="card">
+            <h2>Basic</h2>
+
+            <div class="price">
+                ₹200
+            </div>
+
+            <div class="duration">
+                1 Month Access
+            </div>
+
+            <button
+                class="select-btn"
+                disabled
+                onclick="createPayment('basic')"
+            >
+                Checking Login...
+            </button>
+        </div>
+
+        <div class="card">
+            <h2>Standard</h2>
+
+            <div class="price">
+                ₹1000
+            </div>
+
+            <div class="duration">
+                6 Months Access
+            </div>
+
+            <button
+                class="select-btn"
+                disabled
+                onclick="createPayment('standard')"
+            >
+                Checking Login...
+            </button>
+        </div>
+
+        <div class="card">
+            <h2>Premium</h2>
+
+            <div class="price">
+                ₹2000
+            </div>
+
+            <div class="duration">
+                1 Year Access
+            </div>
+
+            <button
+                class="select-btn"
+                disabled
+                onclick="createPayment('premium')"
+            >
+                Checking Login...
+            </button>
+        </div>
+
+    </div>
+
+    <div id="loader">
+        Creating secure payment...
+    </div>
+
+    <div id="error"></div>
+
+</div>
+
+
+<script type="module">
+
+/* =====================================================
+   FIREBASE
+===================================================== */
+
+import {
+    initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+}
+from
+"https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+
+/* =====================================================
+   FIREBASE CONFIG
+===================================================== */
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyDbHoUVO_oXHCnY040sBLOiXVS6s6xJEb8",
+
+    authDomain:
+        "hospital-57fc8.firebaseapp.com",
+
+    databaseURL:
+        "https://hospital-57fc8-default-rtdb.firebaseio.com",
+
+    projectId:
+        "hospital-57fc8",
+
+    storageBucket:
+        "hospital-57fc8.firebasestorage.app",
+
+    messagingSenderId:
+        "711314420912",
+
+    appId:
+        "1:711314420912:web:14ec889664980679a13775"
+};
+
+
+/* =====================================================
+   FIREBASE INITIALIZATION
+===================================================== */
+
+const firebaseApp =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(firebaseApp);
+
+
+/* =====================================================
+   CASHFREE PRODUCTION
+===================================================== */
+
+const cashfree =
+    Cashfree({
+        mode: "production"
+    });
+
+
+/* =====================================================
+   GLOBAL STATE
+===================================================== */
+
+let currentUser = null;
+let authReady = false;
+
+
+/* =====================================================
+   PLAN CONFIG
+   Backend remains the final authority for amount.
+===================================================== */
+
+const PLAN_DISPLAY = {
+
+    basic: {
+        amount: 200,
+        durationDays: 30
+    },
+
+    standard: {
+        amount: 1000,
+        durationDays: 180
+    },
+
+    premium: {
+        amount: 2000,
+        durationDays: 365
+    }
+
+};
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+const buttons =
+    document.querySelectorAll(".select-btn");
+
+
+/* =====================================================
+   FIREBASE AUTH STATE
+===================================================== */
+
+onAuthStateChanged(
+    auth,
+    (user) => {
+
+        console.log(
+            "========================================"
+        );
+
+        console.log(
+            "PAYMENT AUTH STATE"
+        );
+
+        console.log(
+            "FIREBASE USER:",
+            user
+        );
+
+        console.log(
+            "========================================"
+        );
+
+        authReady = true;
+
+
+        if (!user) {
+
+            currentUser = null;
+
+            document.getElementById(
+                "userInfo"
+            ).innerText =
+                "Login session not found. Please login again.";
+
+            buttons.forEach(
+                (button) => {
+
+                    button.disabled = true;
+
+                    button.innerText =
+                        "Login Required";
+                }
+            );
+
+            return;
+        }
+
+
+        currentUser = user;
+
+
+        console.log(
+            "PAYMENT UID:",
+            user.uid
+        );
+
+        console.log(
+            "PAYMENT EMAIL:",
+            user.email
+        );
+
+
+        document.getElementById(
+            "userInfo"
+        ).innerText =
+            "Logged in: " +
+            (
+                user.email ||
+                user.uid
+            );
+
+
+        buttons.forEach(
+            (button) => {
+
+                button.disabled = false;
+
+                button.innerText =
+                    "Choose Plan";
+            }
+        );
+
+    }
+);
+
+
+/* =====================================================
+   CREATE PAYMENT
+===================================================== */
+
+window.createPayment = async function(plan) {
+
+    const loader =
+        document.getElementById("loader");
+
+    const errorBox =
+        document.getElementById("error");
+
+
+    errorBox.style.display = "none";
+    loader.style.display = "block";
+
+
+    try {
+
+        /* =============================================
+           CHECK PLAN
+        ============================================= */
+
+        const selectedPlan =
+            PLAN_DISPLAY[plan];
+
+
+        if (!selectedPlan) {
+
+            throw new Error(
+                "Invalid plan selected."
+            );
+        }
+
+
+        /* =============================================
+           WAIT FOR AUTH
+        ============================================= */
+
+        if (!authReady) {
+
+            throw new Error(
+                "Firebase is still loading. Please wait."
+            );
+        }
+
+
+        /* =============================================
+           GET USER
+        ============================================= */
+
+        const user =
+            auth.currentUser ||
+            currentUser;
+
+
+        console.log(
+            "PAYMENT FIREBASE USER:",
+            user
+        );
+
+
+        if (!user) {
+
+            throw new Error(
+                "Login session not found. Please login again."
+            );
+        }
+
+
+        currentUser = user;
+
+
+        /* =============================================
+           UID
+        ============================================= */
+
+        const uid =
+            user.uid;
+
+
+        if (!uid) {
+
+            throw new Error(
+                "Firebase UID is missing."
+            );
+        }
+
+
+        console.log(
+            "PAYMENT UID:",
+            uid
+        );
+
+
+        /* =============================================
+           EMAIL
+        ============================================= */
+
+        const customerEmail =
+            user.email || "";
+
+
+        if (!customerEmail) {
+
+            throw new Error(
+                "Firebase email is missing."
+            );
+        }
+
+
+        /* =============================================
+           CUSTOMER NAME
+        ============================================= */
+
+        const customerName =
+            user.displayName ||
+            localStorage.getItem(
+                "hospitalName"
+            ) ||
+            "Statusly Customer";
+
+
+        console.log(
+            "CUSTOMER NAME:",
+            customerName
+        );
+
+        console.log(
+            "CUSTOMER EMAIL:",
+            customerEmail
+        );
+
+
+        /* =============================================
+           FIREBASE TOKEN
+        ============================================= */
+
+        const token =
+            await user.getIdToken(true);
+
+
+        console.log(
+            "FIREBASE TOKEN RECEIVED:",
+            !!token
+        );
+
+        console.log(
+            "FIREBASE TOKEN LENGTH:",
+            token
+                ? token.length
+                : 0
+        );
+
+
+        if (!token) {
+
+            throw new Error(
+                "Firebase authentication token missing."
+            );
+        }
+
+
+        /* =============================================
+           BACKEND REQUEST
+           
+           Do NOT trust browser amount.
+           Backend PLANS controls actual amount.
+        ============================================= */
+
+        const requestData = {
+
+            uid:
+                uid,
+
+            plan:
+                plan,
+
+            customer_name:
+                customerName,
+
+            customer_email:
+                customerEmail
+
+        };
+
+
+        console.log(
+            "========================================"
+        );
+
+        console.log(
+            "SENDING PAYMENT REQUEST"
+        );
+
+        console.log(
+            requestData
+        );
+
+        console.log(
+            "========================================"
+        );
+
+
+        const response =
+            await fetch(
+                "/create-payment-order",
+                {
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json",
+
+                        "Authorization":
+                            "Bearer " +
+                            token,
+
+                        "X-Firebase-Token":
+                            token
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            requestData
+                        )
+                }
+            );
+
+
+        console.log(
+            "CREATE PAYMENT STATUS:",
+            response.status
+        );
+
+
+        /* =============================================
+           READ RESPONSE
+        ============================================= */
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "CREATE PAYMENT RESPONSE:",
+            data
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Payment order creation failed."
+            );
+        }
+
+
+        if (!data.success) {
+
+            throw new Error(
+                data.error ||
+                "Payment order creation failed."
+            );
+        }
+
+
+        /* =============================================
+           PAYMENT SESSION
+        ============================================= */
+
+        const paymentSessionId =
+            String(
+                data.payment_session_id ||
+                ""
+            ).trim();
+
+
+        console.log(
+            "========================================"
+        );
+
+        console.log(
+            "CASHFREE CHECKOUT DEBUG"
+        );
+
+        console.log(
+            "MODE:",
+            "production"
+        );
+
+        console.log(
+            "ORDER ID:",
+            data.order_id
+        );
+
+        console.log(
+            "SESSION EXISTS:",
+            !!paymentSessionId
+        );
+
+        console.log(
+            "SESSION LENGTH:",
+            paymentSessionId.length
+        );
+
+        console.log(
+            "SESSION PREFIX:",
+            paymentSessionId.substring(
+                0,
+                30
+            )
+        );
+
+        console.log(
+            "========================================"
+        );
+
+
+        if (!paymentSessionId) {
+
+            throw new Error(
+                "Cashfree payment session ID is empty."
+            );
+        }
+
+
+        /* =============================================
+           SAVE ORDER
+        ============================================= */
+
+        sessionStorage.setItem(
+            "statusly_order_id",
+            data.order_id
+        );
+
+        sessionStorage.setItem(
+            "statusly_uid",
+            uid
+        );
+
+
+        /* =============================================
+           OPEN CASHFREE
+        ============================================= */
+
+        console.log(
+            "OPENING CASHFREE PRODUCTION CHECKOUT..."
+        );
+
+
+        const result =
+            await cashfree.checkout({
+
+                paymentSessionId:
+                    paymentSessionId,
+
+                redirectTarget:
+                    "_self"
+
+            });
+
+
+        console.log(
+            "CASHFREE RESULT:",
+            result
+        );
+
+
+        /*
+         * Cashfree checkout normally redirects.
+         * If it returns an object with error, show it.
+         */
+
+        if (
+            result &&
+            result.error
+        ) {
+
+            throw new Error(
+                result.error.message ||
+                result.error ||
+                "Cashfree checkout failed."
+            );
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "PAYMENT ERROR:",
+            error
+        );
+
+
+        errorBox.innerText =
+            error.message ||
+            "Payment error occurred.";
+
+
+        errorBox.style.display =
+            "block";
+
+
+        alert(
+            error.message ||
+            "Payment error occurred."
+        );
+
+    }
+
+    finally {
+
+        loader.style.display =
+            "none";
+
+    }
+
+};
+
+</script>
+
+</body>
+</html>

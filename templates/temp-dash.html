@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Statusly - Verifying Payment</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(
+        135deg,
+        #004792,
+        #0077cc
+    );
+
+    font-family: Arial, sans-serif;
+}
+
+.card {
+    background: white;
+
+    width: 90%;
+    max-width: 350px;
+
+    padding: 40px;
+
+    border-radius: 14px;
+
+    text-align: center;
+
+    box-shadow:
+        0 10px 30px
+        rgba(0,0,0,0.2);
+}
+
+h2 {
+    color: #004792;
+    margin-bottom: 15px;
+}
+
+#status {
+    color: #333;
+    line-height: 1.6;
+}
+
+.loader {
+    width: 40px;
+    height: 40px;
+
+    margin: 25px auto 0;
+
+    border: 4px solid #e0e0e0;
+
+    border-top: 4px solid #004792;
+
+    border-radius: 50%;
+
+    animation: spin 1s linear infinite;
+}
+
+.loader.hidden {
+    display: none;
+}
+
+.success {
+    color: #198754 !important;
+    font-weight: bold;
+}
+
+.error {
+    color: #dc3545 !important;
+    font-weight: bold;
+}
+
+@keyframes spin {
+
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="card">
+
+    <h2 id="title">
+        Verifying Payment...
+    </h2>
+
+    <p id="status">
+        Please wait while we verify your Cashfree payment.
+    </p>
+
+    <div id="loader" class="loader"></div>
+
+</div>
+
+
+<script type="module">
+
+// =====================================================
+// FIREBASE
+// =====================================================
+
+import {
+    initializeApp
+}
+from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+
+
+import {
+    getAuth,
+    onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+
+// =====================================================
+// FIREBASE CONFIG
+// =====================================================
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyDbHoUVO_oXHCnY040sBLOiXVS6s6xJEb8",
+
+    authDomain:
+        "hospital-57fc8.firebaseapp.com",
+
+    databaseURL:
+        "https://hospital-57fc8-default-rtdb.firebaseio.com",
+
+    projectId:
+        "hospital-57fc8",
+
+    storageBucket:
+        "hospital-57fc8.firebasestorage.app",
+
+    messagingSenderId:
+        "711314420912",
+
+    appId:
+        "1:764529433359:web:14ec889664980679a13775"
+
+};
+
+
+// =====================================================
+// INITIALIZE FIREBASE
+// =====================================================
+
+const app =
+    initializeApp(firebaseConfig);
+
+const auth =
+    getAuth(app);
+
+
+// =====================================================
+// UI HELPERS
+// =====================================================
+
+const titleElement =
+    document.getElementById("title");
+
+const statusElement =
+    document.getElementById("status");
+
+const loaderElement =
+    document.getElementById("loader");
+
+
+function showError(title, message) {
+
+    titleElement.innerText = title;
+
+    statusElement.innerText = message;
+
+    statusElement.className = "error";
+
+    loaderElement.classList.add("hidden");
+}
+
+
+function showSuccess(title, message) {
+
+    titleElement.innerText = title;
+
+    statusElement.innerText = message;
+
+    statusElement.className = "success";
+
+    loaderElement.classList.add("hidden");
+}
+
+
+// =====================================================
+// GET CASHFREE ORDER ID
+// =====================================================
+
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const orderId =
+    params.get("order_id");
+
+
+console.log(
+    "STATUSLY ORDER ID:",
+    orderId
+);
+
+
+// =====================================================
+// ORDER ID CHECK
+// =====================================================
+
+if (!orderId) {
+
+    showError(
+        "Payment Error",
+        "Cashfree order ID is missing."
+    );
+
+    throw new Error(
+        "Cashfree order ID missing"
+    );
+}
+
+
+// =====================================================
+// VERIFY PAYMENT
+// =====================================================
+
+onAuthStateChanged(
+    auth,
+    async (user) => {
+
+        // -------------------------------------------------
+        // USER NOT LOGGED IN
+        // -------------------------------------------------
+
+        if (!user) {
+
+            showError(
+                "Login Required",
+                "Please login to continue."
+            );
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "/login-page";
+
+            }, 2000);
+
+            return;
+        }
+
+
+        // -------------------------------------------------
+        // GET FRESH FIREBASE TOKEN
+        // -------------------------------------------------
+
+        let token;
+
+        try {
+
+            token =
+                await user.getIdToken(true);
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "FIREBASE TOKEN ERROR:",
+                error
+            );
+
+            showError(
+                "Authentication Error",
+                "Unable to authenticate your account."
+            );
+
+            return;
+        }
+
+
+        // -------------------------------------------------
+        // VERIFY CASHFREE ORDER
+        // -------------------------------------------------
+
+        try {
+
+            statusElement.innerText =
+                "Checking Cashfree payment status...";
+
+
+            const response =
+                await fetch(
+                    `/cashfree/order-status/${encodeURIComponent(orderId)}`,
+                    {
+
+                        method: "GET",
+
+                        headers: {
+
+                            "Authorization":
+                                "Bearer " + token,
+
+                            "Accept":
+                                "application/json"
+
+                        }
+
+                    }
+                );
+
+
+            let data;
+
+            try {
+
+                data =
+                    await response.json();
+
+            }
+
+            catch {
+
+                throw new Error(
+                    "Invalid response from server."
+                );
+
+            }
+
+
+            console.log(
+                "CASHFREE VERIFICATION:",
+                data
+            );
+
+
+            // -------------------------------------------------
+            // BACKEND ERROR
+            // -------------------------------------------------
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.error ||
+                    data.message ||
+                    "Payment verification failed."
+                );
+
+            }
+
+
+            // -------------------------------------------------
+            // PAYMENT STATUS
+            // -------------------------------------------------
+
+            const paymentStatus =
+                String(
+                    data.payment_status ||
+                    data.status ||
+                    ""
+                ).toUpperCase();
+
+
+            console.log(
+                "PAYMENT STATUS:",
+                paymentStatus
+            );
+
+
+            // -------------------------------------------------
+            // PAYMENT SUCCESS
+            // -------------------------------------------------
+
+            if (
+                data.paid === true ||
+                paymentStatus === "PAID" ||
+                paymentStatus === "SUCCESS"
+            ) {
+
+                showSuccess(
+                    "Payment Successful 🎉",
+                    "Your subscription has been activated. Redirecting to dashboard..."
+                );
+
+
+                /*
+                 * IMPORTANT:
+                 *
+                 * We do NOT create or extend the subscription
+                 * using localStorage here.
+                 *
+                 * The backend/Firebase is the source of truth.
+                 */
+
+
+                setTimeout(() => {
+
+                    window.location.href =
+                        "/dashboard";
+
+                }, 2000);
+
+                return;
+            }
+
+
+            // -------------------------------------------------
+            // PAYMENT STILL PROCESSING
+            // -------------------------------------------------
+
+            if (
+                paymentStatus === "PENDING" ||
+                paymentStatus === "ACTIVE" ||
+                paymentStatus === "NOT_ATTEMPTED"
+            ) {
+
+                statusElement.innerText =
+                    "Payment is still being processed. Checking again...";
+
+
+                /*
+                 * Check again after 3 seconds.
+                 */
+
+                setTimeout(() => {
+
+                    window.location.reload();
+
+                }, 3000);
+
+                return;
+            }
+
+
+            // -------------------------------------------------
+            // PAYMENT FAILED / NOT PAID
+            // -------------------------------------------------
+
+            showError(
+                "Payment Not Completed",
+                "Cashfree payment status: " +
+                (
+                    paymentStatus ||
+                    "UNKNOWN"
+                )
+            );
+
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "/payment";
+
+            }, 3000);
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "PAYMENT VERIFICATION ERROR:",
+                error
+            );
+
+
+            showError(
+                "Payment Verification Error",
+                error.message ||
+                "Unable to verify your payment."
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+
+</html>

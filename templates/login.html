@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Hospital Auth System</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial;
+        }
+
+        body {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4facfe,
+                    #00f2fe
+                );
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 20px;
+        }
+
+        .box {
+
+            width: 100%;
+
+            max-width: 420px;
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0,0,0,0.2);
+        }
+
+        h2 {
+
+            text-align: center;
+
+            margin-bottom: 15px;
+        }
+
+        .tabs {
+
+            display: flex;
+
+            gap: 8px;
+
+            margin-bottom: 20px;
+        }
+
+        .tabs button {
+
+            flex: 1;
+
+            padding: 12px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #ddd;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        input {
+
+            width: 100%;
+
+            padding: 12px;
+
+            margin: 7px 0;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+        }
+
+        button.action {
+
+            width: 100%;
+
+            padding: 12px;
+
+            margin-top: 12px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #4facfe;
+
+            color: white;
+
+            font-size: 16px;
+
+            cursor: pointer;
+        }
+
+        .section {
+
+            display: none;
+        }
+
+        .active {
+
+            display: block;
+        }
+
+        #message {
+
+            text-align: center;
+
+            margin-top: 15px;
+
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+    <!-- ================================================= -->
+    <!-- TABS -->
+    <!-- ================================================= -->
+
+    <div class="tabs">
+
+        <button
+            onclick="showSection('register')"
+        >
+            Register
+        </button>
+
+        <button
+            onclick="showSection('login')"
+        >
+            Login
+        </button>
+
+        <button
+            onclick="showSection('forgot')"
+        >
+            Forgot
+        </button>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- REGISTER -->
+    <!-- ================================================= -->
+
+    <div
+        id="register"
+        class="section active"
+    >
+
+        <h2>
+            Hospital Register
+        </h2>
+
+        <input
+            id="hospitalId"
+            placeholder="Hospital ID"
+        >
+
+        <input
+            id="hospitalName"
+            placeholder="Hospital Name"
+        >
+
+        <input
+            id="adminName"
+            placeholder="Admin Name"
+        >
+
+        <input
+            id="regEmail"
+            type="email"
+            placeholder="Admin Email"
+        >
+
+        <input
+            id="regPassword"
+            type="password"
+            placeholder="Password"
+        >
+
+        <button
+            class="action"
+            onclick="register()"
+        >
+            Register
+        </button>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- LOGIN -->
+    <!-- ================================================= -->
+
+    <div
+        id="login"
+        class="section"
+    >
+
+        <h2>
+            Login
+        </h2>
+
+        <input
+            id="loginEmail"
+            type="email"
+            placeholder="Email"
+        >
+
+        <input
+            id="loginPassword"
+            type="password"
+            placeholder="Password"
+        >
+
+        <button
+            class="action"
+            onclick="login()"
+        >
+            Login
+        </button>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- FORGOT PASSWORD -->
+    <!-- ================================================= -->
+
+    <div
+        id="forgot"
+        class="section"
+    >
+
+        <h2>
+            Forgot Password
+        </h2>
+
+        <input
+            id="forgotEmail"
+            type="email"
+            placeholder="Email"
+        >
+
+        <button
+            class="action"
+            onclick="resetPassword()"
+        >
+            Reset Password
+        </button>
+
+    </div>
+
+
+    <div id="message"></div>
+
+</div>
+
+
+<script type="module">
+
+// =====================================================
+// FIREBASE APP
+// =====================================================
+
+import {
+    initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+
+
+// =====================================================
+// FIREBASE AUTH
+// =====================================================
+
+import {
+
+    getAuth,
+
+    createUserWithEmailAndPassword,
+
+    signInWithEmailAndPassword,
+
+    sendPasswordResetEmail
+
+}
+from
+"https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+
+// =====================================================
+// FIREBASE DATABASE
+// =====================================================
+
+import {
+
+    getDatabase,
+
+    ref,
+
+    set,
+
+    get
+
+}
+from
+"https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js";
+
+
+// =====================================================
+// FIREBASE CONFIG
+// =====================================================
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyDbHoUVO_oXHCnY040sBLOiXVS6s6xJEb8",
+
+    authDomain:
+        "hospital-57fc8.firebaseapp.com",
+
+    databaseURL:
+        "https://hospital-57fc8-default-rtdb.firebaseio.com",
+
+    projectId:
+        "hospital-57fc8",
+
+    storageBucket:
+        "hospital-57fc8.firebasestorage.app",
+
+    messagingSenderId:
+        "711314420912",
+
+    appId:
+        "1:711314420912:web:14ec889664980679a13775"
+
+};
+
+
+// =====================================================
+// INITIALIZE
+// =====================================================
+
+const app =
+    initializeApp(
+        firebaseConfig
+    );
+
+
+const auth =
+    getAuth(
+        app
+    );
+
+
+const db =
+    getDatabase(
+        app
+    );
+
+
+// =====================================================
+// SHOW SECTION
+// =====================================================
+
+window.showSection = function(id) {
+
+    document
+        .querySelectorAll(".section")
+        .forEach(
+            section => {
+
+                section.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById(id)
+        .classList.add(
+            "active"
+        );
+
+};
+
+
+// =====================================================
+// REGISTER
+// =====================================================
+
+window.register = async function() {
+
+    try {
+
+        const hospitalId =
+            document
+                .getElementById(
+                    "hospitalId"
+                )
+                .value
+                .trim();
+
+
+        const hospitalName =
+            document
+                .getElementById(
+                    "hospitalName"
+                )
+                .value
+                .trim();
+
+
+        const adminName =
+            document
+                .getElementById(
+                    "adminName"
+                )
+                .value
+                .trim();
+
+
+        const email =
+            document
+                .getElementById(
+                    "regEmail"
+                )
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById(
+                    "regPassword"
+                )
+                .value;
+
+
+        // -------------------------------------------------
+        // VALIDATION
+        // -------------------------------------------------
+
+        if (
+            !hospitalId ||
+            !hospitalName ||
+            !adminName ||
+            !email ||
+            !password
+        ) {
+
+            alert(
+                "Please fill all fields."
+            );
+
+            return;
+
+        }
+
+
+        if (password.length < 6) {
+
+            alert(
+                "Password must contain at least 6 characters."
+            );
+
+            return;
+
+        }
+
+
+        // -------------------------------------------------
+        // CHECK HOSPITAL ID
+        // -------------------------------------------------
+
+        const hospitalReference =
+            ref(
+                db,
+                "hospitals/" + hospitalId
+            );
+
+
+        const existingHospital =
+            await get(
+                hospitalReference
+            );
+
+
+        if (
+            existingHospital.exists()
+        ) {
+
+            alert(
+                "This Hospital ID already exists. Please use another Hospital ID."
+            );
+
+            return;
+
+        }
+
+
+        // -------------------------------------------------
+        // CREATE FIREBASE AUTH USER
+        // -------------------------------------------------
+
+        const userCredential =
+            await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+
+        const user =
+            userCredential.user;
+
+
+        const uid =
+            user.uid;
+
+
+        console.log(
+            "NEW FIREBASE UID:",
+            uid
+        );
+
+
+        // -------------------------------------------------
+        // SAVE HOSPITAL
+        // -------------------------------------------------
+
+        await set(
+            hospitalReference,
+            {
+
+                hospitalId:
+                    hospitalId,
+
+                hospital_name:
+                    hospitalName,
+
+                adminName:
+                    adminName,
+
+                email:
+                    email,
+
+                uid:
+                    uid,
+
+                created_at:
+                    new Date().toISOString(),
+
+                updated_at:
+                    new Date().toISOString(),
+
+                doctors:
+                    []
+
+            }
+        );
+
+
+        // -------------------------------------------------
+        // SAVE LOCAL DATA
+        // -------------------------------------------------
+
+        localStorage.setItem(
+            "uid",
+            uid
+        );
+
+
+        localStorage.setItem(
+            "hospitalId",
+            hospitalId
+        );
+
+
+        localStorage.setItem(
+            "hospitalName",
+            hospitalName
+        );
+
+
+        alert(
+            "Registration Successful. Please Login."
+        );
+
+
+        showSection(
+            "login"
+        );
+
+
+        document
+            .getElementById(
+                "loginEmail"
+            )
+            .value =
+                email;
+
+
+        document
+            .getElementById(
+                "loginPassword"
+            )
+            .value = "";
+
+
+    }
+    catch(error) {
+
+        console.error(
+            "REGISTER ERROR:",
+            error
+        );
+
+
+        if (
+            error.code ===
+            "auth/email-already-in-use"
+        ) {
+
+            alert(
+                "This email is already registered. Please use LOGIN instead of REGISTER."
+            );
+
+            showSection(
+                "login"
+            );
+
+            document
+                .getElementById(
+                    "loginEmail"
+                )
+                .value =
+                    document
+                        .getElementById(
+                            "regEmail"
+                        )
+                        .value
+                        .trim();
+
+            return;
+
+        }
+
+
+        if (
+            error.code ===
+            "auth/invalid-email"
+        ) {
+
+            alert(
+                "Please enter a valid email address."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            error.code ===
+            "auth/weak-password"
+        ) {
+
+            alert(
+                "Password is too weak. Use at least 6 characters."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            error.message ||
+            "Registration failed."
+        );
+
+    }
+
+};
+
+
+// =====================================================
+// LOGIN
+// =====================================================
+
+window.login = async function() {
+
+    try {
+
+        const email =
+            document
+                .getElementById(
+                    "loginEmail"
+                )
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById(
+                    "loginPassword"
+                )
+                .value;
+
+
+        // -------------------------------------------------
+        // VALIDATION
+        // -------------------------------------------------
+
+        if (
+            !email ||
+            !password
+        ) {
+
+            alert(
+                "Enter email and password."
+            );
+
+            return;
+
+        }
+
+
+        console.log(
+            "LOGIN STARTED"
+        );
+
+
+        // -------------------------------------------------
+        // FIREBASE LOGIN
+        // -------------------------------------------------
+
+        const userCredential =
+            await signInWithEmailAndPassword(
+                auth,
+                email,
+                password
+            );
+
+
+        const user =
+            userCredential.user;
+
+
+        console.log(
+            "FIREBASE LOGIN SUCCESS"
+        );
+
+
+        console.log(
+            "UID:",
+            user.uid
+        );
+
+
+        // -------------------------------------------------
+        // GET FIREBASE ID TOKEN
+        // -------------------------------------------------
+
+        const token =
+            await user.getIdToken(
+                true
+            );
+
+
+        console.log(
+            "FIREBASE TOKEN RECEIVED:",
+            !!token
+        );
+
+
+        if (!token) {
+
+            alert(
+                "Firebase authentication token missing."
+            );
+
+            return;
+
+        }
+
+
+        // -------------------------------------------------
+        // SAVE UID
+        // -------------------------------------------------
+
+        localStorage.setItem(
+            "uid",
+            user.uid
+        );
+
+
+        // -------------------------------------------------
+        // BACKEND LOGIN
+        // -------------------------------------------------
+
+        const response =
+            await fetch(
+                "/login",
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + token,
+
+                        "Content-Type":
+                            "application/json"
+
+                    }
+
+                }
+            );
+
+
+        console.log(
+            "BACKEND LOGIN STATUS:",
+            response.status
+        );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "BACKEND LOGIN DATA:",
+            data
+        );
+
+
+        if (!response.ok) {
+
+            alert(
+                data.error ||
+                "Backend login failed."
+            );
+
+            return;
+
+        }
+
+
+        // -------------------------------------------------
+        // SAVE HOSPITAL INFORMATION
+        // -------------------------------------------------
+
+        localStorage.setItem(
+            "uid",
+            data.uid ||
+            user.uid
+        );
+
+
+        localStorage.setItem(
+            "hospitalId",
+            data.hospitalId ||
+            ""
+        );
+
+
+        localStorage.setItem(
+            "hospitalName",
+            data.hospitalName ||
+            ""
+        );
+
+
+        console.log(
+            "HOSPITAL ID:",
+            data.hospitalId
+        );
+
+
+        // -------------------------------------------------
+        // CHECK SUBSCRIPTION
+        // -------------------------------------------------
+
+        const subscriptionResponse =
+            await fetch(
+                "/check-subscription",
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + token,
+
+                        "Content-Type":
+                            "application/json"
+
+                    }
+
+                }
+            );
+
+
+        console.log(
+            "SUBSCRIPTION STATUS:",
+            subscriptionResponse.status
+        );
+
+
+        const subscriptionData =
+            await subscriptionResponse.json();
+
+
+        console.log(
+            "SUBSCRIPTION:",
+            subscriptionData
+        );
+
+
+        if (
+            !subscriptionResponse.ok
+        ) {
+
+            alert(
+                subscriptionData.error ||
+                "Unable to check subscription."
+            );
+
+            return;
+
+        }
+
+
+        // -------------------------------------------------
+        // ACTIVE SUBSCRIPTION
+        // -------------------------------------------------
+
+        if (
+            subscriptionData.active === true
+        ) {
+
+            alert(
+                "Login successful!"
+            );
+
+
+            window.location.href =
+                "/payment";
+
+
+            return;
+
+        }
+
+
+        // -------------------------------------------------
+        // NO SUBSCRIPTION
+        // -------------------------------------------------
+
+        alert(
+            "Please choose a plan to continue."
+        );
+
+
+        window.location.href =
+            "/payment";
+
+
+    }
+    catch(error) {
+
+        console.error(
+            "LOGIN ERROR:",
+            error
+        );
+
+
+        if (
+            error.code ===
+            "auth/invalid-credential"
+        ) {
+
+            alert(
+                "Email or password is incorrect."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            error.code ===
+            "auth/user-not-found"
+        ) {
+
+            alert(
+                "This email is not registered."
+            );
+
+            return;
+
+        }
+
+
+        alert(
+            error.message ||
+            "Login failed."
+        );
+
+    }
+
+};
+
+
+// =====================================================
+// FORGOT PASSWORD
+// =====================================================
+
+window.resetPassword = async function() {
+
+    try {
+
+        const email =
+            document
+                .getElementById(
+                    "forgotEmail"
+                )
+                .value
+                .trim();
+
+
+        if (!email) {
+
+            alert(
+                "Enter email."
+            );
+
+            return;
+
+        }
+
+
+        await sendPasswordResetEmail(
+            auth,
+            email
+        );
+
+
+        alert(
+            "Password reset email sent."
+        );
+
+    }
+    catch(error) {
+
+        console.error(
+            "RESET PASSWORD ERROR:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Unable to send reset email."
+        );
+
+    }
+
+};
+
+</script>
+
+</body>
+</html>
+

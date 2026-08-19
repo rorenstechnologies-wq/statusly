@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ hospital_name }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #dff6ff, #ffffff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+            text-align: center;
+            width: 90%;
+            max-width: 420px;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        .tick {
+            font-size: 70px;
+            color: green;
+            animation: bounce 1s infinite alternate;
+        }
+
+        h1 {
+            color: green;
+            font-size: 24px;
+            animation: slideDown 1s ease;
+        }
+
+        h2 {
+            color: #555;
+            font-size: 20px;
+            animation: fadeIn 2s ease;
+        }
+
+        p {
+            color: #777;
+            font-size: 16px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-12px); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 20px; }
+            h2 { font-size: 16px; }
+            .tick { font-size: 55px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="tick">✔</div>
+        <h1>Appointment Booked Successfully!</h1>
+        <h2>Thank You</h2>
+        <p>We look forward to serving you. Get well soon 😊</p>
+    </div>
+</body>
+</html>

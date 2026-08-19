@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Appointments Dashboard</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial;
+    background:#f4f6f9;
+}
+
+h1{
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin:0;
+}
+
+
+.container{
+    width:95%;
+    margin:auto;
+    margin-top:20px;
+    overflow-x:auto;
+}
+
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+
+th{
+    background:#4facfe;
+    color:white;
+    padding:12px;
+}
+
+
+td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+}
+
+
+tr:hover{
+    background:#f1f8ff;
+}
+
+
+button{
+    background:#27ae60;
+    color:white;
+    border:none;
+    padding:8px 15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+
+button:hover{
+    background:#1e8449;
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<h1>🏥 Appointments Dashboard</h1>
+
+
+<div class="container">
+
+
+<table>
+
+<tr>
+<th>No</th>
+<th>Doctor</th>
+<th>Name</th>
+<th>Gender</th>
+<th>Age</th>
+<th>Mobile</th>
+<th>Address</th>
+<th>Appointment Date</th>
+<th>Action</th>
+</tr>
+
+
+
+{% for p in patients %}
+
+<tr>
+
+<td>{{p.patient_no}}</td>
+
+<td>
+{{p.doctor_name}}
+</td>
+
+<td>
+{{p.patient_name}}
+</td>
+
+<td>
+{{p.gender}}
+</td>
+
+<td>
+{{p.age}}
+</td>
+
+<td>
+{{p.mobile}}
+</td>
+
+<td>
+{{p.address}}
+</td>
+
+
+<td>
+{{p.appointment_date}}
+</td>
+
+
+<td>
+
+<a href="/followups/{{uid}}">
+<button>
+Follow-up
+</button>
+</a>
+
+</td>
+
+
+</tr>
+
+
+{% endfor %}
+
+
+
+</table>
+
+
+</div>
+
+
+</body>
+</html>

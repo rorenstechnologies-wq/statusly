@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Appointment</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body {
+    margin:0;
+    font-family:Arial;
+    background:url("https://images.unsplash.com/photo-1586773860418-d37222d8fce3")
+    no-repeat center center/cover;
+
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+
+.overlay {
+
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,0.6);
+
+}
+
+
+.card {
+
+    position:relative;
+    z-index:2;
+
+    background:rgba(255,255,255,0.12);
+
+    backdrop-filter:blur(12px);
+
+    padding:25px;
+
+    width:100%;
+    max-width:420px;
+
+    border-radius:15px;
+
+    color:white;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.4);
+
+}
+
+
+h2 {
+
+    text-align:center;
+
+}
+
+
+.hospital {
+
+    text-align:center;
+
+    margin-bottom:15px;
+
+    color:#00d4ff;
+
+    font-weight:bold;
+
+}
+
+
+
+input,select,textarea {
+
+
+    width:100%;
+
+    padding:12px;
+
+    margin:8px 0;
+
+    border-radius:8px;
+
+    border:none;
+
+    outline:none;
+
+
+}
+
+
+
+button {
+
+
+    width:100%;
+
+    padding:12px;
+
+    margin-top:10px;
+
+    background:#27ae60;
+
+    color:white;
+
+    border:none;
+
+    border-radius:8px;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+
+}
+
+
+
+button:hover {
+
+    background:#1e8449;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<div class="overlay"></div>
+
+
+<div class="card">
+
+
+<h2>Book Appointment</h2>
+
+
+<div class="hospital">
+
+{{ hospital.hospital_name }}
+
+</div>
+
+
+
+<form action="/book_appointment" method="POST">
+
+
+<input type="hidden" 
+name="hospital_id"
+value="{{ uid }}">
+
+
+
+<!-- Firebase Cloud Messaging Token -->
+
+<input type="hidden"
+name="fcm_token"
+id="fcm_token">
+
+
+
+<select name="doctor_name" required>
+
+<option value="">
+Select Doctor
+</option>
+
+
+{% for doctor in hospital.doctors %}
+
+<option value="{{doctor.doctor_name}}">
+
+Dr. {{doctor.doctor_name}} 
+- {{doctor.specialization}}
+
+</option>
+
+{% endfor %}
+
+
+</select>
+
+
+
+
+<input 
+type="text"
+name="patient_name"
+placeholder="Patient Name"
+required>
+
+
+
+
+<select name="gender" required>
+
+<option value="">
+Select Gender
+</option>
+
+<option>Male</option>
+
+<option>Female</option>
+
+<option>Other</option>
+
+</select>
+
+
+
+
+<input 
+type="number"
+name="age"
+placeholder="Age"
+required>
+
+
+
+
+<input 
+type="tel"
+name="mobile"
+placeholder="Mobile Number"
+required>
+
+
+
+
+<textarea
+name="address"
+placeholder="Address"
+required></textarea>
+
+
+
+
+<input
+type="date"
+name="appointment_date"
+required>
+
+
+
+<button type="submit">
+
+Book Appointment
+
+</button>
+
+
+
+</form>
+
+
+</div>
+<script type="module">
+
+import { initializeApp } 
+from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+
+import {
+    getMessaging,
+    getToken,
+    onMessage
+}
+from "https://www.gstatic.com/firebasejs/12.17.0/firebase-messaging.js";
+
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyDbHoUVO_oXHCnY040sBLOiXVS6s6xJEb8",
+
+    authDomain: "hospital-57fc8.firebaseapp.com",
+
+    databaseURL: "https://hospital-57fc8-default-rtdb.firebaseio.com",
+
+    projectId: "hospital-57fc8",
+
+    storageBucket: "hospital-57fc8.firebasestorage.app",
+
+    messagingSenderId: "711314420912",
+
+    appId: "1:711314420912:web:14ec889664980679a13775"
+
+};
+
+
+
+const app = initializeApp(firebaseConfig);
+
+const messaging = getMessaging(app);
+
+
+
+async function initFCM(){
+
+
+    try{
+
+
+        // Register service worker
+
+        const registration = await navigator.serviceWorker.register(
+
+            "/firebase-messaging-sw.js",
+
+            {
+                scope:"/"
+            }
+
+        );
+
+
+        await navigator.serviceWorker.ready;
+
+
+        console.log(
+            "Service Worker Ready"
+        );
+
+
+
+        // Notification permission
+
+        const permission =
+        await Notification.requestPermission();
+
+
+
+        if(permission !== "granted"){
+
+            console.log(
+                "Notification Permission Denied"
+            );
+
+            return;
+
+        }
+
+
+
+        // Generate FCM Token
+
+        const token = await getToken(
+            messaging,
+            {
+
+                vapidKey:
+                "BBIL-L4suxk0pq4CIojiB6lurKy8GjoDhRaFWnZkXEfHV-I8vn1AIRhTYPnFvL40YNzLrjWLUgoQc00m4D68HLw",
+
+
+                serviceWorkerRegistration:
+                registration
+
+            }
+
+        );
+
+
+
+        if(token){
+
+
+            console.log(
+                "FCM TOKEN:",
+                token
+            );
+
+
+            document.getElementById(
+                "fcm_token"
+            ).value = token;
+
+
+        }
+        else{
+
+
+            console.log(
+                "TOKEN NOT GENERATED"
+            );
+
+
+        }
+
+
+    }
+    catch(error){
+
+        console.error(
+            "FCM ERROR:",
+            error
+        );
+
+    }
+
+
+}
+
+
+
+initFCM();
+
+
+
+
+// Foreground notification
+
+onMessage(
+    messaging,
+    (payload)=>{
+
+
+        console.log(
+            "FOREGROUND MESSAGE:",
+            payload
+        );
+
+
+
+        const title =
+        payload.notification?.title ||
+        payload.data?.title ||
+        "Hospital Reminder";
+
+
+
+        const body =
+        payload.notification?.body ||
+        payload.data?.body ||
+        "Follow-up Reminder";
+
+
+
+        new Notification(
+
+            title,
+
+            {
+
+                body:body,
+
+                icon:"/static/icon.png"
+
+            }
+
+        );
+
+
+    }
+);
+
+
+
+
+// Receive message from service worker
+
+navigator.serviceWorker.addEventListener(
+
+"message",
+
+(event)=>{
+
+
+    console.log(
+
+        "SERVICE WORKER MESSAGE:",
+
+        event.data
+
+    );
+
+
+}
+
+);
+
+
+
+
+// Stop form until token generated
+
+document.querySelector("form")
+.addEventListener(
+
+"submit",
+
+function(e){
+
+
+    const token =
+    document.getElementById(
+        "fcm_token"
+    ).value;
+
+
+
+    if(!token){
+
+
+        e.preventDefault();
+
+
+        alert(
+            "Please wait... Notification token generating"
+        );
+
+
+    }
+
+
+}
+
+);
+
+
+</script>
+</body>
+
+</html>

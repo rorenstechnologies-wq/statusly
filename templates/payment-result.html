@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Result</title>
+</head>
+
+<body>
+
+    <h2>Payment Processing...</h2>
+
+    <p id="status">Please wait...</p>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const orderId = params.get("order_id");
+
+        if (!orderId) {
+            document.getElementById("status").innerText =
+                "Order ID missing";
+        } else {
+
+            fetch(`/cashfree/order-status/${orderId}`, {
+                method: "GET",
+                headers: {
+                    "Authorization":
+                        localStorage.getItem("firebaseToken")
+                            ? "Bearer " + localStorage.getItem("firebaseToken")
+                            : ""
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+
+                console.log("PAYMENT RESULT:", data);
+
+                if (!data.success) {
+                    document.getElementById("status").innerText =
+                        data.error || "Payment verification failed";
+                    return;
+                }
+
+                const orderStatus =
+                    data.order.order_status;
+
+                if (orderStatus === "PAID") {
+
+                    document.getElementById("status").innerText =
+                        "Payment Successful!";
+
+                } else {
+
+                    document.getElementById("status").innerText =
+                        "Payment Status: " + orderStatus;
+                }
+
+            })
+            .catch(error => {
+
+                console.error(error);
+
+                document.getElementById("status").innerText =
+                    "Unable to verify payment";
+            });
+        }
+    </script>
+
+</body>
+</html>

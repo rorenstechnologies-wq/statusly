@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Follow-up Patients</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f6f9;
+}
+
+h1{
+    margin:0;
+    padding:20px;
+    text-align:center;
+    color:white;
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+}
+
+.container{
+    width:95%;
+    margin:20px auto;
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+}
+
+th{
+    background:#3498db;
+    color:white;
+    padding:12px;
+}
+
+td{
+    padding:10px;
+    border-bottom:1px solid #ddd;
+    text-align:center;
+}
+
+tr:hover{
+    background:#f8fbff;
+}
+
+input{
+    width:160px;
+    padding:8px;
+}
+
+button{
+    padding:10px 18px;
+    background:#27ae60;
+    color:white;
+    border:none;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+button:hover{
+    background:#1f8a4d;
+}
+
+button:disabled{
+    background:gray;
+    cursor:not-allowed;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🏥 Patient Follow-up</h1>
+
+<div class="container">
+
+<table>
+
+<tr>
+<th>No</th>
+<th>Doctor</th>
+<th>Patient</th>
+<th>Gender</th>
+<th>Age</th>
+<th>Mobile</th>
+<th>Address</th>
+<th>Previous Visit</th>
+<th>Next Visit</th>
+<th>Notes</th>
+<th>Action</th>
+</tr>
+
+{% for p in patients %}
+
+<tr>
+
+<td>{{p.patient_no}}</td>
+<td>{{p.doctor_name}}</td>
+<td>{{p.patient_name}}</td>
+<td>{{p.gender}}</td>
+<td>{{p.age}}</td>
+<td>{{p.mobile}}</td>
+<td>{{p.address}}</td>
+<td>{{p.appointment_date}}</td>
+
+<td>
+<input
+type="date"
+id="next_visit_{{p.id}}"
+value="{{p.next_visit_date if p.next_visit_date else ''}}">
+</td>
+
+<td>
+<input
+type="text"
+id="notes_{{p.id}}"
+value="{{p.doctor_notes if p.doctor_notes else ''}}">
+</td>
+
+<td>
+
+<button
+id="btn_{{p.id}}"
+onclick="saveFollowup('{{p.id}}')">
+
+Save
+
+</button>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+<script>
+
+async function saveFollowup(patient_id){
+
+    const btn=document.getElementById("btn_"+patient_id);
+
+    const next=document.getElementById("next_visit_"+patient_id).value;
+
+    const notes=document.getElementById("notes_"+patient_id).value;
+
+
+    if(next===""){
+        alert("Select Next Visit Date");
+        return;
+    }
+
+
+    btn.disabled=true;
+    btn.innerHTML="Sending Notification...";
+
+
+    try{
+
+
+        const response = await fetch("/save_followup",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/x-www-form-urlencoded"
+            },
+
+            body:
+            "patient_id="+encodeURIComponent(patient_id)+
+            "&next_visit_date="+encodeURIComponent(next)+
+            "&doctor_notes="+encodeURIComponent(notes)
+
+        });
+
+
+
+        const data = await response.json();
+
+
+        console.log(
+            "SERVER RESPONSE:",
+            data
+        );
+
+
+
+        if(response.ok){
+
+
+            if(data.notification){
+
+                alert(
+                    "Follow-up saved.\nNotification sent successfully."
+                );
+
+            }
+            else{
+
+                alert(
+                    "Follow-up saved but notification failed."
+                );
+
+            }
+
+
+        }
+        else{
+
+            alert(
+                data.error || "Failed"
+            );
+
+        }
+
+
+
+    }
+    catch(err){
+
+        console.error(err);
+
+        alert(
+            "Network Error"
+        );
+
+    }
+
+
+
+    btn.disabled=false;
+    btn.innerHTML="Save";
+
+
+}
+
+
+
+</script>
+
+</body>
+</html>
