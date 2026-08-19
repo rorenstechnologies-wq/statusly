@@ -2,12 +2,15 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Analytics | MediQueue</title>
+    <title>
+        Analytics | MediQueue
+    </title>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -24,77 +27,115 @@
             color: #1f2937;
         }
 
-        /* ================================
+        /* =====================================================
            HEADER
-        ================================= */
+        ===================================================== */
 
         .header {
-            height: 70px;
-            background: linear-gradient(
-                135deg,
-                #004792,
-                #0077cc
-            );
+
+            min-height: 70px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #004792,
+                    #0077cc
+                );
 
             color: white;
 
             display: flex;
+
             align-items: center;
+
             justify-content: space-between;
 
-            padding: 0 30px;
+            padding: 15px 30px;
 
-            box-shadow: 0 3px 12px rgba(
-                0,0,0,.15
-            );
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,.15);
         }
 
         .brand {
+
             font-size: 23px;
+
             font-weight: bold;
         }
 
         .hospital-name {
+
             font-size: 15px;
+
             opacity: .9;
+
+            text-align: right;
         }
 
-        /* ================================
-           PAGE
-        ================================= */
+        /* =====================================================
+           CONTAINER
+        ===================================================== */
 
         .container {
+
             max-width: 1400px;
+
             margin: auto;
+
             padding: 30px;
         }
 
         .title-section {
+
             margin-bottom: 25px;
         }
 
         .title-section h1 {
+
             margin: 0;
+
             font-size: 30px;
         }
 
         .title-section p {
+
             color: #6b7280;
+
             margin-top: 7px;
         }
 
-        /* ================================
-           CARDS
-        ================================= */
+        /* =====================================================
+           ERROR
+        ===================================================== */
+
+        .error {
+
+            background: #fee2e2;
+
+            color: #991b1b;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            margin-bottom: 20px;
+
+            display: none;
+
+            font-weight: 600;
+        }
+
+        /* =====================================================
+           STAT CARDS
+        ===================================================== */
 
         .stats {
+
             display: grid;
 
             grid-template-columns:
-                repeat(
-                    4,
-                    1fr
-                );
+                repeat(4, 1fr);
 
             gap: 20px;
 
@@ -102,6 +143,7 @@
         }
 
         .stat-card {
+
             background: white;
 
             border-radius: 15px;
@@ -111,36 +153,45 @@
             box-shadow:
                 0 5px 20px
                 rgba(0,0,0,.07);
+
+            border-left:
+                4px solid #0077cc;
         }
 
         .stat-title {
+
             color: #6b7280;
+
             font-size: 14px;
         }
 
         .stat-value {
+
             font-size: 32px;
+
             font-weight: bold;
+
             margin-top: 10px;
+
+            color: #111827;
         }
 
-        /* ================================
+        /* =====================================================
            CHART GRID
-        ================================= */
+        ===================================================== */
 
         .charts {
+
             display: grid;
 
             grid-template-columns:
-                repeat(
-                    2,
-                    1fr
-                );
+                repeat(2, 1fr);
 
             gap: 25px;
         }
 
         .chart-card {
+
             background: white;
 
             border-radius: 15px;
@@ -155,122 +206,309 @@
         }
 
         .chart-card h3 {
+
             margin-top: 0;
+
             margin-bottom: 20px;
+
+            font-size: 18px;
         }
 
         .chart-wrapper {
+
             height: 280px;
+
             position: relative;
         }
 
-        /* ================================
-           LOADING
-        ================================= */
+        /* =====================================================
+           DOCTOR HOURS CARD
+        ===================================================== */
 
-        .loading {
-            text-align: center;
-            padding: 60px;
-            font-size: 18px;
-            color: #6b7280;
+        .doctor-hours-card {
+
+            grid-column: span 2;
+
+            min-height: 500px;
         }
 
-        .error {
-            background: #fee2e2;
-            color: #991b1b;
+        .working-hours-controls {
 
-            padding: 15px;
+            display: flex;
 
-            border-radius: 10px;
+            gap: 10px;
 
             margin-bottom: 20px;
 
-            display: none;
+            flex-wrap: wrap;
         }
 
-        /* ================================
+        .period-btn {
+
+            border: none;
+
+            padding: 10px 20px;
+
+            border-radius: 8px;
+
+            background: #e5e7eb;
+
+            color: #374151;
+
+            cursor: pointer;
+
+            font-weight: 600;
+
+            transition: .2s;
+        }
+
+        .period-btn:hover {
+
+            background: #d1d5db;
+        }
+
+        .period-btn.active {
+
+            background: #0077cc;
+
+            color: white;
+        }
+
+        /* =====================================================
+           DOCTOR TABLE
+        ===================================================== */
+
+        .doctor-table-wrapper {
+
+            overflow-x: auto;
+
+            margin-top: 25px;
+        }
+
+        .doctor-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            background: white;
+        }
+
+        .doctor-table th {
+
+            background: #f1f5f9;
+
+            color: #374151;
+
+            font-size: 13px;
+
+            padding: 13px;
+
+            text-align: left;
+
+            border-bottom:
+                1px solid #e5e7eb;
+        }
+
+        .doctor-table td {
+
+            padding: 13px;
+
+            border-bottom:
+                1px solid #e5e7eb;
+
+            font-size: 14px;
+        }
+
+        .doctor-table tr:hover {
+
+            background: #f8fafc;
+        }
+
+        .doctor-name {
+
+            font-weight: 700;
+
+            color: #111827;
+        }
+
+        .specialization {
+
+            color: #6b7280;
+        }
+
+        .hours-badge {
+
+            display: inline-block;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            background: #dbeafe;
+
+            color: #1d4ed8;
+
+            font-weight: 600;
+
+            font-size: 13px;
+        }
+
+        .appointment-badge {
+
+            display: inline-block;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            background: #dcfce7;
+
+            color: #166534;
+
+            font-weight: 600;
+
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           LOADING
+        ===================================================== */
+
+        .loading {
+
+            text-align: center;
+
+            padding: 30px;
+
+            color: #6b7280;
+        }
+
+        /* =====================================================
            RESPONSIVE
-        ================================= */
+        ===================================================== */
 
         @media(max-width: 1000px) {
 
             .stats {
+
                 grid-template-columns:
-                    repeat(
-                        2,
-                        1fr
-                    );
+                    repeat(2, 1fr);
             }
 
             .charts {
-                grid-template-columns:
-                    1fr;
+
+                grid-template-columns: 1fr;
+            }
+
+            .doctor-hours-card {
+
+                grid-column: span 1;
             }
         }
 
         @media(max-width: 600px) {
 
             .header {
-                padding: 0 15px;
+
+                padding: 15px;
+            }
+
+            .brand {
+
+                font-size: 18px;
             }
 
             .hospital-name {
+
                 display: none;
             }
 
             .container {
+
                 padding: 15px;
             }
 
             .stats {
-                grid-template-columns:
-                    1fr;
+
+                grid-template-columns: 1fr;
             }
 
             .title-section h1 {
+
                 font-size: 25px;
             }
 
+            .chart-card {
+
+                padding: 16px;
+            }
+
+            .chart-wrapper {
+
+                height: 250px;
+            }
+
+            .doctor-hours-card {
+
+                min-height: 450px;
+            }
+
+            .doctor-table th,
+            .doctor-table td {
+
+                white-space: nowrap;
+            }
         }
 
     </style>
 
 </head>
 
+
 <body>
 
 
-<!-- =========================================
+<!-- =========================================================
      HEADER
-========================================= -->
+========================================================= -->
 
 <header class="header">
 
     <div class="brand">
+
         MediQueue Analytics
+
     </div>
 
     <div class="hospital-name">
+
         {{ hospital.get("hospital_name", "Hospital") }}
+
     </div>
 
 </header>
 
 
-<!-- =========================================
+<!-- =========================================================
      MAIN
-========================================= -->
+========================================================= -->
 
 <main class="container">
+
 
     <section class="title-section">
 
         <h1>
+
             Hospital Analytics
+
         </h1>
 
         <p>
-            Patient and appointment insights
+
+            Patient, appointment and doctor working-hour insights
+
         </p>
 
     </section>
@@ -281,9 +519,9 @@
     </div>
 
 
-    <!-- =====================================
+    <!-- =====================================================
          STAT CARDS
-    ====================================== -->
+    ====================================================== -->
 
     <section class="stats">
 
@@ -291,7 +529,9 @@
         <div class="stat-card">
 
             <div class="stat-title">
+
                 Total Patients
+
             </div>
 
             <div id="totalPatients"
@@ -307,7 +547,9 @@
         <div class="stat-card">
 
             <div class="stat-title">
+
                 Today's Appointments
+
             </div>
 
             <div id="todayAppointments"
@@ -323,7 +565,9 @@
         <div class="stat-card">
 
             <div class="stat-title">
+
                 Male Patients
+
             </div>
 
             <div id="malePatients"
@@ -339,7 +583,9 @@
         <div class="stat-card">
 
             <div class="stat-title">
+
                 Female Patients
+
             </div>
 
             <div id="femalePatients"
@@ -351,22 +597,27 @@
 
         </div>
 
+
     </section>
 
 
-    <!-- =====================================
+    <!-- =====================================================
          CHARTS
-    ====================================== -->
+    ====================================================== -->
 
     <section class="charts">
 
 
-        <!-- GENDER -->
+        <!-- =================================================
+             GENDER
+        ================================================== -->
 
         <div class="chart-card">
 
             <h3>
+
                 Gender Distribution
+
             </h3>
 
             <div class="chart-wrapper">
@@ -378,12 +629,16 @@
         </div>
 
 
-        <!-- AGE -->
+        <!-- =================================================
+             AGE
+        ================================================== -->
 
         <div class="chart-card">
 
             <h3>
+
                 Patient Age Groups
+
             </h3>
 
             <div class="chart-wrapper">
@@ -395,12 +650,16 @@
         </div>
 
 
-        <!-- DOCTORS -->
+        <!-- =================================================
+             DOCTORS
+        ================================================== -->
 
         <div class="chart-card">
 
             <h3>
+
                 Appointments by Doctor
+
             </h3>
 
             <div class="chart-wrapper">
@@ -412,12 +671,16 @@
         </div>
 
 
-        <!-- DAILY -->
+        <!-- =================================================
+             DAILY
+        ================================================== -->
 
         <div class="chart-card">
 
             <h3>
+
                 Daily Appointments
+
             </h3>
 
             <div class="chart-wrapper">
@@ -429,12 +692,16 @@
         </div>
 
 
-        <!-- TIME -->
+        <!-- =================================================
+             TIME
+        ================================================== -->
 
         <div class="chart-card">
 
             <h3>
+
                 Appointment Time Analysis
+
             </h3>
 
             <div class="chart-wrapper">
@@ -446,12 +713,16 @@
         </div>
 
 
-        <!-- LOCATION -->
+        <!-- =================================================
+             LOCATION
+        ================================================== -->
 
         <div class="chart-card">
 
             <h3>
+
                 Patient Locations
+
             </h3>
 
             <div class="chart-wrapper">
@@ -463,12 +734,162 @@
         </div>
 
 
+        <!-- =================================================
+             DOCTOR WORKING HOURS
+        ================================================== -->
+
+        <div class="chart-card doctor-hours-card">
+
+            <h3>
+
+                Doctor Working Hours
+
+            </h3>
+
+
+            <div class="working-hours-controls">
+
+
+                <button
+                    type="button"
+                    class="period-btn active"
+                    onclick="
+                        loadDoctorHours(
+                            'day',
+                            this
+                        )
+                    "
+                >
+
+                    Day
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="period-btn"
+                    onclick="
+                        loadDoctorHours(
+                            'week',
+                            this
+                        )
+                    "
+                >
+
+                    Week
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="period-btn"
+                    onclick="
+                        loadDoctorHours(
+                            'month',
+                            this
+                        )
+                    "
+                >
+
+                    Month
+
+                </button>
+
+
+            </div>
+
+
+            <div class="chart-wrapper">
+
+                <canvas
+                    id="doctorHoursChart">
+                </canvas>
+
+            </div>
+
+
+            <!-- =============================================
+                 DOCTOR DETAILS TABLE
+            ============================================== -->
+
+            <div class="doctor-table-wrapper">
+
+                <table class="doctor-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Doctor
+                            </th>
+
+                            <th>
+                                Specialization
+                            </th>
+
+                            <th>
+                                OPD Time
+                            </th>
+
+                            <th>
+                                Hours / Day
+                            </th>
+
+                            <th>
+                                Today's Hours
+                            </th>
+
+                            <th>
+                                Week Hours
+                            </th>
+
+                            <th>
+                                Month Hours
+                            </th>
+
+                            <th>
+                                Appointments
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="doctorHoursTable">
+
+                        <tr>
+
+                            <td
+                                colspan="8"
+                                class="loading"
+                            >
+
+                                Loading doctor data...
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
     </section>
+
 
 </main>
 
 
 <script>
+
 
 /* ============================================================
    HOSPITAL ID
@@ -486,14 +907,25 @@ let charts = {};
 
 
 /* ============================================================
+   DOCTOR DATA
+============================================================ */
+
+let doctorHoursData = [];
+
+
+/* ============================================================
    API HELPER
 ============================================================ */
 
-async function getAnalytics(endpoint) {
+async function getAnalytics(
+    endpoint
+) {
 
-    const response = await fetch(
-        endpoint
-    );
+    const response =
+        await fetch(
+            endpoint
+        );
+
 
     if (!response.ok) {
 
@@ -504,7 +936,24 @@ async function getAnalytics(endpoint) {
 
     }
 
-    return await response.json();
+
+    const result =
+        await response.json();
+
+
+    if (
+        result.success === false
+    ) {
+
+        throw new Error(
+            result.error ||
+            "Analytics API error"
+        );
+
+    }
+
+
+    return result;
 
 }
 
@@ -513,15 +962,19 @@ async function getAnalytics(endpoint) {
    SHOW ERROR
 ============================================================ */
 
-function showError(message) {
+function showError(
+    message
+) {
 
     const box =
         document.getElementById(
             "errorBox"
         );
 
+
     box.textContent =
         message;
+
 
     box.style.display =
         "block";
@@ -530,7 +983,7 @@ function showError(message) {
 
 
 /* ============================================================
-   CREATE / DESTROY CHART
+   CREATE CHART
 ============================================================ */
 
 function createChart(
@@ -541,16 +994,33 @@ function createChart(
     label
 ) {
 
-    if (charts[canvasId]) {
+
+    if (
+        charts[canvasId]
+    ) {
 
         charts[canvasId].destroy();
 
     }
 
+
+    const canvas =
+        document.getElementById(
+            canvasId
+        );
+
+
+    if (!canvas) {
+
+        return;
+
+    }
+
+
     const ctx =
-        document
-        .getElementById(canvasId)
-        .getContext("2d");
+        canvas.getContext(
+            "2d"
+        );
 
 
     charts[canvasId] =
@@ -567,11 +1037,15 @@ function createChart(
                     datasets: [
 
                         {
+
                             label: label,
 
                             data: data,
 
-                            borderWidth: 2
+                            borderWidth: 2,
+
+                            tension: 0.3
+
                         }
 
                     ]
@@ -583,6 +1057,19 @@ function createChart(
                     responsive: true,
 
                     maintainAspectRatio: false,
+
+                    scales:
+                        type === "doughnut"
+                            ? {}
+                            : {
+
+                                y: {
+
+                                    beginAtZero: true
+
+                                }
+
+                            },
 
                     plugins: {
 
@@ -604,7 +1091,7 @@ function createChart(
 
 
 /* ============================================================
-   LOAD OVERVIEW
+   OVERVIEW
 ============================================================ */
 
 async function loadOverview() {
@@ -615,22 +1102,12 @@ async function loadOverview() {
         );
 
 
-    if (!result.success) {
-
-        throw new Error(
-            result.error ||
-            "Overview failed"
-        );
-
-    }
-
-
     document
         .getElementById(
             "totalPatients"
         )
         .textContent =
-            result.total_patients;
+            result.total_patients || 0;
 
 
     document
@@ -638,7 +1115,7 @@ async function loadOverview() {
             "todayAppointments"
         )
         .textContent =
-            result.today_appointments;
+            result.today_appointments || 0;
 
 
     document
@@ -646,7 +1123,7 @@ async function loadOverview() {
             "malePatients"
         )
         .textContent =
-            result.male;
+            result.male || 0;
 
 
     document
@@ -654,7 +1131,7 @@ async function loadOverview() {
             "femalePatients"
         )
         .textContent =
-            result.female;
+            result.female || 0;
 
 }
 
@@ -673,22 +1150,28 @@ async function loadGender() {
 
     const labels =
         Object.keys(
-            result.data
+            result.data || {}
         );
 
 
     const values =
         Object.values(
-            result.data
+            result.data || {}
         );
 
 
     createChart(
+
         "genderChart",
+
         "doughnut",
+
         labels,
+
         values,
+
         "Patients"
+
     );
 
 }
@@ -709,10 +1192,15 @@ async function loadAge() {
     const order = [
 
         "0-18",
+
         "19-30",
+
         "31-45",
+
         "46-60",
+
         "60+",
+
         "Unknown"
 
     ];
@@ -727,10 +1215,14 @@ async function loadAge() {
         group => {
 
             if (
-                result.data[group] !== undefined
+                result.data &&
+                result.data[group]
+                !== undefined
             ) {
 
-                labels.push(group);
+                labels.push(
+                    group
+                );
 
                 values.push(
                     result.data[group]
@@ -743,11 +1235,17 @@ async function loadAge() {
 
 
     createChart(
+
         "ageChart",
+
         "bar",
+
         labels,
+
         values,
+
         "Patients"
+
     );
 
 }
@@ -767,22 +1265,28 @@ async function loadDoctors() {
 
     const labels =
         Object.keys(
-            result.data
+            result.data || {}
         );
 
 
     const values =
         Object.values(
-            result.data
+            result.data || {}
         );
 
 
     createChart(
+
         "doctorChart",
+
         "bar",
+
         labels,
+
         values,
+
         "Appointments"
+
     );
 
 }
@@ -802,22 +1306,28 @@ async function loadDaily() {
 
     const labels =
         Object.keys(
-            result.data
+            result.data || {}
         );
 
 
     const values =
         Object.values(
-            result.data
+            result.data || {}
         );
 
 
     createChart(
+
         "dailyChart",
+
         "line",
+
         labels,
+
         values,
+
         "Appointments"
+
     );
 
 }
@@ -837,22 +1347,28 @@ async function loadTime() {
 
     const labels =
         Object.keys(
-            result.data
+            result.data || {}
         );
 
 
     const values =
         Object.values(
-            result.data
+            result.data || {}
         );
 
 
     createChart(
+
         "timeChart",
+
         "bar",
+
         labels,
+
         values,
+
         "Appointments"
+
     );
 
 }
@@ -872,23 +1388,420 @@ async function loadLocation() {
 
     const labels =
         Object.keys(
-            result.data
+            result.data || {}
         );
 
 
     const values =
         Object.values(
-            result.data
+            result.data || {}
         );
 
 
     createChart(
+
         "locationChart",
+
         "bar",
+
         labels,
+
         values,
+
         "Patients"
+
     );
+
+}
+
+
+/* ============================================================
+   DOCTOR WORKING HOURS
+============================================================ */
+
+async function fetchDoctorHours() {
+
+    const result =
+        await getAnalytics(
+            `/api/analytics/doctor-working-hours/${hospitalId}`
+        );
+
+
+    doctorHoursData =
+        result.doctors || [];
+
+
+    renderDoctorHoursTable();
+
+}
+
+
+/* ============================================================
+   LOAD DOCTOR HOURS CHART
+============================================================ */
+
+async function loadDoctorHours(
+    period = "day",
+    button = null
+) {
+
+    try {
+
+        if (
+            doctorHoursData.length === 0
+        ) {
+
+            await fetchDoctorHours();
+
+        }
+
+
+        const labels = [];
+
+        const values = [];
+
+
+        doctorHoursData.forEach(
+            doctor => {
+
+                labels.push(
+                    doctor.doctor_name
+                );
+
+
+                let hours = 0;
+
+
+                if (
+                    period === "day"
+                ) {
+
+                    hours =
+                        Number(
+                            doctor.today_hours
+                        ) || 0;
+
+                }
+
+                else if (
+                    period === "week"
+                ) {
+
+                    hours =
+                        Number(
+                            doctor.week_hours
+                        ) || 0;
+
+                }
+
+                else if (
+                    period === "month"
+                ) {
+
+                    hours =
+                        Number(
+                            doctor.month_hours
+                        ) || 0;
+
+                }
+
+
+                values.push(
+                    hours
+                );
+
+            }
+        );
+
+
+        createChart(
+
+            "doctorHoursChart",
+
+            "bar",
+
+            labels,
+
+            values,
+
+            "Working Hours"
+
+        );
+
+
+        updatePeriodButtons(
+            button
+        );
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "Doctor Hours Error:",
+            error
+        );
+
+
+        showError(
+            "Unable to load doctor working hours. "
+            + error.message
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   PERIOD BUTTONS
+============================================================ */
+
+function updatePeriodButtons(
+    activeButton
+) {
+
+    document
+        .querySelectorAll(
+            ".period-btn"
+        )
+        .forEach(
+            button => {
+
+                button.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    if (
+        activeButton
+    ) {
+
+        activeButton.classList.add(
+            "active"
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   DOCTOR TABLE
+============================================================ */
+
+function renderDoctorHoursTable() {
+
+    const tbody =
+        document.getElementById(
+            "doctorHoursTable"
+        );
+
+
+    if (
+        !doctorHoursData.length
+    ) {
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="8"
+                    class="loading"
+                >
+
+                    No doctor data available.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML = "";
+
+
+    doctorHoursData.forEach(
+        doctor => {
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            row.innerHTML = `
+
+                <td>
+
+                    <div class="doctor-name">
+
+                        ${escapeHtml(
+                            doctor.doctor_name
+                        )}
+
+                    </div>
+
+                </td>
+
+
+                <td>
+
+                    <span class="specialization">
+
+                        ${escapeHtml(
+                            doctor.specialization || "-"
+                        )}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHtml(
+                        doctor.opd_time || "-"
+                    )}
+
+                </td>
+
+
+                <td>
+
+                    <span class="hours-badge">
+
+                        ${formatHours(
+                            doctor.hours_per_day
+                        )}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <span class="hours-badge">
+
+                        ${formatHours(
+                            doctor.today_hours
+                        )}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <span class="hours-badge">
+
+                        ${formatHours(
+                            doctor.week_hours
+                        )}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <span class="hours-badge">
+
+                        ${formatHours(
+                            doctor.month_hours
+                        )}
+
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    <span class="appointment-badge">
+
+                        ${
+                            doctor.appointments || 0
+                        }
+
+                    </span>
+
+                </td>
+
+            `;
+
+
+            tbody.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   FORMAT HOURS
+============================================================ */
+
+function formatHours(
+    value
+) {
+
+    const hours =
+        Number(value) || 0;
+
+
+    return (
+        hours.toFixed(2)
+        + " hrs"
+    );
+
+}
+
+
+/* ============================================================
+   HTML ESCAPE
+============================================================ */
+
+function escapeHtml(
+    value
+) {
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
@@ -915,21 +1828,40 @@ async function loadAnalytics() {
 
             loadTime(),
 
-            loadLocation()
+            loadLocation(),
+
+            fetchDoctorHours()
 
         ]);
+
+
+        /*
+         * Default:
+         * Day
+         */
+
+        await loadDoctorHours(
+            "day",
+            document.querySelector(
+                ".period-btn"
+            )
+        );
 
     }
 
     catch(error) {
 
         console.error(
+            "Analytics Error:",
             error
         );
 
+
         showError(
+
             "Unable to load analytics. "
             + error.message
+
         );
 
     }
@@ -943,8 +1875,10 @@ async function loadAnalytics() {
 
 loadAnalytics();
 
+
 </script>
 
 
 </body>
+
 </html>
