@@ -1,305 +1,1815 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
 
-    <title>Hospital Auth System</title>
+    <meta charset="UTF-8">
 
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="theme-color"
+        content="#0f766e"
+    >
+
+    <meta
+        name="description"
+        content="Statusly.in hospital management login"
+    >
+
+    <title>
+        Statusly.in | Hospital Login
+    </title>
+
+
+    <!-- =====================================================
+         GOOGLE FONT
+    ====================================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
     <style>
+
+        /* =====================================================
+           RESET
+        ====================================================== */
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial;
         }
 
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
         body {
+
+            min-height: 100vh;
+
+            font-family:
+                "Inter",
+                Arial,
+                sans-serif;
+
+            color:
+                #172033;
 
             background:
                 linear-gradient(
                     135deg,
-                    #4facfe,
-                    #00f2fe
+                    #eefcf8 0%,
+                    #f0f8ff 48%,
+                    #ffffff 100%
                 );
 
-            min-height: 100vh;
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
-
-            padding: 20px;
         }
 
-        .box {
 
-            width: 100%;
+        /* =====================================================
+           BACKGROUND
+        ====================================================== */
 
-            max-width: 420px;
+        .bg-circle {
 
-            background: white;
+            position:
+                fixed;
 
-            padding: 25px;
+            border-radius:
+                50%;
 
-            border-radius: 16px;
+            pointer-events:
+                none;
+
+            z-index:
+                0;
+
+        }
+
+
+        .circle-one {
+
+            width:
+                360px;
+
+            height:
+                360px;
+
+            top:
+                -160px;
+
+            right:
+                -120px;
+
+            background:
+                rgba(15,118,110,.08);
+
+        }
+
+
+        .circle-two {
+
+            width:
+                300px;
+
+            height:
+                300px;
+
+            bottom:
+                -140px;
+
+            left:
+                -120px;
+
+            background:
+                rgba(14,116,144,.07);
+
+        }
+
+
+        /* =====================================================
+           PAGE
+        ====================================================== */
+
+        .page {
+
+            min-height:
+                100vh;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                24px;
+
+            position:
+                relative;
+
+            z-index:
+                1;
+
+        }
+
+
+        .login-shell {
+
+            width:
+                100%;
+
+            max-width:
+                1040px;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            background:
+                rgba(255,255,255,.97);
+
+            border:
+                1px solid
+                #e3ecef;
+
+            border-radius:
+                24px;
+
+            overflow:
+                hidden;
 
             box-shadow:
-                0 10px 30px
-                rgba(0,0,0,0.2);
+                0 25px 70px
+                rgba(15,23,42,.12);
+
         }
 
-        h2 {
 
-            text-align: center;
+        /* =====================================================
+           LEFT BRAND PANEL
+        ====================================================== */
 
-            margin-bottom: 15px;
+        .brand-panel {
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            color:
+                white;
+
+            padding:
+                48px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #0f766e,
+                    #0e7490
+                );
+
         }
+
+
+        .brand-panel::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                280px;
+
+            height:
+                280px;
+
+            border-radius:
+                50%;
+
+            top:
+                -150px;
+
+            right:
+                -110px;
+
+            background:
+                rgba(255,255,255,.08);
+
+        }
+
+
+        .brand-panel::after {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            width:
+                220px;
+
+            height:
+                220px;
+
+            border-radius:
+                50%;
+
+            bottom:
+                -130px;
+
+            left:
+                -100px;
+
+            background:
+                rgba(255,255,255,.07);
+
+        }
+
+
+        .brand-content {
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+        }
+
+
+        /* =====================================================
+           LOGO
+        ====================================================== */
+
+        .logo-box {
+
+            width:
+                68px;
+
+            height:
+                68px;
+
+            border-radius:
+                17px;
+
+            display:
+                flex;
+
+            justify-content:
+                center;
+
+            align-items:
+                center;
+
+            background:
+                rgba(255,255,255,.13);
+
+            border:
+                1px solid
+                rgba(255,255,255,.18);
+
+            margin-bottom:
+                22px;
+
+        }
+
+
+        .logo-box img {
+
+            width:
+                56px;
+
+            height:
+                56px;
+
+            object-fit:
+                contain;
+
+        }
+
+
+        .brand-name {
+
+            font-size:
+                31px;
+
+            font-weight:
+                800;
+
+            margin-bottom:
+                10px;
+
+        }
+
+
+        .brand-name span {
+
+            opacity:
+                .72;
+
+        }
+
+
+        .brand-title {
+
+            font-size:
+                30px;
+
+            font-weight:
+                800;
+
+            line-height:
+                1.2;
+
+            margin-bottom:
+                14px;
+
+        }
+
+
+        .brand-text {
+
+            color:
+                rgba(255,255,255,.82);
+
+            font-size:
+                14px;
+
+            line-height:
+                1.75;
+
+            max-width:
+                430px;
+
+        }
+
+
+        /* =====================================================
+           FEATURES
+        ====================================================== */
+
+        .feature-list {
+
+            margin-top:
+                30px;
+
+            display:
+                grid;
+
+            gap:
+                12px;
+
+        }
+
+
+        .feature {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                11px;
+
+            font-size:
+                13px;
+
+            color:
+                rgba(255,255,255,.94);
+
+        }
+
+
+        .feature-icon {
+
+            width:
+                34px;
+
+            height:
+                34px;
+
+            flex-shrink:
+                0;
+
+            display:
+                flex;
+
+            justify-content:
+                center;
+
+            align-items:
+                center;
+
+            border-radius:
+                9px;
+
+            background:
+                rgba(255,255,255,.12);
+
+        }
+
+
+        /* =====================================================
+           RIGHT PANEL
+        ====================================================== */
+
+        .form-panel {
+
+            padding:
+                40px;
+
+            background:
+                white;
+
+        }
+
+
+        .top-line {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            gap:
+                10px;
+
+            margin-bottom:
+                23px;
+
+        }
+
+
+        .security {
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            gap:
+                6px;
+
+            padding:
+                7px 11px;
+
+            border-radius:
+                999px;
+
+            background:
+                #ecfdf5;
+
+            color:
+                #15803d;
+
+            font-size:
+                10px;
+
+            font-weight:
+                800;
+
+        }
+
+
+        .home-link {
+
+            text-decoration:
+                none;
+
+            color:
+                #64748b;
+
+            font-size:
+                12px;
+
+            font-weight:
+                650;
+
+        }
+
+
+        .home-link:hover {
+
+            color:
+                #0f766e;
+
+        }
+
+
+        /* =====================================================
+           HEADING
+        ====================================================== */
+
+        .heading {
+
+            margin-bottom:
+                24px;
+
+        }
+
+
+        .heading h1 {
+
+            font-size:
+                30px;
+
+            font-weight:
+                800;
+
+            margin-bottom:
+                7px;
+
+        }
+
+
+        .heading p {
+
+            color:
+                #64748b;
+
+            font-size:
+                13px;
+
+            line-height:
+                1.6;
+
+        }
+
+
+        /* =====================================================
+           PLAN BOX
+        ====================================================== */
+
+        .plan-box {
+
+            display:
+                none;
+
+            padding:
+                11px 13px;
+
+            margin-bottom:
+                18px;
+
+            border-radius:
+                10px;
+
+            background:
+                #effcf9;
+
+            border:
+                1px solid
+                #cdeee7;
+
+            color:
+                #115e59;
+
+            font-size:
+                12px;
+
+        }
+
+
+        .plan-box.show {
+
+            display:
+                block;
+
+        }
+
+
+        .plan-box strong {
+
+            font-weight:
+                800;
+
+        }
+
+
+        /* =====================================================
+           TABS
+        ====================================================== */
 
         .tabs {
 
-            display: flex;
+            display:
+                grid;
 
-            gap: 8px;
+            grid-template-columns:
+                repeat(3,1fr);
 
-            margin-bottom: 20px;
+            gap:
+                5px;
+
+            background:
+                #f1f5f9;
+
+            padding:
+                5px;
+
+            border-radius:
+                11px;
+
+            margin-bottom:
+                23px;
+
         }
 
-        .tabs button {
 
-            flex: 1;
+        .tab {
 
-            padding: 12px;
+            border:
+                none;
 
-            border: none;
+            background:
+                transparent;
 
-            border-radius: 8px;
+            color:
+                #64748b;
 
-            background: #ddd;
+            padding:
+                10px 7px;
 
-            cursor: pointer;
+            border-radius:
+                8px;
 
-            font-weight: bold;
+            font-size:
+                11px;
+
+            font-weight:
+                750;
+
+            cursor:
+                pointer;
+
         }
 
-        input {
 
-            width: 100%;
+        .tab.active {
 
-            padding: 12px;
+            color:
+                #0f766e;
 
-            margin: 7px 0;
+            background:
+                white;
 
-            border: 1px solid #ccc;
+            box-shadow:
+                0 2px 8px
+                rgba(15,23,42,.07);
 
-            border-radius: 8px;
         }
 
-        button.action {
 
-            width: 100%;
-
-            padding: 12px;
-
-            margin-top: 12px;
-
-            border: none;
-
-            border-radius: 8px;
-
-            background: #4facfe;
-
-            color: white;
-
-            font-size: 16px;
-
-            cursor: pointer;
-        }
+        /* =====================================================
+           SECTIONS
+        ====================================================== */
 
         .section {
 
-            display: none;
+            display:
+                none;
+
         }
 
-        .active {
 
-            display: block;
+        .section.active {
+
+            display:
+                block;
+
+            animation:
+                fade .18s ease;
+
         }
+
+
+        @keyframes fade {
+
+            from {
+                opacity: 0;
+                transform: translateY(3px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+
+        /* =====================================================
+           FORM FIELD
+        ====================================================== */
+
+        .field {
+
+            margin-bottom:
+                14px;
+
+        }
+
+
+        .field label {
+
+            display:
+                block;
+
+            margin-bottom:
+                6px;
+
+            color:
+                #334155;
+
+            font-size:
+                11px;
+
+            font-weight:
+                750;
+
+        }
+
+
+        input {
+
+            width:
+                100%;
+
+            height:
+                46px;
+
+            border:
+                1px solid
+                #d9e4e8;
+
+            border-radius:
+                10px;
+
+            padding:
+                0 13px;
+
+            outline:
+                none;
+
+            background:
+                #fbfdfe;
+
+            color:
+                #172033;
+
+            font-size:
+                13px;
+
+            transition:
+                .18s ease;
+
+        }
+
+
+        input:focus {
+
+            border-color:
+                #0f766e;
+
+            background:
+                white;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(15,118,110,.08);
+
+        }
+
+
+        .password-wrap {
+
+            position:
+                relative;
+
+        }
+
+
+        .password-wrap input {
+
+            padding-right:
+                48px;
+
+        }
+
+
+        .eye-btn {
+
+            position:
+                absolute;
+
+            top:
+                50%;
+
+            right:
+                7px;
+
+            transform:
+                translateY(-50%);
+
+            width:
+                36px;
+
+            height:
+                36px;
+
+            border:
+                none;
+
+            border-radius:
+                8px;
+
+            background:
+                transparent;
+
+            cursor:
+                pointer;
+
+            color:
+                #64748b;
+
+        }
+
+
+        .eye-btn:hover {
+
+            background:
+                #f1f5f9;
+
+        }
+
+
+        /* =====================================================
+           MAIN BUTTON
+        ====================================================== */
+
+        .main-btn {
+
+            width:
+                100%;
+
+            height:
+                47px;
+
+            border:
+                none;
+
+            border-radius:
+                10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f766e,
+                    #0e7490
+                );
+
+            color:
+                white;
+
+            font-size:
+                13px;
+
+            font-weight:
+                800;
+
+            cursor:
+                pointer;
+
+            box-shadow:
+                0 9px 22px
+                rgba(15,118,110,.18);
+
+            transition:
+                .18s ease;
+
+        }
+
+
+        .main-btn:hover {
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 12px 28px
+                rgba(15,118,110,.24);
+
+        }
+
+
+        .main-btn:disabled {
+
+            cursor:
+                not-allowed;
+
+            opacity:
+                .65;
+
+            transform:
+                none;
+
+        }
+
+
+        /* =====================================================
+           LOADER
+        ====================================================== */
+
+        .loader {
+
+            display:
+                inline-block;
+
+            width:
+                15px;
+
+            height:
+                15px;
+
+            border:
+                2px solid
+                rgba(255,255,255,.4);
+
+            border-top-color:
+                white;
+
+            border-radius:
+                50%;
+
+            animation:
+                spin .7s linear infinite;
+
+            vertical-align:
+                middle;
+
+            margin-right:
+                7px;
+
+        }
+
+
+        @keyframes spin {
+
+            to {
+                transform:
+                    rotate(360deg);
+            }
+
+        }
+
+
+        /* =====================================================
+           FORGOT INFO
+        ====================================================== */
+
+        .info-box {
+
+            margin-bottom:
+                15px;
+
+            padding:
+                12px;
+
+            border-radius:
+                10px;
+
+            background:
+                #f8fafc;
+
+            color:
+                #64748b;
+
+            font-size:
+                11px;
+
+            line-height:
+                1.6;
+
+        }
+
+
+        /* =====================================================
+           MESSAGE
+        ====================================================== */
 
         #message {
 
-            text-align: center;
+            min-height:
+                20px;
 
-            margin-top: 15px;
+            margin-top:
+                12px;
 
-            font-weight: bold;
+            text-align:
+                center;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+
+        }
+
+
+        #message.success {
+
+            color:
+                #15803d;
+
+        }
+
+
+        #message.error {
+
+            color:
+                #dc2626;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        .form-footer {
+
+            margin-top:
+                24px;
+
+            padding-top:
+                17px;
+
+            border-top:
+                1px solid
+                #edf2f5;
+
+            text-align:
+                center;
+
+            color:
+                #94a3b8;
+
+            font-size:
+                10px;
+
+            line-height:
+                1.7;
+
+        }
+
+
+        .form-footer strong {
+
+            color:
+                #475569;
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 820px) {
+
+            .page {
+
+                padding:
+                    14px;
+
+            }
+
+
+            .login-shell {
+
+                grid-template-columns:
+                    1fr;
+
+                max-width:
+                    470px;
+
+            }
+
+
+            .brand-panel {
+
+                padding:
+                    30px 25px;
+
+            }
+
+
+            .brand-title {
+
+                font-size:
+                    24px;
+
+            }
+
+
+            .brand-text {
+
+                font-size:
+                    12px;
+
+            }
+
+
+            .feature-list {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+
+            }
+
+
+            .form-panel {
+
+                padding:
+                    28px 24px;
+
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .page {
+
+                align-items:
+                    flex-start;
+
+                padding:
+                    12px;
+
+            }
+
+
+            .login-shell {
+
+                margin:
+                    12px 0;
+
+                border-radius:
+                    18px;
+
+            }
+
+
+            .brand-panel {
+
+                padding:
+                    24px 19px;
+
+            }
+
+
+            .logo-box {
+
+                width:
+                    58px;
+
+                height:
+                    58px;
+
+            }
+
+
+            .logo-box img {
+
+                width:
+                    48px;
+
+                height:
+                    48px;
+
+            }
+
+
+            .brand-name {
+
+                font-size:
+                    25px;
+
+            }
+
+
+            .brand-title {
+
+                font-size:
+                    21px;
+
+            }
+
+
+            .feature-list {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .form-panel {
+
+                padding:
+                    24px 18px;
+
+            }
+
+
+            .heading h1 {
+
+                font-size:
+                    26px;
+
+            }
+
+
+            .tabs {
+
+                gap:
+                    3px;
+
+            }
+
+
+            .tab {
+
+                font-size:
+                    10px;
+
+                padding:
+                    9px 4px;
+
+            }
+
         }
 
     </style>
 
 </head>
 
+
 <body>
 
-<div class="box">
 
-    <!-- ================================================= -->
-    <!-- TABS -->
-    <!-- ================================================= -->
+<div class="bg-circle circle-one"></div>
+<div class="bg-circle circle-two"></div>
 
-    <div class="tabs">
 
-        <button
-            onclick="showSection('register')"
+<div class="page">
+
+
+    <!-- =====================================================
+         BRAND AREA
+    ====================================================== -->
+
+    <section class="brand-panel">
+
+        <div class="brand-content">
+
+
+            <div class="logo-box">
+
+                <img
+                    src="/static/statusly-logo.png"
+                    alt="Statusly Logo"
+                >
+
+            </div>
+
+
+            <div class="brand-name">
+
+                Statusly<span>.in</span>
+
+            </div>
+
+
+            <div class="brand-title">
+
+                Hospital management,
+                made simple.
+
+            </div>
+
+
+            <p class="brand-text">
+
+                A simple platform for hospitals and clinics
+                to manage appointments, doctors, patients,
+                follow-ups and patient communication.
+
+            </p>
+
+
+            <div class="feature-list">
+
+
+                <div class="feature">
+
+                    <span class="feature-icon">
+                        📅
+                    </span>
+
+                    Appointment Management
+
+                </div>
+
+
+                <div class="feature">
+
+                    <span class="feature-icon">
+                        👨‍⚕️
+                    </span>
+
+                    Doctor Management
+
+                </div>
+
+
+                <div class="feature">
+
+                    <span class="feature-icon">
+                        👥
+                    </span>
+
+                    Patient Management
+
+                </div>
+
+
+                <div class="feature">
+
+                    <span class="feature-icon">
+                        🔄
+                    </span>
+
+                    Follow-up Management
+
+                </div>
+
+
+                <div class="feature">
+
+                    <span class="feature-icon">
+                        📱
+                    </span>
+
+                    Patient Notifications
+
+                </div>
+
+
+                <div class="feature">
+
+                    <span class="feature-icon">
+                        🔐
+                    </span>
+
+                    Secure Access
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         FORM AREA
+    ====================================================== -->
+
+    <section class="form-panel">
+
+
+        <div class="top-line">
+
+            <span class="security">
+                🔒 Secure Login
+            </span>
+
+
+            <a
+                href="/"
+                class="home-link"
+            >
+                ← Home
+            </a>
+
+        </div>
+
+
+        <div class="heading">
+
+            <h1>
+                Welcome back
+            </h1>
+
+            <p>
+                Sign in to continue to your hospital dashboard.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             PLAN SELECTED FROM PRICING
+        ================================================== -->
+
+        <div
+            id="planBox"
+            class="plan-box"
         >
-            Register
-        </button>
 
-        <button
-            onclick="showSection('login')"
-        >
-            Login
-        </button>
+            Selected plan:
+            <strong id="planName"></strong>
 
-        <button
-            onclick="showSection('forgot')"
-        >
-            Forgot
-        </button>
-
-    </div>
+        </div>
 
 
-    <!-- ================================================= -->
-    <!-- REGISTER -->
-    <!-- ================================================= -->
+        <!-- =================================================
+             TABS
+        ================================================== -->
 
-    <div
-        id="register"
-        class="section active"
-    >
+        <div class="tabs">
 
-        <h2>
-            Hospital Register
-        </h2>
 
-        <input
-            id="hospitalId"
-            placeholder="Hospital ID"
-        >
+            <button
+                id="loginTab"
+                class="tab active"
+                onclick="showSection('login')"
+            >
+                Login
+            </button>
 
-        <input
-            id="hospitalName"
-            placeholder="Hospital Name"
-        >
 
-        <input
-            id="adminName"
-            placeholder="Admin Name"
-        >
+            <button
+                id="registerTab"
+                class="tab"
+                onclick="showSection('register')"
+            >
+                Register
+            </button>
 
-        <input
-            id="regEmail"
-            type="email"
-            placeholder="Admin Email"
-        >
 
-        <input
-            id="regPassword"
-            type="password"
-            placeholder="Password"
+            <button
+                id="forgotTab"
+                class="tab"
+                onclick="showSection('forgot')"
+            >
+                Forgot
+            </button>
+
+
+        </div>
+
+
+        <!-- =================================================
+             LOGIN
+        ================================================== -->
+
+        <div
+            id="login"
+            class="section active"
         >
 
-        <button
-            class="action"
-            onclick="register()"
+
+            <div class="field">
+
+                <label>
+                    Admin Email
+                </label>
+
+                <input
+                    id="loginEmail"
+                    type="email"
+                    autocomplete="email"
+                    placeholder="admin@hospital.com"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Password
+                </label>
+
+
+                <div class="password-wrap">
+
+                    <input
+                        id="loginPassword"
+                        type="password"
+                        autocomplete="current-password"
+                        placeholder="Enter password"
+                    >
+
+
+                    <button
+                        type="button"
+                        class="eye-btn"
+                        onclick="
+                            togglePassword(
+                                'loginPassword',
+                                this
+                            )
+                        "
+                    >
+                        👁
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="loginButton"
+                class="main-btn"
+                onclick="login()"
+            >
+                Login to Dashboard
+            </button>
+
+
+        </div>
+
+
+        <!-- =================================================
+             REGISTER
+        ================================================== -->
+
+        <div
+            id="register"
+            class="section"
         >
-            Register
-        </button>
-
-    </div>
 
 
-    <!-- ================================================= -->
-    <!-- LOGIN -->
-    <!-- ================================================= -->
+            <div class="field">
 
-    <div
-        id="login"
-        class="section"
-    >
+                <label>
+                    Hospital ID
+                </label>
 
-        <h2>
-            Login
-        </h2>
+                <input
+                    id="hospitalId"
+                    type="text"
+                    placeholder="HOSP001"
+                >
 
-        <input
-            id="loginEmail"
-            type="email"
-            placeholder="Email"
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Hospital Name
+                </label>
+
+                <input
+                    id="hospitalName"
+                    type="text"
+                    placeholder="City Care Hospital"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Administrator Name
+                </label>
+
+                <input
+                    id="adminName"
+                    type="text"
+                    placeholder="Admin Name"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Admin Email
+                </label>
+
+                <input
+                    id="regEmail"
+                    type="email"
+                    autocomplete="email"
+                    placeholder="admin@hospital.com"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label>
+                    Password
+                </label>
+
+
+                <div class="password-wrap">
+
+                    <input
+                        id="regPassword"
+                        type="password"
+                        autocomplete="new-password"
+                        placeholder="Minimum 6 characters"
+                    >
+
+
+                    <button
+                        type="button"
+                        class="eye-btn"
+                        onclick="
+                            togglePassword(
+                                'regPassword',
+                                this
+                            )
+                        "
+                    >
+                        👁
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="registerButton"
+                class="main-btn"
+                onclick="register()"
+            >
+                Create Hospital Account
+            </button>
+
+
+        </div>
+
+
+        <!-- =================================================
+             FORGOT
+        ================================================== -->
+
+        <div
+            id="forgot"
+            class="section"
         >
 
-        <input
-            id="loginPassword"
-            type="password"
-            placeholder="Password"
-        >
 
-        <button
-            class="action"
-            onclick="login()"
-        >
-            Login
-        </button>
+            <div class="info-box">
 
-    </div>
+                Enter the email address associated with
+                your hospital account. We will send you a
+                secure password reset link.
+
+            </div>
 
 
-    <!-- ================================================= -->
-    <!-- FORGOT PASSWORD -->
-    <!-- ================================================= -->
+            <div class="field">
 
-    <div
-        id="forgot"
-        class="section"
-    >
+                <label>
+                    Admin Email
+                </label>
 
-        <h2>
-            Forgot Password
-        </h2>
+                <input
+                    id="forgotEmail"
+                    type="email"
+                    autocomplete="email"
+                    placeholder="admin@hospital.com"
+                >
 
-        <input
-            id="forgotEmail"
-            type="email"
-            placeholder="Email"
-        >
-
-        <button
-            class="action"
-            onclick="resetPassword()"
-        >
-            Reset Password
-        </button>
-
-    </div>
+            </div>
 
 
-    <div id="message"></div>
+            <button
+                id="forgotButton"
+                class="main-btn"
+                onclick="resetPassword()"
+            >
+                Send Reset Link
+            </button>
+
+
+        </div>
+
+
+        <div id="message"></div>
+
+
+        <div class="form-footer">
+
+            Protected by Firebase Authentication.<br>
+
+            Developed by ⚡
+            <strong>
+                RORENS Technologies Pvt. Ltd.
+            </strong><br>
+
+            Innovation • Technology • Growth
+
+        </div>
+
+
+    </section>
 
 </div>
 
 
 <script type="module">
 
-// =====================================================
-// FIREBASE APP
-// =====================================================
+
+/* =========================================================
+   FIREBASE
+========================================================= */
 
 import {
     initializeApp
@@ -307,10 +1817,6 @@ import {
 from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 
-
-// =====================================================
-// FIREBASE AUTH
-// =====================================================
 
 import {
 
@@ -320,16 +1826,14 @@ import {
 
     signInWithEmailAndPassword,
 
-    sendPasswordResetEmail
+    sendPasswordResetEmail,
+
+    onAuthStateChanged
 
 }
 from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
-
-// =====================================================
-// FIREBASE DATABASE
-// =====================================================
 
 import {
 
@@ -346,9 +1850,9 @@ from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js";
 
 
-// =====================================================
-// FIREBASE CONFIG
-// =====================================================
+/* =========================================================
+   FIREBASE CONFIG
+========================================================= */
 
 const firebaseConfig = {
 
@@ -376,9 +1880,9 @@ const firebaseConfig = {
 };
 
 
-// =====================================================
-// INITIALIZE
-// =====================================================
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
 const app =
     initializeApp(
@@ -398,14 +1902,98 @@ const db =
     );
 
 
-// =====================================================
-// SHOW SECTION
-// =====================================================
+/* =========================================================
+   PLAN
+========================================================= */
 
-window.showSection = function(id) {
+const params =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const urlPlan =
+    params.get(
+        "plan"
+    );
+
+
+const allowedPlans = [
+    "basic",
+    "standard",
+    "premium"
+];
+
+
+if (
+    allowedPlans.includes(
+        urlPlan
+    )
+) {
+
+    localStorage.setItem(
+        "selectedPlan",
+        urlPlan
+    );
+
+}
+
+
+const selectedPlan =
+    localStorage.getItem(
+        "selectedPlan"
+    );
+
+
+const planNames = {
+
+    basic:
+        "Basic",
+
+    standard:
+        "Standard",
+
+    premium:
+        "Premium"
+
+};
+
+
+if (
+    selectedPlan &&
+    planNames[selectedPlan]
+) {
 
     document
-        .querySelectorAll(".section")
+        .getElementById(
+            "planBox"
+        )
+        .classList.add(
+            "show"
+        );
+
+    document
+        .getElementById(
+            "planName"
+        )
+        .textContent =
+        planNames[selectedPlan];
+
+}
+
+
+/* =========================================================
+   UI
+========================================================= */
+
+window.showSection =
+function(id) {
+
+
+    document
+        .querySelectorAll(
+            ".section"
+        )
         .forEach(
             section => {
 
@@ -418,21 +2006,182 @@ window.showSection = function(id) {
 
 
     document
-        .getElementById(id)
+        .querySelectorAll(
+            ".tab"
+        )
+        .forEach(
+            tab => {
+
+                tab.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            id
+        )
         .classList.add(
             "active"
         );
 
+
+    document
+        .getElementById(
+            id + "Tab"
+        )
+        .classList.add(
+            "active"
+        );
+
+
+    clearMessage();
+
 };
 
 
-// =====================================================
-// REGISTER
-// =====================================================
+/* =========================================================
+   PASSWORD
+========================================================= */
 
-window.register = async function() {
+window.togglePassword =
+function(
+    inputId,
+    button
+) {
+
+
+    const input =
+        document.getElementById(
+            inputId
+        );
+
+
+    if (
+        input.type ===
+        "password"
+    ) {
+
+        input.type =
+            "text";
+
+        button.textContent =
+            "🙈";
+
+    }
+    else {
+
+        input.type =
+            "password";
+
+        button.textContent =
+            "👁";
+
+    }
+
+};
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showMessage(
+    text,
+    type
+) {
+
+    const element =
+        document.getElementById(
+            "message"
+        );
+
+
+    element.textContent =
+        text;
+
+
+    element.className =
+        type ||
+        "error";
+
+}
+
+
+function clearMessage() {
+
+    const element =
+        document.getElementById(
+            "message"
+        );
+
+
+    element.textContent =
+        "";
+
+    element.className =
+        "";
+
+}
+
+
+/* =========================================================
+   BUTTON LOADING
+========================================================= */
+
+function buttonLoading(
+    button,
+    loading,
+    normalText,
+    loadingText
+) {
+
+
+    if (loading) {
+
+        button.disabled =
+            true;
+
+        button.innerHTML =
+            '<span class="loader"></span>' +
+            loadingText;
+
+    }
+    else {
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            normalText;
+
+    }
+
+}
+
+
+/* =========================================================
+   REGISTER
+========================================================= */
+
+window.register =
+async function() {
+
+
+    clearMessage();
+
+
+    const button =
+        document.getElementById(
+            "registerButton"
+        );
+
 
     try {
+
 
         const hospitalId =
             document
@@ -478,10 +2227,6 @@ window.register = async function() {
                 .value;
 
 
-        // -------------------------------------------------
-        // VALIDATION
-        // -------------------------------------------------
-
         if (
             !hospitalId ||
             !hospitalName ||
@@ -490,8 +2235,9 @@ window.register = async function() {
             !password
         ) {
 
-            alert(
-                "Please fill all fields."
+            showMessage(
+                "Please complete all fields.",
+                "error"
             );
 
             return;
@@ -499,10 +2245,14 @@ window.register = async function() {
         }
 
 
-        if (password.length < 6) {
+        if (
+            password.length <
+            6
+        ) {
 
-            alert(
-                "Password must contain at least 6 characters."
+            showMessage(
+                "Password must contain at least 6 characters.",
+                "error"
             );
 
             return;
@@ -510,14 +2260,19 @@ window.register = async function() {
         }
 
 
-        // -------------------------------------------------
-        // CHECK HOSPITAL ID
-        // -------------------------------------------------
+        buttonLoading(
+            button,
+            true,
+            "Create Hospital Account",
+            "Creating account..."
+        );
+
 
         const hospitalReference =
             ref(
                 db,
-                "hospitals/" + hospitalId
+                "hospitals/" +
+                hospitalId
             );
 
 
@@ -531,18 +2286,22 @@ window.register = async function() {
             existingHospital.exists()
         ) {
 
-            alert(
-                "This Hospital ID already exists. Please use another Hospital ID."
+            buttonLoading(
+                button,
+                false,
+                "Create Hospital Account",
+                ""
+            );
+
+            showMessage(
+                "This Hospital ID already exists.",
+                "error"
             );
 
             return;
 
         }
 
-
-        // -------------------------------------------------
-        // CREATE FIREBASE AUTH USER
-        // -------------------------------------------------
 
         const userCredential =
             await createUserWithEmailAndPassword(
@@ -559,16 +2318,6 @@ window.register = async function() {
         const uid =
             user.uid;
 
-
-        console.log(
-            "NEW FIREBASE UID:",
-            uid
-        );
-
-
-        // -------------------------------------------------
-        // SAVE HOSPITAL
-        // -------------------------------------------------
 
         await set(
             hospitalReference,
@@ -590,10 +2339,12 @@ window.register = async function() {
                     uid,
 
                 created_at:
-                    new Date().toISOString(),
+                    new Date()
+                        .toISOString(),
 
                 updated_at:
-                    new Date().toISOString(),
+                    new Date()
+                        .toISOString(),
 
                 doctors:
                     []
@@ -602,35 +2353,11 @@ window.register = async function() {
         );
 
 
-        // -------------------------------------------------
-        // SAVE LOCAL DATA
-        // -------------------------------------------------
-
-        localStorage.setItem(
-            "uid",
-            uid
-        );
-
-
-        localStorage.setItem(
-            "hospitalId",
-            hospitalId
-        );
-
-
-        localStorage.setItem(
-            "hospitalName",
-            hospitalName
-        );
-
-
-        alert(
-            "Registration Successful. Please Login."
-        );
-
-
-        showSection(
-            "login"
+        buttonLoading(
+            button,
+            false,
+            "Create Hospital Account",
+            ""
         );
 
 
@@ -639,14 +2366,26 @@ window.register = async function() {
                 "loginEmail"
             )
             .value =
-                email;
+            email;
 
 
         document
             .getElementById(
                 "loginPassword"
             )
-            .value = "";
+            .value =
+            "";
+
+
+        showSection(
+            "login"
+        );
+
+
+        showMessage(
+            "Registration successful. Please login.",
+            "success"
+        );
 
 
     }
@@ -658,30 +2397,41 @@ window.register = async function() {
         );
 
 
+        buttonLoading(
+            button,
+            false,
+            "Create Hospital Account",
+            ""
+        );
+
+
         if (
             error.code ===
             "auth/email-already-in-use"
         ) {
 
-            alert(
-                "This email is already registered. Please use LOGIN instead of REGISTER."
-            );
-
             showSection(
                 "login"
             );
+
 
             document
                 .getElementById(
                     "loginEmail"
                 )
                 .value =
-                    document
-                        .getElementById(
-                            "regEmail"
-                        )
-                        .value
-                        .trim();
+                document
+                    .getElementById(
+                        "regEmail"
+                    )
+                    .value
+                    .trim();
+
+
+            showMessage(
+                "This email is already registered. Please login.",
+                "error"
+            );
 
             return;
 
@@ -693,8 +2443,9 @@ window.register = async function() {
             "auth/invalid-email"
         ) {
 
-            alert(
-                "Please enter a valid email address."
+            showMessage(
+                "Please enter a valid email address.",
+                "error"
             );
 
             return;
@@ -707,8 +2458,9 @@ window.register = async function() {
             "auth/weak-password"
         ) {
 
-            alert(
-                "Password is too weak. Use at least 6 characters."
+            showMessage(
+                "Password must contain at least 6 characters.",
+                "error"
             );
 
             return;
@@ -716,9 +2468,10 @@ window.register = async function() {
         }
 
 
-        alert(
+        showMessage(
             error.message ||
-            "Registration failed."
+            "Registration failed.",
+            "error"
         );
 
     }
@@ -726,13 +2479,25 @@ window.register = async function() {
 };
 
 
-// =====================================================
-// LOGIN
-// =====================================================
+/* =========================================================
+   LOGIN
+========================================================= */
 
-window.login = async function() {
+window.login =
+async function() {
+
+
+    clearMessage();
+
+
+    const button =
+        document.getElementById(
+            "loginButton"
+        );
+
 
     try {
+
 
         const email =
             document
@@ -751,17 +2516,14 @@ window.login = async function() {
                 .value;
 
 
-        // -------------------------------------------------
-        // VALIDATION
-        // -------------------------------------------------
-
         if (
             !email ||
             !password
         ) {
 
-            alert(
-                "Enter email and password."
+            showMessage(
+                "Enter your email and password.",
+                "error"
             );
 
             return;
@@ -769,14 +2531,23 @@ window.login = async function() {
         }
 
 
-        console.log(
-            "LOGIN STARTED"
+        buttonLoading(
+            button,
+            true,
+            "Login to Dashboard",
+            "Signing in..."
         );
 
 
-        // -------------------------------------------------
-        // FIREBASE LOGIN
-        // -------------------------------------------------
+        /* =================================================
+           STEP 1
+           FIREBASE AUTHENTICATION
+        ================================================== */
+
+        console.log(
+            "STEP 1: FIREBASE AUTHENTICATION"
+        );
+
 
         const userCredential =
             await signInWithEmailAndPassword(
@@ -791,19 +2562,15 @@ window.login = async function() {
 
 
         console.log(
-            "FIREBASE LOGIN SUCCESS"
-        );
-
-
-        console.log(
-            "UID:",
+            "Firebase login successful:",
             user.uid
         );
 
 
-        // -------------------------------------------------
-        // GET FIREBASE ID TOKEN
-        // -------------------------------------------------
+        /* =================================================
+           STEP 2
+           FIREBASE TOKEN
+        ================================================== */
 
         const token =
             await user.getIdToken(
@@ -811,38 +2578,26 @@ window.login = async function() {
             );
 
 
-        console.log(
-            "FIREBASE TOKEN RECEIVED:",
-            !!token
-        );
-
-
         if (!token) {
 
-            alert(
+            throw new Error(
                 "Firebase authentication token missing."
             );
-
-            return;
 
         }
 
 
-        // -------------------------------------------------
-        // SAVE UID
-        // -------------------------------------------------
+        /* =================================================
+           STEP 3
+           BACKEND AUTHENTICATION
+        ================================================== */
 
-        localStorage.setItem(
-            "uid",
-            user.uid
+        console.log(
+            "STEP 2: BACKEND AUTHENTICATION"
         );
 
 
-        // -------------------------------------------------
-        // BACKEND LOGIN
-        // -------------------------------------------------
-
-        const response =
+        const backendResponse =
             await fetch(
                 "/login",
                 {
@@ -853,7 +2608,8 @@ window.login = async function() {
                     headers: {
 
                         "Authorization":
-                            "Bearer " + token,
+                            "Bearer " +
+                            token,
 
                         "Content-Type":
                             "application/json"
@@ -864,68 +2620,68 @@ window.login = async function() {
             );
 
 
-        console.log(
-            "BACKEND LOGIN STATUS:",
-            response.status
-        );
-
-
-        const data =
-            await response.json();
+        const backendData =
+            await backendResponse.json();
 
 
         console.log(
-            "BACKEND LOGIN DATA:",
-            data
+            "Backend:",
+            backendData
         );
 
 
-        if (!response.ok) {
+        if (
+            !backendResponse.ok
+        ) {
 
-            alert(
-                data.error ||
-                "Backend login failed."
+            throw new Error(
+                backendData.error ||
+                "Backend authentication failed."
             );
-
-            return;
 
         }
 
 
-        // -------------------------------------------------
-        // SAVE HOSPITAL INFORMATION
-        // -------------------------------------------------
+        /* =================================================
+           SAVE HOSPITAL INFORMATION
+        ================================================== */
 
         localStorage.setItem(
             "uid",
-            data.uid ||
+            backendData.uid ||
             user.uid
         );
 
 
         localStorage.setItem(
             "hospitalId",
-            data.hospitalId ||
+            backendData.hospitalId ||
             ""
         );
 
 
         localStorage.setItem(
             "hospitalName",
-            data.hospitalName ||
+            backendData.hospitalName ||
             ""
         );
 
 
-        console.log(
-            "HOSPITAL ID:",
-            data.hospitalId
+        localStorage.setItem(
+            "statuslyLoggedIn",
+            "true"
         );
 
 
-        // -------------------------------------------------
-        // CHECK SUBSCRIPTION
-        // -------------------------------------------------
+        /* =================================================
+           STEP 4
+           CHECK SUBSCRIPTION
+        ================================================== */
+
+        console.log(
+            "STEP 3: CHECK SUBSCRIPTION"
+        );
+
 
         const subscriptionResponse =
             await fetch(
@@ -938,7 +2694,8 @@ window.login = async function() {
                     headers: {
 
                         "Authorization":
-                            "Bearer " + token,
+                            "Bearer " +
+                            token,
 
                         "Content-Type":
                             "application/json"
@@ -949,18 +2706,12 @@ window.login = async function() {
             );
 
 
-        console.log(
-            "SUBSCRIPTION STATUS:",
-            subscriptionResponse.status
-        );
-
-
         const subscriptionData =
             await subscriptionResponse.json();
 
 
         console.log(
-            "SUBSCRIPTION:",
+            "Subscription:",
             subscriptionData
         );
 
@@ -969,52 +2720,132 @@ window.login = async function() {
             !subscriptionResponse.ok
         ) {
 
-            alert(
+            throw new Error(
                 subscriptionData.error ||
                 "Unable to check subscription."
             );
+
+        }
+
+
+        /* =================================================
+           SAVE FINAL LOGIN STATE
+        ================================================== */
+
+        localStorage.setItem(
+            "loginTime",
+            Date.now().toString()
+        );
+
+
+        localStorage.setItem(
+            "firebaseUid",
+            user.uid
+        );
+
+
+        /* =================================================
+           ACTIVE SUBSCRIPTION
+        ================================================== */
+
+        if (
+            subscriptionData.active ===
+            true
+        ) {
+
+            console.log(
+                "ACTIVE SUBSCRIPTION"
+            );
+
+
+            buttonLoading(
+                button,
+                false,
+                "Login to Dashboard",
+                ""
+            );
+
+
+            showMessage(
+                "Login successful. Opening dashboard...",
+                "success"
+            );
+
+
+            setTimeout(
+                () => {
+
+                    window.location.href =
+                        "/dashboard";
+
+                },
+                400
+            );
+
 
             return;
 
         }
 
 
-        // -------------------------------------------------
-// SUBSCRIPTION DECISION
-// -------------------------------------------------
+        /* =================================================
+           NO ACTIVE SUBSCRIPTION
+        ================================================== */
 
-if (subscriptionData.active === true) {
-
-    console.log(
-        "ACTIVE SUBSCRIPTION FOUND"
-    );
-
-    alert(
-        "Login successful!"
-    );
-
-    window.location.href =
-        "/dashboard";
-
-    return;
-}
+        console.log(
+            "NO ACTIVE SUBSCRIPTION"
+        );
 
 
-// -------------------------------------------------
-// NO ACTIVE SUBSCRIPTION / EXPIRED
-// -------------------------------------------------
+        buttonLoading(
+            button,
+            false,
+            "Login to Dashboard",
+            ""
+        );
 
-console.log(
-    "NO ACTIVE SUBSCRIPTION"
-);
 
-alert(
-    "Your subscription is not active. Please choose a plan."
-);
+        showMessage(
+            "Your subscription is not active. Opening plans...",
+            "error"
+        );
 
-window.location.href =
-    "/payment";
-     
+
+        const plan =
+            localStorage.getItem(
+                "selectedPlan"
+            );
+
+
+        setTimeout(
+            () => {
+
+
+                if (
+                    allowedPlans.includes(
+                        plan
+                    )
+                ) {
+
+                    window.location.href =
+                        "/payment?plan=" +
+                        encodeURIComponent(
+                            plan
+                        );
+
+                }
+                else {
+
+                    window.location.href =
+                        "/payment";
+
+                }
+
+            },
+            600
+        );
+
+
     }
     catch(error) {
 
@@ -1024,13 +2855,22 @@ window.location.href =
         );
 
 
+        buttonLoading(
+            button,
+            false,
+            "Login to Dashboard",
+            ""
+        );
+
+
         if (
             error.code ===
             "auth/invalid-credential"
         ) {
 
-            alert(
-                "Email or password is incorrect."
+            showMessage(
+                "Email or password is incorrect.",
+                "error"
             );
 
             return;
@@ -1043,8 +2883,9 @@ window.location.href =
             "auth/user-not-found"
         ) {
 
-            alert(
-                "This email is not registered."
+            showMessage(
+                "This email is not registered.",
+                "error"
             );
 
             return;
@@ -1052,9 +2893,25 @@ window.location.href =
         }
 
 
-        alert(
+        if (
+            error.code ===
+            "auth/too-many-requests"
+        ) {
+
+            showMessage(
+                "Too many login attempts. Please try again later.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        showMessage(
             error.message ||
-            "Login failed."
+            "Login failed.",
+            "error"
         );
 
     }
@@ -1062,13 +2919,25 @@ window.location.href =
 };
 
 
-// =====================================================
-// FORGOT PASSWORD
-// =====================================================
+/* =========================================================
+   FORGOT PASSWORD
+========================================================= */
 
-window.resetPassword = async function() {
+window.resetPassword =
+async function() {
+
+
+    clearMessage();
+
+
+    const button =
+        document.getElementById(
+            "forgotButton"
+        );
+
 
     try {
+
 
         const email =
             document
@@ -1081,13 +2950,22 @@ window.resetPassword = async function() {
 
         if (!email) {
 
-            alert(
-                "Enter email."
+            showMessage(
+                "Enter your registered email.",
+                "error"
             );
 
             return;
 
         }
+
+
+        buttonLoading(
+            button,
+            true,
+            "Send Reset Link",
+            "Sending..."
+        );
 
 
         await sendPasswordResetEmail(
@@ -1096,9 +2974,19 @@ window.resetPassword = async function() {
         );
 
 
-        alert(
-            "Password reset email sent."
+        buttonLoading(
+            button,
+            false,
+            "Send Reset Link",
+            ""
         );
+
+
+        showMessage(
+            "Password reset link sent to your email.",
+            "success"
+        );
+
 
     }
     catch(error) {
@@ -1109,17 +2997,57 @@ window.resetPassword = async function() {
         );
 
 
-        alert(
+        buttonLoading(
+            button,
+            false,
+            "Send Reset Link",
+            ""
+        );
+
+
+        showMessage(
             error.message ||
-            "Unable to send reset email."
+            "Unable to send reset email.",
+            "error"
         );
 
     }
 
 };
 
+
+/* =========================================================
+   FIREBASE SESSION
+========================================================= */
+
+/*
+   Firebase Authentication remembers the signed-in user
+   across page reloads and normal browser restarts using
+   its persistence mechanism.
+
+   We therefore do NOT log the doctor out every minute.
+*/
+
+onAuthStateChanged(
+    auth,
+    user => {
+
+        if (user) {
+
+            console.log(
+                "FIREBASE SESSION ACTIVE:",
+                user.uid
+            );
+
+        }
+
+    }
+);
+
+
 </script>
 
-</body>
-</html>
 
+</body>
+
+</html>
