@@ -4621,7 +4621,43 @@ def health():
 
     })
 
+@app.route("/api/hospital/<uid>", methods=["GET"])
+def api_hospital(uid):
 
+    try:
+
+        hospital = (
+            db.reference(
+                f"hospitals/{uid}"
+            ).get()
+            or {}
+        )
+
+        if not hospital:
+
+            return jsonify({
+                "success": False,
+                "error": "Hospital not found"
+            }), 404
+
+        return jsonify({
+            "success": True,
+            "hospital": hospital
+        })
+
+    except Exception as e:
+
+        print(
+            "API HOSPITAL ERROR:",
+            str(e)
+        )
+
+        traceback.print_exc()
+
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
 # ============================================================
 # RUN
 # ============================================================
