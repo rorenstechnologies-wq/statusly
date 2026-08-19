@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mr">
 
 <head>
 
@@ -26,10 +26,6 @@
 
 
     <style>
-
-        /* =====================================================
-           RESET
-        ===================================================== */
 
         * {
             margin: 0;
@@ -63,7 +59,6 @@
             overflow-x: hidden;
 
             -webkit-font-smoothing: antialiased;
-
         }
 
 
@@ -82,7 +77,8 @@
 
             height: 60px;
 
-            background: rgba(255, 255, 255, 0.97);
+            background:
+                rgba(255,255,255,0.97);
 
             border-bottom:
                 1px solid #e7eaed;
@@ -93,8 +89,7 @@
 
             justify-content: space-between;
 
-            padding:
-                0 14px;
+            padding: 0 14px;
 
             position: sticky;
 
@@ -103,13 +98,8 @@
             z-index: 100;
 
             backdrop-filter: blur(10px);
-
         }
 
-
-        /* =====================================================
-           STATUSLY BRAND
-        ===================================================== */
 
         .brand {
 
@@ -120,7 +110,6 @@
             gap: 8px;
 
             min-width: 0;
-
         }
 
 
@@ -133,7 +122,6 @@
             object-fit: contain;
 
             flex-shrink: 0;
-
         }
 
 
@@ -146,19 +134,16 @@
             letter-spacing: -0.5px;
 
             color: #12395b;
-
         }
 
 
         .brand-name span {
-
             color: #18a66b;
-
         }
 
 
         /* =====================================================
-           LIVE STATUS
+           LIVE
         ===================================================== */
 
         .live-status {
@@ -173,8 +158,7 @@
 
             color: #168558;
 
-            padding:
-                6px 9px;
+            padding: 6px 9px;
 
             border-radius: 20px;
 
@@ -183,7 +167,6 @@
             font-weight: 700;
 
             white-space: nowrap;
-
         }
 
 
@@ -198,12 +181,11 @@
             background: #18a66b;
 
             flex-shrink: 0;
-
         }
 
 
         /* =====================================================
-           MAIN PAGE
+           MAIN
         ===================================================== */
 
         .page {
@@ -214,9 +196,7 @@
 
             margin: 0 auto;
 
-            padding:
-                14px 12px 35px;
-
+            padding: 14px 12px 35px;
         }
 
 
@@ -237,10 +217,9 @@
 
             box-shadow:
                 0 2px 10px
-                rgba(16, 24, 40, 0.04);
+                rgba(16,24,40,0.04);
 
             margin-bottom: 18px;
-
         }
 
 
@@ -251,7 +230,6 @@
             align-items: flex-start;
 
             gap: 12px;
-
         }
 
 
@@ -274,14 +252,12 @@
             justify-content: center;
 
             font-size: 23px;
-
         }
 
 
         .hospital-title {
 
             min-width: 0;
-
         }
 
 
@@ -296,7 +272,6 @@
             color: #152536;
 
             overflow-wrap: anywhere;
-
         }
 
 
@@ -307,7 +282,6 @@
             font-size: 12px;
 
             color: #71808c;
-
         }
 
 
@@ -336,7 +310,6 @@
             font-size: 12px;
 
             font-weight: 700;
-
         }
 
 
@@ -354,9 +327,7 @@
 
             gap: 10px;
 
-            margin:
-                20px 2px 10px;
-
+            margin: 20px 2px 10px;
         }
 
 
@@ -367,7 +338,6 @@
             font-weight: 750;
 
             color: #172b3d;
-
         }
 
 
@@ -379,8 +349,7 @@
 
             font-size: 11px;
 
-            line-height: 1.4;
-
+            line-height: 1.45;
         }
 
 
@@ -392,20 +361,18 @@
 
             background: #ecf9f3;
 
-            padding:
-                5px 8px;
+            padding: 5px 8px;
 
             border-radius: 20px;
 
             white-space: nowrap;
 
             font-weight: 700;
-
         }
 
 
         /* =====================================================
-           INFORMATION GRID
+           INFO GRID
         ===================================================== */
 
         .info-grid {
@@ -413,10 +380,9 @@
             display: grid;
 
             grid-template-columns:
-                repeat(2, minmax(0, 1fr));
+                repeat(2,minmax(0,1fr));
 
             gap: 9px;
-
         }
 
 
@@ -432,7 +398,6 @@
             padding: 14px;
 
             min-width: 0;
-
         }
 
 
@@ -455,13 +420,12 @@
             font-size: 15px;
 
             margin-bottom: 8px;
-
         }
 
 
         .info-label {
 
-            font-size: 9px;
+            font-size: 10px;
 
             font-weight: 700;
 
@@ -469,8 +433,25 @@
 
             text-transform: uppercase;
 
-            letter-spacing: .4px;
+            letter-spacing: .35px;
 
+            line-height: 1.4;
+        }
+
+
+        .info-label-marathi {
+
+            display: block;
+
+            color: #667581;
+
+            text-transform: none;
+
+            letter-spacing: 0;
+
+            font-size: 10px;
+
+            margin-bottom: 2px;
         }
 
 
@@ -485,19 +466,17 @@
             color: #1b2c3d;
 
             overflow-wrap: anywhere;
-
         }
 
 
         .status-open {
 
             color: #168b61 !important;
-
         }
 
 
         /* =====================================================
-           ABOUT HOSPITAL
+           ABOUT
         ===================================================== */
 
         .about-card {
@@ -510,7 +489,6 @@
             border-radius: 13px;
 
             padding: 15px;
-
         }
 
 
@@ -520,10 +498,9 @@
 
             color: #5e6c77;
 
-            line-height: 1.65;
+            line-height: 1.7;
 
             overflow-wrap: anywhere;
-
         }
 
 
@@ -538,7 +515,6 @@
             flex-direction: column;
 
             gap: 9px;
-
         }
 
 
@@ -565,19 +541,7 @@
 
             box-shadow:
                 0 1px 5px
-                rgba(16, 24, 40, 0.025);
-
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease;
-
-        }
-
-
-        .doctor-card:active {
-
-            transform: scale(0.99);
-
+                rgba(16,24,40,0.025);
         }
 
 
@@ -604,7 +568,6 @@
             font-size: 13px;
 
             font-weight: 800;
-
         }
 
 
@@ -613,7 +576,6 @@
             min-width: 0;
 
             flex: 1;
-
         }
 
 
@@ -626,7 +588,6 @@
             color: #192b3c;
 
             overflow-wrap: anywhere;
-
         }
 
 
@@ -641,7 +602,6 @@
             font-weight: 650;
 
             overflow-wrap: anywhere;
-
         }
 
 
@@ -654,7 +614,6 @@
             flex-direction: column;
 
             gap: 6px;
-
         }
 
 
@@ -671,7 +630,6 @@
             font-size: 11px;
 
             min-width: 0;
-
         }
 
 
@@ -694,7 +652,6 @@
             border-radius: 6px;
 
             font-size: 10px;
-
         }
 
 
@@ -703,12 +660,17 @@
             padding-top: 1px;
 
             overflow-wrap: anywhere;
+        }
 
+
+        .doctor-detail-text strong {
+
+            color: #445461;
         }
 
 
         /* =====================================================
-           EMPTY DOCTORS
+           EMPTY
         ===================================================== */
 
         .empty-state {
@@ -720,8 +682,7 @@
 
             border-radius: 14px;
 
-            padding:
-                28px 15px;
+            padding: 28px 15px;
 
             text-align: center;
 
@@ -729,11 +690,12 @@
 
             font-size: 13px;
 
+            line-height: 1.6;
         }
 
 
         /* =====================================================
-           BOOK APPOINTMENT
+           BOOK
         ===================================================== */
 
         .appointment-section {
@@ -753,8 +715,7 @@
 
             box-shadow:
                 0 8px 22px
-                rgba(18, 63, 99, 0.16);
-
+                rgba(18,63,99,0.16);
         }
 
 
@@ -765,19 +726,19 @@
             font-size: 17px;
 
             margin-bottom: 4px;
-
         }
 
 
         .appointment-text p {
 
             color:
-                rgba(255, 255, 255, 0.75);
+                rgba(255,255,255,.75);
 
             font-size: 12px;
 
             margin-bottom: 14px;
 
+            line-height: 1.5;
         }
 
 
@@ -804,17 +765,6 @@
             font-size: 14px;
 
             font-weight: 750;
-
-            transition:
-                transform 0.15s ease;
-
-        }
-
-
-        .book-btn:active {
-
-            transform: scale(0.98);
-
         }
 
 
@@ -834,7 +784,6 @@
             font-size: 11px;
 
             line-height: 1.7;
-
         }
 
 
@@ -843,7 +792,6 @@
             color: #40515f;
 
             font-weight: 700;
-
         }
 
 
@@ -854,74 +802,6 @@
             color: #a0a9b0;
 
             font-size: 10px;
-
-        }
-
-
-        /* =====================================================
-           SMALL PHONE
-        ===================================================== */
-
-        @media (max-width: 360px) {
-
-            .page {
-
-                padding-left: 9px;
-
-                padding-right: 9px;
-
-            }
-
-
-            .topbar {
-
-                padding:
-                    0 10px;
-
-            }
-
-
-            .brand-name {
-
-                font-size: 17px;
-
-            }
-
-
-            .hospital-header {
-
-                padding: 14px;
-
-            }
-
-
-            .hospital-title h1 {
-
-                font-size: 18px;
-
-            }
-
-
-            .info-card {
-
-                padding: 11px;
-
-            }
-
-
-            .info-value {
-
-                font-size: 12px;
-
-            }
-
-
-            .doctor-card {
-
-                padding: 12px;
-
-            }
-
         }
 
 
@@ -929,27 +809,24 @@
            TABLET
         ===================================================== */
 
-        @media (min-width: 600px) {
+        @media (min-width:600px) {
 
             .page {
 
                 padding:
                     24px 20px 45px;
-
             }
 
 
             .hospital-header {
 
                 padding: 24px;
-
             }
 
 
             .hospital-live {
 
                 width: auto;
-
             }
 
 
@@ -958,8 +835,7 @@
                 display: grid;
 
                 grid-template-columns:
-                    repeat(2, minmax(0, 1fr));
-
+                    repeat(2,minmax(0,1fr));
             }
 
 
@@ -972,14 +848,12 @@
                 justify-content: space-between;
 
                 gap: 20px;
-
             }
 
 
             .appointment-text p {
 
                 margin-bottom: 0;
-
             }
 
 
@@ -987,11 +861,10 @@
 
                 width: auto;
 
-                min-width: 190px;
+                min-width: 200px;
 
                 padding:
                     0 22px;
-
             }
 
         }
@@ -1001,7 +874,7 @@
            DESKTOP
         ===================================================== */
 
-        @media (min-width: 900px) {
+        @media (min-width:900px) {
 
             .topbar {
 
@@ -1009,7 +882,6 @@
 
                 padding:
                     0 32px;
-
             }
 
 
@@ -1017,7 +889,6 @@
 
                 padding:
                     32px 24px 60px;
-
             }
 
 
@@ -1030,29 +901,84 @@
                 justify-content: space-between;
 
                 padding: 28px;
-
             }
 
 
             .hospital-live {
 
                 margin-top: 0;
-
             }
 
 
             .info-grid {
 
                 grid-template-columns:
-                    repeat(4, minmax(0, 1fr));
-
+                    repeat(4,minmax(0,1fr));
             }
 
 
             .hospital-title h1 {
 
                 font-size: 28px;
+            }
 
+        }
+
+
+        /* =====================================================
+           SMALL PHONE
+        ===================================================== */
+
+        @media (max-width:360px) {
+
+            .page {
+
+                padding-left: 9px;
+
+                padding-right: 9px;
+            }
+
+
+            .topbar {
+
+                padding:
+                    0 10px;
+            }
+
+
+            .brand-name {
+
+                font-size: 17px;
+            }
+
+
+            .hospital-header {
+
+                padding: 14px;
+            }
+
+
+            .hospital-title h1 {
+
+                font-size: 18px;
+            }
+
+
+            .info-card {
+
+                padding: 11px;
+            }
+
+
+            .info-value {
+
+                font-size: 12px;
+            }
+
+
+            .doctor-card {
+
+                padding: 12px;
             }
 
         }
@@ -1067,7 +993,7 @@
 
     <!-- =====================================================
          STATUSLY HEADER
-    ====================================================== -->
+    ===================================================== -->
 
     <header class="topbar">
 
@@ -1096,7 +1022,7 @@
 
             <span class="live-dot"></span>
 
-            Live
+            Live / थेट माहिती
 
         </div>
 
@@ -1104,10 +1030,6 @@
     </header>
 
 
-
-    <!-- =====================================================
-         MAIN CONTENT
-    ====================================================== -->
 
     <main class="page">
 
@@ -1131,13 +1053,18 @@
 
                 <div class="hospital-title">
 
+
                     <h1>
+
                         {{ hospital.hospital_name }}
+
                     </h1>
 
 
                     <p>
-                        Hospital information and doctor timings
+
+                        हॉस्पिटलची माहिती व डॉक्टरांची वेळ
+
                     </p>
 
 
@@ -1151,7 +1078,8 @@
 
                 <span class="live-dot"></span>
 
-                Hospital Information Available
+                हॉस्पिटलची माहिती उपलब्ध
+                / Hospital Information Available
 
             </div>
 
@@ -1161,7 +1089,7 @@
 
 
         <!-- =================================================
-             TODAY'S INFORMATION
+             TODAY INFORMATION
         ================================================== -->
 
         <div class="section-title">
@@ -1169,18 +1097,28 @@
 
             <div>
 
+
                 <h2>
-                    Today's Information
+
+                    आजची माहिती
+                    / Today's Information
+
                 </h2>
 
+
                 <p class="section-subtitle">
-                    Hospital timings and today's status
+
+                    हॉस्पिटलचे वेळापत्रक व आजची स्थिती
+                    / Hospital timings and today's status
+
                 </p>
+
 
             </div>
 
 
         </div>
+
 
 
         <section class="info-grid">
@@ -1194,12 +1132,22 @@
                     📅
                 </div>
 
+
                 <div class="info-label">
+
+                    <span class="info-label-marathi">
+                        आजची तारीख
+                    </span>
+
                     Date
+
                 </div>
 
+
                 <div class="info-value">
+
                     {{ hospital.date }}
+
                 </div>
 
             </div>
@@ -1214,12 +1162,22 @@
                     🕐
                 </div>
 
+
                 <div class="info-label">
-                    Hospital Opens
+
+                    <span class="info-label-marathi">
+                        हॉस्पिटल सुरू
+                    </span>
+
+                    Opens
+
                 </div>
 
+
                 <div class="info-value">
+
                     {{ hospital.open_time }}
+
                 </div>
 
             </div>
@@ -1234,12 +1192,22 @@
                     🕘
                 </div>
 
+
                 <div class="info-label">
-                    Hospital Closes
+
+                    <span class="info-label-marathi">
+                        हॉस्पिटल बंद
+                    </span>
+
+                    Closes
+
                 </div>
 
+
                 <div class="info-value">
+
                     {{ hospital.close_time }}
+
                 </div>
 
             </div>
@@ -1254,13 +1222,21 @@
                     ✓
                 </div>
 
+
                 <div class="info-label">
-                    Hospital Status
+
+                    <span class="info-label-marathi">
+                        हॉस्पिटलची स्थिती
+                    </span>
+
+                    Status
+
                 </div>
+
 
                 <div class="info-value status-open">
 
-                    Open / Active
+                    सुरू आहे / Open
 
                 </div>
 
@@ -1272,7 +1248,7 @@
 
 
         <!-- =================================================
-             ABOUT HOSPITAL
+             ABOUT
         ================================================== -->
 
         <div class="section-title">
@@ -1280,13 +1256,22 @@
 
             <div>
 
+
                 <h2>
-                    About Hospital
+
+                    हॉस्पिटलची माहिती
+                    / About Hospital
+
                 </h2>
 
+
                 <p class="section-subtitle">
-                    Information about this hospital
+
+                    या हॉस्पिटलबद्दल माहिती
+                    / Information about this hospital
+
                 </p>
+
 
             </div>
 
@@ -1296,18 +1281,20 @@
 
         <section class="about-card">
 
+
             <p>
 
                 {{ hospital.info }}
 
             </p>
 
+
         </section>
 
 
 
         <!-- =================================================
-             TODAY'S DOCTORS
+             DOCTORS
         ================================================== -->
 
         <div class="section-title">
@@ -1315,13 +1302,22 @@
 
             <div>
 
+
                 <h2>
-                    Today's Doctors
+
+                    आज उपलब्ध डॉक्टर
+                    / Today's Doctors
+
                 </h2>
 
+
                 <p class="section-subtitle">
-                    Doctors available today and their OPD timings
+
+                    आज कोणते डॉक्टर उपलब्ध आहेत आणि त्यांची भेटीची वेळ
+                    / Doctors available today and their OPD timings
+
                 </p>
+
 
             </div>
 
@@ -1330,7 +1326,8 @@
 
                 {{ hospital.doctors|length }}
 
-                available
+                डॉक्टर उपलब्ध
+                / Available
 
             </span>
 
@@ -1351,17 +1348,12 @@
             <article class="doctor-card">
 
 
-                <!-- DOCTOR AVATAR -->
-
                 <div class="doctor-avatar">
 
                     DR
 
                 </div>
 
-
-
-                <!-- DOCTOR INFORMATION -->
 
                 <div class="doctor-content">
 
@@ -1383,44 +1375,63 @@
                     <div class="doctor-details">
 
 
-                        <!-- OPD TIME -->
+                        <!-- OPD -->
 
                         <div class="doctor-detail">
 
+
                             <span class="doctor-detail-icon">
+
                                 🕐
+
                             </span>
+
 
                             <span class="doctor-detail-text">
 
-                                <strong>OPD Time:</strong>
+                                <strong>
+
+                                    भेटीची वेळ / OPD Time:
+
+                                </strong>
 
                                 {{ doctor.opd_time }}
 
                             </span>
 
+
                         </div>
 
 
 
-                        <!-- DOCTOR INFORMATION -->
+                        <!-- INFO -->
 
                         {% if doctor.doctor_info %}
 
 
                         <div class="doctor-detail">
 
+
                             <span class="doctor-detail-icon">
+
                                 ℹ️
+
                             </span>
+
 
                             <span class="doctor-detail-text">
 
-                                <strong>Doctor Information:</strong>
+                                <strong>
+
+                                    डॉक्टरांची माहिती
+                                    / Doctor Information:
+
+                                </strong>
 
                                 {{ doctor.doctor_info }}
 
                             </span>
+
 
                         </div>
 
@@ -1448,7 +1459,23 @@
 
         <div class="empty-state">
 
-            No doctors are available today.
+            👨‍⚕️
+
+            <br><br>
+
+            आज डॉक्टरांची माहिती उपलब्ध नाही.
+
+            <br>
+
+            Doctor information is not available today.
+
+            <br><br>
+
+            कृपया हॉस्पिटलशी संपर्क साधा.
+
+            <br>
+
+            Please contact the hospital.
 
         </div>
 
@@ -1468,12 +1495,17 @@
 
 
                 <h2>
-                    Need an appointment?
+
+                    डॉक्टरांची भेट घ्यायची आहे?
+
                 </h2>
 
 
                 <p>
-                    Book your hospital appointment quickly and easily.
+
+                    अपॉइंटमेंट बुक करा
+                    / Book your appointment quickly and easily.
+
                 </p>
 
 
@@ -1485,7 +1517,10 @@
                 href="/hospital/{{ uid }}/book"
             >
 
-                Book Appointment
+                📅
+
+                अपॉइंटमेंट बुक करा
+                / Book Appointment
 
                 <span>
                     →
@@ -1505,7 +1540,7 @@
         <footer class="footer">
 
 
-            <div>
+            <div class="footer-powered">
 
                 Powered by
 
