@@ -5,7 +5,7 @@ from flask import (
     jsonify,
     send_from_directory
 )
-
+import json
 from flask_cors import CORS
 
 import firebase_admin
@@ -61,11 +61,33 @@ def firebase_sw():
 # FIREBASE INITIALIZATION
 # ============================================================
 
-cred = credentials.Certificate(
-    "serviceAccountKey.json"
-)
+FIREBASE_SERVICE_ACCOUNT = os.environ.get(
+    "FIREBASE_SERVICE_ACCOUNT",
+    ""
+).strip()
+
+if not FIREBASE_SERVICE_ACCOUNT:
+    raise RuntimeError(
+        "FIREBASE_SERVICE_ACCOUNT environment variable is missing"
+    )
+
+try:
+
+    firebase_service_account = json.loads(
+        FIREBASE_SERVICE_ACCOUNT
+    )
+
+except json.JSONDecodeError as e:
+
+    raise RuntimeError(
+        f"FIREBASE_SERVICE_ACCOUNT contains invalid JSON: {e}"
+    )
 
 if not firebase_admin._apps:
+
+    cred = credentials.Certificate(
+        firebase_service_account
+    )
 
     firebase_admin.initialize_app(
         cred,
@@ -74,7 +96,6 @@ if not firebase_admin._apps:
                 "https://hospital-57fc8-default-rtdb.firebaseio.com"
         }
     )
-
 
 # ============================================================
 # AISENSY CONFIGURATION
