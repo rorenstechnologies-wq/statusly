@@ -1,75 +1,956 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<title>Appointments Dashboard</title>
 
-<style>
+    <meta charset="UTF-8">
 
-body{
-    margin:0;
-    font-family:Arial;
-    background:#f4f6f9;
-}
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-h1{
-    background:linear-gradient(135deg,#4facfe,#00f2fe);
-    color:white;
-    text-align:center;
-    padding:20px;
-    margin:0;
-}
+    <title>Doctor Appointments</title>
 
+    <style>
 
-.container{
-    width:95%;
-    margin:auto;
-    margin-top:20px;
-    overflow-x:auto;
-}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
+        body {
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    background:white;
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
+            font-family:
+                Inter,
+                Arial,
+                sans-serif;
 
+            background:
+                #f4f8fb;
 
-th{
-    background:#4facfe;
-    color:white;
-    padding:12px;
-}
+            color:
+                #172033;
+
+        }
 
 
-td{
-    padding:12px;
-    border-bottom:1px solid #ddd;
-}
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f766e,
+                    #0e7490
+                );
+
+            color: white;
+
+            padding:
+                24px 5%;
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            gap: 20px;
+
+            flex-wrap: wrap;
+
+            box-shadow:
+                0 6px 25px
+                rgba(0,0,0,0.12);
+
+        }
 
 
-tr:hover{
-    background:#f1f8ff;
-}
+        .header-left h1 {
+
+            font-size:
+                27px;
+
+            margin-bottom:
+                6px;
+
+        }
 
 
-button{
-    background:#27ae60;
-    color:white;
-    border:none;
-    padding:8px 15px;
-    border-radius:5px;
-    cursor:pointer;
-}
+        .header-left p {
+
+            font-size:
+                13px;
+
+            opacity:
+                0.82;
+
+        }
 
 
-button:hover{
-    background:#1e8449;
-}
+        .header-badge {
+
+            background:
+                rgba(255,255,255,0.14);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.2);
+
+            padding:
+                10px 15px;
+
+            border-radius:
+                12px;
+
+            font-size:
+                13px;
+
+        }
 
 
-</style>
+        /* =====================================================
+           CONTROLS
+        ===================================================== */
+
+        .controls {
+
+            width:
+                90%;
+
+            max-width:
+                1450px;
+
+            margin:
+                22px auto;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                230px 1fr 150px;
+
+            gap:
+                12px;
+
+        }
+
+
+        .control {
+
+            height:
+                46px;
+
+            border:
+                1px solid
+                #dbe5eb;
+
+            border-radius:
+                11px;
+
+            padding:
+                0 14px;
+
+            background:
+                white;
+
+            font-size:
+                14px;
+
+            outline:
+                none;
+
+        }
+
+
+        .control:focus {
+
+            border-color:
+                #0f766e;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(15,118,110,0.08);
+
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        .summary {
+
+            width:
+                90%;
+
+            max-width:
+                1450px;
+
+            margin:
+                0 auto 22px;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap:
+                14px;
+
+        }
+
+
+        .summary-card {
+
+            background:
+                white;
+
+            padding:
+                17px;
+
+            border-radius:
+                14px;
+
+            box-shadow:
+                0 6px 20px
+                rgba(15,23,42,0.06);
+
+            border:
+                1px solid
+                #edf2f5;
+
+        }
+
+
+        .summary-label {
+
+            font-size:
+                12px;
+
+            color:
+                #64748b;
+
+            margin-bottom:
+                7px;
+
+        }
+
+
+        .summary-value {
+
+            font-size:
+                26px;
+
+            font-weight:
+                750;
+
+            color:
+                #0f766e;
+
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .container {
+
+            width:
+                90%;
+
+            max-width:
+                1450px;
+
+            margin:
+                auto;
+
+            padding-bottom:
+                35px;
+
+        }
+
+
+        /* =====================================================
+           DOCTOR CARD
+        ===================================================== */
+
+        .doctor-card {
+
+            background:
+                white;
+
+            border-radius:
+                18px;
+
+            margin-bottom:
+                24px;
+
+            overflow:
+                hidden;
+
+            border:
+                1px solid
+                #edf2f5;
+
+            box-shadow:
+                0 10px 30px
+                rgba(15,23,42,0.07);
+
+        }
+
+
+        /* =====================================================
+           DOCTOR HEADER
+        ===================================================== */
+
+        .doctor-header {
+
+            padding:
+                19px 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f766e,
+                    #0e7490
+                );
+
+            color:
+                white;
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap:
+                15px;
+
+            flex-wrap:
+                wrap;
+
+        }
+
+
+        .doctor-info {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                13px;
+
+        }
+
+
+        .doctor-avatar {
+
+            width:
+                50px;
+
+            height:
+                50px;
+
+            border-radius:
+                15px;
+
+            display:
+                flex;
+
+            justify-content:
+                center;
+
+            align-items:
+                center;
+
+            background:
+                rgba(255,255,255,0.15);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.2);
+
+            font-size:
+                23px;
+
+        }
+
+
+        .doctor-name {
+
+            font-size:
+                19px;
+
+            font-weight:
+                750;
+
+        }
+
+
+        .doctor-subtitle {
+
+            margin-top:
+                3px;
+
+            font-size:
+                12px;
+
+            opacity:
+                0.78;
+
+        }
+
+
+        .doctor-stats {
+
+            display:
+                flex;
+
+            gap:
+                8px;
+
+            flex-wrap:
+                wrap;
+
+        }
+
+
+        .doctor-stat {
+
+            background:
+                rgba(255,255,255,0.13);
+
+            padding:
+                8px 11px;
+
+            border-radius:
+                9px;
+
+            font-size:
+                11px;
+
+        }
+
+
+        .doctor-stat strong {
+
+            font-size:
+                15px;
+
+            margin-right:
+                3px;
+
+        }
+
+
+        /* =====================================================
+           TODAY STRIP
+        ===================================================== */
+
+        .today-strip {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            padding:
+                12px 18px;
+
+            background:
+                #f0fdfa;
+
+            border-bottom:
+                1px solid
+                #d9f5f0;
+
+            gap:
+                15px;
+
+            flex-wrap:
+                wrap;
+
+        }
+
+
+        .today-title {
+
+            color:
+                #0f766e;
+
+            font-weight:
+                750;
+
+            font-size:
+                13px;
+
+        }
+
+
+        .today-count {
+
+            color:
+                #475569;
+
+            font-size:
+                12px;
+
+        }
+
+
+        /* =====================================================
+           PATIENT LIST
+        ===================================================== */
+
+        .patients {
+
+            padding:
+                10px;
+
+        }
+
+
+        .patient-row {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                58px
+                minmax(190px, 1.4fr)
+                120px
+                95px
+                150px
+                120px
+                110px;
+
+            gap:
+                12px;
+
+            align-items:
+                center;
+
+            padding:
+                14px 10px;
+
+            border-bottom:
+                1px solid
+                #eef2f5;
+
+            transition:
+                background 0.15s ease;
+
+        }
+
+
+        .patient-row:hover {
+
+            background:
+                #f8fcfd;
+
+        }
+
+
+        .patient-row:last-child {
+
+            border-bottom:
+                none;
+
+        }
+
+
+        .column-title {
+
+            color:
+                #64748b;
+
+            font-size:
+                10px;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                0.5px;
+
+            margin-bottom:
+                3px;
+
+        }
+
+
+        .patient-name {
+
+            font-weight:
+                700;
+
+            color:
+                #172033;
+
+        }
+
+
+        .patient-extra {
+
+            color:
+                #64748b;
+
+            font-size:
+                11px;
+
+            margin-top:
+                3px;
+
+        }
+
+
+        .appointment-date {
+
+            display:
+                inline-block;
+
+            padding:
+                7px 9px;
+
+            border-radius:
+                9px;
+
+            background:
+                #eff6ff;
+
+            color:
+                #2563eb;
+
+            font-weight:
+                700;
+
+            font-size:
+                12px;
+
+        }
+
+
+        .mobile {
+
+            color:
+                #475569;
+
+            font-size:
+                13px;
+
+        }
+
+
+        .patient-no {
+
+            width:
+                38px;
+
+            height:
+                38px;
+
+            border-radius:
+                11px;
+
+            display:
+                flex;
+
+            justify-content:
+                center;
+
+            align-items:
+                center;
+
+            background:
+                #ecfeff;
+
+            color:
+                #0e7490;
+
+            font-weight:
+                750;
+
+            font-size:
+                12px;
+
+        }
+
+
+        .follow-btn {
+
+            display:
+                inline-flex;
+
+            justify-content:
+                center;
+
+            align-items:
+                center;
+
+            min-height:
+                36px;
+
+            padding:
+                0 11px;
+
+            border:
+                none;
+
+            border-radius:
+                9px;
+
+            background:
+                #16a34a;
+
+            color:
+                white;
+
+            text-decoration:
+                none;
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+
+        }
+
+
+        .follow-btn:hover {
+
+            background:
+                #15803d;
+
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .empty {
+
+            padding:
+                32px 20px;
+
+            text-align:
+                center;
+
+            color:
+                #64748b;
+
+        }
+
+
+        .empty-icon {
+
+            font-size:
+                34px;
+
+            margin-bottom:
+                8px;
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .controls {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+            }
+
+
+            .controls .search {
+
+                grid-column:
+                    1 / -1;
+
+            }
+
+
+            .summary {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+
+            .patient-row {
+
+                grid-template-columns:
+                    48px
+                    minmax(180px, 1fr)
+                    105px
+                    105px;
+
+            }
+
+
+            .patient-row > div:nth-child(4),
+            .patient-row > div:nth-child(5),
+            .patient-row > div:nth-child(6) {
+
+                display:
+                    none;
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .header {
+
+                padding:
+                    20px 16px;
+
+            }
+
+
+            .header-left h1 {
+
+                font-size:
+                    22px;
+
+            }
+
+
+            .controls {
+
+                width:
+                    92%;
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .controls .search {
+
+                grid-column:
+                    auto;
+
+            }
+
+
+            .summary {
+
+                width:
+                    92%;
+
+                grid-template-columns:
+                    1fr 1fr;
+
+            }
+
+
+            .container {
+
+                width:
+                    92%;
+
+            }
+
+
+            .doctor-header {
+
+                padding:
+                    16px;
+
+            }
+
+
+            .doctor-name {
+
+                font-size:
+                    17px;
+
+            }
+
+
+            .doctor-stats {
+
+                width:
+                    100%;
+
+            }
+
+
+            .doctor-stat {
+
+                flex:
+                    1;
+
+                text-align:
+                    center;
+
+            }
+
+
+            .patient-row {
+
+                grid-template-columns:
+                    42px 1fr;
+
+                padding:
+                    13px 7px;
+
+            }
+
+
+            .patient-row > div:nth-child(3),
+            .patient-row > div:nth-child(4),
+            .patient-row > div:nth-child(5),
+            .patient-row > div:nth-child(6),
+            .patient-row > div:nth-child(7) {
+
+                display:
+                    none;
+
+            }
+
+
+            .follow-btn {
+
+                margin-top:
+                    7px;
+
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -77,87 +958,905 @@ button:hover{
 <body>
 
 
-<h1>🏥 Appointments Dashboard</h1>
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <div class="header-left">
+
+        <h1>
+            👨‍⚕️ Doctor Appointments
+        </h1>
+
+        <p>
+            Manage patients by doctor and appointment date
+        </p>
+
+    </div>
 
 
-<div class="container">
+    <div class="header-badge">
+
+        📅
+        {{ patients|length }}
+        Total Appointments
+
+    </div>
+
+</header>
 
 
-<table>
+<!-- =====================================================
+     FILTERS
+===================================================== -->
 
-<tr>
-<th>No</th>
-<th>Doctor</th>
-<th>Name</th>
-<th>Gender</th>
-<th>Age</th>
-<th>Mobile</th>
-<th>Address</th>
-<th>Appointment Date</th>
-<th>Action</th>
-</tr>
+<div class="controls">
 
 
+    <select
+        class="control"
+        id="doctorFilter"
+    >
 
-{% for p in patients %}
+        <option value="all">
+            All Doctors
+        </option>
 
-<tr>
-
-<td>{{p.patient_no}}</td>
-
-<td>
-{{p.doctor_name}}
-</td>
-
-<td>
-{{p.patient_name}}
-</td>
-
-<td>
-{{p.gender}}
-</td>
-
-<td>
-{{p.age}}
-</td>
-
-<td>
-{{p.mobile}}
-</td>
-
-<td>
-{{p.address}}
-</td>
+    </select>
 
 
-<td>
-{{p.appointment_date}}
-</td>
+    <input
+        class="control search"
+        type="text"
+        id="searchInput"
+        placeholder="Search patient, mobile or doctor..."
+    >
 
 
-<td>
+    <select
+        class="control"
+        id="dateFilter"
+    >
 
-<a href="/followups/{{uid}}">
-<button>
-Follow-up
-</button>
-</a>
+        <option value="all">
+            All Dates
+        </option>
 
-</td>
+        <option value="today">
+            Today
+        </option>
 
+        <option value="upcoming">
+            Upcoming
+        </option>
 
-</tr>
-
-
-{% endfor %}
-
-
-
-</table>
+    </select>
 
 
 </div>
 
 
+<!-- =====================================================
+     SUMMARY
+===================================================== -->
+
+<div class="summary">
+
+
+    <div class="summary-card">
+
+        <div class="summary-label">
+            Total Patients
+        </div>
+
+        <div
+            class="summary-value"
+            id="totalCount"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+        <div class="summary-label">
+            Doctors
+        </div>
+
+        <div
+            class="summary-value"
+            id="doctorCount"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+        <div class="summary-label">
+            Today
+        </div>
+
+        <div
+            class="summary-value"
+            id="todayCount"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+        <div class="summary-label">
+            Upcoming
+        </div>
+
+        <div
+            class="summary-value"
+            id="upcomingCount"
+        >
+            0
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     DATA
+===================================================== -->
+
+<div
+    class="container"
+    id="appointmentsContainer"
+>
+
+
+{% if patients %}
+
+
+    {% set grouped = {} %}
+
+
+    {% for p in patients %}
+
+        {% set doctor =
+            p.doctor_name or "Unknown Doctor"
+        %}
+
+
+        {% if doctor not in grouped %}
+
+            {% set _ =
+                grouped.update({
+                    doctor: []
+                })
+            %}
+
+        {% endif %}
+
+
+        {% set _ =
+            grouped[doctor].append(p)
+        %}
+
+
+    {% endfor %}
+
+
+    {% for doctor, doctor_patients in grouped.items()|sort %}
+
+
+    <section
+        class="doctor-card"
+        data-doctor="{{ doctor|lower }}"
+    >
+
+
+        <!-- =================================================
+             DOCTOR HEADER
+        ================================================= -->
+
+        <div class="doctor-header">
+
+
+            <div class="doctor-info">
+
+
+                <div class="doctor-avatar">
+                    👨‍⚕️
+                </div>
+
+
+                <div>
+
+                    <div class="doctor-name">
+
+                        Dr. {{ doctor }}
+
+                    </div>
+
+
+                    <div class="doctor-subtitle">
+
+                        Patient Appointment List
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="doctor-stats">
+
+
+                <div class="doctor-stat">
+
+                    <strong>
+                        {{ doctor_patients|length }}
+                    </strong>
+
+                    Patients
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             DOCTOR TODAY
+        ================================================= -->
+
+        <div class="today-strip">
+
+
+            <div class="today-title">
+
+                📅 Today's Schedule
+
+            </div>
+
+
+            <div
+                class="today-count"
+                data-doctor-today="{{ doctor|lower }}"
+            >
+
+                Loading...
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             PATIENTS
+        ================================================= -->
+
+        <div class="patients">
+
+
+            <!-- COLUMN HEADER -->
+
+            <div
+                class="patient-row"
+                style="
+                    background:#f8fafc;
+                    font-weight:700;
+                    color:#64748b;
+                "
+            >
+
+                <div>
+                    No
+                </div>
+
+                <div>
+                    Patient
+                </div>
+
+                <div>
+                    Gender
+                </div>
+
+                <div>
+                    Age
+                </div>
+
+                <div>
+                    Mobile
+                </div>
+
+                <div>
+                    Date
+                </div>
+
+                <div>
+                    Action
+                </div>
+
+            </div>
+
+
+            <!-- PATIENT ROWS -->
+
+            {% for p in doctor_patients|sort(attribute='appointment_date') %}
+
+
+            <div
+                class="patient-row appointment-row"
+                data-doctor="{{ doctor|lower }}"
+                data-date="{{ p.appointment_date }}"
+                data-search="
+                    {{ p.patient_name|default('')|lower }}
+                    {{ p.mobile|default('')|lower }}
+                    {{ doctor|default('')|lower }}
+                    {{ p.gender|default('')|lower }}
+                "
+            >
+
+
+                <div>
+
+                    <div class="patient-no">
+
+                        {{ p.patient_no }}
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="patient-name">
+
+                        {{ p.patient_name }}
+
+                    </div>
+
+
+                    <div class="patient-extra">
+
+                        {{ p.address }}
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    {{ p.gender }}
+
+                </div>
+
+
+                <div>
+
+                    {{ p.age }}
+
+                </div>
+
+
+                <div>
+
+                    <div class="mobile">
+
+                        📱
+                        {{ p.mobile }}
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <span class="appointment-date">
+
+                        {{ p.appointment_date }}
+
+                    </span>
+
+                </div>
+
+
+                <div>
+
+                    <a
+                        href="/followups/{{ uid }}"
+                        class="follow-btn"
+                    >
+                        Follow-up
+                    </a>
+
+                </div>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    </section>
+
+
+    {% endfor %}
+
+
+{% else %}
+
+
+    <div class="doctor-card">
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                📅
+            </div>
+
+            <h3>
+                No appointments yet
+            </h3>
+
+            <p>
+                Appointments will appear here when patients book.
+            </p>
+
+        </div>
+
+    </div>
+
+
+{% endif %}
+
+
+</div>
+
+
+<script>
+
+
+// =====================================================
+// ELEMENTS
+// =====================================================
+
+const doctorFilter =
+    document.getElementById(
+        "doctorFilter"
+    );
+
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
+
+
+const dateFilter =
+    document.getElementById(
+        "dateFilter"
+    );
+
+
+const rows =
+    document.querySelectorAll(
+        ".appointment-row"
+    );
+
+
+const doctorCards =
+    document.querySelectorAll(
+        ".doctor-card[data-doctor]"
+    );
+
+
+// =====================================================
+// TODAY
+// =====================================================
+
+function todayISO() {
+
+    const now =
+        new Date();
+
+    const year =
+        now.getFullYear();
+
+    const month =
+        String(
+            now.getMonth() + 1
+        ).padStart(
+            2,
+            "0"
+        );
+
+    const day =
+        String(
+            now.getDate()
+        ).padStart(
+            2,
+            "0"
+        );
+
+    return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day
+    );
+
+}
+
+
+const today =
+    todayISO();
+
+
+// =====================================================
+// DOCTORS
+// =====================================================
+
+const doctors =
+    new Set();
+
+
+doctorCards.forEach(
+    card => {
+
+        const doctor =
+            card.dataset.doctor;
+
+        if (doctor) {
+
+            doctors.add(
+                doctor
+            );
+
+        }
+
+    }
+);
+
+
+[...doctors]
+    .sort()
+    .forEach(
+        doctor => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                doctor;
+
+            option.textContent =
+                "Dr. " +
+                doctor
+                    .replace(
+                        /\b\w/g,
+                        c =>
+                            c.toUpperCase()
+                    );
+
+            doctorFilter.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+// =====================================================
+// TODAY COUNTS FOR EACH DOCTOR
+// =====================================================
+
+doctorCards.forEach(
+    card => {
+
+        const doctor =
+            card.dataset.doctor;
+
+
+        const doctorRows =
+            card.querySelectorAll(
+                ".appointment-row"
+            );
+
+
+        let count =
+            0;
+
+
+        doctorRows.forEach(
+            row => {
+
+                if (
+                    row.dataset.date ===
+                    today
+                ) {
+
+                    count++;
+
+                }
+
+            }
+        );
+
+
+        const element =
+            card.querySelector(
+                "[data-doctor-today]"
+            );
+
+
+        if (element) {
+
+            element.textContent =
+                count +
+                (
+                    count === 1
+                    ? " patient today"
+                    : " patients today"
+                );
+
+        }
+
+    }
+);
+
+
+// =====================================================
+// APPLY FILTERS
+// =====================================================
+
+function applyFilters() {
+
+    const selectedDoctor =
+        doctorFilter.value;
+
+
+    const search =
+        searchInput.value
+            .trim()
+            .toLowerCase();
+
+
+    const selectedDate =
+        dateFilter.value;
+
+
+    let visible =
+        0;
+
+
+    doctorCards.forEach(
+        card => {
+
+            const doctor =
+                card.dataset.doctor;
+
+
+            const doctorMatch =
+                selectedDoctor === "all" ||
+                doctor === selectedDoctor;
+
+
+            let cardVisible =
+                false;
+
+
+            card
+                .querySelectorAll(
+                    ".appointment-row"
+                )
+                .forEach(
+                    row => {
+
+                        const rowSearch =
+                            row.dataset.search
+                                .replace(
+                                    /\s+/g,
+                                    " "
+                                )
+                                .trim();
+
+
+                        const textMatch =
+                            !search ||
+                            rowSearch.includes(
+                                search
+                            );
+
+
+                        let dateMatch =
+                            true;
+
+
+                        if (
+                            selectedDate ===
+                            "today"
+                        ) {
+
+                            dateMatch =
+                                row.dataset.date ===
+                                today;
+
+                        }
+
+
+                        if (
+                            selectedDate ===
+                            "upcoming"
+                        ) {
+
+                            dateMatch =
+                                row.dataset.date >
+                                today;
+
+                        }
+
+
+                        const show =
+                            doctorMatch &&
+                            textMatch &&
+                            dateMatch;
+
+
+                        row.style.display =
+                            show
+                            ? "grid"
+                            : "none";
+
+
+                        if (show) {
+
+                            cardVisible =
+                                true;
+
+                            visible++;
+
+                        }
+
+                    }
+                );
+
+
+            card.style.display =
+                cardVisible
+                ? "block"
+                : "none";
+
+        }
+    );
+
+
+    document.getElementById(
+        "totalCount"
+    ).textContent =
+        visible;
+
+}
+
+
+// =====================================================
+// SUMMARY
+// =====================================================
+
+let todayTotal =
+    0;
+
+let upcomingTotal =
+    0;
+
+
+rows.forEach(
+    row => {
+
+        if (
+            row.dataset.date ===
+            today
+        ) {
+
+            todayTotal++;
+
+        }
+
+
+        if (
+            row.dataset.date >
+            today
+        ) {
+
+            upcomingTotal++;
+
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "totalCount"
+).textContent =
+    rows.length;
+
+
+document.getElementById(
+    "doctorCount"
+).textContent =
+    doctors.size;
+
+
+document.getElementById(
+    "todayCount"
+).textContent =
+    todayTotal;
+
+
+document.getElementById(
+    "upcomingCount"
+).textContent =
+    upcomingTotal;
+
+
+// =====================================================
+// EVENTS
+// =====================================================
+
+doctorFilter.addEventListener(
+    "change",
+    applyFilters
+);
+
+
+searchInput.addEventListener(
+    "input",
+    applyFilters
+);
+
+
+dateFilter.addEventListener(
+    "change",
+    applyFilters
+);
+
+
+// =====================================================
+// INITIAL
+// =====================================================
+
+applyFilters();
+
+</script>
+
+
 </body>
+
 </html>
+
