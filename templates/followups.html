@@ -1592,9 +1592,16 @@
 
 
                     <div class="doctor-avatar">
-                        👨‍⚕️
-                    </div>
 
+                       {% if doctor_gender == "Female" %}
+                            👩‍⚕️
+                        {% elif doctor_gender == "Male" %}
+                            👨‍⚕️
+                           {% else %}
+                             🧑‍⚕️
+                          {% endif %}
+
+                       </div>
 
                     <div>
 
