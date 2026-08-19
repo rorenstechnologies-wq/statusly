@@ -2833,7 +2833,28 @@ def whatsapp_webhook():
 
     return "EVENT_RECEIVED", 200
 
+# ============================================================
+# ANALYTICS PAGE
+# ============================================================
 
+@app.route("/analytics/<uid>")
+def analytics_page(uid):
+
+    hospital = (
+        db.reference(
+            f"hospitals/{uid}"
+        ).get()
+        or {}
+    )
+
+    if not hospital:
+        return "Hospital not found", 404
+
+    return render_template(
+        "analytics.html",
+        uid=uid,
+        hospital=hospital
+    )
 # ============================================================
 # RUN
 # ============================================================
