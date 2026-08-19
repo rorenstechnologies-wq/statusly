@@ -2128,19 +2128,76 @@ def book_appointment():
             whatsapp_result
         )
 
+                     # ----------------------------------------------------
+        # GET HOSPITAL DATA
+        # ----------------------------------------------------
+
+        hospital = db.reference(
+            f"hospitals/{hospital_id}"
+        ).get() or {}
+
+        hospital_name = hospital.get(
+            "hospital_name",
+            "Hospital"
+        )
 
         # ----------------------------------------------------
-        # SUCCESS
+        # GET APPOINTMENT DATA
+        # ----------------------------------------------------
+
+        doctor_name = appointment.get(
+            "doctor_name",
+            "Doctor"
+        )
+
+        appointment_date = appointment.get(
+            "appointment_date",
+            ""
+        )
+
+        appointment_time = appointment.get(
+            "appointment_time",
+            ""
+        )
+
+        # ----------------------------------------------------
+        # GET DOCTOR SPECIALIZATION
+        # ----------------------------------------------------
+
+        specialization = ""
+
+        for doctor in hospital.get("doctors", []):
+
+            if doctor.get("doctor_name") == doctor_name:
+
+                specialization = doctor.get(
+                    "specialization",
+                    ""
+                )
+
+                break
+
+        # ----------------------------------------------------
+        # SHOW SUCCESS PAGE
         # ----------------------------------------------------
 
         return render_template(
-
             "success.html",
 
-            patient_id=patient_id
+            patient_id=patient_id,
 
+            hospital_name=hospital_name,
+
+            doctor_name=doctor_name,
+
+            specialization=specialization,
+
+            appointment_date=appointment_date,
+
+            appointment_time=appointment_time
         )
-
+      
+       
 
     except Exception as e:
 
