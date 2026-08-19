@@ -3,651 +3,1875 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <title>Hospital Dashboard</title>
+<meta name="theme-color"
+      content="#0f172a">
 
-    <style>
+<title>MediQueue Analytics Dashboard</title>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        body {
+<style>
 
-            min-height: 100vh;
+/* =========================================================
+   RESET
+========================================================= */
 
-            background:
-                url("https://images.unsplash.com/photo-1586773860418-d37222d8fce3")
-                no-repeat
-                center center /
-                cover;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-        }
+:root {
 
-        .overlay {
+    --bg: #f4f7fb;
+    --card: #ffffff;
 
-            min-height: 100vh;
+    --text: #172033;
+    --muted: #718096;
 
-            display: flex;
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
 
-            background:
-                rgba(0, 0, 0, 0.65);
+    --success: #16a34a;
+    --danger: #dc2626;
+    --warning: #f59e0b;
 
-        }
+    --border: #e5e7eb;
 
-        /* =================================================
-           SIDEBAR
-        ================================================= */
+    --sidebar: #0f172a;
 
-        .sidebar {
+    --shadow:
+        0 8px 30px rgba(15,23,42,0.07);
 
-            width: 230px;
+    --radius: 16px;
+}
 
-            min-height: 100vh;
+body {
 
-            padding: 20px;
+    font-family:
+        Inter,
+        Arial,
+        sans-serif;
 
-            background:
-                rgba(0, 0, 0, 0.88);
+    background: var(--bg);
 
-            color: white;
+    color: var(--text);
 
-            position: fixed;
+    min-height: 100vh;
+}
 
-            left: 0;
-            top: 0;
-            bottom: 0;
 
-            overflow-y: auto;
+/* =========================================================
+   APP
+========================================================= */
 
-        }
+.app {
 
-        .sidebar h2 {
+    display: flex;
 
-            text-align: center;
+    min-height: 100vh;
+}
 
-            margin-bottom: 20px;
 
-            font-size: 22px;
+/* =========================================================
+   SIDEBAR
+========================================================= */
 
-        }
+.sidebar {
 
-        .sidebar button {
+    width: 250px;
 
-            width: 100%;
+    background: var(--sidebar);
 
-            padding: 13px;
+    color: white;
 
-            margin: 7px 0;
+    position: fixed;
 
-            border: none;
+    top: 0;
+    bottom: 0;
+    left: 0;
 
-            border-radius: 8px;
+    z-index: 100;
 
-            cursor: pointer;
+    padding: 22px 16px;
 
-            background: #3498db;
+    display: flex;
 
-            color: white;
+    flex-direction: column;
+}
 
-            font-size: 15px;
 
-            transition: 0.2s;
+.logo {
 
-        }
+    display: flex;
 
-        .sidebar button:hover {
+    align-items: center;
 
-            background: #217dbb;
+    gap: 10px;
 
-        }
+    padding: 8px 10px 25px;
 
-        .logout-btn {
+    border-bottom:
+        1px solid rgba(255,255,255,0.08);
 
-            background: #e74c3c !important;
+    margin-bottom: 18px;
+}
 
-        }
 
-        .logout-btn:hover {
+.logo-icon {
 
-            background: #c0392b !important;
+    width: 40px;
+    height: 40px;
 
-        }
+    border-radius: 11px;
 
-        /* =================================================
-           CONTENT
-        ================================================= */
+    display: flex;
 
-        .content {
+    justify-content: center;
+    align-items: center;
 
-            margin-left: 230px;
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #06b6d4
+        );
 
-            width: calc(100% - 230px);
+    font-size: 21px;
+}
 
-            min-height: 100vh;
 
-            padding: 30px;
+.logo-text {
 
-            color: white;
+    font-size: 20px;
 
-        }
+    font-weight: 700;
+}
 
-        .topbar {
 
-            display: flex;
+.logo-sub {
 
-            justify-content: space-between;
+    font-size: 10px;
 
-            align-items: center;
+    color: #94a3b8;
 
-            gap: 15px;
+    margin-top: 2px;
+}
 
-            flex-wrap: wrap;
 
-            margin-bottom: 20px;
+.nav {
 
-        }
+    display: flex;
 
-        .topbar h1 {
+    flex-direction: column;
 
-            font-size: 30px;
+    gap: 6px;
+}
 
-        }
 
-        .hospital-name-display {
+.nav-btn {
 
-            padding: 10px 16px;
+    border: none;
 
-            border-radius: 8px;
+    width: 100%;
 
-            background:
-                rgba(255,255,255,0.12);
+    background: transparent;
 
-            backdrop-filter: blur(8px);
+    color: #cbd5e1;
 
-        }
+    padding: 13px 14px;
 
-        /* =================================================
-           CARD
-        ================================================= */
+    border-radius: 10px;
 
-        .card {
+    text-align: left;
 
-            background:
-                rgba(255,255,255,0.12);
+    cursor: pointer;
 
-            backdrop-filter: blur(12px);
+    font-size: 14px;
 
-            padding: 22px;
+    display: flex;
 
-            margin-bottom: 20px;
+    align-items: center;
 
-            border-radius: 14px;
+    gap: 12px;
 
-            box-shadow:
-                0 10px 25px
-                rgba(0,0,0,0.25);
+    transition: 0.2s;
+}
 
-        }
 
-        .card h2 {
+.nav-btn:hover {
 
-            margin-bottom: 15px;
+    background:
+        rgba(255,255,255,0.08);
 
-        }
+    color: white;
+}
 
-        /* =================================================
-           INPUTS
-        ================================================= */
 
-        input,
-        textarea,
-        select {
+.nav-btn.active {
 
-            width: 100%;
+    background: var(--primary);
 
-            padding: 12px;
+    color: white;
+}
 
-            margin: 8px 0;
 
-            border: none;
+.sidebar-bottom {
 
-            outline: none;
+    margin-top: auto;
+}
 
-            border-radius: 8px;
 
-            background: white;
+.logout {
 
-            color: #222;
+    width: 100%;
 
-        }
+    border: none;
 
-        textarea {
+    background:
+        rgba(239,68,68,0.12);
 
-            min-height: 100px;
+    color: #fca5a5;
 
-            resize: vertical;
+    padding: 12px;
 
-        }
+    border-radius: 10px;
 
-        input:disabled {
+    cursor: pointer;
 
-            background: #ddd;
+    font-size: 14px;
+}
 
-            color: #555;
 
-        }
+.logout:hover {
 
-        /* =================================================
-           BUTTONS
-        ================================================= */
+    background:
+        rgba(239,68,68,0.22);
+}
 
-        button {
 
-            cursor: pointer;
+/* =========================================================
+   MAIN
+========================================================= */
 
-        }
+.main {
 
-        button.save {
+    margin-left: 250px;
 
-            background: #27ae60;
+    width:
+        calc(100% - 250px);
 
-            color: white;
+    min-height: 100vh;
 
-            padding: 12px 18px;
+    padding: 25px;
+}
 
-            border: none;
 
-            border-radius: 8px;
+/* =========================================================
+   TOPBAR
+========================================================= */
 
-            font-size: 15px;
+.topbar {
 
-            margin-top: 10px;
+    display: flex;
 
-        }
+    justify-content:
+        space-between;
 
-        button.save:hover {
+    align-items: center;
 
-            background: #1f8a4c;
+    gap: 15px;
 
-        }
+    margin-bottom: 25px;
+}
 
-        button.add {
 
-            background: #8e44ad;
+.page-title {
 
-            color: white;
+    font-size: 25px;
 
-            padding: 11px 16px;
+    font-weight: 700;
+}
 
-            border: none;
 
-            border-radius: 8px;
+.page-subtitle {
 
-            margin-top: 10px;
+    color: var(--muted);
 
-        }
+    margin-top: 5px;
 
-        button.add:hover {
+    font-size: 13px;
+}
 
-            background: #71368a;
 
-        }
+.top-actions {
 
-        /* =================================================
-           DOCTOR BOX
-        ================================================= */
+    display: flex;
 
-        .doctor-box {
+    align-items: center;
 
-            background:
-                rgba(255,255,255,0.08);
+    gap: 10px;
+}
 
-            padding: 15px;
 
-            margin: 15px 0;
+.hospital-pill {
 
-            border-radius: 10px;
+    background: white;
 
-        }
+    border: 1px solid var(--border);
 
-        .doctor-box h3 {
+    padding: 9px 14px;
 
-            margin-bottom: 8px;
+    border-radius: 10px;
 
-        }
+    font-size: 13px;
 
-        .remove-doctor {
+    box-shadow: var(--shadow);
+}
 
-            background: #e74c3c;
 
-            color: white;
+.refresh-btn {
 
-            padding: 8px 12px;
+    border: none;
 
-            border: none;
+    background: var(--primary);
 
-            border-radius: 6px;
+    color: white;
 
-            margin-top: 5px;
+    padding: 10px 15px;
 
-        }
+    border-radius: 9px;
 
-        /* =================================================
-           STATUS
-        ================================================= */
+    cursor: pointer;
 
-        #statusMessage {
+    font-size: 13px;
+}
 
-            margin-top: 15px;
 
-            padding: 12px;
+.refresh-btn:hover {
 
-            display: none;
+    background: var(--primary-dark);
+}
 
-            border-radius: 8px;
 
-            background:
-                rgba(255,255,255,0.15);
+/* =========================================================
+   SECTIONS
+========================================================= */
 
-        }
+.section {
 
-        /* =================================================
-           MOBILE
-        ================================================= */
+    display: none;
+}
 
-        @media (max-width: 768px) {
+.section.active {
 
-            .sidebar {
+    display: block;
+}
 
-                width: 100%;
 
-                min-height: auto;
+/* =========================================================
+   ANALYTICS CARDS
+========================================================= */
 
-                position: relative;
+.stats-grid {
 
-            }
+    display: grid;
 
-            .overlay {
+    grid-template-columns:
+        repeat(4, minmax(0,1fr));
 
-                display: block;
+    gap: 16px;
 
-            }
+    margin-bottom: 20px;
+}
 
-            .content {
 
-                margin-left: 0;
+.stat-card {
 
-                width: 100%;
+    background: var(--card);
 
-                padding: 20px;
+    border:
+        1px solid var(--border);
 
-            }
+    border-radius: var(--radius);
 
-            .sidebar {
+    padding: 20px;
 
-                display: flex;
+    box-shadow: var(--shadow);
 
-                flex-wrap: wrap;
+    position: relative;
 
-                gap: 8px;
+    overflow: hidden;
+}
 
-            }
 
-            .sidebar h2 {
+.stat-top {
 
-                width: 100%;
+    display: flex;
 
-            }
+    justify-content:
+        space-between;
 
-            .sidebar button {
+    align-items: center;
 
-                width: calc(50% - 4px);
+    margin-bottom: 15px;
+}
 
-                margin: 0;
 
-            }
+.stat-label {
 
-        }
+    color: var(--muted);
 
-    </style>
+    font-size: 13px;
+}
+
+
+.stat-icon {
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 10px;
+
+    background: #eff6ff;
+
+    font-size: 19px;
+}
+
+
+.stat-number {
+
+    font-size: 30px;
+
+    font-weight: 700;
+}
+
+
+.stat-description {
+
+    color: var(--muted);
+
+    font-size: 11px;
+
+    margin-top: 6px;
+}
+
+
+/* =========================================================
+   ANALYTICS GRID
+========================================================= */
+
+.analytics-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
+
+    gap: 18px;
+
+    margin-bottom: 18px;
+}
+
+
+.chart-card {
+
+    background: white;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    padding: 20px;
+
+    box-shadow: var(--shadow);
+
+    min-width: 0;
+}
+
+
+.chart-card.full {
+
+    grid-column:
+        span 2;
+}
+
+
+.chart-header {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: flex-start;
+
+    margin-bottom: 18px;
+}
+
+
+.chart-title {
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+
+.chart-subtitle {
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    margin-top: 4px;
+}
+
+
+.chart-container {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 280px;
+}
+
+
+/* =========================================================
+   DOCTOR TABLE
+========================================================= */
+
+.table-wrapper {
+
+    overflow-x: auto;
+}
+
+
+table {
+
+    width: 100%;
+
+    border-collapse:
+        collapse;
+
+    min-width: 500px;
+}
+
+
+th {
+
+    text-align: left;
+
+    padding: 12px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+
+td {
+
+    padding: 13px 12px;
+
+    font-size: 13px;
+
+    border-bottom:
+        1px solid #f1f5f9;
+}
+
+
+.doctor-rank {
+
+    width: 30px;
+
+    height: 30px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #eff6ff;
+
+    color: var(--primary);
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   HOSPITAL FORM
+========================================================= */
+
+.form-card {
+
+    background: white;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    padding: 22px;
+
+    box-shadow: var(--shadow);
+
+    margin-bottom: 20px;
+}
+
+
+.form-title {
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    margin-bottom: 18px;
+}
+
+
+.form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
+
+    gap: 14px;
+}
+
+
+.form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+
+.form-group.full {
+
+    grid-column:
+        span 2;
+}
+
+
+label {
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #475569;
+}
+
+
+input,
+textarea,
+select {
+
+    width: 100%;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 9px;
+
+    padding: 11px 12px;
+
+    outline: none;
+
+    font-size: 14px;
+
+    background: white;
+
+    color: var(--text);
+}
+
+
+input:focus,
+textarea:focus,
+select:focus {
+
+    border-color:
+        var(--primary);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(37,99,235,0.1);
+}
+
+
+textarea {
+
+    min-height: 100px;
+
+    resize: vertical;
+}
+
+
+.save-btn {
+
+    margin-top: 18px;
+
+    border: none;
+
+    background: var(--success);
+
+    color: white;
+
+    padding: 12px 20px;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   DOCTOR BOX
+========================================================= */
+
+.doctor-box {
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 12px;
+
+    padding: 16px;
+
+    margin-bottom: 14px;
+
+    background: #fafcff;
+}
+
+
+.doctor-box-header {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+
+.doctor-number {
+
+    font-weight: 700;
+
+    font-size: 14px;
+}
+
+
+.remove-btn {
+
+    border: none;
+
+    background: #fee2e2;
+
+    color: #dc2626;
+
+    padding: 7px 10px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+}
+
+
+.add-btn {
+
+    border: none;
+
+    background: #eef2ff;
+
+    color: #4338ca;
+
+    padding: 10px 14px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    margin-top: 5px;
+}
+
+
+/* =========================================================
+   EMPTY / LOADING
+========================================================= */
+
+.loading {
+
+    color: var(--muted);
+
+    text-align: center;
+
+    padding: 30px;
+}
+
+
+.error-box {
+
+    background: #fee2e2;
+
+    color: #991b1b;
+
+    padding: 12px;
+
+    border-radius: 9px;
+
+    margin-bottom: 15px;
+
+    display: none;
+}
+
+
+/* =========================================================
+   MOBILE NAV
+========================================================= */
+
+.mobile-nav {
+
+    display: none;
+
+    position: fixed;
+
+    bottom: 0;
+
+    left: 0;
+
+    right: 0;
+
+    height: 65px;
+
+    background: white;
+
+    border-top:
+        1px solid var(--border);
+
+    z-index: 200;
+
+    justify-content:
+        space-around;
+
+    align-items: center;
+}
+
+
+.mobile-nav button {
+
+    border: none;
+
+    background: transparent;
+
+    color: #64748b;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 4px;
+
+    font-size: 10px;
+
+    cursor: pointer;
+}
+
+
+.mobile-nav button span {
+
+    font-size: 20px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .stats-grid {
+
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .sidebar {
+
+        display: none;
+    }
+
+    .main {
+
+        margin-left: 0;
+
+        width: 100%;
+
+        padding: 16px;
+
+        padding-bottom: 85px;
+    }
+
+    .mobile-nav {
+
+        display: flex;
+    }
+
+    .topbar {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+    }
+
+    .top-actions {
+
+        width: 100%;
+
+        justify-content:
+            space-between;
+    }
+
+    .hospital-pill {
+
+        max-width: 70%;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+    }
+
+    .analytics-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .chart-card.full {
+
+        grid-column:
+            span 1;
+    }
+
+    .chart-container {
+
+        height: 250px;
+    }
+
+}
+
+
+@media (max-width: 550px) {
+
+    .stats-grid {
+
+        grid-template-columns:
+            repeat(2,1fr);
+
+        gap: 10px;
+    }
+
+    .stat-card {
+
+        padding: 15px;
+    }
+
+    .stat-number {
+
+        font-size: 24px;
+    }
+
+    .stat-label {
+
+        font-size: 11px;
+    }
+
+    .stat-icon {
+
+        width: 32px;
+        height: 32px;
+
+        font-size: 15px;
+    }
+
+    .form-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full {
+
+        grid-column:
+            span 1;
+    }
+
+    .page-title {
+
+        font-size: 21px;
+    }
+
+    .chart-card {
+
+        padding: 15px;
+    }
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+
+    position: fixed;
+
+    right: 20px;
+
+    bottom: 20px;
+
+    background: #0f172a;
+
+    color: white;
+
+    padding: 13px 17px;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+
+    display: none;
+
+    z-index: 500;
+}
+
+</style>
 
 </head>
 
 
 <body>
 
-<div class="overlay">
+
+<div class="app">
 
 
-    <!-- =================================================
-         SIDEBAR
-    ================================================= -->
+<!-- ======================================================
+     SIDEBAR
+======================================================= -->
 
-    <aside class="sidebar">
+<aside class="sidebar">
 
-        <h2>
-            🏥 MediQueue
-        </h2>
+    <div class="logo">
 
+        <div class="logo-icon">
+            🏥
+        </div>
+
+        <div>
+
+            <div class="logo-text">
+                MediQueue
+            </div>
+
+            <div class="logo-sub">
+                HOSPITAL MANAGEMENT
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <nav class="nav">
 
         <button
-            onclick="showSection('hospital')"
+            class="nav-btn active"
+            onclick="showPage('analytics',this)"
         >
-            🏥 Hospital
+            📊
+            <span>Analytics</span>
         </button>
 
 
         <button
-            onclick="showSection('doctor')"
+            class="nav-btn"
+            onclick="showPage('hospital',this)"
         >
-            👨‍⚕️ Doctors
+            🏥
+            <span>Hospital</span>
         </button>
 
 
         <button
+            class="nav-btn"
+            onclick="showPage('doctors',this)"
+        >
+            👨‍⚕️
+            <span>Doctors</span>
+        </button>
+
+
+        <button
+            class="nav-btn"
             onclick="openAppointments()"
         >
-            📅 Appointments
+            📅
+            <span>Appointments</span>
         </button>
 
 
         <button
+            class="nav-btn"
             onclick="openFollowups()"
         >
-            🔄 Follow-ups
+            🔄
+            <span>Follow-ups</span>
         </button>
 
+    </nav>
+
+
+    <div class="sidebar-bottom">
 
         <button
-            class="logout-btn"
+            class="logout"
             onclick="logout()"
         >
             🚪 Logout
         </button>
 
-    </aside>
+    </div>
+
+</aside>
 
 
-    <!-- =================================================
-         MAIN CONTENT
-    ================================================= -->
+<!-- ======================================================
+     MAIN
+======================================================= -->
 
-    <main class="content">
+<main class="main">
 
 
-        <div class="topbar">
+    <!-- TOPBAR -->
 
-            <h1>
-                Hospital Dashboard
+    <header class="topbar">
+
+        <div>
+
+            <h1 class="page-title"
+                id="pageTitle">
+
+                Analytics Overview
+
             </h1>
 
-            <div
-                id="hospitalNameDisplay"
-                class="hospital-name-display"
-            >
-                Loading...
+            <div class="page-subtitle">
+
+                Monitor your hospital performance and patient activity
+
             </div>
 
         </div>
 
 
-        <!-- =================================================
-             HOSPITAL SECTION
-        ================================================= -->
+        <div class="top-actions">
 
-        <section
-            id="hospital"
-            class="section card"
-        >
-
-            <h2>
-                Hospital Details
-            </h2>
-
-
-            <input
-                id="hospital_id"
-                placeholder="Hospital ID"
-                disabled
+            <div
+                class="hospital-pill"
+                id="hospitalNameDisplay"
             >
-
-
-            <input
-                id="hospital_name"
-                placeholder="Hospital Name"
-            >
-
-
-            <input
-                id="date"
-                type="date"
-            >
-
-
-            <input
-                id="open_time"
-                type="time"
-            >
-
-
-            <input
-                id="close_time"
-                type="time"
-            >
-
-
-            <textarea
-                id="info"
-                placeholder="Hospital Information"
-            ></textarea>
+                Loading...
+            </div>
 
 
             <button
-                class="save"
-                onclick="saveHospital()"
+                class="refresh-btn"
+                onclick="loadAnalytics()"
             >
-                💾 Save Hospital
+                ↻ Refresh
             </button>
 
+        </div>
 
-            <div id="statusMessage"></div>
-
-        </section>
-
-
-        <!-- =================================================
-             DOCTOR SECTION
-        ================================================= -->
-
-        <section
-            id="doctor"
-            class="section card"
-            style="display:none;"
-        >
-
-            <h2>
-                Doctor Details
-            </h2>
+    </header>
 
 
-            <div id="doctor-section">
+    <div
+        id="errorBox"
+        class="error-box"
+    ></div>
 
 
-                <div class="doctor-box">
+    <!-- ==================================================
+         ANALYTICS
+    =================================================== -->
 
-                    <h3>
-                        Doctor 1
-                    </h3>
-
-
-                    <input
-                        class="doctor_name"
-                        placeholder="Doctor Name"
-                    >
+    <section
+        id="analytics"
+        class="section active"
+    >
 
 
-                    <input
-                        class="specialization"
-                        placeholder="Specialization"
-                    >
+        <!-- STAT CARDS -->
+
+        <div class="stats-grid">
 
 
-                    <input
-                        class="opd_time"
-                        placeholder="OPD Time"
-                    >
+            <div class="stat-card">
 
+                <div class="stat-top">
 
-                    <textarea
-                        class="doctor_info"
-                        placeholder="Doctor Information"
-                    ></textarea>
+                    <span class="stat-label">
+                        Total Patients
+                    </span>
+
+                    <div class="stat-icon">
+                        👥
+                    </div>
 
                 </div>
 
+                <div
+                    class="stat-number"
+                    id="totalPatients"
+                >
+                    --
+                </div>
+
+                <div class="stat-description">
+                    All registered appointments
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-label">
+                        Today's Appointments
+                    </span>
+
+                    <div class="stat-icon">
+                        📅
+                    </div>
+
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="todayAppointments"
+                >
+                    --
+                </div>
+
+                <div class="stat-description">
+                    Appointments scheduled today
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-label">
+                        Male Patients
+                    </span>
+
+                    <div class="stat-icon">
+                        👨
+                    </div>
+
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="malePatients"
+                >
+                    --
+                </div>
+
+                <div class="stat-description">
+                    Male patient appointments
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-top">
+
+                    <span class="stat-label">
+                        Female Patients
+                    </span>
+
+                    <div class="stat-icon">
+                        👩
+                    </div>
+
+                </div>
+
+                <div
+                    class="stat-number"
+                    id="femalePatients"
+                >
+                    --
+                </div>
+
+                <div class="stat-description">
+                    Female patient appointments
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CHARTS -->
+
+        <div class="analytics-grid">
+
+
+            <!-- DAILY -->
+
+            <div class="chart-card full">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <div class="chart-title">
+                            Patient Appointments
+                        </div>
+
+                        <div class="chart-subtitle">
+                            Daily appointment volume
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="chart-container">
+
+                    <canvas
+                        id="dailyChart"
+                    ></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- GENDER -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <div class="chart-title">
+                            Gender Distribution
+                        </div>
+
+                        <div class="chart-subtitle">
+                            Patient demographics
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="chart-container">
+
+                    <canvas
+                        id="genderChart"
+                    ></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- AGE -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <div class="chart-title">
+                            Age Distribution
+                        </div>
+
+                        <div class="chart-subtitle">
+                            Patient age groups
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="chart-container">
+
+                    <canvas
+                        id="ageChart"
+                    ></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- DOCTORS -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <div class="chart-title">
+                            Doctor Performance
+                        </div>
+
+                        <div class="chart-subtitle">
+                            Appointments by doctor
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="chart-container">
+
+                    <canvas
+                        id="doctorChart"
+                    ></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- TIME -->
+
+            <div class="chart-card">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <div class="chart-title">
+                            Appointment Times
+                        </div>
+
+                        <div class="chart-subtitle">
+                            Popular appointment slots
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="chart-container">
+
+                    <canvas
+                        id="timeChart"
+                    ></canvas>
+
+                </div>
+
+            </div>
+
+
+            <!-- LOCATION -->
+
+            <div class="chart-card full">
+
+                <div class="chart-header">
+
+                    <div>
+
+                        <div class="chart-title">
+                            Patient Locations
+                        </div>
+
+                        <div class="chart-subtitle">
+                            Where your patients come from
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="chart-container">
+
+                    <canvas
+                        id="locationChart"
+                    ></canvas>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- DOCTOR TABLE -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <div class="chart-title">
+                        Doctor Appointment Ranking
+                    </div>
+
+                    <div class="chart-subtitle">
+                        Appointment distribution by doctor
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                #
+                            </th>
+
+                            <th>
+                                Doctor
+                            </th>
+
+                            <th>
+                                Appointments
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="doctorTable"
+                    >
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- ==================================================
+         HOSPITAL
+    =================================================== -->
+
+    <section
+        id="hospital"
+        class="section"
+    >
+
+        <div class="form-card">
+
+            <div class="form-title">
+                Hospital Information
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Hospital ID
+                    </label>
+
+                    <input
+                        id="hospital_id"
+                        disabled
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Hospital Name
+                    </label>
+
+                    <input
+                        id="hospital_name"
+                        placeholder="Hospital name"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Date
+                    </label>
+
+                    <input
+                        id="date"
+                        type="date"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Opening Time
+                    </label>
+
+                    <input
+                        id="open_time"
+                        type="time"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Closing Time
+                    </label>
+
+                    <input
+                        id="close_time"
+                        type="time"
+                    >
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label>
+                        Hospital Information
+                    </label>
+
+                    <textarea
+                        id="info"
+                        placeholder="Describe hospital services..."
+                    ></textarea>
+
+                </div>
 
             </div>
 
 
             <button
-                class="add"
+                class="save-btn"
+                onclick="saveHospital()"
+            >
+                💾 Save Hospital
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ==================================================
+         DOCTORS
+    =================================================== -->
+
+    <section
+        id="doctors"
+        class="section"
+    >
+
+        <div class="form-card">
+
+            <div class="form-title">
+                Doctors
+            </div>
+
+
+            <div id="doctor-section"></div>
+
+
+            <button
+                class="add-btn"
                 onclick="addDoctor()"
             >
                 + Add Doctor
             </button>
 
 
+            <br>
+
+
             <button
-                class="save"
+                class="save-btn"
                 onclick="saveHospital()"
             >
                 💾 Save Hospital & Doctors
             </button>
 
-        </section>
+        </div>
+
+    </section>
 
 
-    </main>
+</main>
 
 </div>
 
 
+<!-- ======================================================
+     MOBILE NAV
+======================================================= -->
+
+<nav class="mobile-nav">
+
+
+    <button
+        onclick="showPage('analytics')"
+    >
+
+        <span>📊</span>
+
+        Analytics
+
+    </button>
+
+
+    <button
+        onclick="showPage('hospital')"
+    >
+
+        <span>🏥</span>
+
+        Hospital
+
+    </button>
+
+
+    <button
+        onclick="openAppointments()"
+    >
+
+        <span>📅</span>
+
+        Patients
+
+    </button>
+
+
+    <button
+        onclick="openFollowups()"
+    >
+
+        <span>🔄</span>
+
+        Follow-ups
+
+    </button>
+
+
+    <button
+        onclick="logout()"
+    >
+
+        <span>🚪</span>
+
+        Logout
+
+    </button>
+
+</nav>
+
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
+
+<!-- ======================================================
+     FIREBASE
+======================================================= -->
+
 <script type="module">
 
-
-// =====================================================
-// FIREBASE
-// =====================================================
 
 import {
     initializeApp
@@ -665,9 +1889,9 @@ from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
 
-// =====================================================
-// FIREBASE CONFIG
-// =====================================================
+/* ======================================================
+   FIREBASE CONFIG
+====================================================== */
 
 const firebaseConfig = {
 
@@ -695,11 +1919,7 @@ const firebaseConfig = {
 };
 
 
-// =====================================================
-// INITIALIZE
-// =====================================================
-
-const app =
+const firebaseApp =
     initializeApp(
         firebaseConfig
     );
@@ -707,36 +1927,26 @@ const app =
 
 const auth =
     getAuth(
-        app
+        firebaseApp
     );
 
 
-// =====================================================
-// CURRENT USER
-// =====================================================
-
 let currentUser = null;
 
+let charts = {};
 
-// =====================================================
-// DASHBOARD AUTHENTICATION
-// =====================================================
+let doctorCount = 0;
+
+
+/* ======================================================
+   AUTH
+====================================================== */
 
 onAuthStateChanged(
     auth,
     async function(user) {
 
-        console.log(
-            "AUTH STATE:",
-            user
-        );
-
-
         if (!user) {
-
-            console.log(
-                "User not logged in"
-            );
 
             window.location.href =
                 "/login-page";
@@ -745,42 +1955,21 @@ onAuthStateChanged(
         }
 
 
-        currentUser =
-            user;
+        currentUser = user;
 
 
         try {
 
-            // ---------------------------------------------
-            // GET FRESH FIREBASE TOKEN
-            // ---------------------------------------------
-
             const token =
-                await user.getIdToken(
-                    true
-                );
+                await user.getIdToken(true);
 
-
-            if (!token) {
-
-                window.location.href =
-                    "/login-page";
-
-                return;
-            }
-
-
-            // ---------------------------------------------
-            // CHECK SUBSCRIPTION
-            // ---------------------------------------------
 
             const response =
                 await fetch(
                     "/check-subscription",
                     {
 
-                        method:
-                            "POST",
+                        method: "POST",
 
                         headers: {
 
@@ -800,37 +1989,10 @@ onAuthStateChanged(
                 await response.json();
 
 
-            console.log(
-                "SUBSCRIPTION:",
-                data
-            );
-
-
-            if (!response.ok) {
-
-                alert(
-                    data.error ||
-                    "Unable to verify subscription."
-                );
-
-                window.location.href =
-                    "/login-page";
-
-                return;
-            }
-
-
-            // ---------------------------------------------
-            // EXPIRED / NO SUBSCRIPTION
-            // ---------------------------------------------
-
             if (
+                !response.ok ||
                 data.active !== true
             ) {
-
-                alert(
-                    "Your subscription has expired or is not active."
-                );
 
                 window.location.href =
                     "/payment";
@@ -839,27 +2001,16 @@ onAuthStateChanged(
             }
 
 
-            // ---------------------------------------------
-            // ACTIVE SUBSCRIPTION
-            // ---------------------------------------------
-
-            console.log(
-                "DASHBOARD ACCESS GRANTED"
-            );
-
-
-            // SAVE UID
             localStorage.setItem(
                 "uid",
                 user.uid
             );
 
 
-            // SHOW HOSPITAL ID
             const hospitalId =
                 localStorage.getItem(
                     "hospitalId"
-                ) || "";
+                ) || user.uid;
 
 
             document.getElementById(
@@ -868,11 +2019,11 @@ onAuthStateChanged(
                 hospitalId;
 
 
-            // SHOW HOSPITAL NAME
             const hospitalName =
                 localStorage.getItem(
                     "hospitalName"
-                ) || "Hospital";
+                ) ||
+                "Hospital";
 
 
             document.getElementById(
@@ -881,14 +2032,19 @@ onAuthStateChanged(
                 hospitalName;
 
 
-            // LOAD STORED HOSPITAL INFO
-            loadSavedHospital();
+            document.getElementById(
+                "hospital_name"
+            ).value =
+                hospitalName;
+
+
+            await loadAnalytics();
+
 
         }
         catch(error) {
 
             console.error(
-                "DASHBOARD ERROR:",
                 error
             );
 
@@ -901,20 +2057,21 @@ onAuthStateChanged(
 );
 
 
-// =====================================================
-// SHOW SECTION
-// =====================================================
+/* ======================================================
+   SHOW PAGE
+====================================================== */
 
-window.showSection =
-function(id) {
+window.showPage =
+function(page, button) {
 
     document
         .querySelectorAll(".section")
         .forEach(
-            function(section) {
+            section => {
 
-                section.style.display =
-                    "none";
+                section.classList.remove(
+                    "active"
+                );
 
             }
         );
@@ -922,92 +2079,615 @@ function(id) {
 
     const selected =
         document.getElementById(
-            id
+            page
         );
 
 
     if (selected) {
 
-        selected.style.display =
-            "block";
+        selected.classList.add(
+            "active"
+        );
+
+    }
+
+
+    const titles = {
+
+        analytics:
+            "Analytics Overview",
+
+        hospital:
+            "Hospital Information",
+
+        doctors:
+            "Doctors"
+
+    };
+
+
+    document.getElementById(
+        "pageTitle"
+    ).innerText =
+        titles[page] ||
+        "Dashboard";
+
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(
+            btn => {
+
+                btn.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    if (button) {
+
+        button.classList.add(
+            "active"
+        );
 
     }
 
 };
 
 
-// =====================================================
-// OPEN APPOINTMENTS
-// =====================================================
+/* ======================================================
+   ANALYTICS
+====================================================== */
 
-window.openAppointments =
-function() {
+async function api(url) {
 
-    const uid =
-        localStorage.getItem(
-            "uid"
+    const response =
+        await fetch(url);
+
+
+    const data =
+        await response.json();
+
+
+    if (!response.ok ||
+        data.success !== true) {
+
+        throw new Error(
+            data.error ||
+            "Analytics API error"
+        );
+
+    }
+
+
+    return data;
+
+}
+
+
+window.loadAnalytics =
+async function() {
+
+    try {
+
+        hideError();
+
+
+        const hospitalId =
+            localStorage.getItem(
+                "hospitalId"
+            ) ||
+            localStorage.getItem(
+                "uid"
+            );
+
+
+        if (!hospitalId) {
+
+            throw new Error(
+                "Hospital ID not found"
+            );
+
+        }
+
+
+        /* =============================================
+           OVERVIEW
+        ============================================= */
+
+        const overview =
+            await api(
+                `/api/analytics/overview/${hospitalId}`
+            );
+
+
+        document.getElementById(
+            "totalPatients"
+        ).innerText =
+            overview.total_patients;
+
+
+        document.getElementById(
+            "todayAppointments"
+        ).innerText =
+            overview.today_appointments;
+
+
+        document.getElementById(
+            "malePatients"
+        ).innerText =
+            overview.male;
+
+
+        document.getElementById(
+            "femalePatients"
+        ).innerText =
+            overview.female;
+
+
+        /* =============================================
+           GENDER
+        ============================================= */
+
+        const gender =
+            await api(
+                `/api/analytics/gender/${hospitalId}`
+            );
+
+
+        createChart(
+            "genderChart",
+            "doughnut",
+            Object.keys(
+                gender.data
+            ),
+            Object.values(
+                gender.data
+            )
         );
 
 
-    if (!uid) {
+        /* =============================================
+           AGE
+        ============================================= */
 
-        alert(
-            "Login required!"
+        const age =
+            await api(
+                `/api/analytics/age/${hospitalId}`
+            );
+
+
+        const ageOrder = [
+
+            "0-18",
+            "19-30",
+            "31-45",
+            "46-60",
+            "60+",
+            "Unknown"
+
+        ];
+
+
+        const ageLabels =
+            ageOrder.filter(
+                x =>
+                    age.data[x] !== undefined
+            );
+
+
+        createChart(
+            "ageChart",
+            "bar",
+            ageLabels,
+            ageLabels.map(
+                x =>
+                    age.data[x]
+            )
         );
 
-        window.location.href =
-            "/login-page";
+
+        /* =============================================
+           DOCTORS
+        ============================================= */
+
+        const doctors =
+            await api(
+                `/api/analytics/doctors/${hospitalId}`
+            );
+
+
+        const doctorLabels =
+            Object.keys(
+                doctors.data
+            );
+
+
+        const doctorValues =
+            Object.values(
+                doctors.data
+            );
+
+
+        createChart(
+            "doctorChart",
+            "bar",
+            doctorLabels,
+            doctorValues,
+            true
+        );
+
+
+        buildDoctorTable(
+            doctors.data
+        );
+
+
+        /* =============================================
+           DAILY
+        ============================================= */
+
+        const daily =
+            await api(
+                `/api/analytics/daily/${hospitalId}`
+            );
+
+
+        createChart(
+            "dailyChart",
+            "line",
+            Object.keys(
+                daily.data
+            ),
+            Object.values(
+                daily.data
+            )
+        );
+
+
+        /* =============================================
+           TIME
+        ============================================= */
+
+        const time =
+            await api(
+                `/api/analytics/time/${hospitalId}`
+            );
+
+
+        createChart(
+            "timeChart",
+            "bar",
+            Object.keys(
+                time.data
+            ),
+            Object.values(
+                time.data
+            )
+        );
+
+
+        /* =============================================
+           LOCATION
+        ============================================= */
+
+        const location =
+            await api(
+                `/api/analytics/location/${hospitalId}`
+            );
+
+
+        const locationData =
+            Object.entries(
+                location.data
+            )
+            .slice(0,10);
+
+
+        createChart(
+            "locationChart",
+            "bar",
+            locationData.map(
+                x => x[0]
+            ),
+            locationData.map(
+                x => x[1]
+            ),
+            true
+        );
+
+
+        showToast(
+            "Analytics updated"
+        );
+
+    }
+    catch(error) {
+
+        console.error(
+            "ANALYTICS ERROR:",
+            error
+        );
+
+        showError(
+            error.message
+        );
+
+    }
+
+};
+
+
+/* ======================================================
+   CREATE CHART
+====================================================== */
+
+function createChart(
+    canvasId,
+    type,
+    labels,
+    values,
+    horizontal = false
+) {
+
+    const canvas =
+        document.getElementById(
+            canvasId
+        );
+
+
+    if (!canvas) return;
+
+
+    if (charts[canvasId]) {
+
+        charts[canvasId].destroy();
+
+    }
+
+
+    let options = {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+
+                position:
+                    type === "doughnut"
+                        ? "bottom"
+                        : "top",
+
+                labels: {
+
+                    usePointStyle:
+                        true,
+
+                    padding: 15
+
+                }
+
+            }
+
+        }
+
+    };
+
+
+    if (type !== "doughnut") {
+
+        options.scales = {
+
+            x: {
+
+                ticks: {
+
+                    maxRotation: 45,
+
+                    minRotation: 0
+
+                },
+
+                grid: {
+
+                    display: false
+
+                }
+
+            },
+
+            y: {
+
+                beginAtZero: true,
+
+                ticks: {
+
+                    precision: 0
+
+                }
+
+            }
+
+        };
+
+    }
+
+
+    if (horizontal) {
+
+        options.indexAxis = "y";
+
+    }
+
+
+    charts[canvasId] =
+        new Chart(
+            canvas,
+            {
+
+                type: type,
+
+                data: {
+
+                    labels: labels,
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Appointments",
+
+                            data: values,
+
+                            borderWidth: 2,
+
+                            borderRadius: 7,
+
+                            tension: 0.35,
+
+                            fill:
+                                type === "line",
+
+                            backgroundColor:
+
+                                type === "doughnut"
+
+                                ? [
+
+                                    "#2563eb",
+                                    "#ec4899",
+                                    "#f59e0b",
+                                    "#10b981",
+                                    "#8b5cf6",
+                                    "#06b6d4"
+
+                                ]
+
+                                : "#2563eb",
+
+                            borderColor:
+                                "#2563eb"
+
+                        }
+
+                    ]
+
+                },
+
+                options:
+                    options
+
+            }
+        );
+
+}
+
+
+/* ======================================================
+   DOCTOR TABLE
+====================================================== */
+
+function buildDoctorTable(data) {
+
+    const tbody =
+        document.getElementById(
+            "doctorTable"
+        );
+
+
+    tbody.innerHTML = "";
+
+
+    const doctors =
+        Object.entries(data);
+
+
+    if (!doctors.length) {
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="3">
+
+                    No appointment data available
+
+                </td>
+
+            </tr>
+
+        `;
 
         return;
     }
 
 
-    window.location.href =
-        "/appointments/" +
-        uid;
+    doctors.forEach(
+        function(item,index) {
 
-};
+            const doctor =
+                item[0];
 
-
-// =====================================================
-// OPEN FOLLOW-UPS
-// =====================================================
-
-window.openFollowups =
-function() {
-
-    const uid =
-        localStorage.getItem(
-            "uid"
-        );
+            const count =
+                item[1];
 
 
-    if (!uid) {
-
-        alert(
-            "Login required!"
-        );
-
-        window.location.href =
-            "/login-page";
-
-        return;
-    }
+            const row =
+                document.createElement(
+                    "tr"
+                );
 
 
-    window.location.href =
-        "/followups/" +
-        uid;
+            row.innerHTML = `
 
-};
+                <td>
+
+                    <span class="doctor-rank">
+
+                        ${index + 1}
+
+                    </span>
+
+                </td>
+
+                <td>
+
+                    ${escapeHtml(doctor)}
+
+                </td>
+
+                <td>
+
+                    <strong>
+
+                        ${count}
+
+                    </strong>
+
+                </td>
+
+            `;
 
 
-// =====================================================
-// ADD DOCTOR
-// =====================================================
+            tbody.appendChild(
+                row
+            );
 
-let doctorCount = 1;
+        }
+    );
 
+}
+
+
+/* ======================================================
+   ADD DOCTOR
+====================================================== */
 
 window.addDoctor =
 function() {
@@ -1015,116 +2695,135 @@ function() {
     doctorCount++;
 
 
-    const doctorSection =
+    const container =
         document.getElementById(
             "doctor-section"
         );
 
 
-    const newDoctor =
+    const box =
         document.createElement(
             "div"
         );
 
 
-    newDoctor.className =
+    box.className =
         "doctor-box";
 
 
-    newDoctor.innerHTML = `
+    box.innerHTML = `
 
-        <h3>
-            Doctor ${doctorCount}
-        </h3>
+        <div class="doctor-box-header">
 
-        <input
-            class="doctor_name"
-            placeholder="Doctor Name"
-        >
+            <div class="doctor-number">
 
-        <input
-            class="specialization"
-            placeholder="Specialization"
-        >
+                Doctor ${doctorCount}
 
-        <input
-            class="opd_time"
-            placeholder="OPD Time"
-        >
+            </div>
 
-        <textarea
-            class="doctor_info"
-            placeholder="Doctor Information"
-        ></textarea>
+            <button
+                type="button"
+                class="remove-btn"
+                onclick="this.closest('.doctor-box').remove()"
+            >
+                Remove
+            </button>
 
-        <button
-            type="button"
-            class="remove-doctor"
-            onclick="this.parentElement.remove()"
-        >
-            Remove
-        </button>
+        </div>
+
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label>
+                    Doctor Name
+                </label>
+
+                <input
+                    class="doctor_name"
+                    placeholder="Dr. Name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Specialization
+                </label>
+
+                <input
+                    class="specialization"
+                    placeholder="Cardiologist"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    OPD Time
+                </label>
+
+                <input
+                    class="opd_time"
+                    placeholder="10:00 AM - 2:00 PM"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Doctor Information
+                </label>
+
+                <input
+                    class="doctor_info"
+                    placeholder="Experience / information"
+                >
+
+            </div>
+
+        </div>
 
     `;
 
 
-    doctorSection.appendChild(
-        newDoctor
+    container.appendChild(
+        box
     );
 
 };
 
 
-// =====================================================
-// LOAD SAVED HOSPITAL
-// =====================================================
-
-async function loadSavedHospital() {
-
-    const uid =
-        localStorage.getItem(
-            "uid"
-        );
-
-
-    if (!uid) {
-
-        return;
-    }
-
-
-    /*
-      Your existing /hospital/<uid> route
-      returns HTML, not JSON.
-
-      Therefore we don't fetch it here.
-
-      The form will show stored local values.
-    */
-
-
-    const hospitalName =
-        localStorage.getItem(
-            "hospitalName"
-        ) || "";
-
-
-    document.getElementById(
-        "hospital_name"
-    ).value =
-        hospitalName;
-
-}
-
-
-// =====================================================
-// SAVE HOSPITAL
-// =====================================================
+/* ======================================================
+   SAVE HOSPITAL
+====================================================== */
 
 window.saveHospital =
 async function() {
 
     try {
+
+        if (!currentUser) {
+
+            throw new Error(
+                "Login session expired"
+            );
+
+        }
+
+
+        const token =
+            await currentUser.getIdToken(
+                true
+            );
+
 
         const uid =
             localStorage.getItem(
@@ -1134,56 +2833,15 @@ async function() {
 
         if (!uid) {
 
-            alert(
-                "Login required!"
+            throw new Error(
+                "User ID missing"
             );
 
-            window.location.href =
-                "/login-page";
-
-            return;
         }
 
-
-        // ---------------------------------------------
-        // CHECK FIREBASE USER
-        // ---------------------------------------------
-
-        if (!currentUser) {
-
-            alert(
-                "Login session expired."
-            );
-
-            window.location.href =
-                "/login-page";
-
-            return;
-        }
-
-
-        // ---------------------------------------------
-        // GET FRESH TOKEN
-        // ---------------------------------------------
-
-        const token =
-            await currentUser.getIdToken(
-                true
-            );
-
-
-        // ---------------------------------------------
-        // FORM DATA
-        // ---------------------------------------------
 
         const formData =
             new FormData();
-
-
-        formData.append(
-            "uid",
-            uid
-        );
 
 
         formData.append(
@@ -1226,81 +2884,66 @@ async function() {
         );
 
 
-        // ---------------------------------------------
-        // DOCTORS
-        // ---------------------------------------------
-
         const names =
             document.querySelectorAll(
                 ".doctor_name"
             );
 
 
-        const specializations =
+        const specs =
             document.querySelectorAll(
                 ".specialization"
             );
 
 
-        const opdTimes =
+        const times =
             document.querySelectorAll(
                 ".opd_time"
             );
 
 
-        const doctorInfos =
+        const infos =
             document.querySelectorAll(
                 ".doctor_info"
             );
 
 
         names.forEach(
-            function(element, index) {
+            function(input,index) {
 
                 formData.append(
                     "doctor_name",
-                    element.value.trim()
+                    input.value.trim()
                 );
 
 
                 formData.append(
                     "specialization",
-                    specializations[index]
-                        .value
-                        .trim()
+                    specs[index].value.trim()
                 );
 
 
                 formData.append(
                     "opd_time",
-                    opdTimes[index]
-                        .value
-                        .trim()
+                    times[index].value.trim()
                 );
 
 
                 formData.append(
                     "doctor_info",
-                    doctorInfos[index]
-                        .value
-                        .trim()
+                    infos[index].value.trim()
                 );
 
             }
         );
 
 
-        // ---------------------------------------------
-        // SEND TO VERCEL BACKEND
-        // ---------------------------------------------
-
         const response =
             await fetch(
                 "/save_hospital",
                 {
 
-                    method:
-                        "POST",
+                    method: "POST",
 
                     headers: {
 
@@ -1309,8 +2952,7 @@ async function() {
 
                     },
 
-                    body:
-                        formData
+                    body: formData
 
                 }
             );
@@ -1320,78 +2962,57 @@ async function() {
             await response.json();
 
 
-        console.log(
-            "SAVE HOSPITAL RESPONSE:",
-            data
+        if (
+            !response.ok
+        ) {
+
+            throw new Error(
+                data.error ||
+                "Unable to save hospital"
+            );
+
+        }
+
+
+        localStorage.setItem(
+            "hospitalName",
+            document.getElementById(
+                "hospital_name"
+            ).value.trim()
         );
 
 
-        // ---------------------------------------------
-        // SUCCESS
-        // ---------------------------------------------
-
-        if (response.ok) {
-
-            localStorage.setItem(
-                "hospitalName",
-                document.getElementById(
-                    "hospital_name"
-                ).value.trim()
-            );
+        document.getElementById(
+            "hospitalNameDisplay"
+        ).innerText =
+            document.getElementById(
+                "hospital_name"
+            ).value.trim();
 
 
-            alert(
-                "Hospital saved successfully."
-            );
+        showToast(
+            "Hospital saved successfully"
+        );
 
 
-            window.location.href =
-                "/hospital/" +
-                uid;
+        setTimeout(
+            () => {
 
+                loadAnalytics();
 
-            return;
-        }
-
-
-        // ---------------------------------------------
-        // EXPIRED SUBSCRIPTION
-        // ---------------------------------------------
-
-        if (
-            response.status === 403
-        ) {
-
-            alert(
-                data.error ||
-                "Your subscription has expired."
-            );
-
-
-            window.location.href =
-                "/payment";
-
-
-            return;
-        }
-
-
-        alert(
-            data.error ||
-            "Unable to save hospital."
+            },
+            800
         );
 
     }
     catch(error) {
 
         console.error(
-            "SAVE HOSPITAL ERROR:",
             error
         );
 
-
-        alert(
-            "Unable to connect to server."
+        showError(
+            error.message
         );
 
     }
@@ -1399,9 +3020,69 @@ async function() {
 };
 
 
-// =====================================================
-// LOGOUT
-// =====================================================
+/* ======================================================
+   APPOINTMENTS
+====================================================== */
+
+window.openAppointments =
+function() {
+
+    const uid =
+        localStorage.getItem(
+            "uid"
+        );
+
+
+    if (!uid) {
+
+        window.location.href =
+            "/login-page";
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "/appointments/" +
+        uid;
+
+};
+
+
+/* ======================================================
+   FOLLOWUPS
+====================================================== */
+
+window.openFollowups =
+function() {
+
+    const uid =
+        localStorage.getItem(
+            "uid"
+        );
+
+
+    if (!uid) {
+
+        window.location.href =
+            "/login-page";
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "/followups/" +
+        uid;
+
+};
+
+
+/* ======================================================
+   LOGOUT
+====================================================== */
 
 window.logout =
 async function() {
@@ -1433,12 +3114,7 @@ async function() {
     catch(error) {
 
         console.error(
-            "LOGOUT ERROR:",
             error
-        );
-
-        alert(
-            "Logout failed."
         );
 
     }
@@ -1446,15 +3122,111 @@ async function() {
 };
 
 
-// =====================================================
-// DEFAULT SECTION
-// =====================================================
+/* ======================================================
+   TOAST
+====================================================== */
 
-showSection(
-    "hospital"
-);
+function showToast(message) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.innerText =
+        message;
+
+
+    toast.style.display =
+        "block";
+
+
+    setTimeout(
+        function() {
+
+            toast.style.display =
+                "none";
+
+        },
+        2500
+    );
+
+}
+
+
+/* ======================================================
+   ERROR
+====================================================== */
+
+function showError(message) {
+
+    const box =
+        document.getElementById(
+            "errorBox"
+        );
+
+
+    box.innerText =
+        "⚠️ " + message;
+
+
+    box.style.display =
+        "block";
+
+}
+
+
+function hideError() {
+
+    document.getElementById(
+        "errorBox"
+    ).style.display =
+        "none";
+
+}
+
+
+/* ======================================================
+   HTML ESCAPE
+====================================================== */
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* ======================================================
+   INITIAL DOCTOR
+====================================================== */
+
+addDoctor();
+
 
 </script>
+
 
 </body>
 
