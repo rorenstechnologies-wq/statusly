@@ -1,137 +1,746 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0f766e"
+    >
+
     <title>Book Appointment</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
 
-<style>
+        * {
+            box-sizing: border-box;
+        }
 
-body {
-    margin:0;
-    font-family:Arial;
-    background:url("https://images.unsplash.com/photo-1586773860418-d37222d8fce3")
-    no-repeat center center/cover;
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+        }
 
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
+        body {
 
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
 
-.overlay {
+            min-height: 100vh;
 
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f766e 0%,
+                    #0e7490 45%,
+                    #164e63 100%
+                );
 
-    background:rgba(0,0,0,0.6);
+            color: #172033;
 
-}
+        }
 
 
-.card {
+        /* =====================================================
+           BACKGROUND
+        ===================================================== */
 
-    position:relative;
-    z-index:2;
+        .page-background {
 
-    background:rgba(255,255,255,0.12);
+            position: fixed;
 
-    backdrop-filter:blur(12px);
+            inset: 0;
 
-    padding:25px;
+            background:
+                linear-gradient(
+                    rgba(8, 35, 45, 0.70),
+                    rgba(8, 35, 45, 0.82)
+                ),
+                url(
+                    "https://images.unsplash.com/photo-1586773860418-d37222d8fce3"
+                )
+                center center /
+                cover no-repeat;
 
-    width:100%;
-    max-width:420px;
+            z-index: -2;
 
-    border-radius:15px;
+        }
 
-    color:white;
 
-    box-shadow:0 10px 25px rgba(0,0,0,0.4);
+        .page-glow {
 
-}
+            position: fixed;
 
+            width: 260px;
 
-h2 {
+            height: 260px;
 
-    text-align:center;
+            border-radius: 50%;
 
-}
+            background:
+                rgba(45, 212, 191, 0.18);
 
+            filter:
+                blur(70px);
 
-.hospital {
+            top: -80px;
 
-    text-align:center;
+            left: -80px;
 
-    margin-bottom:15px;
+            z-index: -1;
 
-    color:#00d4ff;
+        }
 
-    font-weight:bold;
 
-}
+        .page-glow-two {
 
+            position: fixed;
 
+            width: 280px;
 
-input,select,textarea {
+            height: 280px;
 
+            border-radius: 50%;
 
-    width:100%;
+            background:
+                rgba(56, 189, 248, 0.15);
 
-    padding:12px;
+            filter:
+                blur(75px);
 
-    margin:8px 0;
+            bottom: -100px;
 
-    border-radius:8px;
+            right: -100px;
 
-    border:none;
+            z-index: -1;
 
-    outline:none;
+        }
 
 
-}
+        /* =====================================================
+           PAGE
+        ===================================================== */
 
+        .page {
 
+            min-height: 100vh;
 
-button {
+            display: flex;
 
+            justify-content: center;
 
-    width:100%;
+            align-items: center;
 
-    padding:12px;
+            padding: 24px;
 
-    margin-top:10px;
+        }
 
-    background:#27ae60;
 
-    color:white;
+        /* =====================================================
+           CARD
+        ===================================================== */
 
-    border:none;
+        .appointment-card {
 
-    border-radius:8px;
+            width: 100%;
 
-    font-size:16px;
+            max-width: 510px;
 
-    cursor:pointer;
+            background:
+                rgba(255,255,255,0.97);
 
+            border-radius: 24px;
 
-}
+            overflow: hidden;
 
+            box-shadow:
+                0 25px 70px
+                rgba(0,0,0,0.30);
 
+            animation:
+                cardIn 0.55s ease;
 
-button:hover {
+        }
 
-    background:#1e8449;
 
-}
+        @keyframes cardIn {
 
+            from {
+                opacity: 0;
+                transform:
+                    translateY(24px)
+                    scale(0.98);
+            }
 
-</style>
+            to {
+                opacity: 1;
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
 
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .card-header {
+
+            position: relative;
+
+            padding: 28px 26px 24px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f766e,
+                    #0e7490
+                );
+
+            color: white;
+
+        }
+
+
+        .header-top {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+        }
+
+
+        .hospital-icon {
+
+            width: 52px;
+
+            height: 52px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 16px;
+
+            background:
+                rgba(255,255,255,0.16);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.22);
+
+            font-size: 25px;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .header-title {
+
+            min-width: 0;
+
+        }
+
+
+        .header-title h1 {
+
+            margin: 0;
+
+            font-size: 24px;
+
+            font-weight: 750;
+
+            letter-spacing:
+                -0.4px;
+
+        }
+
+
+        .header-title p {
+
+            margin: 5px 0 0;
+
+            font-size: 13px;
+
+            opacity: 0.84;
+
+        }
+
+
+        .hospital-name {
+
+            margin-top: 20px;
+
+            padding: 12px 14px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(255,255,255,0.12);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.15);
+
+            font-size: 14px;
+
+            line-height: 1.45;
+
+            word-break: break-word;
+
+        }
+
+
+        .hospital-name strong {
+
+            display: block;
+
+            margin-bottom: 3px;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.9px;
+
+            opacity: 0.72;
+
+        }
+
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .form-container {
+
+            padding: 26px;
+
+            background: white;
+
+        }
+
+
+        .section-label {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-bottom: 16px;
+
+            color: #334155;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+        }
+
+
+        .section-label span {
+
+            width: 28px;
+
+            height: 28px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background:
+                #e6fffb;
+
+            color:
+                #0f766e;
+
+            font-size: 14px;
+
+        }
+
+
+        /* =====================================================
+           INPUT GROUP
+        ===================================================== */
+
+        .field {
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .field label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #475569;
+
+            font-size: 13px;
+
+            font-weight: 650;
+
+        }
+
+
+        input,
+        select,
+        textarea {
+
+            width: 100%;
+
+            border: 1px solid #dbe4ea;
+
+            border-radius: 12px;
+
+            background: #f8fafc;
+
+            color: #172033;
+
+            font-family: inherit;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+
+        }
+
+
+        input,
+        select {
+
+            height: 48px;
+
+            padding:
+                0 14px;
+
+        }
+
+
+        textarea {
+
+            min-height: 105px;
+
+            padding:
+                13px 14px;
+
+            resize: vertical;
+
+        }
+
+
+        input::placeholder,
+        textarea::placeholder {
+
+            color: #94a3b8;
+
+        }
+
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+
+            border-color:
+                #0f766e;
+
+            background: white;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(15,118,110,0.10);
+
+        }
+
+
+        /* =====================================================
+           TWO COLUMN FIELDS
+        ===================================================== */
+
+        .two-columns {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 12px;
+
+        }
+
+
+        /* =====================================================
+           SUBMIT
+        ===================================================== */
+
+        .submit-btn {
+
+            width: 100%;
+
+            height: 52px;
+
+            margin-top: 8px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f766e,
+                    #0e7490
+                );
+
+            color: white;
+
+            font-family: inherit;
+
+            font-size: 16px;
+
+            font-weight: 750;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 22px
+                rgba(15,118,110,0.22);
+
+            transition:
+                transform 0.18s ease,
+                box-shadow 0.18s ease,
+                opacity 0.18s ease;
+
+        }
+
+
+        .submit-btn:hover {
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 14px 25px
+                rgba(15,118,110,0.28);
+
+        }
+
+
+        .submit-btn:active {
+
+            transform:
+                translateY(0);
+
+        }
+
+
+        .submit-btn:disabled {
+
+            opacity: 0.65;
+
+            cursor: wait;
+
+            transform: none;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .secure-note {
+
+            margin-top: 16px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 7px;
+
+            color: #64748b;
+
+            font-size: 11px;
+
+            text-align: center;
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .page {
+
+                padding: 12px;
+
+                align-items: flex-start;
+
+            }
+
+
+            .appointment-card {
+
+                margin:
+                    8px 0;
+
+                border-radius:
+                    20px;
+
+            }
+
+
+            .card-header {
+
+                padding:
+                    22px 18px 19px;
+
+            }
+
+
+            .header-title h1 {
+
+                font-size: 21px;
+
+            }
+
+
+            .header-title p {
+
+                font-size: 12px;
+
+            }
+
+
+            .hospital-icon {
+
+                width: 46px;
+
+                height: 46px;
+
+                border-radius: 14px;
+
+            }
+
+
+            .form-container {
+
+                padding:
+                    20px 16px 18px;
+
+            }
+
+
+            .two-columns {
+
+                grid-template-columns:
+                    1fr;
+
+                gap: 0;
+
+            }
+
+
+            input,
+            select {
+
+                height: 48px;
+
+            }
+
+
+            textarea {
+
+                min-height: 100px;
+
+            }
+
+
+            .submit-btn {
+
+                height: 52px;
+
+            }
+
+        }
+
+
+        @media (max-width: 380px) {
+
+            .page {
+
+                padding: 8px;
+
+            }
+
+
+            .card-header {
+
+                padding:
+                    19px 15px;
+
+            }
+
+
+            .form-container {
+
+                padding:
+                    18px 13px;
+
+            }
+
+
+            .header-title h1 {
+
+                font-size: 19px;
+
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -139,191 +748,392 @@ button:hover {
 <body>
 
 
-<div class="overlay"></div>
+<div class="page-background"></div>
+
+<div class="page-glow"></div>
+
+<div class="page-glow-two"></div>
 
 
-<div class="card">
+<div class="page">
 
 
-<h2>Book Appointment</h2>
+    <div class="appointment-card">
 
 
-<div class="hospital">
+        <!-- =================================================
+             HEADER
+        ================================================= -->
 
-{{ hospital.hospital_name }}
+        <div class="card-header">
+
+
+            <div class="header-top">
+
+
+                <div class="hospital-icon">
+                    🏥
+                </div>
+
+
+                <div class="header-title">
+
+                    <h1>
+                        Book Appointment
+                    </h1>
+
+                    <p>
+                        Schedule your visit quickly and easily
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="hospital-name">
+
+                <strong>
+                    Hospital
+                </strong>
+
+                {{ hospital.hospital_name }}
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             FORM
+        ================================================= -->
+
+        <div class="form-container">
+
+
+            <div class="section-label">
+
+                <span>
+                    ✦
+                </span>
+
+                Appointment Details
+
+            </div>
+
+
+            <form
+                action="/book_appointment"
+                method="POST"
+                id="appointmentForm"
+            >
+
+
+                <input
+                    type="hidden"
+                    name="hospital_id"
+                    value="{{ uid }}"
+                >
+
+
+                <input
+                    type="hidden"
+                    name="fcm_token"
+                    id="fcm_token"
+                >
+
+
+                <!-- =================================================
+                     DOCTOR
+                ================================================= -->
+
+                <div class="field">
+
+                    <label>
+                        Select Doctor
+                    </label>
+
+                    <select
+                        name="doctor_name"
+                        required
+                    >
+
+                        <option value="">
+                            Choose a doctor
+                        </option>
+
+
+                        {% for doctor in hospital.doctors %}
+
+                        <option
+                            value="{{ doctor.doctor_name }}"
+                        >
+
+                            Dr. {{ doctor.doctor_name }}
+                            —
+                            {{ doctor.specialization }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- =================================================
+                     PATIENT NAME
+                ================================================= -->
+
+                <div class="field">
+
+                    <label>
+                        Patient Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="patient_name"
+                        placeholder="Enter patient name"
+                        autocomplete="name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- =================================================
+                     GENDER + AGE
+                ================================================= -->
+
+                <div class="two-columns">
+
+
+                    <div class="field">
+
+                        <label>
+                            Gender
+                        </label>
+
+                        <select
+                            name="gender"
+                            required
+                        >
+
+                            <option value="">
+                                Select gender
+                            </option>
+
+                            <option value="Male">
+                                Male
+                            </option>
+
+                            <option value="Female">
+                                Female
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Age
+                        </label>
+
+                        <input
+                            type="number"
+                            name="age"
+                            placeholder="Age"
+                            min="1"
+                            max="120"
+                            inputmode="numeric"
+                            required
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =================================================
+                     MOBILE
+                ================================================= -->
+
+                <div class="field">
+
+                    <label>
+                        Mobile Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        name="mobile"
+                        placeholder="10-digit mobile number"
+                        autocomplete="tel"
+                        inputmode="numeric"
+                        maxlength="10"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- =================================================
+                     ADDRESS
+                ================================================= -->
+
+                <div class="field">
+
+                    <label>
+                        Address
+                    </label>
+
+                    <textarea
+                        name="address"
+                        placeholder="Enter patient address"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- =================================================
+                     DATE
+                ================================================= -->
+
+                <div class="field">
+
+                    <label>
+                        Appointment Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="appointment_date"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- =================================================
+                     BUTTON
+                ================================================= -->
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                    id="submitBtn"
+                >
+                    Book Appointment
+                </button>
+
+
+                <div class="secure-note">
+
+                    🔒 Your appointment information is handled securely.
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
 
 </div>
 
 
-
-<form action="/book_appointment" method="POST">
-
-
-<input type="hidden" 
-name="hospital_id"
-value="{{ uid }}">
-
-
-
-<!-- Firebase Cloud Messaging Token -->
-
-<input type="hidden"
-name="fcm_token"
-id="fcm_token">
-
-
-
-<select name="doctor_name" required>
-
-<option value="">
-Select Doctor
-</option>
-
-
-{% for doctor in hospital.doctors %}
-
-<option value="{{doctor.doctor_name}}">
-
-Dr. {{doctor.doctor_name}} 
-- {{doctor.specialization}}
-
-</option>
-
-{% endfor %}
-
-
-</select>
-
-
-
-
-<input 
-type="text"
-name="patient_name"
-placeholder="Patient Name"
-required>
-
-
-
-
-<select name="gender" required>
-
-<option value="">
-Select Gender
-</option>
-
-<option>Male</option>
-
-<option>Female</option>
-
-<option>Other</option>
-
-</select>
-
-
-
-
-<input 
-type="number"
-name="age"
-placeholder="Age"
-required>
-
-
-
-
-<input 
-type="tel"
-name="mobile"
-placeholder="Mobile Number"
-required>
-
-
-
-
-<textarea
-name="address"
-placeholder="Address"
-required></textarea>
-
-
-
-
-<input
-type="date"
-name="appointment_date"
-required>
-
-
-
-<button type="submit">
-
-Book Appointment
-
-</button>
-
-
-
-</form>
-
-
-</div>
 <script type="module">
 
-import { initializeApp } 
-from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+import {
+    initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
+
 
 import {
     getMessaging,
     getToken,
     onMessage
 }
-from "https://www.gstatic.com/firebasejs/12.17.0/firebase-messaging.js";
+from
+"https://www.gstatic.com/firebasejs/12.17.0/firebase-messaging.js";
 
+
+// =====================================================
+// FIREBASE CONFIG
+// =====================================================
 
 const firebaseConfig = {
 
-    apiKey: "AIzaSyDbHoUVO_oXHCnY040sBLOiXVS6s6xJEb8",
+    apiKey:
+        "AIzaSyDbHoUVO_oXHCnY040sBLOiXVS6s6xJEb8",
 
-    authDomain: "hospital-57fc8.firebaseapp.com",
+    authDomain:
+        "hospital-57fc8.firebaseapp.com",
 
-    databaseURL: "https://hospital-57fc8-default-rtdb.firebaseio.com",
+    databaseURL:
+        "https://hospital-57fc8-default-rtdb.firebaseio.com",
 
-    projectId: "hospital-57fc8",
+    projectId:
+        "hospital-57fc8",
 
-    storageBucket: "hospital-57fc8.firebasestorage.app",
+    storageBucket:
+        "hospital-57fc8.firebasestorage.app",
 
-    messagingSenderId: "711314420912",
+    messagingSenderId:
+        "711314420912",
 
-    appId: "1:711314420912:web:14ec889664980679a13775"
+    appId:
+        "1:711314420912:web:14ec889664980679a13775"
 
 };
 
 
-
-const app = initializeApp(firebaseConfig);
-
-const messaging = getMessaging(app);
-
-
-
-async function initFCM(){
+const app =
+    initializeApp(
+        firebaseConfig
+    );
 
 
-    try{
+const messaging =
+    getMessaging(
+        app
+    );
 
 
-        // Register service worker
+// =====================================================
+// FCM INITIALIZATION
+// =====================================================
 
-        const registration = await navigator.serviceWorker.register(
+async function initFCM() {
 
-            "/firebase-messaging-sw.js",
+    try {
 
-            {
-                scope:"/"
-            }
-
-        );
+        const registration =
+            await navigator.serviceWorker.register(
+                "/firebase-messaging-sw.js",
+                {
+                    scope: "/"
+                }
+            );
 
 
         await navigator.serviceWorker.ready;
@@ -334,18 +1144,29 @@ async function initFCM(){
         );
 
 
-
-        // Notification permission
-
-        const permission =
-        await Notification.requestPermission();
+        let permission =
+            Notification.permission;
 
 
+        if (
+            permission ===
+            "default"
+        ) {
 
-        if(permission !== "granted"){
+            permission =
+                await Notification.requestPermission();
+
+        }
+
+
+        if (
+            permission !==
+            "granted"
+        ) {
 
             console.log(
-                "Notification Permission Denied"
+                "Notification permission:",
+                permission
             );
 
             return;
@@ -353,28 +1174,22 @@ async function initFCM(){
         }
 
 
+        const token =
+            await getToken(
+                messaging,
+                {
 
-        // Generate FCM Token
+                    vapidKey:
+                        "BBIL-L4suxk0pq4CIojiB6lurKy8GjoDhRaFWnZkXEfHV-I8vn1AIRhTYPnFvL40YNzLrjWLUgoQc00m4D68HLw",
 
-        const token = await getToken(
-            messaging,
-            {
+                    serviceWorkerRegistration:
+                        registration
 
-                vapidKey:
-                "BBIL-L4suxk0pq4CIojiB6lurKy8GjoDhRaFWnZkXEfHV-I8vn1AIRhTYPnFvL40YNzLrjWLUgoQc00m4D68HLw",
-
-
-                serviceWorkerRegistration:
-                registration
-
-            }
-
-        );
+                }
+            );
 
 
-
-        if(token){
-
+        if (token) {
 
             console.log(
                 "FCM TOKEN:",
@@ -384,23 +1199,19 @@ async function initFCM(){
 
             document.getElementById(
                 "fcm_token"
-            ).value = token;
+            ).value =
+                token;
 
-
-        }
-        else{
-
+        } else {
 
             console.log(
-                "TOKEN NOT GENERATED"
+                "FCM TOKEN NOT GENERATED"
             );
-
 
         }
 
-
     }
-    catch(error){
+    catch(error) {
 
         console.error(
             "FCM ERROR:",
@@ -409,22 +1220,19 @@ async function initFCM(){
 
     }
 
-
 }
-
 
 
 initFCM();
 
 
-
-
-// Foreground notification
+// =====================================================
+// FOREGROUND NOTIFICATION
+// =====================================================
 
 onMessage(
     messaging,
-    (payload)=>{
-
+    function(payload) {
 
         console.log(
             "FOREGROUND MESSAGE:",
@@ -432,104 +1240,79 @@ onMessage(
         );
 
 
-
         const title =
-        payload.notification?.title ||
-        payload.data?.title ||
-        "Hospital Reminder";
-
+            payload.notification?.title ||
+            payload.data?.title ||
+            "Hospital Reminder";
 
 
         const body =
-        payload.notification?.body ||
-        payload.data?.body ||
-        "Follow-up Reminder";
+            payload.notification?.body ||
+            payload.data?.body ||
+            "You have a hospital reminder.";
 
 
+        if (
+            Notification.permission ===
+            "granted"
+        ) {
 
-        new Notification(
+            new Notification(
+                title,
+                {
+                    body:
+                        body,
 
-            title,
+                    icon:
+                        "/static/icon.png"
+                }
+            );
 
-            {
-
-                body:body,
-
-                icon:"/static/icon.png"
-
-            }
-
-        );
-
+        }
 
     }
 );
 
 
+// =====================================================
+// FORM
+// =====================================================
 
-
-// Receive message from service worker
-
-navigator.serviceWorker.addEventListener(
-
-"message",
-
-(event)=>{
-
-
-    console.log(
-
-        "SERVICE WORKER MESSAGE:",
-
-        event.data
-
+const form =
+    document.getElementById(
+        "appointmentForm"
     );
 
 
-}
-
-);
-
-
-
-
-// Stop form until token generated
-
-document.querySelector("form")
-.addEventListener(
-
-"submit",
-
-function(e){
-
-
-    const token =
+const submitBtn =
     document.getElementById(
-        "fcm_token"
-    ).value;
+        "submitBtn"
+    );
 
 
+form.addEventListener(
+    "submit",
+    function() {
 
-    if(!token){
+        /*
+            Do NOT block booking when
+            notification permission is denied.
 
+            FCM is optional.
+        */
 
-        e.preventDefault();
+        submitBtn.disabled =
+            true;
 
-
-        alert(
-            "Please wait... Notification token generating"
-        );
-
+        submitBtn.innerText =
+            "Booking Appointment...";
 
     }
-
-
-}
-
 );
 
-
 </script>
+
+
 </body>
 
 </html>
