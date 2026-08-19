@@ -102,27 +102,29 @@ AISENSY_FOLLOWUP_CAMPAIGN = (
 # CASHFREE CONFIGURATION
 # ============================================================
 CASHFREE_CLIENT_ID = os.environ.get(
-    "CASHFREE_CLIENT_ID"
-)
+    "CASHFREE_CLIENT_ID",
+    ""
+).strip()
 
 CASHFREE_CLIENT_SECRET = os.environ.get(
-    "CASHFREE_CLIENT_SECRET"
-)
+    "CASHFREE_CLIENT_SECRET",
+    ""
+).strip()
 
 CASHFREE_BASE_URL = os.environ.get(
     "CASHFREE_BASE_URL",
     "https://api.cashfree.com/pg"
-).rstrip("/")
+).strip().rstrip("/")
 
 CASHFREE_API_VERSION = os.environ.get(
     "CASHFREE_API_VERSION",
     "2025-01-01"
-)
+).strip()
 
 STATUSLY_BASE_URL = os.environ.get(
     "STATUSLY_BASE_URL",
     "https://statusly.in"
-).rstrip("/")
+).strip().rstrip("/")
 # ============================================================
 # SUBSCRIPTION PLANS
 # ============================================================
