@@ -1,214 +1,1492 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hospital Info</title>
 
-<style>
-/* Reset */
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    overflow-x: hidden;
-}
+    <meta charset="UTF-8">
 
-/* =========================
-   BACKGROUND ANIMATION
-========================= */
-.bg-animation {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    background: linear-gradient(-45deg, #2193b0, #6dd5ed, #1d976c, #93f9b9);
-    background-size: 400% 400%;
-    animation: gradientMove 10s ease infinite;
-}
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    >
 
-@keyframes gradientMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+    <meta
+        name="theme-color"
+        content="#ffffff"
+    >
 
-/* Floating bubbles */
-.bubble {
-    position: absolute;
-    bottom: -100px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 50%;
-    animation: floatUp 15s infinite linear;
-}
+    <meta
+        name="apple-mobile-web-app-capable"
+        content="yes"
+    >
 
-@keyframes floatUp {
-    from {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-    to {
-        transform: translateY(-120vh) scale(1.5);
-        opacity: 0;
-    }
-}
+    <title>
+        {{ hospital.hospital_name }} | Statusly
+    </title>
 
-/* =========================
-   HEADER
-========================= */
-h1 {
-    margin: 0;
-    padding: 20px;
-    text-align: center;
-    color: white;
-    background: rgba(0,0,0,0.2);
-    backdrop-filter: blur(5px);
-    animation: slideDown 0.8s ease-in-out;
-}
 
-@keyframes slideDown {
-    from { transform: translateY(-30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
+    <style>
 
-/* =========================
-   CONTAINER
-========================= */
-.container {
-    max-width: 900px;
-    margin: auto;
-    padding: 15px;
-}
+        /* =====================================================
+           RESET
+        ===================================================== */
 
-/* Info boxes */
-p {
-    background: white;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 8px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    animation: fadeUp 0.6s ease forwards;
-    opacity: 0;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-p:nth-of-type(1) { animation-delay: 0.1s; }
-p:nth-of-type(2) { animation-delay: 0.2s; }
-p:nth-of-type(3) { animation-delay: 0.3s; }
-p:nth-of-type(4) { animation-delay: 0.4s; }
 
-@keyframes fadeUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
+        html {
+            scroll-behavior: smooth;
+        }
 
-/* =========================
-   DOCTOR CARDS
-========================= */
-h2 {
-    margin-top: 20px;
-    padding-left: 10px;
-    border-left: 5px solid #fff;
-    color: white;
-}
 
-.doctor {
-    background: white;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    transition: 0.3s ease;
-    animation: fadeUp 0.6s ease forwards;
-    opacity: 0;
-}
+        body {
 
-.doctor:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-}
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
 
-/* Stagger animation */
-.doctor:nth-child(1) { animation-delay: 0.1s; }
-.doctor:nth-child(2) { animation-delay: 0.2s; }
-.doctor:nth-child(3) { animation-delay: 0.3s; }
-.doctor:nth-child(4) { animation-delay: 0.4s; }
+            background: #f5f7fa;
 
-/* =========================
-   BUTTON
-========================= */
-a {
-    display: inline-block;
-    margin: 20px 0;
-    padding: 12px 18px;
-    background: #1d976c;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: 0.3s;
-    animation: pulse 2s infinite;
-}
+            color: #17212b;
 
-a:hover {
-    transform: scale(1.05);
-    background: #137a55;
-}
+            line-height: 1.5;
 
-@keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(29,151,108,0.5); }
-    70% { box-shadow: 0 0 0 10px rgba(29,151,108,0); }
-    100% { box-shadow: 0 0 0 0 rgba(29,151,108,0); }
-}
+            overflow-x: hidden;
 
-/* Mobile */
-@media (max-width: 600px) {
-    h1 {
-        font-size: 18px;
-    }
-}
-</style>
+            -webkit-font-smoothing: antialiased;
+
+        }
+
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* =====================================================
+           TOP NAVIGATION
+        ===================================================== */
+
+        .topbar {
+
+            width: 100%;
+
+            height: 60px;
+
+            background: rgba(255, 255, 255, 0.97);
+
+            border-bottom:
+                1px solid #e7eaed;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding:
+                0 14px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+
+            backdrop-filter: blur(10px);
+
+        }
+
+
+        /* =====================================================
+           STATUSLY BRAND
+        ===================================================== */
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            min-width: 0;
+
+        }
+
+
+        .brand-logo {
+
+            width: 34px;
+
+            height: 34px;
+
+            object-fit: contain;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .brand-name {
+
+            font-size: 19px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.5px;
+
+            color: #12395b;
+
+        }
+
+
+        .brand-name span {
+
+            color: #18a66b;
+
+        }
+
+
+        /* =====================================================
+           LIVE STATUS
+        ===================================================== */
+
+        .live-status {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            background: #ecf9f3;
+
+            color: #168558;
+
+            padding:
+                6px 9px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+
+        }
+
+
+        .live-dot {
+
+            width: 7px;
+
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #18a66b;
+
+            flex-shrink: 0;
+
+        }
+
+
+        /* =====================================================
+           MAIN PAGE
+        ===================================================== */
+
+        .page {
+
+            width: 100%;
+
+            max-width: 1180px;
+
+            margin: 0 auto;
+
+            padding:
+                14px 12px 35px;
+
+        }
+
+
+        /* =====================================================
+           HOSPITAL HEADER
+        ===================================================== */
+
+        .hospital-header {
+
+            background: #ffffff;
+
+            border:
+                1px solid #e4e8ec;
+
+            border-radius: 16px;
+
+            padding: 17px;
+
+            box-shadow:
+                0 2px 10px
+                rgba(16, 24, 40, 0.04);
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .hospital-left {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 12px;
+
+        }
+
+
+        .hospital-icon {
+
+            width: 48px;
+
+            height: 48px;
+
+            min-width: 48px;
+
+            border-radius: 12px;
+
+            background: #eaf7f2;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 23px;
+
+        }
+
+
+        .hospital-title {
+
+            min-width: 0;
+
+        }
+
+
+        .hospital-title h1 {
+
+            font-size: 20px;
+
+            line-height: 1.25;
+
+            font-weight: 750;
+
+            color: #152536;
+
+            overflow-wrap: anywhere;
+
+        }
+
+
+        .hospital-title p {
+
+            margin-top: 4px;
+
+            font-size: 12px;
+
+            color: #71808c;
+
+        }
+
+
+        .hospital-live {
+
+            width: 100%;
+
+            margin-top: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 7px;
+
+            background: #ecf9f3;
+
+            color: #168558;
+
+            padding: 9px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        /* =====================================================
+           SECTION TITLE
+        ===================================================== */
+
+        .section-title {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin:
+                20px 2px 10px;
+
+        }
+
+
+        .section-title h2 {
+
+            font-size: 17px;
+
+            font-weight: 750;
+
+            color: #172b3d;
+
+        }
+
+
+        .section-title span {
+
+            font-size: 11px;
+
+            color: #89949d;
+
+            white-space: nowrap;
+
+        }
+
+
+        /* =====================================================
+           INFORMATION GRID
+        ===================================================== */
+
+        .info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 9px;
+
+        }
+
+
+        .info-card {
+
+            background: #ffffff;
+
+            border:
+                1px solid #e4e8ec;
+
+            border-radius: 13px;
+
+            padding: 14px;
+
+            min-width: 0;
+
+        }
+
+
+        .info-icon {
+
+            width: 32px;
+
+            height: 32px;
+
+            border-radius: 9px;
+
+            background: #f1f6fa;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 15px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .info-label {
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            color: #87929c;
+
+            text-transform: uppercase;
+
+            letter-spacing: .4px;
+
+        }
+
+
+        .info-value {
+
+            margin-top: 3px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            color: #1b2c3d;
+
+            overflow-wrap: anywhere;
+
+        }
+
+
+        .status-open {
+
+            color: #168b61 !important;
+
+        }
+
+
+        /* =====================================================
+           ABOUT HOSPITAL
+        ===================================================== */
+
+        .about-card {
+
+            background: #ffffff;
+
+            border:
+                1px solid #e4e8ec;
+
+            border-radius: 13px;
+
+            padding: 15px;
+
+        }
+
+
+        .about-card p {
+
+            font-size: 13px;
+
+            color: #5e6c77;
+
+            line-height: 1.65;
+
+            overflow-wrap: anywhere;
+
+        }
+
+
+        /* =====================================================
+           DOCTORS
+        ===================================================== */
+
+        .doctors-grid {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 9px;
+
+        }
+
+
+        .doctor-card {
+
+            width: 100%;
+
+            background: #ffffff;
+
+            border:
+                1px solid #e4e8ec;
+
+            border-radius: 14px;
+
+            padding: 14px;
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 11px;
+
+            min-width: 0;
+
+            box-shadow:
+                0 1px 5px
+                rgba(16, 24, 40, 0.025);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+
+        }
+
+
+        .doctor-card:active {
+
+            transform: scale(0.99);
+
+        }
+
+
+        .doctor-avatar {
+
+            width: 44px;
+
+            height: 44px;
+
+            min-width: 44px;
+
+            border-radius: 11px;
+
+            background: #e8f6f0;
+
+            color: #168b61;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+        }
+
+
+        .doctor-content {
+
+            min-width: 0;
+
+            flex: 1;
+
+        }
+
+
+        .doctor-name {
+
+            font-size: 14px;
+
+            font-weight: 750;
+
+            color: #192b3c;
+
+            overflow-wrap: anywhere;
+
+        }
+
+
+        .doctor-specialization {
+
+            margin-top: 2px;
+
+            color: #168d63;
+
+            font-size: 12px;
+
+            font-weight: 650;
+
+            overflow-wrap: anywhere;
+
+        }
+
+
+        .doctor-details {
+
+            margin-top: 9px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 5px;
+
+        }
+
+
+        .doctor-detail {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 6px;
+
+            color: #687782;
+
+            font-size: 11px;
+
+            min-width: 0;
+
+        }
+
+
+        .doctor-detail span:last-child {
+
+            overflow-wrap: anywhere;
+
+        }
+
+
+        /* =====================================================
+           EMPTY DOCTORS
+        ===================================================== */
+
+        .empty-state {
+
+            background: #ffffff;
+
+            border:
+                1px dashed #d5dce2;
+
+            border-radius: 14px;
+
+            padding:
+                28px 15px;
+
+            text-align: center;
+
+            color: #7c8993;
+
+            font-size: 13px;
+
+        }
+
+
+        /* =====================================================
+           BOOK APPOINTMENT
+        ===================================================== */
+
+        .appointment-section {
+
+            margin-top: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #123f63,
+                    #0d6b5f
+                );
+
+            border-radius: 16px;
+
+            padding: 18px;
+
+            box-shadow:
+                0 8px 22px
+                rgba(18, 63, 99, 0.16);
+
+        }
+
+
+        .appointment-text h2 {
+
+            color: #ffffff;
+
+            font-size: 17px;
+
+            margin-bottom: 4px;
+
+        }
+
+
+        .appointment-text p {
+
+            color:
+                rgba(255, 255, 255, 0.75);
+
+            font-size: 12px;
+
+            margin-bottom: 14px;
+
+        }
+
+
+        .book-btn {
+
+            width: 100%;
+
+            min-height: 50px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            background: #ffffff;
+
+            color: #123f63;
+
+            border-radius: 11px;
+
+            font-size: 14px;
+
+            font-weight: 750;
+
+            transition:
+                transform 0.15s ease;
+
+        }
+
+
+        .book-btn:active {
+
+            transform: scale(0.98);
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+
+            text-align: center;
+
+            padding:
+                28px 10px 15px;
+
+            color: #8a949d;
+
+            font-size: 11px;
+
+            line-height: 1.7;
+
+        }
+
+
+        .footer-powered {
+
+            color: #8a949d;
+
+        }
+
+
+        .footer-powered strong {
+
+            color: #40515f;
+
+            font-weight: 700;
+
+        }
+
+
+        .footer-tagline {
+
+            margin-top: 2px;
+
+            color: #a0a9b0;
+
+            font-size: 10px;
+
+        }
+
+
+        /* =====================================================
+           SMALL PHONE
+        ===================================================== */
+
+        @media (max-width: 360px) {
+
+            .page {
+
+                padding-left: 9px;
+
+                padding-right: 9px;
+
+            }
+
+
+            .topbar {
+
+                padding:
+                    0 10px;
+
+            }
+
+
+            .brand-name {
+
+                font-size: 17px;
+
+            }
+
+
+            .hospital-header {
+
+                padding: 14px;
+
+            }
+
+
+            .hospital-title h1 {
+
+                font-size: 18px;
+
+            }
+
+
+            .info-card {
+
+                padding: 11px;
+
+            }
+
+
+            .info-value {
+
+                font-size: 12px;
+
+            }
+
+
+            .doctor-card {
+
+                padding: 12px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           TABLET
+        ===================================================== */
+
+        @media (min-width: 600px) {
+
+            .page {
+
+                padding:
+                    24px 20px 45px;
+
+            }
+
+
+            .hospital-header {
+
+                padding: 24px;
+
+            }
+
+
+            .hospital-live {
+
+                width: auto;
+
+            }
+
+
+            .doctors-grid {
+
+                display: grid;
+
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+
+            }
+
+
+            .appointment-section {
+
+                display: flex;
+
+                align-items: center;
+
+                justify-content: space-between;
+
+                gap: 20px;
+
+            }
+
+
+            .appointment-text p {
+
+                margin-bottom: 0;
+
+            }
+
+
+            .book-btn {
+
+                width: auto;
+
+                min-width: 190px;
+
+                padding:
+                    0 22px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           DESKTOP
+        ===================================================== */
+
+        @media (min-width: 900px) {
+
+            .topbar {
+
+                height: 72px;
+
+                padding:
+                    0 32px;
+
+            }
+
+
+            .page {
+
+                padding:
+                    32px 24px 60px;
+
+            }
+
+
+            .hospital-header {
+
+                display: flex;
+
+                align-items: center;
+
+                justify-content: space-between;
+
+                padding: 28px;
+
+            }
+
+
+            .hospital-live {
+
+                margin-top: 0;
+
+            }
+
+
+            .info-grid {
+
+                grid-template-columns:
+                    repeat(4, minmax(0, 1fr));
+
+            }
+
+
+            .hospital-title h1 {
+
+                font-size: 28px;
+
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-<!-- BACKGROUND -->
-<div class="bg-animation"></div>
 
-<!-- FLOATING BUBBLES -->
-<div class="bubble" style="left:10%; width:40px; height:40px; animation-duration:12s;"></div>
-<div class="bubble" style="left:25%; width:60px; height:60px; animation-duration:18s;"></div>
-<div class="bubble" style="left:50%; width:30px; height:30px; animation-duration:10s;"></div>
-<div class="bubble" style="left:70%; width:50px; height:50px; animation-duration:16s;"></div>
-<div class="bubble" style="left:85%; width:35px; height:35px; animation-duration:14s;"></div>
+    <!-- =====================================================
+         STATUSLY HEADER
+    ====================================================== -->
 
-<!-- CONTENT -->
-<h1>{{ hospital.hospital_name }}</h1>
+    <header class="topbar">
 
-<div class="container">
 
-<p>Date: {{ hospital.date }}</p>
-<p>Open: {{ hospital.open_time }}</p>
-<p>Close: {{ hospital.close_time }}</p>
-<p>Info: {{ hospital.info }}</p>
+        <div class="brand">
 
-<h2>Doctors</h2>
 
-{% for doctor in hospital.doctors %}
-    <div class="doctor">
-        <p><b>Name:</b> {{ doctor.doctor_name }}</p>
-        <p><b>Specialization:</b> {{ doctor.specialization }}</p>
-        <p><b>OPD Time:</b> {{ doctor.opd_time }}</p>
-        <p><b>Info:</b> {{ doctor.doctor_info }}</p>
-    </div>
-{% endfor %}
+            <img
+                class="brand-logo"
+                src="{{ url_for('static', filename='statusly-logo.png') }}"
+                alt="Statusly"
+            >
 
-<a href="/hospital/{{ uid }}/book">
-    👉 Book Appointment
-</a>
-</a>
 
-</div>
+            <div class="brand-name">
+
+                Status<span>ly</span>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="live-status">
+
+            <span class="live-dot"></span>
+
+            Live
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="page">
+
+
+        <!-- =================================================
+             HOSPITAL HEADER
+        ================================================== -->
+
+        <section class="hospital-header">
+
+
+            <div class="hospital-left">
+
+
+                <div class="hospital-icon">
+
+                    🏥
+
+                </div>
+
+
+                <div class="hospital-title">
+
+                    <h1>
+                        {{ hospital.hospital_name }}
+                    </h1>
+
+
+                    <p>
+                        Hospital information & doctor availability
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+            <div class="hospital-live">
+
+                <span class="live-dot"></span>
+
+                Hospital Information Live
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             TODAY'S INFORMATION
+        ================================================== -->
+
+        <div class="section-title">
+
+
+            <h2>
+                Today's Information
+            </h2>
+
+
+            <span>
+                Updated
+            </span>
+
+
+        </div>
+
+
+        <section class="info-grid">
+
+
+            <!-- DATE -->
+
+            <div class="info-card">
+
+
+                <div class="info-icon">
+                    📅
+                </div>
+
+
+                <div class="info-label">
+                    Date
+                </div>
+
+
+                <div class="info-value">
+                    {{ hospital.date }}
+                </div>
+
+
+            </div>
+
+
+
+            <!-- OPEN -->
+
+            <div class="info-card">
+
+
+                <div class="info-icon">
+                    🕐
+                </div>
+
+
+                <div class="info-label">
+                    Opens
+                </div>
+
+
+                <div class="info-value">
+                    {{ hospital.open_time }}
+                </div>
+
+
+            </div>
+
+
+
+            <!-- CLOSE -->
+
+            <div class="info-card">
+
+
+                <div class="info-icon">
+                    🕘
+                </div>
+
+
+                <div class="info-label">
+                    Closes
+                </div>
+
+
+                <div class="info-value">
+                    {{ hospital.close_time }}
+                </div>
+
+
+            </div>
+
+
+
+            <!-- STATUS -->
+
+            <div class="info-card">
+
+
+                <div class="info-icon">
+                    ✓
+                </div>
+
+
+                <div class="info-label">
+                    Status
+                </div>
+
+
+                <div class="info-value status-open">
+
+                    Open / Active
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ABOUT HOSPITAL
+        ================================================== -->
+
+        <div class="section-title">
+
+
+            <h2>
+                About Hospital
+            </h2>
+
+
+        </div>
+
+
+        <section class="about-card">
+
+
+            <p>
+
+                {{ hospital.info }}
+
+            </p>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             DOCTORS
+        ================================================== -->
+
+        <div class="section-title">
+
+
+            <h2>
+                Available Doctors
+            </h2>
+
+
+            <span>
+
+                {{ hospital.doctors|length }}
+
+                doctors
+
+            </span>
+
+
+        </div>
+
+
+
+        {% if hospital.doctors %}
+
+
+        <section class="doctors-grid">
+
+
+            {% for doctor in hospital.doctors %}
+
+
+            <article class="doctor-card">
+
+
+                <!-- DOCTOR AVATAR -->
+
+                <div class="doctor-avatar">
+
+                    DR
+
+                </div>
+
+
+
+                <!-- DOCTOR INFORMATION -->
+
+                <div class="doctor-content">
+
+
+                    <div class="doctor-name">
+
+                        Dr. {{ doctor.doctor_name }}
+
+                    </div>
+
+
+                    <div class="doctor-specialization">
+
+                        {{ doctor.specialization }}
+
+                    </div>
+
+
+                    <div class="doctor-details">
+
+
+                        <!-- OPD -->
+
+                        <div class="doctor-detail">
+
+                            <span>
+                                🕐
+                            </span>
+
+
+                            <span>
+
+                                OPD:
+                                {{ doctor.opd_time }}
+
+                            </span>
+
+                        </div>
+
+
+
+                        <!-- DOCTOR INFO -->
+
+                        {% if doctor.doctor_info %}
+
+
+                        <div class="doctor-detail">
+
+                            <span>
+                                ℹ️
+                            </span>
+
+
+                            <span>
+
+                                {{ doctor.doctor_info }}
+
+                            </span>
+
+                        </div>
+
+
+                        {% endif %}
+
+
+                    </div>
+
+
+                </div>
+
+
+            </article>
+
+
+            {% endfor %}
+
+
+        </section>
+
+
+        {% else %}
+
+
+        <div class="empty-state">
+
+            No doctors are currently listed.
+
+        </div>
+
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             BOOK APPOINTMENT
+        ================================================== -->
+
+        <section class="appointment-section">
+
+
+            <div class="appointment-text">
+
+
+                <h2>
+                    Need an appointment?
+                </h2>
+
+
+                <p>
+                    Book your hospital appointment quickly and easily.
+                </p>
+
+
+            </div>
+
+
+            <a
+                class="book-btn"
+                href="/hospital/{{ uid }}/book"
+            >
+
+                Book Appointment
+
+                <span>
+                    →
+                </span>
+
+            </a>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             FOOTER
+        ================================================== -->
+
+        <footer class="footer">
+
+
+            <div class="footer-powered">
+
+                Powered by
+
+                <strong>
+                    RORENS Technologies Pvt. Ltd.
+                </strong>
+
+            </div>
+
+
+            <div class="footer-tagline">
+
+                Innovation • Technology • Growth
+
+            </div>
+
+
+        </footer>
+
+
+    </main>
+
 
 </body>
+
 </html>
