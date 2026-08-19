@@ -2219,7 +2219,493 @@ def book_appointment():
 
         }), 500
 
+# ============================================================
+# HOSPITAL ANALYTICS / DECISION SUPPORT
+# ============================================================
 
+from collections import Counter
+
+
+# ============================================================
+# GET HOSPITAL APPOINTMENTS
+# ============================================================
+
+def get_hospital_appointments(hospital_id):
+
+    if not hospital_id:
+        return []
+
+    data = db.reference(
+        "appointments"
+    ).get() or {}
+
+    appointments = []
+
+    for appointment_id, appointment in data.items():
+
+        if not isinstance(appointment, dict):
+            continue
+
+        if appointment.get("hospital_id") != hospital_id:
+            continue
+
+        appointment["id"] = appointment_id
+
+        appointments.append(appointment)
+
+    return appointments
+
+
+# ============================================================
+# ANALYTICS OVERVIEW
+# ============================================================
+
+@app.route(
+    "/api/analytics/overview/<hospital_id>"
+)
+def analytics_overview(hospital_id):
+
+    try:
+
+        appointments = get_hospital_appointments(
+            hospital_id
+        )
+
+        today = datetime.now().strftime(
+            "%Y-%m-%d"
+        )
+
+        total_patients = len(
+            appointments
+        )
+
+        today_appointments = sum(
+            1
+            for appointment in appointments
+            if appointment.get(
+                "appointment_date"
+            ) == today
+        )
+
+        male = 0
+        female = 0
+        other = 0
+
+        for appointment in appointments:
+
+            gender = str(
+                appointment.get(
+                    "gender",
+                    ""
+                )
+            ).strip().lower()
+
+            if gender == "male":
+                male += 1
+
+            elif gender == "female":
+                female += 1
+
+            else:
+                other += 1
+
+        return jsonify({
+
+            "success": True,
+
+            "total_patients":
+                total_patients,
+
+            "today_appointments":
+                today_appointments,
+
+            "male":
+                male,
+
+            "female":
+                female,
+
+            "other":
+                other
+
+        })
+
+    except Exception as e:
+
+        traceback.print_exc()
+
+        return jsonify({
+
+            "success": False,
+
+            "error": str(e)
+
+        }), 500
+
+
+# ============================================================
+# GENDER ANALYTICS
+# ============================================================
+
+@app.route(
+    "/api/analytics/gender/<hospital_id>"
+)
+def analytics_gender(hospital_id):
+
+    try:
+
+        appointments = get_hospital_appointments(
+            hospital_id
+        )
+
+        gender = Counter()
+
+        for appointment in appointments:
+
+            value = str(
+                appointment.get(
+                    "gender",
+                    "Unknown"
+                )
+            ).strip().title()
+
+            if not value:
+                value = "Unknown"
+
+            gender[value] += 1
+
+        return jsonify({
+
+            "success": True,
+
+            "data":
+                dict(gender)
+
+        })
+
+    except Exception as e:
+
+        traceback.print_exc()
+
+        return jsonify({
+
+            "success": False,
+
+            "error": str(e)
+
+        }), 500
+
+
+# ============================================================
+# AGE ANALYTICS
+# ============================================================
+
+@app.route(
+    "/api/analytics/age/<hospital_id>"
+)
+def analytics_age(hospital_id):
+
+    try:
+
+        appointments = get_hospital_appointments(
+            hospital_id
+        )
+
+        age_groups = Counter()
+
+        for appointment in appointments:
+
+            try:
+
+                age = int(
+                    appointment.get(
+                        "age",
+                        0
+                    )
+                )
+
+            except:
+
+                age = 0
+
+
+            if age <= 0:
+
+                group = "Unknown"
+
+            elif age <= 18:
+
+                group = "0-18"
+
+            elif age <= 30:
+
+                group = "19-30"
+
+            elif age <= 45:
+
+                group = "31-45"
+
+            elif age <= 60:
+
+                group = "46-60"
+
+            else:
+
+                group = "60+"
+
+
+            age_groups[group] += 1
+
+        return jsonify({
+
+            "success": True,
+
+            "data":
+                dict(age_groups)
+
+        })
+
+    except Exception as e:
+
+        traceback.print_exc()
+
+        return jsonify({
+
+            "success": False,
+
+            "error": str(e)
+
+        }), 500
+
+
+# ============================================================
+# DOCTOR ANALYTICS
+# ============================================================
+
+@app.route(
+    "/api/analytics/doctors/<hospital_id>"
+)
+def analytics_doctors(hospital_id):
+
+    try:
+
+        appointments = get_hospital_appointments(
+            hospital_id
+        )
+
+        doctors = Counter()
+
+        for appointment in appointments:
+
+            doctor = str(
+                appointment.get(
+                    "doctor_name",
+                    "Unknown"
+                )
+            ).strip()
+
+            if not doctor:
+
+                doctor = "Unknown"
+
+            doctors[doctor] += 1
+
+        return jsonify({
+
+            "success": True,
+
+            "data":
+                dict(
+                    doctors.most_common()
+                )
+
+        })
+
+    except Exception as e:
+
+        traceback.print_exc()
+
+        return jsonify({
+
+            "success": False,
+
+            "error": str(e)
+
+        }), 500
+
+
+# ============================================================
+# APPOINTMENT DATE ANALYTICS
+# ============================================================
+
+@app.route(
+    "/api/analytics/daily/<hospital_id>"
+)
+def analytics_daily(hospital_id):
+
+    try:
+
+        appointments = get_hospital_appointments(
+            hospital_id
+        )
+
+        daily = Counter()
+
+        for appointment in appointments:
+
+            date = appointment.get(
+                "appointment_date"
+            )
+
+            if date:
+
+                daily[str(date)] += 1
+
+        sorted_data = dict(
+            sorted(
+                daily.items()
+            )
+        )
+
+        return jsonify({
+
+            "success": True,
+
+            "data":
+                sorted_data
+
+        })
+
+    except Exception as e:
+
+        traceback.print_exc()
+
+        return jsonify({
+
+            "success": False,
+
+            "error": str(e)
+
+        }), 500
+
+
+# ============================================================
+# APPOINTMENT TIME ANALYTICS
+# ============================================================
+
+@app.route(
+    "/api/analytics/time/<hospital_id>"
+)
+def analytics_time(hospital_id):
+
+    try:
+
+        appointments = get_hospital_appointments(
+            hospital_id
+        )
+
+        times = Counter()
+
+        for appointment in appointments:
+
+            time = str(
+                appointment.get(
+                    "appointment_time",
+                    "Unknown"
+                )
+            ).strip()
+
+            if not time:
+
+                time = "Unknown"
+
+            times[time] += 1
+
+        return jsonify({
+
+            "success": True,
+
+            "data":
+                dict(times)
+
+        })
+
+    except Exception as e:
+
+        traceback.print_exc()
+
+        return jsonify({
+
+            "success": False,
+
+            "error": str(e)
+
+        }), 500
+
+
+# ============================================================
+# LOCATION ANALYTICS
+# ============================================================
+
+@app.route(
+    "/api/analytics/location/<hospital_id>"
+)
+def analytics_location(hospital_id):
+
+    try:
+
+        appointments = get_hospital_appointments(
+            hospital_id
+        )
+
+        locations = Counter()
+
+        for appointment in appointments:
+
+            location = (
+                appointment.get(
+                    "village"
+                )
+                or
+                appointment.get(
+                    "address"
+                )
+                or
+                "Unknown"
+            )
+
+            location = str(
+                location
+            ).strip()
+
+            if not location:
+
+                location = "Unknown"
+
+            locations[location] += 1
+
+        return jsonify({
+
+            "success": True,
+
+            "data":
+                dict(
+                    locations.most_common()
+                )
+
+        })
+
+    except Exception as e:
+
+        traceback.print_exc()
+
+        return jsonify({
+
+            "success": False,
+
+            "error": str(e)
+
+        }), 500
 # ============================================================
 # APPOINTMENTS LIST
 # ============================================================
