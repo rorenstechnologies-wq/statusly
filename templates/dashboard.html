@@ -3,1505 +3,1774 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <title>MediQueue | Hospital Analytics Dashboard</title>
+<meta name="theme-color"
+      content="#0b1220">
 
-    <!-- =====================================================
-         CHART.JS
-    ====================================================== -->
+<title>MediQueue — Hospital Dashboard</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
+<style>
 
-        /* =====================================================
-           RESET
-        ====================================================== */
+/* =========================================================
+   RESET
+========================================================= */
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
 
+html{
+    scroll-behavior:smooth;
+}
 
-        html {
-            scroll-behavior: smooth;
-        }
+body{
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
 
+    background:#f5f7fb;
+    color:#172033;
 
-        body {
+    min-height:100vh;
 
-            font-family:
-                Inter,
-                Arial,
-                Helvetica,
-                sans-serif;
+    -webkit-font-smoothing:antialiased;
+}
 
-            background:
-                #f4f7fb;
+button,
+input,
+textarea,
+select{
+    font:inherit;
+}
 
-            color:
-                #172033;
+button{
+    cursor:pointer;
+}
 
-            min-height:
-                100vh;
-        }
+:root{
 
+    --primary:#2563eb;
+    --primary-dark:#1d4ed8;
 
-        button,
-        input,
-        select {
+    --success:#16a34a;
+    --warning:#f59e0b;
+    --danger:#dc2626;
 
-            font-family:
-                inherit;
-        }
+    --sidebar:#0b1220;
 
+    --bg:#f5f7fb;
 
-        /* =====================================================
-           APP
-        ====================================================== */
+    --card:#ffffff;
 
-        .app {
+    --text:#172033;
+    --muted:#718096;
 
-            display:
-                flex;
+    --border:#e5eaf1;
 
-            min-height:
-                100vh;
-        }
+    --shadow:
+        0 8px 30px rgba(15,23,42,.055);
 
+    --shadow-lg:
+        0 18px 50px rgba(15,23,42,.09);
 
-        /* =====================================================
-           SIDEBAR
-        ====================================================== */
+    --radius:18px;
+}
 
-        .sidebar {
 
-            width:
-                250px;
+/* =========================================================
+   APP
+========================================================= */
 
-            background:
-                #101828;
+.app{
+    min-height:100vh;
+}
 
-            color:
-                white;
 
-            position:
-                fixed;
+/* =========================================================
+   SIDEBAR
+========================================================= */
 
-            left:
-                0;
+.sidebar{
 
-            top:
-                0;
+    position:fixed;
 
-            bottom:
-                0;
+    left:0;
+    top:0;
+    bottom:0;
 
-            z-index:
-                1000;
+    width:258px;
 
-            overflow-y:
-                auto;
+    background:
+        linear-gradient(
+            180deg,
+            #0b1220 0%,
+            #111827 100%
+        );
 
-            transition:
-                0.3s;
-        }
+    color:white;
 
+    z-index:1000;
 
-        .brand {
+    padding:20px 15px;
 
-            height:
-                72px;
+    display:flex;
+    flex-direction:column;
 
-            display:
-                flex;
+    box-shadow:
+        8px 0 30px rgba(15,23,42,.08);
+}
 
-            align-items:
-                center;
 
-            gap:
-                10px;
+/* =========================================================
+   BRAND
+========================================================= */
 
-            padding:
-                0 20px;
+.brand{
 
-            border-bottom:
-                1px solid
-                rgba(255,255,255,0.08);
-        }
+    display:flex;
+    align-items:center;
 
+    gap:12px;
 
-        .brand-icon {
+    padding:
+        8px 9px 22px;
 
-            width:
-                38px;
+    border-bottom:
+        1px solid rgba(255,255,255,.08);
 
-            height:
-                38px;
+    margin-bottom:20px;
+}
 
-            border-radius:
-                10px;
+.brand-icon{
 
-            display:
-                flex;
+    width:44px;
+    height:44px;
 
-            align-items:
-                center;
+    border-radius:13px;
 
-            justify-content:
-                center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-            background:
-                #2563eb;
+    font-size:22px;
 
-            font-size:
-                20px;
-        }
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #06b6d4
+        );
 
+    box-shadow:
+        0 8px 20px
+        rgba(37,99,235,.28);
+}
 
-        .brand-text {
+.brand-name{
 
-            font-size:
-                20px;
+    font-size:19px;
 
-            font-weight:
-                700;
-        }
+    font-weight:750;
 
+    letter-spacing:-.3px;
+}
 
-        .brand-text span {
+.brand-sub{
 
-            color:
-                #60a5fa;
-        }
+    font-size:9px;
 
+    color:#94a3b8;
 
-        .menu {
+    margin-top:3px;
 
-            padding:
-                18px 12px;
-        }
+    letter-spacing:.8px;
+}
 
 
-        .menu-title {
+/* =========================================================
+   SIDEBAR LABEL
+========================================================= */
 
-            color:
-                #667085;
+.menu-label{
 
-            font-size:
-                11px;
+    padding:
+        0 11px 9px;
 
-            font-weight:
-                700;
+    color:#64748b;
 
-            text-transform:
-                uppercase;
+    font-size:10px;
 
-            letter-spacing:
-                1px;
+    font-weight:700;
 
-            padding:
-                10px 12px;
-        }
+    text-transform:uppercase;
 
+    letter-spacing:1px;
+}
 
-        .menu button {
 
-            width:
-                100%;
+/* =========================================================
+   NAV
+========================================================= */
 
-            border:
-                0;
+.sidebar-nav{
 
-            background:
-                transparent;
+    display:flex;
+    flex-direction:column;
 
-            color:
-                #d0d5dd;
+    gap:5px;
+}
 
-            padding:
-                12px;
+.nav-btn{
 
-            border-radius:
-                8px;
+    width:100%;
 
-            margin-bottom:
-                4px;
+    border:0;
 
-            text-align:
-                left;
+    background:transparent;
 
-            cursor:
-                pointer;
+    color:#cbd5e1;
 
-            font-size:
-                14px;
+    min-height:48px;
 
-            display:
-                flex;
+    padding:
+        10px 12px;
 
-            align-items:
-                center;
+    border-radius:12px;
 
-            gap:
-                12px;
+    display:flex;
 
-            transition:
-                0.2s;
-        }
+    align-items:center;
 
+    gap:12px;
 
-        .menu button:hover {
+    text-align:left;
 
-            background:
-                #1d2939;
+    transition:
+        background .2s ease,
+        color .2s ease,
+        transform .2s ease;
+}
 
-            color:
-                white;
-        }
+.nav-btn:hover{
 
+    background:
+        rgba(255,255,255,.065);
 
-        .menu button.active {
+    color:#fff;
 
-            background:
-                #2563eb;
+    transform:translateX(2px);
+}
 
-            color:
-                white;
-        }
+.nav-btn.active{
 
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
 
-        .menu-icon {
+    color:white;
 
-            width:
-                22px;
+    box-shadow:
+        0 8px 22px
+        rgba(37,99,235,.22);
+}
 
-            text-align:
-                center;
-        }
+.nav-icon{
 
+    width:31px;
+    height:31px;
 
-        .sidebar-bottom {
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-            position:
-                absolute;
+    border-radius:9px;
 
-            left:
-                12px;
+    background:
+        rgba(255,255,255,.055);
 
-            right:
-                12px;
+    font-size:16px;
 
-            bottom:
-                15px;
-        }
+    flex:none;
+}
 
+.nav-btn.active .nav-icon{
 
-        .logout {
+    background:
+        rgba(255,255,255,.14);
+}
 
-            width:
-                100%;
+.nav-content{
 
-            border:
-                0;
+    flex:1;
+}
 
-            background:
-                #2b1a1a;
+.nav-title{
 
-            color:
-                #fca5a5;
+    font-size:13px;
 
-            padding:
-                12px;
+    font-weight:600;
+}
 
-            border-radius:
-                8px;
+.nav-description{
 
-            cursor:
-                pointer;
+    font-size:10px;
 
-            font-size:
-                14px;
-        }
+    color:#64748b;
 
+    margin-top:2px;
+}
 
-        .logout:hover {
+.nav-btn.active
+.nav-description{
 
-            background:
-                #4c1d1d;
-        }
+    color:#bfdbfe;
+}
 
 
-        /* =====================================================
-           MOBILE SIDEBAR
-        ====================================================== */
+/* =========================================================
+   SIDEBAR BOTTOM
+========================================================= */
 
-        .mobile-header {
+.sidebar-bottom{
 
-            display:
-                none;
+    margin-top:auto;
 
-            height:
-                62px;
+    padding-top:15px;
 
-            background:
-                white;
+    border-top:
+        1px solid rgba(255,255,255,.07);
+}
 
-            border-bottom:
-                1px solid #eaecf0;
+.account-box{
 
-            align-items:
-                center;
+    display:flex;
 
-            justify-content:
-                space-between;
+    align-items:center;
 
-            padding:
-                0 16px;
+    gap:10px;
 
-            position:
-                sticky;
+    padding:
+        10px;
 
-            top:
-                0;
+    margin-bottom:10px;
 
-            z-index:
-                900;
-        }
+    background:
+        rgba(255,255,255,.04);
 
+    border-radius:12px;
+}
 
-        .mobile-menu-btn {
+.account-avatar{
 
-            width:
-                40px;
+    width:35px;
+    height:35px;
 
-            height:
-                40px;
+    border-radius:10px;
 
-            border:
-                0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-            background:
-                #f2f4f7;
+    background:#1e293b;
 
-            border-radius:
-                8px;
+    font-size:16px;
+}
 
-            font-size:
-                20px;
+.account-info{
 
-            cursor:
-                pointer;
-        }
+    min-width:0;
+}
 
+.account-name{
 
-        .mobile-title {
+    font-size:12px;
 
-            font-weight:
-                700;
+    font-weight:600;
 
-            font-size:
-                17px;
-        }
+    white-space:nowrap;
 
+    overflow:hidden;
 
-        .sidebar-overlay {
+    text-overflow:ellipsis;
+}
 
-            display:
-                none;
+.account-status{
 
-            position:
-                fixed;
+    font-size:10px;
 
-            inset:
-                0;
+    color:#86efac;
 
-            background:
-                rgba(0,0,0,0.45);
+    margin-top:2px;
+}
 
-            z-index:
-                950;
-        }
+.logout{
 
+    width:100%;
 
-        /* =====================================================
-           MAIN
-        ====================================================== */
+    border:0;
 
-        .main {
+    background:
+        rgba(239,68,68,.09);
 
-            margin-left:
-                250px;
+    color:#fca5a5;
 
-            width:
-                calc(100% - 250px);
+    padding:11px;
 
-            min-width:
-                0;
-        }
+    border-radius:11px;
 
+    font-size:12px;
 
-        .content {
+    font-weight:600;
 
-            padding:
-                26px;
+    transition:.2s;
+}
 
-            max-width:
-                1600px;
+.logout:hover{
 
-            margin:
-                auto;
-        }
+    background:
+        rgba(239,68,68,.18);
 
+    color:#fecaca;
+}
 
-        /* =====================================================
-           TOPBAR
-        ====================================================== */
 
-        .topbar {
+/* =========================================================
+   MAIN
+========================================================= */
 
-            display:
-                flex;
+.main{
 
-            align-items:
-                center;
+    margin-left:258px;
 
-            justify-content:
-                space-between;
+    min-height:100vh;
 
-            gap:
-                20px;
+    padding:27px 30px 40px;
+}
 
-            margin-bottom:
-                24px;
 
-            flex-wrap:
-                wrap;
-        }
+/* =========================================================
+   TOPBAR
+========================================================= */
 
+.topbar{
 
-        .page-title h1 {
+    display:flex;
 
-            font-size:
-                28px;
+    justify-content:space-between;
 
-            margin-bottom:
-                5px;
-        }
+    align-items:center;
 
+    gap:20px;
 
-        .page-title p {
+    margin-bottom:25px;
+}
 
-            color:
-                #667085;
+.title-area{
 
-            font-size:
-                14px;
-        }
+    min-width:0;
+}
 
+.page-title{
 
-        .hospital-badge {
+    font-size:26px;
 
-            background:
-                white;
+    font-weight:750;
 
-            border:
-                1px solid #eaecf0;
+    letter-spacing:-.6px;
 
-            padding:
-                10px 15px;
+    color:#111827;
+}
 
-            border-radius:
-                10px;
+.page-subtitle{
 
-            display:
-                flex;
+    color:#7b8798;
 
-            align-items:
-                center;
+    font-size:13px;
 
-            gap:
-                9px;
+    margin-top:5px;
+}
 
-            box-shadow:
-                0 1px 3px
-                rgba(16,24,40,0.05);
-        }
+.top-actions{
 
+    display:flex;
 
-        .hospital-dot {
+    align-items:center;
 
-            width:
-                9px;
+    gap:9px;
+}
 
-            height:
-                9px;
+.hospital-pill{
 
-            background:
-                #12b76a;
+    max-width:240px;
 
-            border-radius:
-                50%;
-        }
+    background:white;
 
+    border:1px solid var(--border);
 
-        #hospitalNameDisplay {
+    padding:10px 14px;
 
-            font-weight:
-                600;
-        }
+    border-radius:11px;
 
+    font-size:12px;
 
-        /* =====================================================
-           FILTER CARD
-        ====================================================== */
+    font-weight:600;
 
-        .filter-card {
+    color:#475569;
 
-            background:
-                white;
+    box-shadow:var(--shadow);
 
-            border:
-                1px solid #eaecf0;
+    white-space:nowrap;
 
-            border-radius:
-                12px;
+    overflow:hidden;
 
-            padding:
-                16px;
+    text-overflow:ellipsis;
+}
 
-            margin-bottom:
-                20px;
+.refresh-btn{
 
-            box-shadow:
-                0 1px 3px
-                rgba(16,24,40,0.04);
-        }
+    border:0;
 
+    color:white;
 
-        .filter-top {
+    background:var(--primary);
 
-            display:
-                flex;
+    padding:10px 15px;
 
-            justify-content:
-                space-between;
+    border-radius:10px;
 
-            align-items:
-                center;
+    font-size:12px;
 
-            gap:
-                15px;
+    font-weight:600;
 
-            margin-bottom:
-                14px;
+    transition:.2s;
+}
 
-            flex-wrap:
-                wrap;
-        }
+.refresh-btn:hover{
 
+    background:var(--primary-dark);
 
-        .filter-title {
+    transform:translateY(-1px);
+}
 
-            font-size:
-                15px;
 
-            font-weight:
-                700;
-        }
+/* =========================================================
+   SECTIONS
+========================================================= */
 
+.section{
+    display:none;
+}
 
-        .filter-buttons {
+.section.active{
+    display:block;
+}
 
-            display:
-                flex;
 
-            gap:
-                7px;
+/* =========================================================
+   WELCOME BANNER
+========================================================= */
 
-            flex-wrap:
-                wrap;
-        }
+.welcome-card{
 
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #172554
+        );
 
-        .filter-btn {
+    color:white;
 
-            border:
-                1px solid #d0d5dd;
+    border-radius:20px;
 
-            background:
-                white;
+    padding:23px 25px;
 
-            color:
-                #344054;
+    margin-bottom:20px;
 
-            padding:
-                8px 13px;
+    display:flex;
 
-            border-radius:
-                7px;
+    align-items:center;
 
-            cursor:
-                pointer;
+    justify-content:space-between;
 
-            font-size:
-                13px;
-        }
+    gap:20px;
 
+    position:relative;
 
-        .filter-btn:hover {
+    overflow:hidden;
 
-            background:
-                #f9fafb;
-        }
+    box-shadow:
+        0 15px 40px
+        rgba(15,23,42,.12);
+}
 
+.welcome-card::after{
 
-        .filter-btn.active {
+    content:"";
 
-            background:
-                #2563eb;
+    position:absolute;
 
-            color:
-                white;
+    width:220px;
+    height:220px;
 
-            border-color:
-                #2563eb;
-        }
+    right:-70px;
+    top:-100px;
 
+    border-radius:50%;
 
-        .custom-date-row {
+    background:
+        rgba(37,99,235,.18);
+}
 
-            display:
-                grid;
+.welcome-text{
 
-            grid-template-columns:
-                repeat(3, 1fr);
+    position:relative;
 
-            gap:
-                12px;
-        }
+    z-index:1;
+}
 
+.welcome-title{
 
-        .date-input label {
+    font-size:20px;
 
-            display:
-                block;
+    font-weight:700;
+}
 
-            font-size:
-                12px;
+.welcome-subtitle{
 
-            font-weight:
-                600;
+    font-size:12px;
 
-            color:
-                #475467;
+    color:#cbd5e1;
 
-            margin-bottom:
-                5px;
-        }
+    margin-top:6px;
+}
 
+.welcome-icon{
 
-        .date-input input {
+    position:relative;
 
-            width:
-                100%;
+    z-index:1;
 
-            padding:
-                10px;
+    width:58px;
+    height:58px;
 
-            border:
-                1px solid #d0d5dd;
+    border-radius:17px;
 
-            border-radius:
-                7px;
+    background:
+        rgba(255,255,255,.1);
 
-            outline:
-                none;
-        }
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
+    font-size:28px;
+}
 
-        .date-input input:focus {
 
-            border-color:
-                #2563eb;
-        }
+/* =========================================================
+   STAT CARDS
+========================================================= */
 
+.stats-grid{
 
-        /* =====================================================
-           KPI CARDS
-        ====================================================== */
+    display:grid;
 
-        .stats-grid {
+    grid-template-columns:
+        repeat(4,minmax(0,1fr));
 
-            display:
-                grid;
+    gap:15px;
 
-            grid-template-columns:
-                repeat(4, 1fr);
+    margin-bottom:20px;
+}
 
-            gap:
-                16px;
+.stat-card{
 
-            margin-bottom:
-                20px;
-        }
+    background:var(--card);
 
+    border:1px solid var(--border);
 
-        .stat-card {
+    border-radius:17px;
 
-            background:
-                white;
+    padding:18px;
 
-            border:
-                1px solid #eaecf0;
+    box-shadow:var(--shadow);
 
-            border-radius:
-                12px;
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+}
 
-            padding:
-                18px;
+.stat-card:hover{
 
-            position:
-                relative;
+    transform:translateY(-2px);
 
-            overflow:
-                hidden;
+    box-shadow:var(--shadow-lg);
+}
 
-            box-shadow:
-                0 1px 3px
-                rgba(16,24,40,0.04);
-        }
+.stat-top{
 
+    display:flex;
 
-        .stat-header {
+    justify-content:space-between;
 
-            display:
-                flex;
+    align-items:center;
 
-            align-items:
-                center;
+    margin-bottom:15px;
+}
 
-            justify-content:
-                space-between;
+.stat-label{
 
-            margin-bottom:
-                14px;
-        }
+    color:#7b8798;
 
+    font-size:12px;
 
-        .stat-label {
+    font-weight:600;
+}
 
-            color:
-                #667085;
+.stat-icon{
 
-            font-size:
-                13px;
+    width:38px;
+    height:38px;
 
-            font-weight:
-                500;
-        }
+    border-radius:11px;
 
+    display:flex;
 
-        .stat-icon {
+    align-items:center;
+    justify-content:center;
 
-            width:
-                38px;
+    background:#eff6ff;
 
-            height:
-                38px;
+    font-size:18px;
+}
 
-            border-radius:
-                9px;
+.stat-number{
 
-            display:
-                flex;
+    font-size:29px;
 
-            align-items:
-                center;
+    line-height:1;
 
-            justify-content:
-                center;
+    font-weight:750;
 
-            font-size:
-                18px;
-        }
+    letter-spacing:-.7px;
+}
 
+.stat-description{
 
-        .blue {
-            background: #eff6ff;
-        }
+    color:#94a3b8;
 
-        .green {
-            background: #ecfdf3;
-        }
+    font-size:10px;
 
-        .purple {
-            background: #f5f3ff;
-        }
+    margin-top:8px;
+}
 
-        .orange {
-            background: #fff7ed;
-        }
 
+/* =========================================================
+   SECTION HEADER
+========================================================= */
 
-        .stat-value {
+.section-heading{
 
-            font-size:
-                29px;
+    display:flex;
 
-            font-weight:
-                750;
+    align-items:flex-end;
 
-            margin-bottom:
-                4px;
-        }
+    justify-content:space-between;
 
+    margin:
+        24px 0 13px;
+}
 
-        .stat-small {
+.section-heading h2{
 
-            color:
-                #667085;
+    font-size:16px;
 
-            font-size:
-                12px;
-        }
+    font-weight:700;
+}
 
+.section-heading p{
 
-        /* =====================================================
-           GENDER MINI STATS
-        ====================================================== */
+    font-size:11px;
 
-        .gender-grid {
+    color:#94a3b8;
 
-            display:
-                grid;
+    margin-top:3px;
+}
 
-            grid-template-columns:
-                repeat(3, 1fr);
 
-            gap:
-                12px;
+/* =========================================================
+   ANALYTICS GRID
+========================================================= */
 
-            margin-bottom:
-                20px;
-        }
+.analytics-grid{
 
+    display:grid;
 
-        .gender-card {
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
 
-            background:
-                white;
+    gap:17px;
+}
 
-            border:
-                1px solid #eaecf0;
+.chart-card{
 
-            border-radius:
-                10px;
+    background:white;
 
-            padding:
-                15px;
+    border:1px solid var(--border);
 
-            display:
-                flex;
+    border-radius:17px;
 
-            align-items:
-                center;
+    padding:19px;
 
-            gap:
-                12px;
-        }
+    box-shadow:var(--shadow);
 
+    min-width:0;
+}
 
-        .gender-icon {
+.chart-card.full{
 
-            width:
-                40px;
+    grid-column:span 2;
+}
 
-            height:
-                40px;
+.chart-header{
 
-            border-radius:
-                50%;
+    display:flex;
 
-            display:
-                flex;
+    justify-content:space-between;
 
-            align-items:
-                center;
+    align-items:flex-start;
 
-            justify-content:
-                center;
+    gap:10px;
 
-            font-size:
-                19px;
+    margin-bottom:15px;
+}
 
-            background:
-                #f2f4f7;
-        }
+.chart-title{
 
+    font-size:14px;
 
-        .gender-card strong {
+    font-weight:700;
+}
 
-            display:
-                block;
+.chart-subtitle{
 
-            font-size:
-                20px;
+    color:#94a3b8;
 
-            margin-top:
-                2px;
-        }
+    font-size:10px;
 
+    margin-top:4px;
+}
 
-        .gender-card span {
+.chart-container{
 
-            color:
-                #667085;
+    width:100%;
 
-            font-size:
-                12px;
-        }
+    height:280px;
 
+    position:relative;
+}
 
-        /* =====================================================
-           CHART GRID
-        ====================================================== */
 
-        .chart-grid {
+/* =========================================================
+   TABLE
+========================================================= */
 
-            display:
-                grid;
+.table-wrapper{
 
-            grid-template-columns:
-                repeat(2, 1fr);
+    width:100%;
 
-            gap:
-                20px;
+    overflow-x:auto;
+}
 
-            margin-bottom:
-                20px;
-        }
+table{
 
+    width:100%;
 
-        .chart-card {
+    border-collapse:collapse;
 
-            background:
-                white;
+    min-width:480px;
+}
 
-            border:
-                1px solid #eaecf0;
+th{
 
-            border-radius:
-                12px;
+    padding:
+        11px 10px;
 
-            padding:
-                18px;
+    text-align:left;
 
-            min-width:
-                0;
+    color:#94a3b8;
 
-            box-shadow:
-                0 1px 3px
-                rgba(16,24,40,0.04);
-        }
+    font-size:10px;
 
+    text-transform:uppercase;
 
-        .chart-card.full {
+    letter-spacing:.5px;
 
-            grid-column:
-                1 / -1;
-        }
+    border-bottom:
+        1px solid var(--border);
+}
 
+td{
 
-        .chart-header {
+    padding:
+        12px 10px;
 
-            display:
-                flex;
+    border-bottom:
+        1px solid #f1f5f9;
 
-            justify-content:
-                space-between;
+    font-size:12px;
+}
 
-            align-items:
-                center;
+.doctor-rank{
 
-            gap:
-                10px;
+    width:28px;
+    height:28px;
 
-            margin-bottom:
-                18px;
+    display:inline-flex;
 
-            flex-wrap:
-                wrap;
-        }
+    align-items:center;
+    justify-content:center;
 
+    border-radius:9px;
 
-        .chart-title {
+    background:#eff6ff;
 
-            font-size:
-                15px;
+    color:var(--primary);
 
-            font-weight:
-                700;
-        }
+    font-weight:700;
+}
 
 
-        .chart-subtitle {
+/* =========================================================
+   FORM CARDS
+========================================================= */
 
-            color:
-                #98a2b3;
+.form-card{
 
-            font-size:
-                12px;
+    background:white;
 
-            margin-top:
-                3px;
-        }
+    border:1px solid var(--border);
 
+    border-radius:18px;
 
-        .chart-container {
+    padding:22px;
 
-            position:
-                relative;
+    box-shadow:var(--shadow);
 
-            height:
-                300px;
-        }
+    margin-bottom:18px;
+}
 
+.form-header{
 
-        .chart-container.small {
+    display:flex;
 
-            height:
-                260px;
-        }
+    align-items:center;
 
+    gap:12px;
 
-        /* =====================================================
-           TABLE
-        ====================================================== */
+    margin-bottom:20px;
+}
 
-        .table-card {
+.form-header-icon{
 
-            background:
-                white;
+    width:42px;
+    height:42px;
 
-            border:
-                1px solid #eaecf0;
+    border-radius:12px;
 
-            border-radius:
-                12px;
+    display:flex;
 
-            overflow:
-                hidden;
+    align-items:center;
+    justify-content:center;
 
-            margin-bottom:
-                20px;
-        }
+    background:#eff6ff;
 
+    font-size:19px;
+}
 
-        .table-header {
+.form-title{
 
-            padding:
-                18px;
+    font-size:17px;
 
-            border-bottom:
-                1px solid #eaecf0;
-        }
+    font-weight:700;
+}
 
+.form-subtitle{
 
-        .table-header h3 {
+    color:#94a3b8;
 
-            font-size:
-                15px;
-        }
+    font-size:11px;
 
+    margin-top:3px;
+}
 
-        .table-wrapper {
+.form-grid{
 
-            width:
-                100%;
+    display:grid;
 
-            overflow-x:
-                auto;
-        }
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
 
+    gap:15px;
+}
 
-        table {
+.form-group{
 
-            width:
-                100%;
+    display:flex;
 
-            border-collapse:
-                collapse;
+    flex-direction:column;
 
-            min-width:
-                500px;
-        }
+    gap:6px;
+}
 
+.form-group.full{
 
-        th,
-        td {
+    grid-column:span 2;
+}
 
-            padding:
-                13px 18px;
+label{
 
-            text-align:
-                left;
+    color:#475569;
 
-            border-bottom:
-                1px solid #f2f4f7;
+    font-size:11px;
 
-            font-size:
-                13px;
-        }
+    font-weight:650;
+}
 
+input,
+textarea,
+select{
 
-        th {
+    width:100%;
 
-            background:
-                #f9fafb;
+    border:
+        1px solid var(--border);
 
-            color:
-                #475467;
+    background:#fff;
 
-            font-weight:
-                600;
-        }
+    color:#172033;
 
+    outline:none;
 
-        td {
+    border-radius:10px;
 
-            color:
-                #344054;
-        }
+    padding:
+        11px 12px;
 
+    font-size:13px;
 
-        tr:last-child td {
+    transition:.2s;
+}
 
-            border-bottom:
-                0;
-        }
+input:focus,
+textarea:focus,
+select:focus{
 
+    border-color:var(--primary);
 
-        .rank {
+    box-shadow:
+        0 0 0 3px
+        rgba(37,99,235,.09);
+}
 
-            width:
-                30px;
+textarea{
 
-            height:
-                30px;
+    min-height:105px;
 
-            display:
-                inline-flex;
+    resize:vertical;
+}
 
-            align-items:
-                center;
+.save-btn{
 
-            justify-content:
-                center;
+    margin-top:18px;
 
-            border-radius:
-                50%;
+    border:0;
 
-            background:
-                #eff6ff;
+    background:var(--success);
 
-            color:
-                #2563eb;
+    color:white;
 
-            font-weight:
-                700;
-        }
+    padding:11px 17px;
 
+    border-radius:10px;
 
-        /* =====================================================
-           LOADING
-        ====================================================== */
+    font-size:12px;
 
-        .loading {
+    font-weight:650;
 
-            opacity:
-                0.5;
+    transition:.2s;
+}
 
-            pointer-events:
-                none;
-        }
+.save-btn:hover{
 
+    background:#15803d;
 
-        .loading-box {
+    transform:translateY(-1px);
+}
 
-            display:
-                none;
 
-            position:
-                fixed;
+/* =========================================================
+   DOCTOR BOX
+========================================================= */
 
-            inset:
-                0;
+.doctor-box{
 
-            z-index:
-                2000;
+    border:
+        1px solid var(--border);
 
-            background:
-                rgba(255,255,255,0.7);
+    border-radius:14px;
 
-            align-items:
-                center;
+    padding:16px;
 
-            justify-content:
-                center;
-        }
+    margin-bottom:13px;
 
+    background:#fafcff;
+}
 
-        .loading-box.show {
+.doctor-box-header{
 
-            display:
-                flex;
-        }
+    display:flex;
 
+    align-items:center;
 
-        .loader {
+    justify-content:space-between;
 
-            width:
-                45px;
+    margin-bottom:13px;
+}
 
-            height:
-                45px;
+.doctor-number{
 
-            border:
-                4px solid #e5e7eb;
+    font-size:13px;
 
-            border-top-color:
-                #2563eb;
+    font-weight:700;
+}
 
-            border-radius:
-                50%;
+.remove-btn{
 
-            animation:
-                spin 0.8s linear infinite;
-        }
+    border:0;
 
+    background:#fee2e2;
 
-        @keyframes spin {
+    color:#dc2626;
 
-            to {
-                transform:
-                    rotate(360deg);
-            }
-        }
+    padding:7px 10px;
 
+    border-radius:8px;
 
-        /* =====================================================
-           EMPTY
-        ====================================================== */
+    font-size:10px;
 
-        .empty {
+    font-weight:600;
+}
 
-            padding:
-                35px;
+.add-btn{
 
-            text-align:
-                center;
+    border:1px solid #c7d2fe;
 
-            color:
-                #98a2b3;
-        }
+    background:#eef2ff;
 
+    color:#4338ca;
 
-        /* =====================================================
-           MOBILE
-        ====================================================== */
+    padding:10px 14px;
 
-        @media (max-width: 1100px) {
+    border-radius:9px;
 
-            .stats-grid {
+    font-size:11px;
 
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
+    font-weight:650;
 
-        }
+    margin-top:4px;
+}
 
 
-        @media (max-width: 850px) {
+/* =========================================================
+   HOSPITAL OVERVIEW CARDS
+========================================================= */
 
-            .sidebar {
+.overview-grid{
 
-                transform:
-                    translateX(-100%);
-            }
+    display:grid;
 
+    grid-template-columns:
+        repeat(3,minmax(0,1fr));
 
-            .sidebar.open {
+    gap:15px;
 
-                transform:
-                    translateX(0);
-            }
+    margin-bottom:18px;
+}
 
+.overview-mini{
 
-            .sidebar-overlay.show {
+    background:white;
 
-                display:
-                    block;
-            }
+    border:1px solid var(--border);
 
+    border-radius:15px;
 
-            .main {
+    padding:17px;
 
-                margin-left:
-                    0;
+    box-shadow:var(--shadow);
+}
 
-                width:
-                    100%;
-            }
+.mini-icon{
 
+    width:38px;
+    height:38px;
 
-            .mobile-header {
+    border-radius:11px;
 
-                display:
-                    flex;
-            }
+    background:#eff6ff;
 
+    display:flex;
 
-            .content {
+    align-items:center;
+    justify-content:center;
 
-                padding:
-                    18px;
-            }
+    font-size:17px;
 
+    margin-bottom:12px;
+}
 
-            .chart-grid {
+.mini-label{
 
-                grid-template-columns:
-                    1fr;
-            }
+    color:#94a3b8;
 
+    font-size:10px;
+}
 
-            .chart-card.full {
+.mini-value{
 
-                grid-column:
-                    auto;
-            }
+    margin-top:5px;
 
-        }
+    font-size:14px;
 
+    font-weight:700;
 
-        @media (max-width: 600px) {
+    word-break:break-word;
+}
 
-            .content {
 
-                padding:
-                    14px;
-            }
+/* =========================================================
+   ERROR
+========================================================= */
 
+.error-box{
 
-            .topbar {
+    display:none;
 
-                margin-bottom:
-                    15px;
-            }
+    background:#fef2f2;
 
+    color:#991b1b;
 
-            .page-title h1 {
+    border:
+        1px solid #fecaca;
 
-                font-size:
-                    22px;
-            }
+    padding:12px 14px;
 
+    border-radius:10px;
 
-            .hospital-badge {
+    font-size:12px;
 
-                width:
-                    100%;
-            }
+    margin-bottom:16px;
+}
 
 
-            .stats-grid {
+/* =========================================================
+   TOAST
+========================================================= */
 
-                grid-template-columns:
-                    1fr 1fr;
+.toast{
 
-                gap:
-                    10px;
-            }
+    position:fixed;
 
+    right:22px;
+    bottom:22px;
 
-            .stat-card {
+    z-index:5000;
 
-                padding:
-                    14px;
-            }
+    background:#0f172a;
 
+    color:white;
 
-            .stat-value {
+    padding:12px 16px;
 
-                font-size:
-                    24px;
-            }
+    border-radius:10px;
 
+    font-size:12px;
 
-            .gender-grid {
+    box-shadow:
+        0 12px 30px
+        rgba(15,23,42,.2);
 
-                grid-template-columns:
-                    1fr;
+    display:none;
+}
 
-                gap:
-                    8px;
-            }
 
+/* =========================================================
+   MOBILE TOP
+========================================================= */
 
-            .custom-date-row {
+.mobile-topbar{
 
-                grid-template-columns:
-                    1fr;
-            }
+    display:none;
 
+    position:sticky;
 
-            .filter-buttons {
+    top:0;
 
-                width:
-                    100%;
-            }
+    z-index:900;
 
+    background:
+        rgba(255,255,255,.94);
 
-            .filter-btn {
+    backdrop-filter:
+        blur(15px);
 
-                flex:
-                    1;
-            }
+    border-bottom:
+        1px solid var(--border);
 
+    padding:
+        12px 15px;
+}
 
-            .chart-card {
+.mobile-brand{
 
-                padding:
-                    14px;
-            }
+    display:flex;
 
+    align-items:center;
 
-            .chart-container {
+    gap:9px;
+}
 
-                height:
-                    250px;
-            }
+.mobile-brand-icon{
 
+    width:35px;
+    height:35px;
 
-            .chart-container.small {
+    border-radius:10px;
 
-                height:
-                    230px;
-            }
+    display:flex;
 
-        }
+    align-items:center;
+    justify-content:center;
 
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #06b6d4
+        );
 
-    </style>
+    color:white;
+}
+
+.mobile-brand-name{
+
+    font-weight:750;
+
+    font-size:15px;
+}
+
+.mobile-brand-sub{
+
+    color:#94a3b8;
+
+    font-size:9px;
+}
+
+
+/* =========================================================
+   MOBILE NAV
+========================================================= */
+
+.mobile-nav{
+
+    display:none;
+
+    position:fixed;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    height:69px;
+
+    z-index:2000;
+
+    background:
+        rgba(255,255,255,.96);
+
+    backdrop-filter:
+        blur(18px);
+
+    border-top:
+        1px solid var(--border);
+
+    box-shadow:
+        0 -8px 30px
+        rgba(15,23,42,.06);
+
+    padding:
+        6px 7px;
+
+    justify-content:
+        space-around;
+
+    align-items:center;
+}
+
+.mobile-nav-btn{
+
+    border:0;
+
+    background:transparent;
+
+    color:#64748b;
+
+    min-width:58px;
+
+    height:57px;
+
+    border-radius:11px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:3px;
+
+    font-size:9px;
+
+    font-weight:600;
+}
+
+.mobile-nav-btn span{
+
+    font-size:19px;
+}
+
+.mobile-nav-btn.active{
+
+    color:var(--primary);
+
+    background:#eff6ff;
+}
+
+
+/* =========================================================
+   MORE DRAWER
+========================================================= */
+
+.more-overlay{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+        rgba(15,23,42,.45);
+
+    z-index:2500;
+}
+
+.more-overlay.open{
+
+    display:block;
+}
+
+.more-sheet{
+
+    position:absolute;
+
+    left:12px;
+    right:12px;
+    bottom:80px;
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:15px;
+
+    box-shadow:
+        0 20px 50px
+        rgba(15,23,42,.2);
+
+    animation:
+        sheetUp .2s ease;
+}
+
+@keyframes sheetUp{
+
+    from{
+        transform:translateY(15px);
+        opacity:0;
+    }
+
+    to{
+        transform:translateY(0);
+        opacity:1;
+    }
+}
+
+.more-title{
+
+    font-size:14px;
+
+    font-weight:700;
+
+    margin-bottom:10px;
+
+    padding:5px 4px;
+}
+
+.more-btn{
+
+    width:100%;
+
+    border:0;
+
+    background:#f8fafc;
+
+    margin-bottom:7px;
+
+    border-radius:11px;
+
+    padding:12px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    text-align:left;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    color:#334155;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1150px){
+
+    .stats-grid{
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+    }
+
+    .overview-grid{
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+    }
+}
+
+
+@media(max-width:850px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .mobile-topbar{
+        display:block;
+    }
+
+    .mobile-nav{
+        display:flex;
+    }
+
+    .main{
+
+        margin-left:0;
+
+        padding:
+            20px 15px 92px;
+    }
+
+    .topbar{
+
+        align-items:flex-start;
+
+        flex-direction:column;
+
+        margin-bottom:18px;
+    }
+
+    .top-actions{
+
+        width:100%;
+
+        justify-content:space-between;
+    }
+
+    .hospital-pill{
+
+        max-width:68%;
+    }
+
+    .analytics-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .chart-card.full{
+
+        grid-column:span 1;
+    }
+
+    .chart-container{
+
+        height:250px;
+    }
+}
+
+
+@media(max-width:600px){
+
+    .page-title{
+
+        font-size:21px;
+    }
+
+    .page-subtitle{
+
+        font-size:11px;
+    }
+
+    .welcome-card{
+
+        padding:18px;
+
+        border-radius:16px;
+    }
+
+    .welcome-title{
+
+        font-size:17px;
+    }
+
+    .welcome-subtitle{
+
+        font-size:10px;
+    }
+
+    .welcome-icon{
+
+        width:48px;
+        height:48px;
+
+        font-size:23px;
+    }
+
+    .stats-grid{
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+
+        gap:10px;
+    }
+
+    .stat-card{
+
+        padding:14px;
+    }
+
+    .stat-number{
+
+        font-size:23px;
+    }
+
+    .stat-label{
+
+        font-size:10px;
+    }
+
+    .stat-icon{
+
+        width:31px;
+        height:31px;
+
+        font-size:14px;
+    }
+
+    .stat-description{
+
+        font-size:9px;
+    }
+
+    .overview-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .form-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+
+        grid-column:span 1;
+    }
+
+    .chart-card{
+
+        padding:15px;
+    }
+
+    .chart-container{
+
+        height:230px;
+    }
+
+    .top-actions{
+
+        gap:7px;
+    }
+
+    .refresh-btn{
+
+        padding:
+            9px 11px;
+    }
+
+    .hospital-pill{
+
+        padding:
+            9px 10px;
+    }
+}
+
+</style>
 
 </head>
 
@@ -1511,924 +1780,1163 @@
 
 <!-- =========================================================
      MOBILE HEADER
-========================================================== -->
+========================================================= -->
 
-<header class="mobile-header">
+<header class="mobile-topbar">
 
-    <button
-        class="mobile-menu-btn"
-        onclick="toggleSidebar()"
-    >
-        ☰
-    </button>
+    <div class="mobile-brand">
 
-    <div class="mobile-title">
-        MediQueue
+        <div class="mobile-brand-icon">
+            🏥
+        </div>
+
+        <div>
+
+            <div class="mobile-brand-name">
+                MediQueue
+            </div>
+
+            <div class="mobile-brand-sub">
+                HOSPITAL MANAGEMENT
+            </div>
+
+        </div>
+
     </div>
 
-    <div style="width:40px;"></div>
-
 </header>
-
-
-<!-- =========================================================
-     SIDEBAR OVERLAY
-========================================================== -->
-
-<div
-    id="sidebarOverlay"
-    class="sidebar-overlay"
-    onclick="toggleSidebar()"
-></div>
 
 
 <div class="app">
 
 
-    <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
+<!-- =========================================================
+     SIDEBAR
+========================================================= -->
 
-    <aside
-        id="sidebar"
-        class="sidebar"
-    >
+<aside class="sidebar">
 
-        <div class="brand">
 
-            <div class="brand-icon">
+    <div class="brand">
+
+        <div class="brand-icon">
+            🏥
+        </div>
+
+        <div>
+
+            <div class="brand-name">
+                MediQueue
+            </div>
+
+            <div class="brand-sub">
+                HOSPITAL MANAGEMENT
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="menu-label">
+        Main Menu
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+
+        <button
+            class="nav-btn active"
+            data-page="analytics"
+            onclick="showPage('analytics',this)"
+        >
+
+            <div class="nav-icon">
+                📊
+            </div>
+
+            <div class="nav-content">
+
+                <div class="nav-title">
+                    Analytics
+                </div>
+
+                <div class="nav-description">
+                    Hospital overview
+                </div>
+
+            </div>
+
+        </button>
+
+
+        <button
+            class="nav-btn"
+            data-page="hospital"
+            onclick="showPage('hospital',this)"
+        >
+
+            <div class="nav-icon">
                 🏥
             </div>
 
-            <div class="brand-text">
-                Medi<span>Queue</span>
-            </div>
+            <div class="nav-content">
 
-        </div>
-
-
-        <div class="menu">
-
-            <div class="menu-title">
-                Main
-            </div>
-
-
-            <button
-                class="active"
-                onclick="goDashboard()"
-            >
-
-                <span class="menu-icon">
-                    📊
-                </span>
-
-                Dashboard
-
-            </button>
-
-
-            <button
-                onclick="openAppointments()"
-            >
-
-                <span class="menu-icon">
-                    📅
-                </span>
-
-                Appointments
-
-            </button>
-
-
-            <button
-                onclick="openFollowups()"
-            >
-
-                <span class="menu-icon">
-                    🔄
-                </span>
-
-                Follow-ups
-
-            </button>
-
-
-            <div class="menu-title">
-                Management
-            </div>
-
-
-            <button
-                onclick="openHospital()"
-            >
-
-                <span class="menu-icon">
-                    🏥
-                </span>
-
-                Hospital
-
-            </button>
-
-
-            <button
-                onclick="openDoctors()"
-            >
-
-                <span class="menu-icon">
-                    👨‍⚕️
-                </span>
-
-                Doctors
-
-            </button>
-
-
-            <button
-                onclick="refreshAnalytics()"
-            >
-
-                <span class="menu-icon">
-                    🔄
-                </span>
-
-                Refresh Data
-
-            </button>
-
-        </div>
-
-
-        <div class="sidebar-bottom">
-
-            <button
-                class="logout"
-                onclick="logout()"
-            >
-                🚪 Logout
-            </button>
-
-        </div>
-
-    </aside>
-
-
-    <!-- =====================================================
-         MAIN
-    ====================================================== -->
-
-    <main class="main">
-
-
-        <div class="content">
-
-
-            <!-- =================================================
-                 TOPBAR
-            ================================================== -->
-
-            <div class="topbar">
-
-                <div class="page-title">
-
-                    <h1>
-                        Analytics Dashboard
-                    </h1>
-
-                    <p>
-                        Monitor patient activity and hospital performance
-                    </p>
-
+                <div class="nav-title">
+                    Hospital Overview
                 </div>
 
-
-                <div class="hospital-badge">
-
-                    <span class="hospital-dot"></span>
-
-                    <span id="hospitalNameDisplay">
-                        Loading hospital...
-                    </span>
-
+                <div class="nav-description">
+                    Hospital information
                 </div>
 
             </div>
 
-
-            <!-- =================================================
-                 FILTER
-            ================================================== -->
-
-            <div class="filter-card">
-
-                <div class="filter-top">
-
-                    <div class="filter-title">
-                        📅 Analytics Period
-                    </div>
+        </button>
 
 
-                    <div class="filter-buttons">
+        <button
+            class="nav-btn"
+            data-page="doctors"
+            onclick="showPage('doctors',this)"
+        >
 
-                        <button
-                            class="filter-btn"
-                            data-period="today"
-                            onclick="setPeriod('today')"
-                        >
-                            Today
-                        </button>
+            <div class="nav-icon">
+                👨‍⚕️
+            </div>
 
+            <div class="nav-content">
 
-                        <button
-                            class="filter-btn active"
-                            data-period="7"
-                            onclick="setPeriod('7')"
-                        >
-                            7 Days
-                        </button>
-
-
-                        <button
-                            class="filter-btn"
-                            data-period="30"
-                            onclick="setPeriod('30')"
-                        >
-                            30 Days
-                        </button>
-
-
-                        <button
-                            class="filter-btn"
-                            data-period="90"
-                            onclick="setPeriod('90')"
-                        >
-                            90 Days
-                        </button>
-
-
-                        <button
-                            class="filter-btn"
-                            data-period="all"
-                            onclick="setPeriod('all')"
-                        >
-                            All Time
-                        </button>
-
-
-                        <button
-                            class="filter-btn"
-                            data-period="custom"
-                            onclick="setPeriod('custom')"
-                        >
-                            Custom
-                        </button>
-
-                    </div>
-
+                <div class="nav-title">
+                    Doctors
                 </div>
 
+                <div class="nav-description">
+                    Manage medical team
+                </div>
+
+            </div>
+
+        </button>
+
+
+        <button
+            class="nav-btn"
+            onclick="openAppointments()"
+        >
+
+            <div class="nav-icon">
+                📅
+            </div>
+
+            <div class="nav-content">
+
+                <div class="nav-title">
+                    Appointments
+                </div>
+
+                <div class="nav-description">
+                    Patient appointments
+                </div>
+
+            </div>
+
+        </button>
+
+
+        <button
+            class="nav-btn"
+            onclick="openFollowups()"
+        >
+
+            <div class="nav-icon">
+                🔄
+            </div>
+
+            <div class="nav-content">
+
+                <div class="nav-title">
+                    Follow-ups
+                </div>
+
+                <div class="nav-description">
+                    Patient follow-ups
+                </div>
+
+            </div>
+
+        </button>
+
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+
+        <div class="account-box">
+
+            <div class="account-avatar">
+                👤
+            </div>
+
+            <div class="account-info">
 
                 <div
-                    id="customDateRow"
-                    class="custom-date-row"
-                    style="display:none;"
+                    class="account-name"
+                    id="accountName"
+                >
+                    Hospital Admin
+                </div>
+
+                <div class="account-status">
+                    ● Account active
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="logout"
+            onclick="logout()"
+        >
+            🚪 &nbsp; Logout
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+
+        <div class="title-area">
+
+            <h1
+                class="page-title"
+                id="pageTitle"
+            >
+                Analytics
+            </h1>
+
+            <div class="page-subtitle">
+                Hospital overview and patient activity
+            </div>
+
+        </div>
+
+
+        <div class="top-actions">
+
+            <div
+                class="hospital-pill"
+                id="hospitalNameDisplay"
+            >
+                Loading...
+            </div>
+
+            <button
+                class="refresh-btn"
+                onclick="loadAnalytics()"
+            >
+                ↻ Refresh
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <div
+        id="errorBox"
+        class="error-box"
+    ></div>
+
+
+<!-- =========================================================
+     ANALYTICS
+========================================================= -->
+
+<section
+    id="analytics"
+    class="section active"
+>
+
+
+    <div class="welcome-card">
+
+        <div class="welcome-text">
+
+            <div class="welcome-title">
+                Welcome to your Hospital Dashboard 👋
+            </div>
+
+            <div class="welcome-subtitle">
+                Monitor appointments, patients and doctor activity from one place.
+            </div>
+
+        </div>
+
+        <div class="welcome-icon">
+            🏥
+        </div>
+
+    </div>
+
+
+    <!-- STAT CARDS -->
+
+    <div class="stats-grid">
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    Total Patients
+                </div>
+
+                <div class="stat-icon">
+                    👥
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="totalPatients"
+            >
+                --
+            </div>
+
+            <div class="stat-description">
+                All registered appointments
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    Today's Appointments
+                </div>
+
+                <div class="stat-icon">
+                    📅
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="todayAppointments"
+            >
+                --
+            </div>
+
+            <div class="stat-description">
+                Scheduled for today
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    Male Patients
+                </div>
+
+                <div class="stat-icon">
+                    👨
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="malePatients"
+            >
+                --
+            </div>
+
+            <div class="stat-description">
+                Male patient appointments
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div class="stat-label">
+                    Female Patients
+                </div>
+
+                <div class="stat-icon">
+                    👩
+                </div>
+
+            </div>
+
+            <div
+                class="stat-number"
+                id="femalePatients"
+            >
+                --
+            </div>
+
+            <div class="stat-description">
+                Female patient appointments
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- ANALYTICS -->
+
+    <div class="section-heading">
+
+        <div>
+
+            <h2>
+                Hospital Analytics
+            </h2>
+
+            <p>
+                Understand patient and appointment trends
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="analytics-grid">
+
+
+        <!-- DAILY -->
+
+        <div class="chart-card full">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <div class="chart-title">
+                        Patient Appointments
+                    </div>
+
+                    <div class="chart-subtitle">
+                        Daily appointment volume
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="chart-container">
+
+                <canvas
+                    id="dailyChart"
+                ></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- GENDER -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <div class="chart-title">
+                        Gender Distribution
+                    </div>
+
+                    <div class="chart-subtitle">
+                        Patient demographics
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="chart-container">
+
+                <canvas
+                    id="genderChart"
+                ></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- AGE -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <div class="chart-title">
+                        Age Distribution
+                    </div>
+
+                    <div class="chart-subtitle">
+                        Patient age groups
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="chart-container">
+
+                <canvas
+                    id="ageChart"
+                ></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- DOCTORS -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <div class="chart-title">
+                        Doctor Performance
+                    </div>
+
+                    <div class="chart-subtitle">
+                        Appointments by doctor
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="chart-container">
+
+                <canvas
+                    id="doctorChart"
+                ></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- TIME -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <div class="chart-title">
+                        Appointment Times
+                    </div>
+
+                    <div class="chart-subtitle">
+                        Popular appointment slots
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="chart-container">
+
+                <canvas
+                    id="timeChart"
+                ></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- LOCATION -->
+
+        <div class="chart-card full">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <div class="chart-title">
+                        Patient Locations
+                    </div>
+
+                    <div class="chart-subtitle">
+                        Where your patients come from
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="chart-container">
+
+                <canvas
+                    id="locationChart"
+                ></canvas>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- DOCTOR RANKING -->
+
+    <div class="section-heading">
+
+        <div>
+
+            <h2>
+                Doctor Performance
+            </h2>
+
+            <p>
+                Appointment distribution by doctor
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="chart-card">
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+
+                        <th>Doctor</th>
+
+                        <th>Appointments</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody
+                    id="doctorTable"
+                ></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<!-- =========================================================
+     HOSPITAL OVERVIEW
+========================================================= -->
+
+<section
+    id="hospital"
+    class="section"
+>
+
+
+    <div class="section-heading">
+
+        <div>
+
+            <h2>
+                Hospital Overview
+            </h2>
+
+            <p>
+                Manage your hospital profile and operating information
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="overview-grid">
+
+
+        <div class="overview-mini">
+
+            <div class="mini-icon">
+                🏥
+            </div>
+
+            <div class="mini-label">
+                Hospital
+            </div>
+
+            <div
+                class="mini-value"
+                id="overviewHospitalName"
+            >
+                --
+            </div>
+
+        </div>
+
+
+        <div class="overview-mini">
+
+            <div class="mini-icon">
+                🕐
+            </div>
+
+            <div class="mini-label">
+                Working Hours
+            </div>
+
+            <div
+                class="mini-value"
+                id="overviewHours"
+            >
+                --
+            </div>
+
+        </div>
+
+
+        <div class="overview-mini">
+
+            <div class="mini-icon">
+                🩺
+            </div>
+
+            <div class="mini-label">
+                Hospital ID
+            </div>
+
+            <div
+                class="mini-value"
+                id="overviewHospitalId"
+            >
+                --
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="form-card">
+
+
+        <div class="form-header">
+
+            <div class="form-header-icon">
+                🏥
+            </div>
+
+            <div>
+
+                <div class="form-title">
+                    Hospital Information
+                </div>
+
+                <div class="form-subtitle">
+                    Keep your hospital information up to date
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+
+            <div class="form-group">
+
+                <label>
+                    Hospital ID
+                </label>
+
+                <input
+                    id="hospital_id"
+                    disabled
                 >
 
-                    <div class="date-input">
-
-                        <label>
-                            From
-                        </label>
-
-                        <input
-                            type="date"
-                            id="startDate"
-                        >
-
-                    </div>
+            </div>
 
 
-                    <div class="date-input">
+            <div class="form-group">
 
-                        <label>
-                            To
-                        </label>
+                <label>
+                    Hospital Name
+                </label>
 
-                        <input
-                            type="date"
-                            id="endDate"
-                        >
-
-                    </div>
-
-
-                    <div
-                        class="date-input"
-                        style="display:flex;align-items:end;"
-                    >
-
-                        <button
-                            class="filter-btn active"
-                            style="width:100%;"
-                            onclick="applyCustomDate()"
-                        >
-                            Apply Date Range
-                        </button>
-
-                    </div>
-
-                </div>
+                <input
+                    id="hospital_name"
+                    placeholder="Enter hospital name"
+                >
 
             </div>
 
 
-            <!-- =================================================
-                 KPI CARDS
-            ================================================== -->
+            <div class="form-group">
 
-            <div class="stats-grid">
+                <label>
+                    Date
+                </label>
 
-
-                <div class="stat-card">
-
-                    <div class="stat-header">
-
-                        <span class="stat-label">
-                            Total Patients
-                        </span>
-
-                        <div class="stat-icon blue">
-                            👥
-                        </div>
-
-                    </div>
-
-                    <div
-                        id="totalPatients"
-                        class="stat-value"
-                    >
-                        0
-                    </div>
-
-                    <div
-                        id="periodText"
-                        class="stat-small"
-                    >
-                        Selected period
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <div class="stat-header">
-
-                        <span class="stat-label">
-                            Appointments
-                        </span>
-
-                        <div class="stat-icon green">
-                            📅
-                        </div>
-
-                    </div>
-
-                    <div
-                        id="appointmentsCount"
-                        class="stat-value"
-                    >
-                        0
-                    </div>
-
-                    <div class="stat-small">
-                        Scheduled visits
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <div class="stat-header">
-
-                        <span class="stat-label">
-                            Doctors
-                        </span>
-
-                        <div class="stat-icon purple">
-                            👨‍⚕️
-                        </div>
-
-                    </div>
-
-                    <div
-                        id="doctorCount"
-                        class="stat-value"
-                    >
-                        0
-                    </div>
-
-                    <div class="stat-small">
-                        Active doctors
-                    </div>
-
-                </div>
-
-
-                <div class="stat-card">
-
-                    <div class="stat-header">
-
-                        <span class="stat-label">
-                            Avg. Daily Patients
-                        </span>
-
-                        <div class="stat-icon orange">
-                            📈
-                        </div>
-
-                    </div>
-
-                    <div
-                        id="averagePatients"
-                        class="stat-value"
-                    >
-                        0
-                    </div>
-
-                    <div class="stat-small">
-                        Average per day
-                    </div>
-
-                </div>
-
+                <input
+                    id="date"
+                    type="date"
+                >
 
             </div>
 
 
-            <!-- =================================================
-                 GENDER
-            ================================================== -->
+            <div class="form-group">
 
-            <div class="gender-grid">
+                <label>
+                    Opening Time
+                </label>
 
-
-                <div class="gender-card">
-
-                    <div class="gender-icon">
-                        👨
-                    </div>
-
-                    <div>
-
-                        <span>
-                            Male Patients
-                        </span>
-
-                        <strong id="maleCount">
-                            0
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-                <div class="gender-card">
-
-                    <div class="gender-icon">
-                        👩
-                    </div>
-
-                    <div>
-
-                        <span>
-                            Female Patients
-                        </span>
-
-                        <strong id="femaleCount">
-                            0
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-                <div class="gender-card">
-
-                    <div class="gender-icon">
-                        👤
-                    </div>
-
-                    <div>
-
-                        <span>
-                            Other / Unknown
-                        </span>
-
-                        <strong id="otherCount">
-                            0
-                        </strong>
-
-                    </div>
-
-                </div>
-
+                <input
+                    id="open_time"
+                    type="time"
+                >
 
             </div>
 
 
-            <!-- =================================================
-                 DATE-WISE MAIN CHART
-            ================================================== -->
-
-            <div class="chart-grid">
-
-
-                <div class="chart-card full">
-
-                    <div class="chart-header">
-
-                        <div>
-
-                            <div class="chart-title">
-                                📈 Patient Visits Over Time
-                            </div>
-
-                            <div class="chart-subtitle">
-                                Date-wise appointment trend
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="chart-container">
-
-                        <canvas
-                            id="dailyChart"
-                        ></canvas>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     WEEK-WISE
-                ================================================== -->
-
-                <div class="chart-card">
-
-                    <div class="chart-header">
-
-                        <div>
-
-                            <div class="chart-title">
-                                📆 Week-wise Patients
-                            </div>
-
-                            <div class="chart-subtitle">
-                                Weekly patient volume
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="chart-container">
-
-                        <canvas
-                            id="weeklyChart"
-                        ></canvas>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     MONTH-WISE
-                ================================================== -->
-
-                <div class="chart-card">
-
-                    <div class="chart-header">
-
-                        <div>
-
-                            <div class="chart-title">
-                                🗓️ Month-wise Patients
-                            </div>
-
-                            <div class="chart-subtitle">
-                                Monthly patient volume
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="chart-container">
-
-                        <canvas
-                            id="monthlyChart"
-                        ></canvas>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     GENDER
-                ================================================== -->
-
-                <div class="chart-card">
-
-                    <div class="chart-header">
-
-                        <div>
-
-                            <div class="chart-title">
-                                👥 Gender Distribution
-                            </div>
-
-                            <div class="chart-subtitle">
-                                Patient demographics
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="chart-container small">
-
-                        <canvas
-                            id="genderChart"
-                        ></canvas>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     AGE
-                ================================================== -->
-
-                <div class="chart-card">
-
-                    <div class="chart-header">
-
-                        <div>
-
-                            <div class="chart-title">
-                                🎂 Age Distribution
-                            </div>
-
-                            <div class="chart-subtitle">
-                                Patients by age group
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="chart-container small">
-
-                        <canvas
-                            id="ageChart"
-                        ></canvas>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     DOCTORS
-                ================================================== -->
-
-                <div class="chart-card">
-
-                    <div class="chart-header">
-
-                        <div>
-
-                            <div class="chart-title">
-                                👨‍⚕️ Doctor Performance
-                            </div>
-
-                            <div class="chart-subtitle">
-                                Appointments handled by doctor
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="chart-container">
-
-                        <canvas
-                            id="doctorChart"
-                        ></canvas>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     TIME
-                ================================================== -->
-
-                <div class="chart-card">
-
-                    <div class="chart-header">
-
-                        <div>
-
-                            <div class="chart-title">
-                                🕐 Appointment Time
-                            </div>
-
-                            <div class="chart-subtitle">
-                                Popular appointment slots
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="chart-container">
-
-                        <canvas
-                            id="timeChart"
-                        ></canvas>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =================================================
-                     LOCATION
-                ================================================== -->
-
-                <div class="chart-card full">
-
-                    <div class="chart-header">
-
-                        <div>
-
-                            <div class="chart-title">
-                                📍 Patient Location
-                            </div>
-
-                            <div class="chart-subtitle">
-                                Where your patients are coming from
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="chart-container">
-
-                        <canvas
-                            id="locationChart"
-                        ></canvas>
-
-                    </div>
-
-                </div>
-
+            <div class="form-group">
+
+                <label>
+                    Closing Time
+                </label>
+
+                <input
+                    id="close_time"
+                    type="time"
+                >
 
             </div>
 
 
-            <!-- =================================================
-                 DOCTOR TABLE
-            ================================================== -->
+            <div class="form-group full">
 
-            <div class="table-card">
+                <label>
+                    Hospital Information
+                </label>
 
-                <div class="table-header">
-
-                    <h3>
-                        👨‍⚕️ Doctor-wise Appointment Summary
-                    </h3>
-
-                </div>
-
-
-                <div class="table-wrapper">
-
-                    <table>
-
-                        <thead>
-
-                            <tr>
-
-                                <th>
-                                    Rank
-                                </th>
-
-                                <th>
-                                    Doctor
-                                </th>
-
-                                <th>
-                                    Appointments
-                                </th>
-
-                                <th>
-                                    Share
-                                </th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody id="doctorTable">
-
-                        </tbody>
-
-                    </table>
-
-                </div>
+                <textarea
+                    id="info"
+                    placeholder="Describe hospital services, facilities and other information..."
+                ></textarea>
 
             </div>
 
 
         </div>
 
-    </main>
+
+        <button
+            class="save-btn"
+            onclick="saveHospital()"
+        >
+            💾 Save Hospital Information
+        </button>
+
+
+    </div>
+
+
+</section>
+
+
+<!-- =========================================================
+     DOCTORS
+========================================================= -->
+
+<section
+    id="doctors"
+    class="section"
+>
+
+
+    <div class="section-heading">
+
+        <div>
+
+            <h2>
+                Doctors
+            </h2>
+
+            <p>
+                Manage your hospital's medical team
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="form-card">
+
+
+        <div class="form-header">
+
+            <div class="form-header-icon">
+                👨‍⚕️
+            </div>
+
+            <div>
+
+                <div class="form-title">
+                    Medical Team
+                </div>
+
+                <div class="form-subtitle">
+                    Add doctors, specializations and OPD timings
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div id="doctor-section"></div>
+
+
+        <button
+            class="add-btn"
+            onclick="addDoctor()"
+        >
+            + Add Doctor
+        </button>
+
+
+        <br>
+
+
+        <button
+            class="save-btn"
+            onclick="saveHospital()"
+        >
+            💾 Save Hospital & Doctors
+        </button>
+
+
+    </div>
+
+
+</section>
+
+
+</main>
 
 </div>
 
 
 <!-- =========================================================
-     LOADING
-========================================================== -->
+     MOBILE NAV
+========================================================= -->
+
+<nav class="mobile-nav">
+
+
+    <button
+        class="mobile-nav-btn active"
+        data-mobile-page="analytics"
+        onclick="mobileShowPage('analytics',this)"
+    >
+
+        <span>📊</span>
+
+        Analytics
+
+    </button>
+
+
+    <button
+        class="mobile-nav-btn"
+        data-mobile-page="hospital"
+        onclick="mobileShowPage('hospital',this)"
+    >
+
+        <span>🏥</span>
+
+        Hospital
+
+    </button>
+
+
+    <button
+        class="mobile-nav-btn"
+        data-mobile-page="doctors"
+        onclick="mobileShowPage('doctors',this)"
+    >
+
+        <span>👨‍⚕️</span>
+
+        Doctors
+
+    </button>
+
+
+    <button
+        class="mobile-nav-btn"
+        onclick="openAppointments()"
+    >
+
+        <span>📅</span>
+
+        Appointments
+
+    </button>
+
+
+    <button
+        class="mobile-nav-btn"
+        onclick="openMoreMenu()"
+    >
+
+        <span>☰</span>
+
+        More
+
+    </button>
+
+
+</nav>
+
+
+<!-- =========================================================
+     MOBILE MORE
+========================================================= -->
 
 <div
-    id="loadingBox"
-    class="loading-box"
+    class="more-overlay"
+    id="moreOverlay"
+    onclick="closeMoreMenu(event)"
 >
 
-    <div class="loader"></div>
+
+    <div class="more-sheet">
+
+
+        <div class="more-title">
+            More
+        </div>
+
+
+        <button
+            class="more-btn"
+            onclick="openFollowups()"
+        >
+            🔄
+            <span>
+                Follow-ups
+            </span>
+        </button>
+
+
+        <button
+            class="more-btn"
+            onclick="logout()"
+        >
+            🚪
+            <span>
+                Logout
+            </span>
+        </button>
+
+
+    </div>
 
 </div>
 
 
+<div
+    id="toast"
+    class="toast"
+></div>
+
+
+<!-- =========================================================
+     FIREBASE
+========================================================= -->
+
 <script type="module">
 
 
-/* ============================================================
-   FIREBASE
-============================================================ */
-
-
 import {
-
     initializeApp
-
 }
 from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 
 
 import {
-
     getAuth,
-
     onAuthStateChanged,
-
     signOut
-
 }
 from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
 
-/* ============================================================
+/* =========================================================
    FIREBASE CONFIG
-============================================================ */
-
+========================================================= */
 
 const firebaseConfig = {
 
@@ -2468,80 +2976,22 @@ const auth =
     );
 
 
-/* ============================================================
-   GLOBAL VARIABLES
-============================================================ */
-
-
 let currentUser = null;
-
-let hospitalId = "";
-
-let allDailyData = {};
-
-let selectedPeriod = "7";
 
 let charts = {};
 
-
-/* ============================================================
-   DOM
-============================================================ */
+let doctorCount = 0;
 
 
-const $ = id =>
-    document.getElementById(id);
-
-
-/* ============================================================
-   MOBILE SIDEBAR
-============================================================ */
-
-
-window.toggleSidebar =
-function() {
-
-    $("sidebar")
-        .classList
-        .toggle("open");
-
-    $("sidebarOverlay")
-        .classList
-        .toggle("show");
-
-};
-
-
-/* ============================================================
-   CLOSE SIDEBAR ON MOBILE
-============================================================ */
-
-
-function closeMobileSidebar() {
-
-    $("sidebar")
-        .classList
-        .remove("open");
-
-    $("sidebarOverlay")
-        .classList
-        .remove("show");
-
-}
-
-
-/* ============================================================
+/* =========================================================
    AUTH
-============================================================ */
-
+========================================================= */
 
 onAuthStateChanged(
-
     auth,
+    async function(user){
 
-    async function(user) {
-
-        if (!user) {
+        if(!user){
 
             window.location.href =
                 "/login-page";
@@ -2550,35 +3000,23 @@ onAuthStateChanged(
         }
 
 
-        currentUser =
-            user;
+        currentUser = user;
 
 
-        try {
-
-            showLoading(true);
-
+        try{
 
             const token =
                 await user.getIdToken(true);
 
 
-            /* -----------------------------------------------
-               CHECK SUBSCRIPTION
-            ------------------------------------------------ */
-
-
             const response =
                 await fetch(
-
                     "/check-subscription",
-
                     {
 
-                        method:
-                            "POST",
+                        method:"POST",
 
-                        headers: {
+                        headers:{
 
                             "Authorization":
                                 "Bearer " + token,
@@ -2589,7 +3027,6 @@ onAuthStateChanged(
                         }
 
                     }
-
                 );
 
 
@@ -2597,27 +3034,10 @@ onAuthStateChanged(
                 await response.json();
 
 
-            if (!response.ok) {
-
-                alert(
-                    data.error ||
-                    "Subscription verification failed."
-                );
-
-                window.location.href =
-                    "/login-page";
-
-                return;
-            }
-
-
-            if (
+            if(
+                !response.ok ||
                 data.active !== true
-            ) {
-
-                alert(
-                    "Your subscription is not active."
-                );
+            ){
 
                 window.location.href =
                     "/payment";
@@ -2626,504 +3046,274 @@ onAuthStateChanged(
             }
 
 
-            /* -----------------------------------------------
-               UID
-            ------------------------------------------------ */
-
-
             localStorage.setItem(
                 "uid",
                 user.uid
             );
 
 
-            /* -----------------------------------------------
-               HOSPITAL ID
-            ------------------------------------------------ */
-
-
-            hospitalId =
+            const hospitalId =
                 localStorage.getItem(
                     "hospitalId"
                 ) ||
                 user.uid;
 
 
-            $("hospitalNameDisplay")
-                .innerText =
-                    localStorage.getItem(
-                        "hospitalName"
-                    ) ||
-                    "Hospital";
+            document.getElementById(
+                "hospital_id"
+            ).value =
+                hospitalId;
 
 
-            /* -----------------------------------------------
-               LOAD ANALYTICS
-            ------------------------------------------------ */
+            document.getElementById(
+                "overviewHospitalId"
+            ).innerText =
+                hospitalId;
+
+
+            const hospitalName =
+                localStorage.getItem(
+                    "hospitalName"
+                ) ||
+                "Hospital";
+
+
+            document.getElementById(
+                "hospitalNameDisplay"
+            ).innerText =
+                hospitalName;
+
+
+            document.getElementById(
+                "hospital_name"
+            ).value =
+                hospitalName;
+
+
+            document.getElementById(
+                "overviewHospitalName"
+            ).innerText =
+                hospitalName;
+
+
+            document.getElementById(
+                "accountName"
+            ).innerText =
+                hospitalName;
 
 
             await loadAnalytics();
 
         }
+        catch(error){
 
-        catch(error) {
+            console.error(error);
 
-            console.error(
-                error
-            );
-
-            alert(
-                "Unable to load dashboard."
-            );
-
-        }
-
-        finally {
-
-            showLoading(false);
+            window.location.href =
+                "/login-page";
 
         }
 
     }
-
 );
 
 
-/* ============================================================
-   LOADING
-============================================================ */
+/* =========================================================
+   PAGE TITLES
+========================================================= */
+
+const pageTitles = {
+
+    analytics:
+        "Analytics",
+
+    hospital:
+        "Hospital Overview",
+
+    doctors:
+        "Doctors"
+
+};
 
 
-function showLoading(show) {
+/* =========================================================
+   SHOW PAGE
+========================================================= */
 
-    if (show) {
+window.showPage =
+function(page,button){
 
-        $("loadingBox")
-            .classList
-            .add("show");
+    document
+        .querySelectorAll(".section")
+        .forEach(
+            section =>
+                section.classList.remove(
+                    "active"
+                )
+        );
+
+
+    const selected =
+        document.getElementById(
+            page
+        );
+
+
+    if(selected){
+
+        selected.classList.add(
+            "active"
+        );
 
     }
-    else {
 
-        $("loadingBox")
-            .classList
-            .remove("show");
+
+    document.getElementById(
+        "pageTitle"
+    ).innerText =
+        pageTitles[page] ||
+        "Dashboard";
+
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(
+            btn =>
+                btn.classList.remove(
+                    "active"
+                )
+        );
+
+
+    const navButton =
+        button ||
+        document.querySelector(
+            `.nav-btn[data-page="${page}"]`
+        );
+
+
+    if(navButton){
+
+        navButton.classList.add(
+            "active"
+        );
 
     }
-
-}
-
-
-/* ============================================================
-   PERIOD
-============================================================ */
-
-
-window.setPeriod =
-function(period) {
-
-    selectedPeriod =
-        period;
 
 
     document
         .querySelectorAll(
-            ".filter-btn"
+            ".mobile-nav-btn"
         )
         .forEach(
-            button => {
-
-                if (
-                    button.dataset.period ===
-                    period
-                ) {
-
-                    button.classList.add(
-                        "active"
-                    );
-
-                }
-                else {
-
-                    button.classList.remove(
-                        "active"
-                    );
-
-                }
-
-            }
+            btn =>
+                btn.classList.remove(
+                    "active"
+                )
         );
 
 
-    if (period === "custom") {
+    const mobileButton =
+        document.querySelector(
+            `.mobile-nav-btn[data-mobile-page="${page}"]`
+        );
 
-        $("customDateRow")
-            .style
-            .display =
-                "grid";
 
-        return;
+    if(mobileButton){
+
+        mobileButton.classList.add(
+            "active"
+        );
 
     }
 
 
-    $("customDateRow")
-        .style
-        .display =
-            "none";
-
-
-    renderFilteredAnalytics();
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
 
 };
 
 
-/* ============================================================
-   CUSTOM DATE
-============================================================ */
+/* =========================================================
+   MOBILE PAGE
+========================================================= */
 
+window.mobileShowPage =
+function(page,button){
 
-window.applyCustomDate =
-function() {
+    showPage(
+        page
+    );
 
-    const start =
-        $("startDate").value;
-
-    const end =
-        $("endDate").value;
-
-
-    if (!start || !end) {
-
-        alert(
-            "Please select both dates."
+    document
+        .querySelectorAll(
+            ".mobile-nav-btn"
+        )
+        .forEach(
+            btn =>
+                btn.classList.remove(
+                    "active"
+                )
         );
 
-        return;
-    }
 
+    if(button){
 
-    if (start > end) {
-
-        alert(
-            "Start date cannot be after end date."
+        button.classList.add(
+            "active"
         );
 
-        return;
     }
-
-
-    selectedPeriod =
-        "custom";
-
-
-    renderFilteredAnalytics();
 
 };
 
 
-/* ============================================================
-   GET DATE OBJECT
-============================================================ */
+/* =========================================================
+   MORE MENU
+========================================================= */
 
+window.openMoreMenu =
+function(){
 
-function parseDate(dateString) {
-
-    if (!dateString) {
-        return null;
-    }
-
-
-    const parts =
-        String(dateString)
-            .split("-");
-
-
-    if (parts.length !== 3) {
-        return null;
-    }
-
-
-    return new Date(
-
-        Number(parts[0]),
-
-        Number(parts[1]) - 1,
-
-        Number(parts[2])
-
-    );
-
-}
-
-
-/* ============================================================
-   FORMAT DATE
-============================================================ */
-
-
-function formatDate(date) {
-
-    const year =
-        date.getFullYear();
-
-
-    const month =
-        String(
-            date.getMonth() + 1
+    document
+        .getElementById(
+            "moreOverlay"
         )
-        .padStart(2, "0");
-
-
-    const day =
-        String(
-            date.getDate()
-        )
-        .padStart(2, "0");
-
-
-    return `${year}-${month}-${day}`;
-
-}
-
-
-/* ============================================================
-   GET FILTERED DAILY DATA
-============================================================ */
-
-
-function getFilteredDailyData() {
-
-    const entries =
-        Object.entries(
-            allDailyData
+        .classList.add(
+            "open"
         );
 
-
-    if (
-        selectedPeriod === "all"
-    ) {
-
-        return entries;
-
-    }
+};
 
 
-    let startDate;
+window.closeMoreMenu =
+function(event){
 
-    let endDate =
-        new Date();
+    if(
+        event.target.id ===
+        "moreOverlay"
+    ){
 
-
-    if (
-        selectedPeriod === "today"
-    ) {
-
-        startDate =
-            new Date();
-
-    }
-
-    else if (
-        selectedPeriod === "custom"
-    ) {
-
-        const start =
-            $("startDate").value;
-
-        const end =
-            $("endDate").value;
-
-
-        if (!start || !end) {
-
-            return [];
-
-        }
-
-
-        return entries.filter(
-            ([date]) =>
-                date >= start &&
-                date <= end
-        );
-
-    }
-
-    else {
-
-        startDate =
-            new Date();
-
-
-        startDate.setDate(
-
-            startDate.getDate()
-            -
-            Number(
-                selectedPeriod
+        document
+            .getElementById(
+                "moreOverlay"
             )
-            +
-            1
-
-        );
-
-    }
-
-
-    const start =
-        formatDate(
-            startDate
-        );
-
-
-    const end =
-        formatDate(
-            endDate
-        );
-
-
-    return entries.filter(
-
-        ([date]) =>
-            date >= start &&
-            date <= end
-
-    );
-
-}
-
-
-/* ============================================================
-   LOAD ALL ANALYTICS
-============================================================ */
-
-
-async function loadAnalytics() {
-
-    if (!hospitalId) {
-
-        console.error(
-            "Hospital ID missing"
-        );
-
-        return;
-    }
-
-
-    showLoading(true);
-
-
-    try {
-
-        const [
-
-            overview,
-
-            gender,
-
-            age,
-
-            doctors,
-
-            daily,
-
-            time,
-
-            location
-
-        ] = await Promise.all([
-
-            fetchJson(
-                `/api/analytics/overview/${hospitalId}`
-            ),
-
-            fetchJson(
-                `/api/analytics/gender/${hospitalId}`
-            ),
-
-            fetchJson(
-                `/api/analytics/age/${hospitalId}`
-            ),
-
-            fetchJson(
-                `/api/analytics/doctors/${hospitalId}`
-            ),
-
-            fetchJson(
-                `/api/analytics/daily/${hospitalId}`
-            ),
-
-            fetchJson(
-                `/api/analytics/time/${hospitalId}`
-            ),
-
-            fetchJson(
-                `/api/analytics/location/${hospitalId}`
-            )
-
-        ]);
-
-
-        allDailyData =
-            daily.data || {};
-
-
-        window.analyticsCache = {
-
-            overview:
-                overview,
-
-            gender:
-                gender.data || {},
-
-            age:
-                age.data || {},
-
-            doctors:
-                doctors.data || {},
-
-            time:
-                time.data || {},
-
-            location:
-                location.data || {}
-
-        };
-
-
-        renderFilteredAnalytics();
+            .classList.remove(
+                "open"
+            );
 
     }
 
-    catch(error) {
-
-        console.error(
-            "ANALYTICS ERROR:",
-            error
-        );
-
-        alert(
-            "Unable to load analytics data."
-        );
-
-    }
-
-    finally {
-
-        showLoading(false);
-
-    }
-
-}
+};
 
 
-/* ============================================================
-   FETCH JSON
-============================================================ */
+/* =========================================================
+   API
+========================================================= */
 
-
-async function fetchJson(url) {
+async function api(url){
 
     const response =
         await fetch(url);
@@ -3133,11 +3323,14 @@ async function fetchJson(url) {
         await response.json();
 
 
-    if (!response.ok) {
+    if(
+        !response.ok ||
+        data.success !== true
+    ){
 
         throw new Error(
             data.error ||
-            `Request failed: ${response.status}`
+            "Analytics API error"
         );
 
     }
@@ -3148,626 +3341,423 @@ async function fetchJson(url) {
 }
 
 
-/* ============================================================
-   RENDER FILTERED ANALYTICS
-============================================================ */
+/* =========================================================
+   ANALYTICS
+========================================================= */
+
+window.loadAnalytics =
+async function(){
+
+    try{
+
+        hideError();
 
 
-function renderFilteredAnalytics() {
-
-    const filtered =
-        getFilteredDailyData();
-
-
-    const dailyObject =
-        Object.fromEntries(
-            filtered
-        );
-
-
-    renderKPIs(
-        dailyObject
-    );
-
-
-    renderDailyChart(
-        dailyObject
-    );
-
-
-    renderWeeklyChart(
-        dailyObject
-    );
-
-
-    renderMonthlyChart(
-        dailyObject
-    );
-
-
-    renderGenderChart();
-
-
-    renderAgeChart();
-
-
-    renderDoctorChart();
-
-
-    renderTimeChart();
-
-
-    renderLocationChart();
-
-
-    renderDoctorTable();
-
-}
-
-
-/* ============================================================
-   KPI
-============================================================ */
-
-
-function renderKPIs(dailyData) {
-
-    const total =
-        Object.values(
-            dailyData
-        )
-        .reduce(
-            (sum, value) =>
-                sum + Number(value || 0),
-            0
-        );
-
-
-    const dates =
-        Object.keys(
-            dailyData
-        );
-
-
-    let days = 1;
-
-
-    if (dates.length > 0) {
-
-        const first =
-            parseDate(
-                dates[0]
-            );
-
-        const last =
-            parseDate(
-                dates[dates.length - 1]
+        const hospitalId =
+            localStorage.getItem(
+                "hospitalId"
+            ) ||
+            localStorage.getItem(
+                "uid"
             );
 
 
-        if (first && last) {
+        if(!hospitalId){
 
-            days =
-                Math.max(
-                    1,
-                    Math.round(
-                        (
-                            last - first
-                        )
-                        /
-                        86400000
-                    ) + 1
-                );
+            throw new Error(
+                "Hospital ID not found"
+            );
 
         }
 
-    }
 
+        /* OVERVIEW */
 
-    const average =
-        total / days;
-
-
-    $("totalPatients")
-        .innerText =
-            total.toLocaleString();
-
-
-    $("appointmentsCount")
-        .innerText =
-            total.toLocaleString();
-
-
-    $("averagePatients")
-        .innerText =
-            average.toFixed(1);
-
-
-    $("periodText")
-        .innerText =
-            getPeriodLabel();
-
-}
-
-
-/* ============================================================
-   PERIOD LABEL
-============================================================ */
-
-
-function getPeriodLabel() {
-
-    if (
-        selectedPeriod ===
-        "today"
-    ) {
-
-        return "Today";
-
-    }
-
-
-    if (
-        selectedPeriod ===
-        "7"
-    ) {
-
-        return "Last 7 days";
-
-    }
-
-
-    if (
-        selectedPeriod ===
-        "30"
-    ) {
-
-        return "Last 30 days";
-
-    }
-
-
-    if (
-        selectedPeriod ===
-        "90"
-    ) {
-
-        return "Last 90 days";
-
-    }
-
-
-    if (
-        selectedPeriod ===
-        "custom"
-    ) {
-
-        return "Custom date range";
-
-    }
-
-
-    return "All time";
-
-}
-
-
-/* ============================================================
-   CHART DESTROY
-============================================================ */
-
-
-function destroyChart(name) {
-
-    if (charts[name]) {
-
-        charts[name].destroy();
-
-    }
-
-}
-
-
-/* ============================================================
-   DAILY CHART
-============================================================ */
-
-
-function renderDailyChart(data) {
-
-    destroyChart(
-        "daily"
-    );
-
-
-    const entries =
-        Object.entries(data)
-            .sort(
-                ([a], [b]) =>
-                    a.localeCompare(b)
+        const overview =
+            await api(
+                `/api/analytics/overview/${hospitalId}`
             );
 
 
-    charts.daily =
+        document.getElementById(
+            "totalPatients"
+        ).innerText =
+            overview.total_patients;
+
+
+        document.getElementById(
+            "todayAppointments"
+        ).innerText =
+            overview.today_appointments;
+
+
+        document.getElementById(
+            "malePatients"
+        ).innerText =
+            overview.male;
+
+
+        document.getElementById(
+            "femalePatients"
+        ).innerText =
+            overview.female;
+
+
+        /* GENDER */
+
+        const gender =
+            await api(
+                `/api/analytics/gender/${hospitalId}`
+            );
+
+
+        createChart(
+            "genderChart",
+            "doughnut",
+            Object.keys(
+                gender.data
+            ),
+            Object.values(
+                gender.data
+            )
+        );
+
+
+        /* AGE */
+
+        const age =
+            await api(
+                `/api/analytics/age/${hospitalId}`
+            );
+
+
+        const ageOrder = [
+
+            "0-18",
+            "19-30",
+            "31-45",
+            "46-60",
+            "60+",
+            "Unknown"
+
+        ];
+
+
+        const ageLabels =
+            ageOrder.filter(
+                x =>
+                    age.data[x] !== undefined
+            );
+
+
+        createChart(
+            "ageChart",
+            "bar",
+            ageLabels,
+            ageLabels.map(
+                x =>
+                    age.data[x]
+            )
+        );
+
+
+        /* DOCTORS */
+
+        const doctors =
+            await api(
+                `/api/analytics/doctors/${hospitalId}`
+            );
+
+
+        const doctorLabels =
+            Object.keys(
+                doctors.data
+            );
+
+
+        const doctorValues =
+            Object.values(
+                doctors.data
+            );
+
+
+        createChart(
+            "doctorChart",
+            "bar",
+            doctorLabels,
+            doctorValues,
+            true
+        );
+
+
+        buildDoctorTable(
+            doctors.data
+        );
+
+
+        /* DAILY */
+
+        const daily =
+            await api(
+                `/api/analytics/daily/${hospitalId}`
+            );
+
+
+        createChart(
+            "dailyChart",
+            "line",
+            Object.keys(
+                daily.data
+            ),
+            Object.values(
+                daily.data
+            )
+        );
+
+
+        /* TIME */
+
+        const time =
+            await api(
+                `/api/analytics/time/${hospitalId}`
+            );
+
+
+        createChart(
+            "timeChart",
+            "bar",
+            Object.keys(
+                time.data
+            ),
+            Object.values(
+                time.data
+            )
+        );
+
+
+        /* LOCATION */
+
+        const location =
+            await api(
+                `/api/analytics/location/${hospitalId}`
+            );
+
+
+        const locationData =
+            Object.entries(
+                location.data
+            )
+            .slice(0,10);
+
+
+        createChart(
+            "locationChart",
+            "bar",
+            locationData.map(
+                x => x[0]
+            ),
+            locationData.map(
+                x => x[1]
+            ),
+            true
+        );
+
+
+        showToast(
+            "Analytics updated"
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "ANALYTICS ERROR:",
+            error
+        );
+
+        showError(
+            error.message
+        );
+
+    }
+
+};
+
+
+/* =========================================================
+   CHART
+========================================================= */
+
+function createChart(
+    canvasId,
+    type,
+    labels,
+    values,
+    horizontal=false
+){
+
+    const canvas =
+        document.getElementById(
+            canvasId
+        );
+
+
+    if(!canvas)
+        return;
+
+
+    if(charts[canvasId]){
+
+        charts[canvasId].destroy();
+
+    }
+
+
+    let options = {
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        interaction:{
+            intersect:false,
+            mode:"index"
+        },
+
+        plugins:{
+
+            legend:{
+
+                position:
+                    type === "doughnut"
+                        ? "bottom"
+                        : "top",
+
+                labels:{
+
+                    usePointStyle:true,
+
+                    padding:15,
+
+                    font:{
+                        size:10
+                    }
+
+                }
+
+            }
+
+        }
+
+    };
+
+
+    if(type !== "doughnut"){
+
+        options.scales = {
+
+            x:{
+
+                ticks:{
+
+                    maxRotation:45,
+
+                    minRotation:0,
+
+                    font:{
+                        size:9
+                    }
+
+                },
+
+                grid:{
+                    display:false
+                }
+
+            },
+
+            y:{
+
+                beginAtZero:true,
+
+                ticks:{
+
+                    precision:0,
+
+                    font:{
+                        size:9
+                    }
+
+                },
+
+                grid:{
+                    color:
+                        "#eef2f7"
+                }
+
+            }
+
+        };
+
+    }
+
+
+    if(horizontal){
+
+        options.indexAxis =
+            "y";
+
+    }
+
+
+    charts[canvasId] =
         new Chart(
-
-            $("dailyChart"),
-
+            canvas,
             {
 
-                type:
-                    "line",
+                type:type,
 
-                data: {
+                data:{
 
-                    labels:
-                        entries.map(
-                            ([date]) =>
-                                date
-                        ),
+                    labels:labels,
 
-                    datasets: [
+                    datasets:[
 
                         {
 
                             label:
-                                "Patients",
+                                "Appointments",
 
-                            data:
-                                entries.map(
-                                    ([,value]) =>
-                                        value
-                                ),
+                            data:values,
 
-                            borderColor:
-                                "#2563eb",
+                            borderWidth:2,
 
-                            backgroundColor:
-                                "rgba(37,99,235,0.10)",
+                            borderRadius:7,
+
+                            tension:.35,
 
                             fill:
-                                true,
-
-                            tension:
-                                0.35,
-
-                            pointRadius:
-                                3,
-
-                            pointHoverRadius:
-                                6
-
-                        }
-
-                    ]
-
-                },
-
-                options: {
-
-                    responsive:
-                        true,
-
-                    maintainAspectRatio:
-                        false,
-
-                    plugins: {
-
-                        legend: {
-
-                            display:
-                                false
-
-                        }
-
-                    },
-
-                    scales: {
-
-                        y: {
-
-                            beginAtZero:
-                                true,
-
-                            ticks: {
-
-                                precision:
-                                    0
-
-                            }
-
-                        },
-
-                        x: {
-
-                            ticks: {
-
-                                maxTicksLimit:
-                                    12
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        );
-
-}
-
-
-/* ============================================================
-   WEEKLY GROUPING
-============================================================ */
-
-
-function getWeekStart(date) {
-
-    const d =
-        new Date(date);
-
-
-    const day =
-        d.getDay();
-
-
-    const diff =
-        day === 0
-            ? -6
-            : 1 - day;
-
-
-    d.setDate(
-        d.getDate() + diff
-    );
-
-
-    d.setHours(
-        0,
-        0,
-        0,
-        0
-    );
-
-
-    return d;
-
-}
-
-
-function renderWeeklyChart(data) {
-
-    destroyChart(
-        "weekly"
-    );
-
-
-    const weekly = {};
-
-
-    Object.entries(data)
-        .forEach(
-            ([date, count]) => {
-
-                const d =
-                    parseDate(
-                        date
-                    );
-
-
-                if (!d) {
-                    return;
-                }
-
-
-                const weekStart =
-                    getWeekStart(
-                        d
-                    );
-
-
-                const key =
-                    formatDate(
-                        weekStart
-                    );
-
-
-                weekly[key] =
-                    (
-                        weekly[key] ||
-                        0
-                    )
-                    +
-                    Number(count || 0);
-
-            }
-        );
-
-
-    const entries =
-        Object.entries(weekly)
-            .sort(
-                ([a], [b]) =>
-                    a.localeCompare(b)
-            );
-
-
-    charts.weekly =
-        new Chart(
-
-            $("weeklyChart"),
-
-            {
-
-                type:
-                    "bar",
-
-                data: {
-
-                    labels:
-                        entries.map(
-                            ([date]) =>
-                                "Week " + date
-                        ),
-
-                    datasets: [
-
-                        {
-
-                            label:
-                                "Patients",
-
-                            data:
-                                entries.map(
-                                    ([,count]) =>
-                                        count
-                                ),
+                                type === "line",
 
                             backgroundColor:
-                                "#2563eb",
 
-                            borderRadius:
-                                6
+                                type === "doughnut"
 
-                        }
+                                ? [
 
-                    ]
+                                    "#2563eb",
+                                    "#ec4899",
+                                    "#f59e0b",
+                                    "#10b981",
+                                    "#8b5cf6",
+                                    "#06b6d4"
 
-                },
+                                ]
 
-                options: {
+                                : "#2563eb",
 
-                    responsive:
-                        true,
-
-                    maintainAspectRatio:
-                        false,
-
-                    plugins: {
-
-                        legend: {
-
-                            display:
-                                false
-
-                        }
-
-                    },
-
-                    scales: {
-
-                        y: {
-
-                            beginAtZero:
-                                true,
-
-                            ticks: {
-
-                                precision:
-                                    0
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        );
-
-}
-
-
-/* ============================================================
-   MONTHLY
-============================================================ */
-
-
-function renderMonthlyChart(data) {
-
-    destroyChart(
-        "monthly"
-    );
-
-
-    const monthly = {};
-
-
-    Object.entries(data)
-        .forEach(
-            ([date, count]) => {
-
-                const month =
-                    String(date)
-                        .substring(
-                            0,
-                            7
-                        );
-
-
-                monthly[month] =
-                    (
-                        monthly[month] ||
-                        0
-                    )
-                    +
-                    Number(count || 0);
-
-            }
-        );
-
-
-    const entries =
-        Object.entries(monthly)
-            .sort(
-                ([a], [b]) =>
-                    a.localeCompare(b)
-            );
-
-
-    charts.monthly =
-        new Chart(
-
-            $("monthlyChart"),
-
-            {
-
-                type:
-                    "bar",
-
-                data: {
-
-                    labels:
-                        entries.map(
-                            ([month]) =>
-                                month
-                        ),
-
-                    datasets: [
-
-                        {
-
-                            label:
-                                "Patients",
-
-                            data:
-                                entries.map(
-                                    ([,count]) =>
-                                        count
-                                ),
-
-                            backgroundColor:
-                                "#7c3aed",
-
-                            borderRadius:
-                                6
+                            borderColor:
+                                "#2563eb"
 
                         }
 
@@ -3775,735 +3765,51 @@ function renderMonthlyChart(data) {
 
                 },
 
-                options: {
-
-                    responsive:
-                        true,
-
-                    maintainAspectRatio:
-                        false,
-
-                    plugins: {
-
-                        legend: {
-
-                            display:
-                                false
-
-                        }
-
-                    },
-
-                    scales: {
-
-                        y: {
-
-                            beginAtZero:
-                                true,
-
-                            ticks: {
-
-                                precision:
-                                    0
-
-                            }
-
-                        }
-
-                    }
-
-                }
+                options:options
 
             }
-
         );
 
 }
 
 
-/* ============================================================
-   GENDER
-============================================================ */
-
-
-function renderGenderChart() {
-
-    destroyChart(
-        "gender"
-    );
-
-
-    const data =
-        window.analyticsCache
-            ?.gender || {};
-
-
-    let male =
-        0;
-
-    let female =
-        0;
-
-    let other =
-        0;
-
-
-    Object.entries(data)
-        .forEach(
-            ([key, value]) => {
-
-                const gender =
-                    key
-                        .toLowerCase()
-                        .trim();
-
-
-                if (
-                    gender === "male"
-                ) {
-
-                    male +=
-                        Number(value);
-
-                }
-
-                else if (
-                    gender === "female"
-                ) {
-
-                    female +=
-                        Number(value);
-
-                }
-
-                else {
-
-                    other +=
-                        Number(value);
-
-                }
-
-            }
-        );
-
-
-    $("maleCount")
-        .innerText =
-            male;
-
-
-    $("femaleCount")
-        .innerText =
-            female;
-
-
-    $("otherCount")
-        .innerText =
-            other;
-
-
-    charts.gender =
-        new Chart(
-
-            $("genderChart"),
-
-            {
-
-                type:
-                    "doughnut",
-
-                data: {
-
-                    labels: [
-
-                        "Male",
-
-                        "Female",
-
-                        "Other"
-
-                    ],
-
-                    datasets: [
-
-                        {
-
-                            data: [
-
-                                male,
-
-                                female,
-
-                                other
-
-                            ],
-
-                            backgroundColor: [
-
-                                "#2563eb",
-
-                                "#ec4899",
-
-                                "#94a3b8"
-
-                            ],
-
-                            borderWidth:
-                                0
-
-                        }
-
-                    ]
-
-                },
-
-                options: {
-
-                    responsive:
-                        true,
-
-                    maintainAspectRatio:
-                        false,
-
-                    cutout:
-                        "65%"
-
-                }
-
-            }
-
-        );
-
-}
-
-
-/* ============================================================
-   AGE
-============================================================ */
-
-
-function renderAgeChart() {
-
-    destroyChart(
-        "age"
-    );
-
-
-    const data =
-        window.analyticsCache
-            ?.age || {};
-
-
-    const order = [
-
-        "0-18",
-
-        "19-30",
-
-        "31-45",
-
-        "46-60",
-
-        "60+",
-
-        "Unknown"
-
-    ];
-
-
-    const values =
-        order.map(
-            key =>
-                Number(
-                    data[key] || 0
-                )
-        );
-
-
-    charts.age =
-        new Chart(
-
-            $("ageChart"),
-
-            {
-
-                type:
-                    "bar",
-
-                data: {
-
-                    labels:
-                        order,
-
-                    datasets: [
-
-                        {
-
-                            label:
-                                "Patients",
-
-                            data:
-                                values,
-
-                            backgroundColor:
-                                "#16a34a",
-
-                            borderRadius:
-                                6
-
-                        }
-
-                    ]
-
-                },
-
-                options: {
-
-                    responsive:
-                        true,
-
-                    maintainAspectRatio:
-                        false,
-
-                    plugins: {
-
-                        legend: {
-
-                            display:
-                                false
-
-                        }
-
-                    },
-
-                    scales: {
-
-                        y: {
-
-                            beginAtZero:
-                                true,
-
-                            ticks: {
-
-                                precision:
-                                    0
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        );
-
-}
-
-
-/* ============================================================
-   DOCTORS
-============================================================ */
-
-
-function renderDoctorChart() {
-
-    destroyChart(
-        "doctor"
-    );
-
-
-    const data =
-        window.analyticsCache
-            ?.doctors || {};
-
-
-    const entries =
-        Object.entries(data)
-            .sort(
-                ([,a], [,b]) =>
-                    Number(b) -
-                    Number(a)
-            );
-
-
-    const limited =
-        entries.slice(
-            0,
-            10
-        );
-
-
-    charts.doctor =
-        new Chart(
-
-            $("doctorChart"),
-
-            {
-
-                type:
-                    "bar",
-
-                data: {
-
-                    labels:
-                        limited.map(
-                            ([name]) =>
-                                name
-                        ),
-
-                    datasets: [
-
-                        {
-
-                            label:
-                                "Appointments",
-
-                            data:
-                                limited.map(
-                                    ([,count]) =>
-                                        count
-                                ),
-
-                            backgroundColor:
-                                "#0891b2",
-
-                            borderRadius:
-                                6
-
-                        }
-
-                    ]
-
-                },
-
-                options: {
-
-                    indexAxis:
-                        "y",
-
-                    responsive:
-                        true,
-
-                    maintainAspectRatio:
-                        false,
-
-                    plugins: {
-
-                        legend: {
-
-                            display:
-                                false
-
-                        }
-
-                    },
-
-                    scales: {
-
-                        x: {
-
-                            beginAtZero:
-                                true,
-
-                            ticks: {
-
-                                precision:
-                                    0
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        );
-
-}
-
-
-/* ============================================================
-   TIME
-============================================================ */
-
-
-function renderTimeChart() {
-
-    destroyChart(
-        "time"
-    );
-
-
-    const data =
-        window.analyticsCache
-            ?.time || {};
-
-
-    const entries =
-        Object.entries(data);
-
-
-    charts.time =
-        new Chart(
-
-            $("timeChart"),
-
-            {
-
-                type:
-                    "bar",
-
-                data: {
-
-                    labels:
-                        entries.map(
-                            ([time]) =>
-                                time
-                        ),
-
-                    datasets: [
-
-                        {
-
-                            label:
-                                "Appointments",
-
-                            data:
-                                entries.map(
-                                    ([,count]) =>
-                                        count
-                                ),
-
-                            backgroundColor:
-                                "#f59e0b",
-
-                            borderRadius:
-                                6
-
-                        }
-
-                    ]
-
-                },
-
-                options: {
-
-                    responsive:
-                        true,
-
-                    maintainAspectRatio:
-                        false,
-
-                    plugins: {
-
-                        legend: {
-
-                            display:
-                                false
-
-                        }
-
-                    },
-
-                    scales: {
-
-                        y: {
-
-                            beginAtZero:
-                                true,
-
-                            ticks: {
-
-                                precision:
-                                    0
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        );
-
-}
-
-
-/* ============================================================
-   LOCATION
-============================================================ */
-
-
-function renderLocationChart() {
-
-    destroyChart(
-        "location"
-    );
-
-
-    const data =
-        window.analyticsCache
-            ?.location || {};
-
-
-    const entries =
-        Object.entries(data)
-            .slice(
-                0,
-                10
-            );
-
-
-    charts.location =
-        new Chart(
-
-            $("locationChart"),
-
-            {
-
-                type:
-                    "bar",
-
-                data: {
-
-                    labels:
-                        entries.map(
-                            ([location]) =>
-                                location
-                        ),
-
-                    datasets: [
-
-                        {
-
-                            label:
-                                "Patients",
-
-                            data:
-                                entries.map(
-                                    ([,count]) =>
-                                        count
-                                ),
-
-                            backgroundColor:
-                                "#9333ea",
-
-                            borderRadius:
-                                6
-
-                        }
-
-                    ]
-
-                },
-
-                options: {
-
-                    responsive:
-                        true,
-
-                    maintainAspectRatio:
-                        false,
-
-                    plugins: {
-
-                        legend: {
-
-                            display:
-                                false
-
-                        }
-
-                    },
-
-                    scales: {
-
-                        y: {
-
-                            beginAtZero:
-                                true,
-
-                            ticks: {
-
-                                precision:
-                                    0
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        );
-
-}
-
-
-/* ============================================================
+/* =========================================================
    DOCTOR TABLE
-============================================================ */
+========================================================= */
 
-
-function renderDoctorTable() {
-
-    const data =
-        window.analyticsCache
-            ?.doctors || {};
-
-
-    const entries =
-        Object.entries(data)
-            .sort(
-                ([,a], [,b]) =>
-                    Number(b) -
-                    Number(a)
-            );
-
-
-    const total =
-        entries.reduce(
-
-            (sum, [,value]) =>
-                sum +
-                Number(value || 0),
-
-            0
-
-        );
-
+function buildDoctorTable(data){
 
     const tbody =
-        $("doctorTable");
+        document.getElementById(
+            "doctorTable"
+        );
 
 
-    tbody.innerHTML =
-        "";
+    tbody.innerHTML = "";
 
 
-    if (!entries.length) {
+    const doctors =
+        Object.entries(
+            data
+        )
+        .sort(
+            (a,b) =>
+                Number(b[1]) -
+                Number(a[1])
+        );
+
+
+    if(!doctors.length){
 
         tbody.innerHTML = `
 
             <tr>
 
-                <td
-                    colspan="4"
-                    class="empty"
-                >
-                    No doctor data available.
+                <td colspan="3"
+                    style="text-align:center;color:#94a3b8">
+
+                    No appointment data available
+
                 </td>
 
             </tr>
@@ -4514,20 +3820,14 @@ function renderDoctorTable() {
     }
 
 
-    entries.forEach(
+    doctors.forEach(
+        function(item,index){
 
-        ([doctor, count], index) => {
+            const doctor =
+                item[0];
 
-            const share =
-                total
-                    ? (
-                        Number(count)
-                        /
-                        total
-                        *
-                        100
-                    ).toFixed(1)
-                    : "0.0";
+            const count =
+                item[1];
 
 
             const row =
@@ -4540,8 +3840,10 @@ function renderDoctorTable() {
 
                 <td>
 
-                    <span class="rank">
-                        ${index + 1}
+                    <span
+                        class="doctor-rank"
+                    >
+                        ${index+1}
                     </span>
 
                 </td>
@@ -4551,11 +3853,11 @@ function renderDoctorTable() {
                 </td>
 
                 <td>
-                    ${Number(count).toLocaleString()}
-                </td>
 
-                <td>
-                    ${share}%
+                    <strong>
+                        ${count}
+                    </strong>
+
                 </td>
 
             `;
@@ -4566,18 +3868,607 @@ function renderDoctorTable() {
             );
 
         }
-
     );
 
 }
 
 
-/* ============================================================
+/* =========================================================
+   ADD DOCTOR
+========================================================= */
+
+window.addDoctor =
+function(){
+
+    doctorCount++;
+
+
+    const container =
+        document.getElementById(
+            "doctor-section"
+        );
+
+
+    const box =
+        document.createElement(
+            "div"
+        );
+
+
+    box.className =
+        "doctor-box";
+
+
+    box.innerHTML = `
+
+        <div class="doctor-box-header">
+
+            <div class="doctor-number">
+                Doctor ${doctorCount}
+            </div>
+
+            <button
+                type="button"
+                class="remove-btn"
+                onclick="
+                    this.closest('.doctor-box').remove()
+                "
+            >
+                Remove
+            </button>
+
+        </div>
+
+
+        <div class="form-grid">
+
+
+            <div class="form-group">
+
+                <label>
+                    Doctor Name
+                </label>
+
+                <input
+                    class="doctor_name"
+                    placeholder="Dr. Name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Specialization
+                </label>
+
+                <input
+                    class="specialization"
+                    placeholder="Cardiologist"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    OPD Time
+                </label>
+
+                <input
+                    class="opd_time"
+                    placeholder="10:00 AM - 2:00 PM"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Doctor Information
+                </label>
+
+                <input
+                    class="doctor_info"
+                    placeholder="Experience / information"
+                >
+
+            </div>
+
+
+        </div>
+
+    `;
+
+
+    container.appendChild(
+        box
+    );
+
+};
+
+
+/* =========================================================
+   SAVE HOSPITAL
+========================================================= */
+
+window.saveHospital =
+async function(){
+
+    try{
+
+        if(!currentUser){
+
+            throw new Error(
+                "Login session expired"
+            );
+
+        }
+
+
+        const token =
+            await currentUser.getIdToken(
+                true
+            );
+
+
+        const uid =
+            localStorage.getItem(
+                "uid"
+            );
+
+
+        if(!uid){
+
+            throw new Error(
+                "User ID missing"
+            );
+
+        }
+
+
+        const hospitalName =
+            document.getElementById(
+                "hospital_name"
+            ).value.trim();
+
+
+        if(!hospitalName){
+
+            throw new Error(
+                "Please enter hospital name"
+            );
+
+        }
+
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "hospital_name",
+            hospitalName
+        );
+
+
+        formData.append(
+            "date",
+            document.getElementById(
+                "date"
+            ).value
+        );
+
+
+        formData.append(
+            "open_time",
+            document.getElementById(
+                "open_time"
+            ).value
+        );
+
+
+        formData.append(
+            "close_time",
+            document.getElementById(
+                "close_time"
+            ).value
+        );
+
+
+        formData.append(
+            "info",
+            document.getElementById(
+                "info"
+            ).value.trim()
+        );
+
+
+        const names =
+            document.querySelectorAll(
+                ".doctor_name"
+            );
+
+
+        const specs =
+            document.querySelectorAll(
+                ".specialization"
+            );
+
+
+        const times =
+            document.querySelectorAll(
+                ".opd_time"
+            );
+
+
+        const infos =
+            document.querySelectorAll(
+                ".doctor_info"
+            );
+
+
+        names.forEach(
+            function(input,index){
+
+                formData.append(
+                    "doctor_name",
+                    input.value.trim()
+                );
+
+
+                formData.append(
+                    "specialization",
+                    specs[index].value.trim()
+                );
+
+
+                formData.append(
+                    "opd_time",
+                    times[index].value.trim()
+                );
+
+
+                formData.append(
+                    "doctor_info",
+                    infos[index].value.trim()
+                );
+
+            }
+        );
+
+
+        const response =
+            await fetch(
+                "/save_hospital",
+                {
+
+                    method:"POST",
+
+                    headers:{
+
+                        "Authorization":
+                            "Bearer " + token
+
+                    },
+
+                    body:formData
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(!response.ok){
+
+            throw new Error(
+                data.error ||
+                "Unable to save hospital"
+            );
+
+        }
+
+
+        localStorage.setItem(
+            "hospitalName",
+            hospitalName
+        );
+
+
+        document.getElementById(
+            "hospitalNameDisplay"
+        ).innerText =
+            hospitalName;
+
+
+        document.getElementById(
+            "overviewHospitalName"
+        ).innerText =
+            hospitalName;
+
+
+        document.getElementById(
+            "accountName"
+        ).innerText =
+            hospitalName;
+
+
+        updateOverviewHours();
+
+
+        showToast(
+            "Hospital saved successfully"
+        );
+
+
+        setTimeout(
+            () => {
+
+                loadAnalytics();
+
+            },
+            500
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            error
+        );
+
+        showError(
+            error.message
+        );
+
+    }
+
+};
+
+
+/* =========================================================
+   HOSPITAL HOURS
+========================================================= */
+
+function updateOverviewHours(){
+
+    const open =
+        document.getElementById(
+            "open_time"
+        ).value;
+
+
+    const close =
+        document.getElementById(
+            "close_time"
+        ).value;
+
+
+    const element =
+        document.getElementById(
+            "overviewHours"
+        );
+
+
+    if(open && close){
+
+        element.innerText =
+            `${open} — ${close}`;
+
+    }
+    else{
+
+        element.innerText =
+            "Not configured";
+
+    }
+
+}
+
+
+document.getElementById(
+    "open_time"
+).addEventListener(
+    "change",
+    updateOverviewHours
+);
+
+
+document.getElementById(
+    "close_time"
+).addEventListener(
+    "change",
+    updateOverviewHours
+);
+
+
+/* =========================================================
+   APPOINTMENTS
+========================================================= */
+
+window.openAppointments =
+function(){
+
+    const uid =
+        localStorage.getItem(
+            "uid"
+        );
+
+
+    if(!uid){
+
+        window.location.href =
+            "/login-page";
+
+        return;
+    }
+
+
+    window.location.href =
+        "/appointments/" +
+        uid;
+
+};
+
+
+/* =========================================================
+   FOLLOWUPS
+========================================================= */
+
+window.openFollowups =
+function(){
+
+    const uid =
+        localStorage.getItem(
+            "uid"
+        );
+
+
+    if(!uid){
+
+        window.location.href =
+            "/login-page";
+
+        return;
+    }
+
+
+    document
+        .getElementById(
+            "moreOverlay"
+        )
+        .classList.remove(
+            "open"
+        );
+
+
+    window.location.href =
+        "/followups/" +
+        uid;
+
+};
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+window.logout =
+async function(){
+
+    try{
+
+        await signOut(
+            auth
+        );
+
+
+        localStorage.removeItem(
+            "uid"
+        );
+
+
+        localStorage.removeItem(
+            "hospitalId"
+        );
+
+
+        localStorage.removeItem(
+            "hospitalName"
+        );
+
+
+        window.location.href =
+            "/login-page";
+
+    }
+    catch(error){
+
+        console.error(
+            error
+        );
+
+    }
+
+};
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(message){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.innerText =
+        message;
+
+
+    toast.style.display =
+        "block";
+
+
+    setTimeout(
+        function(){
+
+            toast.style.display =
+                "none";
+
+        },
+        2500
+    );
+
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+
+function showError(message){
+
+    const box =
+        document.getElementById(
+            "errorBox"
+        );
+
+
+    box.innerText =
+        "⚠️ " + message;
+
+
+    box.style.display =
+        "block";
+
+}
+
+
+function hideError(){
+
+    document.getElementById(
+        "errorBox"
+    ).style.display =
+        "none";
+
+}
+
+
+/* =========================================================
    ESCAPE HTML
-============================================================ */
+========================================================= */
 
-
-function escapeHtml(value) {
+function escapeHtml(value){
 
     return String(value)
 
@@ -4609,185 +4500,13 @@ function escapeHtml(value) {
 }
 
 
-/* ============================================================
-   REFRESH
-============================================================ */
-
-
-window.refreshAnalytics =
-async function() {
-
-    await loadAnalytics();
-
-};
-
-
-/* ============================================================
-   NAVIGATION
-============================================================ */
-
-
-window.goDashboard =
-function() {
-
-    closeMobileSidebar();
-
-    window.scrollTo(
-        0,
-        0
-    );
-
-};
-
-
-window.openAppointments =
-function() {
-
-    const uid =
-        localStorage.getItem(
-            "uid"
-        );
-
-
-    if (!uid) {
-
-        window.location.href =
-            "/login-page";
-
-        return;
-    }
-
-
-    window.location.href =
-        "/appointments/" +
-        uid;
-
-};
-
-
-window.openFollowups =
-function() {
-
-    const uid =
-        localStorage.getItem(
-            "uid"
-        );
-
-
-    if (!uid) {
-
-        window.location.href =
-            "/login-page";
-
-        return;
-    }
-
-
-    window.location.href =
-        "/followups/" +
-        uid;
-
-};
-
-
-window.openHospital =
-function() {
-
-    /*
-       We keep your existing dashboard
-       hospital editing route.
-    */
-
-    window.location.href =
-        "/temp-dash";
-
-};
-
-
-window.openDoctors =
-function() {
-
-    window.location.href =
-        "/temp-dash";
-
-};
-
-
-/* ============================================================
-   LOGOUT
-============================================================ */
-
-
-window.logout =
-async function() {
-
-    try {
-
-        await signOut(
-            auth
-        );
-
-
-        localStorage.removeItem(
-            "uid"
-        );
-
-        localStorage.removeItem(
-            "hospitalId"
-        );
-
-        localStorage.removeItem(
-            "hospitalName"
-        );
-
-
-        window.location.href =
-            "/login-page";
-
-    }
-
-    catch(error) {
-
-        console.error(
-            "LOGOUT ERROR:",
-            error
-        );
-
-        alert(
-            "Logout failed."
-        );
-
-    }
-
-};
-
-
-/* ============================================================
-   DEFAULT
-============================================================ */
-
-
-window.addEventListener(
-
-    "resize",
-
-    function() {
-
-        if (
-            window.innerWidth > 850
-        ) {
-
-            closeMobileSidebar();
-
-        }
-
-    }
-
-);
-
+/* =========================================================
+   INITIAL DOCTOR
+========================================================= */
+
+addDoctor();
 
 </script>
-
 
 </body>
 
