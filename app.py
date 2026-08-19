@@ -5,7 +5,7 @@ from flask import (
     jsonify,
     send_from_directory
 )
-import json
+
 from flask_cors import CORS
 
 import firebase_admin
@@ -30,7 +30,7 @@ from dotenv import load_dotenv
 # LOAD ENVIRONMENT VARIABLES
 # ============================================================
 
-load_dotenv(override=True)
+load_dotenv()
 
 
 # ============================================================
@@ -61,29 +61,11 @@ def firebase_sw():
 # FIREBASE INITIALIZATION
 # ============================================================
 
-FIREBASE_SERVICE_ACCOUNT = os.environ.get(
-    "FIREBASE_SERVICE_ACCOUNT"
+cred = credentials.Certificate(
+    "serviceAccountKey.json"
 )
 
-if not FIREBASE_SERVICE_ACCOUNT:
-    raise RuntimeError(
-        "FIREBASE_SERVICE_ACCOUNT environment variable is missing"
-    )
-
-try:
-    firebase_service_account = json.loads(
-        FIREBASE_SERVICE_ACCOUNT
-    )
-except json.JSONDecodeError as e:
-    raise RuntimeError(
-        f"FIREBASE_SERVICE_ACCOUNT is not valid JSON: {e}"
-    )
-
 if not firebase_admin._apps:
-
-    cred = credentials.Certificate(
-        firebase_service_account
-    )
 
     firebase_admin.initialize_app(
         cred,
@@ -800,13 +782,10 @@ def create_payment_order():
         # ----------------------------------------------------
         # RETURN URL
         # ----------------------------------------------------
-   
         return_url = (
-    f"{STATUSLY_BASE_URL}"
-    f"/temp-dash?order_id={order_id}"
+    f"{STATUSLY_BASE_URL}/temp-dash"
+    f"?order_id={order_id}"
 )
-
-
 
         # ----------------------------------------------------
         # CASHFREE PAYLOAD
