@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mr">
 
 <head>
 
@@ -15,7 +15,10 @@
         content="#0f766e"
     >
 
-    <title>Book Appointment</title>
+    <title>
+        Book Appointment / अपॉइंटमेंट बुक करा
+    </title>
+
 
     <style>
 
@@ -146,7 +149,7 @@
 
             align-items: center;
 
-            padding: 24px;
+            padding: 16px;
 
         }
 
@@ -159,10 +162,10 @@
 
             width: 100%;
 
-            max-width: 510px;
+            max-width: 520px;
 
             background:
-                rgba(255,255,255,0.97);
+                rgba(255,255,255,0.98);
 
             border-radius: 24px;
 
@@ -182,6 +185,7 @@
 
             from {
                 opacity: 0;
+
                 transform:
                     translateY(24px)
                     scale(0.98);
@@ -189,6 +193,7 @@
 
             to {
                 opacity: 1;
+
                 transform:
                     translateY(0)
                     scale(1);
@@ -205,7 +210,8 @@
 
             position: relative;
 
-            padding: 28px 26px 24px;
+            padding:
+                24px 20px 21px;
 
             background:
                 linear-gradient(
@@ -225,16 +231,16 @@
 
             align-items: center;
 
-            gap: 14px;
+            gap: 13px;
 
         }
 
 
         .hospital-icon {
 
-            width: 52px;
+            width: 50px;
 
-            height: 52px;
+            height: 50px;
 
             display: flex;
 
@@ -242,7 +248,7 @@
 
             justify-content: center;
 
-            border-radius: 16px;
+            border-radius: 15px;
 
             background:
                 rgba(255,255,255,0.16);
@@ -251,7 +257,7 @@
                 1px solid
                 rgba(255,255,255,0.22);
 
-            font-size: 25px;
+            font-size: 24px;
 
             flex-shrink: 0;
 
@@ -269,34 +275,35 @@
 
             margin: 0;
 
-            font-size: 24px;
+            font-size: 22px;
 
             font-weight: 750;
 
-            letter-spacing:
-                -0.4px;
+            line-height: 1.3;
 
         }
 
 
         .header-title p {
 
-            margin: 5px 0 0;
+            margin: 4px 0 0;
 
-            font-size: 13px;
+            font-size: 12px;
 
-            opacity: 0.84;
+            line-height: 1.5;
+
+            opacity: 0.88;
 
         }
 
 
         .hospital-name {
 
-            margin-top: 20px;
+            margin-top: 17px;
 
-            padding: 12px 14px;
+            padding: 11px 13px;
 
-            border-radius: 13px;
+            border-radius: 12px;
 
             background:
                 rgba(255,255,255,0.12);
@@ -318,15 +325,13 @@
 
             display: block;
 
-            margin-bottom: 3px;
+            margin-bottom: 2px;
 
-            font-size: 11px;
+            font-size: 10px;
 
-            text-transform: uppercase;
+            letter-spacing: 0.7px;
 
-            letter-spacing: 0.9px;
-
-            opacity: 0.72;
+            opacity: 0.75;
 
         }
 
@@ -337,7 +342,8 @@
 
         .form-container {
 
-            padding: 26px;
+            padding:
+                22px 18px 20px;
 
             background: white;
 
@@ -348,11 +354,11 @@
 
             display: flex;
 
-            align-items: center;
+            align-items: flex-start;
 
             gap: 8px;
 
-            margin-bottom: 16px;
+            margin-bottom: 17px;
 
             color: #334155;
 
@@ -368,6 +374,8 @@
             width: 28px;
 
             height: 28px;
+
+            min-width: 28px;
 
             display: flex;
 
@@ -388,8 +396,30 @@
         }
 
 
+        .section-label-text {
+
+            line-height: 1.35;
+
+        }
+
+
+        .section-label-english {
+
+            display: block;
+
+            margin-top: 1px;
+
+            color: #94a3b8;
+
+            font-size: 10px;
+
+            font-weight: 500;
+
+        }
+
+
         /* =====================================================
-           INPUT GROUP
+           FIELD
         ===================================================== */
 
         .field {
@@ -411,6 +441,19 @@
 
             font-weight: 650;
 
+            line-height: 1.45;
+
+        }
+
+
+        .field label .english {
+
+            color: #94a3b8;
+
+            font-size: 10px;
+
+            font-weight: 500;
+
         }
 
 
@@ -420,7 +463,8 @@
 
             width: 100%;
 
-            border: 1px solid #dbe4ea;
+            border:
+                1px solid #dbe4ea;
 
             border-radius: 12px;
 
@@ -448,17 +492,17 @@
             height: 48px;
 
             padding:
-                0 14px;
+                0 13px;
 
         }
 
 
         textarea {
 
-            min-height: 105px;
+            min-height: 100px;
 
             padding:
-                13px 14px;
+                12px 13px;
 
             resize: vertical;
 
@@ -469,6 +513,8 @@
         textarea::placeholder {
 
             color: #94a3b8;
+
+            font-size: 13px;
 
         }
 
@@ -490,7 +536,7 @@
 
 
         /* =====================================================
-           TWO COLUMN FIELDS
+           TWO COLUMNS
         ===================================================== */
 
         .two-columns {
@@ -506,6 +552,17 @@
 
 
         /* =====================================================
+           DOCTOR OPTION
+        ===================================================== */
+
+        select option {
+
+            color: #172033;
+
+        }
+
+
+        /* =====================================================
            SUBMIT
         ===================================================== */
 
@@ -513,9 +570,9 @@
 
             width: 100%;
 
-            height: 52px;
+            min-height: 52px;
 
-            margin-top: 8px;
+            margin-top: 7px;
 
             border: none;
 
@@ -532,7 +589,7 @@
 
             font-family: inherit;
 
-            font-size: 16px;
+            font-size: 15px;
 
             font-weight: 750;
 
@@ -582,12 +639,12 @@
 
 
         /* =====================================================
-           FOOTER
+           SECURITY NOTE
         ===================================================== */
 
         .secure-note {
 
-            margin-top: 16px;
+            margin-top: 14px;
 
             display: flex;
 
@@ -599,9 +656,11 @@
 
             color: #64748b;
 
-            font-size: 11px;
+            font-size: 10px;
 
             text-align: center;
+
+            line-height: 1.5;
 
         }
 
@@ -614,7 +673,7 @@
 
             .page {
 
-                padding: 12px;
+                padding: 10px;
 
                 align-items: flex-start;
 
@@ -624,7 +683,7 @@
             .appointment-card {
 
                 margin:
-                    8px 0;
+                    6px 0;
 
                 border-radius:
                     20px;
@@ -635,32 +694,34 @@
             .card-header {
 
                 padding:
-                    22px 18px 19px;
+                    21px 16px 18px;
 
             }
 
 
             .header-title h1 {
 
-                font-size: 21px;
+                font-size: 20px;
 
             }
 
 
             .header-title p {
 
-                font-size: 12px;
+                font-size: 11px;
 
             }
 
 
             .hospital-icon {
 
-                width: 46px;
+                width: 45px;
 
-                height: 46px;
+                height: 45px;
 
-                border-radius: 14px;
+                border-radius: 13px;
+
+                font-size: 22px;
 
             }
 
@@ -668,7 +729,7 @@
             .form-container {
 
                 padding:
-                    20px 16px 18px;
+                    20px 15px 17px;
 
             }
 
@@ -693,14 +754,14 @@
 
             textarea {
 
-                min-height: 100px;
+                min-height: 95px;
 
             }
 
 
             .submit-btn {
 
-                height: 52px;
+                min-height: 52px;
 
             }
 
@@ -711,7 +772,7 @@
 
             .page {
 
-                padding: 8px;
+                padding: 7px;
 
             }
 
@@ -719,7 +780,7 @@
             .card-header {
 
                 padding:
-                    19px 15px;
+                    18px 14px;
 
             }
 
@@ -727,14 +788,21 @@
             .form-container {
 
                 padding:
-                    18px 13px;
+                    18px 12px;
 
             }
 
 
             .header-title h1 {
 
-                font-size: 19px;
+                font-size: 18px;
+
+            }
+
+
+            .hospital-name {
+
+                font-size: 13px;
 
             }
 
@@ -763,7 +831,7 @@
 
         <!-- =================================================
              HEADER
-        ================================================= -->
+        ================================================== -->
 
         <div class="card-header">
 
@@ -772,18 +840,24 @@
 
 
                 <div class="hospital-icon">
+
                     🏥
+
                 </div>
 
 
                 <div class="header-title">
 
                     <h1>
-                        Book Appointment
+
+                        अपॉइंटमेंट बुक करा
+
                     </h1>
 
                     <p>
-                        Schedule your visit quickly and easily
+
+                        Book your hospital appointment
+
                     </p>
 
                 </div>
@@ -795,7 +869,7 @@
             <div class="hospital-name">
 
                 <strong>
-                    Hospital
+                    हॉस्पिटल / Hospital
                 </strong>
 
                 {{ hospital.hospital_name }}
@@ -806,20 +880,32 @@
         </div>
 
 
+
         <!-- =================================================
              FORM
-        ================================================= -->
+        ================================================== -->
 
         <div class="form-container">
 
 
             <div class="section-label">
 
+
                 <span>
-                    ✦
+                    📋
                 </span>
 
-                Appointment Details
+
+                <div class="section-label-text">
+
+                    अपॉइंटमेंटची माहिती
+
+                    <span class="section-label-english">
+                        Appointment Details
+                    </span>
+
+                </div>
+
 
             </div>
 
@@ -831,12 +917,16 @@
             >
 
 
+                <!-- HOSPITAL ID -->
+
                 <input
                     type="hidden"
                     name="hospital_id"
                     value="{{ uid }}"
                 >
 
+
+                <!-- FCM TOKEN -->
 
                 <input
                     type="hidden"
@@ -845,27 +935,40 @@
                 >
 
 
+
                 <!-- =================================================
                      DOCTOR
-                ================================================= -->
+                ================================================== -->
 
                 <div class="field">
 
+
                     <label>
-                        Select Doctor
+
+                        डॉक्टर निवडा
+
+                        <span class="english">
+                            / Select Doctor
+                        </span>
+
                     </label>
+
 
                     <select
                         name="doctor_name"
                         required
                     >
 
+
                         <option value="">
-                            Choose a doctor
+
+                            डॉक्टर निवडा / Choose a doctor
+
                         </option>
 
 
                         {% for doctor in hospital.doctors %}
+
 
                         <option
                             value="{{ doctor.doctor_name }}"
@@ -877,172 +980,346 @@
 
                         </option>
 
+
                         {% endfor %}
+
 
                     </select>
 
+
                 </div>
+
 
 
                 <!-- =================================================
                      PATIENT NAME
-                ================================================= -->
+                ================================================== -->
 
                 <div class="field">
 
+
                     <label>
-                        Patient Name
+
+                        रुग्णाचे नाव
+
+                        <span class="english">
+                            / Patient Name
+                        </span>
+
                     </label>
+
 
                     <input
                         type="text"
                         name="patient_name"
-                        placeholder="Enter patient name"
+                        placeholder="रुग्णाचे पूर्ण नाव / Enter full name"
                         autocomplete="name"
                         required
                     >
 
+
                 </div>
+
 
 
                 <!-- =================================================
                      GENDER + AGE
-                ================================================= -->
+                ================================================== -->
 
                 <div class="two-columns">
 
 
                     <div class="field">
 
+
                         <label>
-                            Gender
+
+                            लिंग
+
+                            <span class="english">
+                                / Gender
+                            </span>
+
                         </label>
+
 
                         <select
                             name="gender"
                             required
                         >
 
+
                             <option value="">
-                                Select gender
+
+                                लिंग निवडा / Select gender
+
                             </option>
+
 
                             <option value="Male">
-                                Male
+
+                                पुरुष / Male
+
                             </option>
+
 
                             <option value="Female">
-                                Female
+
+                                महिला / Female
+
                             </option>
+
 
                             <option value="Other">
-                                Other
+
+                                इतर / Other
+
                             </option>
 
+
                         </select>
+
 
                     </div>
 
 
+
                     <div class="field">
 
+
                         <label>
-                            Age
+
+                            वय
+
+                            <span class="english">
+                                / Age
+                            </span>
+
                         </label>
+
 
                         <input
                             type="number"
                             name="age"
-                            placeholder="Age"
+                            placeholder="वय / Age"
                             min="1"
                             max="120"
                             inputmode="numeric"
                             required
                         >
 
+
                     </div>
 
 
                 </div>
 
 
+
                 <!-- =================================================
                      MOBILE
-                ================================================= -->
+                ================================================== -->
 
                 <div class="field">
 
+
                     <label>
-                        Mobile Number
+
+                        मोबाईल नंबर
+
+                        <span class="english">
+                            / Mobile Number
+                        </span>
+
                     </label>
+
 
                     <input
                         type="tel"
                         name="mobile"
-                        placeholder="10-digit mobile number"
+                        placeholder="10 अंकी मोबाईल नंबर / 10-digit mobile number"
                         autocomplete="tel"
                         inputmode="numeric"
                         maxlength="10"
+                        pattern="[0-9]{10}"
                         required
                     >
 
+
                 </div>
+
 
 
                 <!-- =================================================
                      ADDRESS
-                ================================================= -->
+                ================================================== -->
 
                 <div class="field">
 
+
                     <label>
-                        Address
+
+                        पत्ता
+
+                        <span class="english">
+                            / Address
+                        </span>
+
                     </label>
+
 
                     <textarea
                         name="address"
-                        placeholder="Enter patient address"
+                        placeholder="रुग्णाचा पत्ता लिहा / Enter patient address"
                         required
                     ></textarea>
 
+
                 </div>
+
 
 
                 <!-- =================================================
                      DATE
-                ================================================= -->
+                ================================================== -->
 
                 <div class="field">
 
+
                     <label>
-                        Appointment Date
+
+                        भेटीची तारीख
+
+                        <span class="english">
+                            / Appointment Date
+                        </span>
+
                     </label>
+
 
                     <input
                         type="date"
                         name="appointment_date"
+                        id="appointment_date"
                         required
                     >
+
 
                 </div>
 
 
+
                 <!-- =================================================
-                     BUTTON
-                ================================================= -->
+                     TIME
+                ================================================== -->
+
+                <div class="field">
+
+
+                    <label>
+
+                        भेटीची वेळ
+
+                        <span class="english">
+                            / Appointment Time
+                        </span>
+
+                    </label>
+
+
+                    <select
+                        name="appointment_time"
+                        required
+                    >
+
+                        <option value="">
+
+                            वेळ निवडा / Select time
+
+                        </option>
+
+
+                        {% for doctor in hospital.doctors %}
+
+                        {% if doctor.doctor_name %}
+
+                        {% endif %}
+
+                        {% endfor %}
+
+                        <!--
+
+                            येथे सध्याच्या appointment
+                            time options वापरता येतील.
+
+                            जर तुमच्या existing system मध्ये
+                            JavaScript ने time भरत असेल,
+                            तर तो code कायम ठेवा.
+
+                        -->
+
+                        <option value="Morning">
+
+                            सकाळी / Morning
+
+                        </option>
+
+                        <option value="Afternoon">
+
+                            दुपारी / Afternoon
+
+                        </option>
+
+                        <option value="Evening">
+
+                            संध्याकाळी / Evening
+
+                        </option>
+
+
+                    </select>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     BOOK BUTTON
+                ================================================== -->
 
                 <button
                     type="submit"
                     class="submit-btn"
                     id="submitBtn"
                 >
-                    Book Appointment
+
+                    अपॉइंटमेंट बुक करा
+
+                    <span style="
+                        opacity:.85;
+                        font-size:12px;
+                        margin-left:4px;
+                    ">
+                        / Book Appointment
+                    </span>
+
                 </button>
 
 
+
+                <!-- SECURITY -->
+
                 <div class="secure-note">
 
-                    🔒 Your appointment information is handled securely.
+                    🔒
+
+                    <span>
+
+                        तुमची माहिती सुरक्षित ठेवली जाते
+                        / Your appointment information is handled securely.
+
+                    </span>
 
                 </div>
 
@@ -1059,27 +1336,40 @@
 </div>
 
 
+
 <script type="module">
 
+
+/* =====================================================
+   FIREBASE
+===================================================== */
+
 import {
+
     initializeApp
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/12.17.0/firebase-app.js";
 
 
 import {
+
     getMessaging,
+
     getToken,
+
     onMessage
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/12.17.0/firebase-messaging.js";
 
 
-// =====================================================
-// FIREBASE CONFIG
-// =====================================================
 
 const firebaseConfig = {
 
@@ -1119,9 +1409,10 @@ const messaging =
     );
 
 
-// =====================================================
-// FCM INITIALIZATION
-// =====================================================
+
+/* =====================================================
+   FCM
+===================================================== */
 
 async function initFCM() {
 
@@ -1211,6 +1502,7 @@ async function initFCM() {
         }
 
     }
+
     catch(error) {
 
         console.error(
@@ -1226,9 +1518,10 @@ async function initFCM() {
 initFCM();
 
 
-// =====================================================
-// FOREGROUND NOTIFICATION
-// =====================================================
+
+/* =====================================================
+   FOREGROUND NOTIFICATION
+===================================================== */
 
 onMessage(
     messaging,
@@ -1274,9 +1567,35 @@ onMessage(
 );
 
 
-// =====================================================
-// FORM
-// =====================================================
+
+/* =====================================================
+   APPOINTMENT DATE
+===================================================== */
+
+const dateInput =
+    document.getElementById(
+        "appointment_date"
+    );
+
+
+if (dateInput) {
+
+    const today =
+        new Date()
+            .toISOString()
+            .split("T")[0];
+
+
+    dateInput.min =
+        today;
+
+}
+
+
+
+/* =====================================================
+   FORM SUBMIT
+===================================================== */
 
 const form =
     document.getElementById(
@@ -1295,17 +1614,17 @@ form.addEventListener(
     function() {
 
         /*
-            Do NOT block booking when
-            notification permission is denied.
-
-            FCM is optional.
-        */
+         * FCM optional आहे.
+         * Notification permission नाकारली तरी
+         * appointment booking थांबू नये.
+         */
 
         submitBtn.disabled =
             true;
 
+
         submitBtn.innerText =
-            "Booking Appointment...";
+            "अपॉइंटमेंट बुक होत आहे... / Booking Appointment...";
 
     }
 );
