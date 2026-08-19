@@ -1,260 +1,1841 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
-<title>Follow-up Patients</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<style>
+    <title>Doctor Follow-up Dashboard</title>
 
-*{
-    box-sizing:border-box;
-}
+    <style>
 
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f4f6f9;
-}
+        * {
+            box-sizing: border-box;
+        }
 
-h1{
-    margin:0;
-    padding:20px;
-    text-align:center;
-    color:white;
-    background:linear-gradient(135deg,#4facfe,#00f2fe);
-}
+        body {
 
-.container{
-    width:95%;
-    margin:20px auto;
-    overflow-x:auto;
-}
+            margin: 0;
 
-table{
-    width:100%;
-    border-collapse:collapse;
-    background:white;
-    box-shadow:0 5px 15px rgba(0,0,0,.15);
-}
+            font-family:
+                Inter,
+                Arial,
+                sans-serif;
 
-th{
-    background:#3498db;
-    color:white;
-    padding:12px;
-}
+            background:
+                #f4f8fb;
 
-td{
-    padding:10px;
-    border-bottom:1px solid #ddd;
-    text-align:center;
-}
+            color:
+                #172033;
 
-tr:hover{
-    background:#f8fbff;
-}
+        }
 
-input{
-    width:160px;
-    padding:8px;
-}
 
-button{
-    padding:10px 18px;
-    background:#27ae60;
-    color:white;
-    border:none;
-    cursor:pointer;
-    border-radius:5px;
-}
+        /* =====================================================
+           HEADER
+        ===================================================== */
 
-button:hover{
-    background:#1f8a4d;
-}
+        .header {
 
-button:disabled{
-    background:gray;
-    cursor:not-allowed;
-}
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f766e,
+                    #0e7490
+                );
 
-</style>
+            color: white;
+
+            padding:
+                24px 5%;
+
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+
+            box-shadow:
+                0 7px 25px
+                rgba(0,0,0,0.12);
+
+        }
+
+
+        .header-left h1 {
+
+            margin: 0;
+
+            font-size: 27px;
+
+        }
+
+
+        .header-left p {
+
+            margin:
+                6px 0 0;
+
+            font-size: 13px;
+
+            opacity: .82;
+
+        }
+
+
+        .header-badge {
+
+            padding:
+                10px 15px;
+
+            border-radius:
+                11px;
+
+            background:
+                rgba(255,255,255,.14);
+
+            border:
+                1px solid
+                rgba(255,255,255,.2);
+
+            font-size:
+                13px;
+
+        }
+
+
+        /* =====================================================
+           FILTER BAR
+        ===================================================== */
+
+        .filters {
+
+            width: 90%;
+
+            max-width: 1450px;
+
+            margin: 22px auto;
+
+            display: grid;
+
+            grid-template-columns:
+                220px 1fr 170px;
+
+            gap: 12px;
+
+        }
+
+
+        .filter-control {
+
+            width: 100%;
+
+            height: 46px;
+
+            padding:
+                0 13px;
+
+            border:
+                1px solid #dbe5ea;
+
+            border-radius:
+                10px;
+
+            background:
+                white;
+
+            font-size:
+                14px;
+
+            outline:
+                none;
+
+        }
+
+
+        .filter-control:focus {
+
+            border-color:
+                #0f766e;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(15,118,110,.09);
+
+        }
+
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        .summary {
+
+            width: 90%;
+
+            max-width: 1450px;
+
+            margin:
+                0 auto 22px;
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 14px;
+
+        }
+
+
+        .summary-card {
+
+            background:
+                white;
+
+            border:
+                1px solid #edf2f5;
+
+            border-radius:
+                14px;
+
+            padding:
+                17px;
+
+            box-shadow:
+                0 6px 20px
+                rgba(15,23,42,.06);
+
+        }
+
+
+        .summary-label {
+
+            color:
+                #64748b;
+
+            font-size:
+                12px;
+
+            margin-bottom:
+                7px;
+
+        }
+
+
+        .summary-value {
+
+            font-size:
+                25px;
+
+            font-weight:
+                750;
+
+            color:
+                #0f766e;
+
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .container {
+
+            width: 90%;
+
+            max-width: 1450px;
+
+            margin:
+                0 auto 35px;
+
+        }
+
+
+        /* =====================================================
+           DOCTOR CARD
+        ===================================================== */
+
+        .doctor-card {
+
+            background:
+                white;
+
+            border-radius:
+                18px;
+
+            margin-bottom:
+                24px;
+
+            overflow:
+                hidden;
+
+            border:
+                1px solid #edf2f5;
+
+            box-shadow:
+                0 10px 30px
+                rgba(15,23,42,.07);
+
+        }
+
+
+        .doctor-header {
+
+            padding:
+                18px 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #0f766e,
+                    #0e7490
+                );
+
+            color:
+                white;
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            gap:
+                15px;
+
+            flex-wrap:
+                wrap;
+
+        }
+
+
+        .doctor-info {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                13px;
+
+        }
+
+
+        .doctor-avatar {
+
+            width:
+                50px;
+
+            height:
+                50px;
+
+            border-radius:
+                15px;
+
+            display:
+                flex;
+
+            justify-content:
+                center;
+
+            align-items:
+                center;
+
+            background:
+                rgba(255,255,255,.15);
+
+            font-size:
+                22px;
+
+        }
+
+
+        .doctor-name {
+
+            font-size:
+                19px;
+
+            font-weight:
+                750;
+
+        }
+
+
+        .doctor-role {
+
+            margin-top:
+                4px;
+
+            font-size:
+                12px;
+
+            opacity:
+                .78;
+
+        }
+
+
+        .doctor-total {
+
+            background:
+                rgba(255,255,255,.13);
+
+            padding:
+                9px 12px;
+
+            border-radius:
+                10px;
+
+            font-size:
+                12px;
+
+        }
+
+
+        /* =====================================================
+           FOLLOW UP LIST
+        ===================================================== */
+
+        .followup-list {
+
+            padding:
+                8px 12px;
+
+        }
+
+
+        .followup-row {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                48px
+                minmax(200px,1.5fr)
+                125px
+                130px
+                minmax(180px,1.3fr)
+                145px;
+
+            gap:
+                12px;
+
+            align-items:
+                center;
+
+            padding:
+                14px 10px;
+
+            border-bottom:
+                1px solid #eef2f5;
+
+        }
+
+
+        .followup-row:last-child {
+
+            border-bottom:
+                none;
+
+        }
+
+
+        .followup-row:hover {
+
+            background:
+                #f8fcfd;
+
+        }
+
+
+        .patient-number {
+
+            width:
+                36px;
+
+            height:
+                36px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                10px;
+
+            background:
+                #ecfeff;
+
+            color:
+                #0e7490;
+
+            font-size:
+                12px;
+
+            font-weight:
+                750;
+
+        }
+
+
+        .label {
+
+            color:
+                #64748b;
+
+            text-transform:
+                uppercase;
+
+            font-size:
+                9px;
+
+            letter-spacing:
+                .5px;
+
+            margin-bottom:
+                4px;
+
+        }
+
+
+        .patient-name {
+
+            font-weight:
+                700;
+
+            color:
+                #172033;
+
+        }
+
+
+        .patient-meta {
+
+            color:
+                #64748b;
+
+            font-size:
+                11px;
+
+            margin-top:
+                3px;
+
+        }
+
+
+        .previous-date {
+
+            color:
+                #475569;
+
+            font-size:
+                13px;
+
+        }
+
+
+        .next-date {
+
+            width:
+                100%;
+
+            height:
+                42px;
+
+            border:
+                1px solid #dbe5ea;
+
+            border-radius:
+                9px;
+
+            padding:
+                0 9px;
+
+            outline:
+                none;
+
+            font-size:
+                13px;
+
+            background:
+                #f8fafc;
+
+        }
+
+
+        .next-date:focus {
+
+            border-color:
+                #0f766e;
+
+            background:
+                white;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(15,118,110,.08);
+
+        }
+
+
+        .notes {
+
+            width:
+                100%;
+
+            min-height:
+                42px;
+
+            resize:
+                vertical;
+
+            border:
+                1px solid #dbe5ea;
+
+            border-radius:
+                9px;
+
+            padding:
+                9px;
+
+            outline:
+                none;
+
+            font-family:
+                inherit;
+
+            font-size:
+                13px;
+
+            background:
+                #f8fafc;
+
+        }
+
+
+        .notes:focus {
+
+            border-color:
+                #0f766e;
+
+            background:
+                white;
+
+        }
+
+
+        /* =====================================================
+           SAVE BUTTON
+        ===================================================== */
+
+        .save-btn {
+
+            width:
+                100%;
+
+            min-height:
+                42px;
+
+            border:
+                none;
+
+            border-radius:
+                9px;
+
+            background:
+                #16a34a;
+
+            color:
+                white;
+
+            font-size:
+                13px;
+
+            font-weight:
+                700;
+
+            cursor:
+                pointer;
+
+            transition:
+                .18s ease;
+
+        }
+
+
+        .save-btn:hover {
+
+            background:
+                #15803d;
+
+        }
+
+
+        .save-btn:disabled {
+
+            background:
+                #94a3b8;
+
+            cursor:
+                not-allowed;
+
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .empty {
+
+            padding:
+                35px 20px;
+
+            text-align:
+                center;
+
+            color:
+                #64748b;
+
+        }
+
+
+        .empty-icon {
+
+            font-size:
+                35px;
+
+            margin-bottom:
+                8px;
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .filters {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+            }
+
+
+            .filters .search {
+
+                grid-column:
+                    1 / -1;
+
+            }
+
+
+            .summary {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+
+            }
+
+
+            .followup-row {
+
+                grid-template-columns:
+                    42px
+                    minmax(180px,1fr)
+                    120px
+                    130px;
+
+            }
+
+
+            .followup-row > div:nth-child(4),
+            .followup-row > div:nth-child(5) {
+
+                display:
+                    none;
+
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .header {
+
+                padding:
+                    20px 16px;
+
+            }
+
+
+            .header-left h1 {
+
+                font-size:
+                    22px;
+
+            }
+
+
+            .filters {
+
+                width:
+                    92%;
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .filters .search {
+
+                grid-column:
+                    auto;
+
+            }
+
+
+            .summary {
+
+                width:
+                    92%;
+
+                grid-template-columns:
+                    1fr 1fr;
+
+            }
+
+
+            .container {
+
+                width:
+                    92%;
+
+            }
+
+
+            .doctor-header {
+
+                padding:
+                    16px;
+
+            }
+
+
+            .doctor-name {
+
+                font-size:
+                    17px;
+
+            }
+
+
+            .followup-row {
+
+                grid-template-columns:
+                    42px 1fr;
+
+                gap:
+                    10px;
+
+                padding:
+                    14px 6px;
+
+            }
+
+
+            .followup-row > div:nth-child(3),
+            .followup-row > div:nth-child(4),
+            .followup-row > div:nth-child(5),
+            .followup-row > div:nth-child(6) {
+
+                display:
+                    none;
+
+            }
+
+
+            .next-date,
+            .notes,
+            .save-btn {
+
+                display:
+                    block;
+
+                grid-column:
+                    2;
+
+            }
+
+
+            .patient-number {
+
+                grid-row:
+                    span 1;
+
+            }
+
+        }
+
+    </style>
 
 </head>
 
+
 <body>
 
-<h1>🏥 Patient Follow-up</h1>
 
-<div class="container">
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-<table>
+<header class="header">
 
-<tr>
-<th>No</th>
-<th>Doctor</th>
-<th>Patient</th>
-<th>Gender</th>
-<th>Age</th>
-<th>Mobile</th>
-<th>Address</th>
-<th>Previous Visit</th>
-<th>Next Visit</th>
-<th>Notes</th>
-<th>Action</th>
-</tr>
 
-{% for p in patients %}
+    <div class="header-left">
 
-<tr>
+        <h1>
+            🔄 Doctor Follow-ups
+        </h1>
 
-<td>{{p.patient_no}}</td>
-<td>{{p.doctor_name}}</td>
-<td>{{p.patient_name}}</td>
-<td>{{p.gender}}</td>
-<td>{{p.age}}</td>
-<td>{{p.mobile}}</td>
-<td>{{p.address}}</td>
-<td>{{p.appointment_date}}</td>
+        <p>
+            Manage previous visits, next visits and doctor notes
+        </p>
 
-<td>
-<input
-type="date"
-id="next_visit_{{p.id}}"
-value="{{p.next_visit_date if p.next_visit_date else ''}}">
-</td>
+    </div>
 
-<td>
-<input
-type="text"
-id="notes_{{p.id}}"
-value="{{p.doctor_notes if p.doctor_notes else ''}}">
-</td>
 
-<td>
+    <div class="header-badge">
 
-<button
-id="btn_{{p.id}}"
-onclick="saveFollowup('{{p.id}}')">
+        🩺
+        {{ patients|length }}
+        Patients
 
-Save
+    </div>
 
-</button>
 
-</td>
+</header>
 
-</tr>
 
-{% endfor %}
+<!-- =====================================================
+     FILTERS
+===================================================== -->
 
-</table>
+<div class="filters">
+
+
+    <select
+        class="filter-control"
+        id="doctorFilter"
+    >
+
+        <option value="all">
+            All Doctors
+        </option>
+
+    </select>
+
+
+    <input
+        class="filter-control search"
+        id="searchInput"
+        type="text"
+        placeholder="Search patient, mobile or doctor..."
+    >
+
+
+    <select
+        class="filter-control"
+        id="followupFilter"
+    >
+
+        <option value="all">
+            All Follow-ups
+        </option>
+
+        <option value="pending">
+            Pending
+        </option>
+
+        <option value="scheduled">
+            Scheduled
+        </option>
+
+    </select>
+
 
 </div>
 
+
+<!-- =====================================================
+     SUMMARY
+===================================================== -->
+
+<div class="summary">
+
+
+    <div class="summary-card">
+
+        <div class="summary-label">
+            Total Patients
+        </div>
+
+        <div
+            class="summary-value"
+            id="totalPatients"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+        <div class="summary-label">
+            Doctors
+        </div>
+
+        <div
+            class="summary-value"
+            id="totalDoctors"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+        <div class="summary-label">
+            Scheduled
+        </div>
+
+        <div
+            class="summary-value"
+            id="scheduledCount"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <div class="summary-card">
+
+        <div class="summary-label">
+            Pending
+        </div>
+
+        <div
+            class="summary-value"
+            id="pendingCount"
+        >
+            0
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     CONTENT
+===================================================== -->
+
+<div
+    class="container"
+    id="followupContainer"
+>
+
+
+{% if patients %}
+
+
+    {% set grouped = {} %}
+
+
+    {% for p in patients %}
+
+        {% set doctor =
+            p.doctor_name or "Unknown Doctor"
+        %}
+
+
+        {% if doctor not in grouped %}
+
+            {% set _ =
+                grouped.update({
+                    doctor: []
+                })
+            %}
+
+        {% endif %}
+
+
+        {% set _ =
+            grouped[doctor].append(p)
+        %}
+
+
+    {% endfor %}
+
+
+    {% for doctor, doctor_patients in grouped.items()|sort %}
+
+
+    <section
+        class="doctor-card"
+        data-doctor="{{ doctor|lower }}"
+    >
+
+
+        <div class="doctor-header">
+
+
+            <div class="doctor-info">
+
+
+                <div class="doctor-avatar">
+                    👨‍⚕️
+                </div>
+
+
+                <div>
+
+                    <div class="doctor-name">
+                        Dr. {{ doctor }}
+                    </div>
+
+                    <div class="doctor-role">
+                        Follow-up Patient List
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="doctor-total">
+
+                {{ doctor_patients|length }}
+                Patient{% if doctor_patients|length != 1 %}s{% endif %}
+
+            </div>
+
+
+        </div>
+
+
+        <div class="followup-list">
+
+
+            <!-- COLUMN HEADER -->
+
+            <div
+                class="followup-row"
+                style="
+                    background:#f8fafc;
+                    font-weight:700;
+                    color:#64748b;
+                "
+            >
+
+                <div>
+                    No
+                </div>
+
+                <div>
+                    Patient
+                </div>
+
+                <div>
+                    Previous Visit
+                </div>
+
+                <div>
+                    Next Visit
+                </div>
+
+                <div>
+                    Doctor Notes
+                </div>
+
+                <div>
+                    Action
+                </div>
+
+            </div>
+
+
+            {% for p in doctor_patients|sort(attribute='appointment_date') %}
+
+
+            <div
+                class="followup-row patient-row"
+                data-doctor="{{ doctor|lower }}"
+                data-scheduled="{% if p.next_visit_date %}scheduled{% else %}pending{% endif %}"
+                data-search="
+                    {{ p.patient_name|default('')|lower }}
+                    {{ p.mobile|default('')|lower }}
+                    {{ doctor|default('')|lower }}
+                "
+            >
+
+
+                <div>
+
+                    <div class="patient-number">
+
+                        {{ p.patient_no }}
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="label">
+                        Patient
+                    </div>
+
+                    <div class="patient-name">
+
+                        {{ p.patient_name }}
+
+                    </div>
+
+                    <div class="patient-meta">
+
+                        📱 {{ p.mobile }}
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="label">
+                        Previous Visit
+                    </div>
+
+                    <div class="previous-date">
+
+                        {{ p.appointment_date }}
+
+                    </div>
+
+                </div>
+
+
+                <div>
+
+                    <div class="label">
+                        Next Visit
+                    </div>
+
+                    <input
+                        class="next-date"
+                        type="date"
+                        id="next_visit_{{ p.id }}"
+                        value="{{ p.next_visit_date if p.next_visit_date else '' }}"
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <div class="label">
+                        Doctor Notes
+                    </div>
+
+                    <textarea
+                        class="notes"
+                        id="notes_{{ p.id }}"
+                        placeholder="Enter follow-up notes..."
+                    >{{ p.doctor_notes if p.doctor_notes else '' }}</textarea>
+
+                </div>
+
+
+                <div>
+
+                    <button
+                        class="save-btn"
+                        id="btn_{{ p.id }}"
+                        onclick="saveFollowup('{{ p.id }}')"
+                    >
+                        Save & Notify
+                    </button>
+
+                </div>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    </section>
+
+
+    {% endfor %}
+
+
+{% else %}
+
+
+    <div class="doctor-card">
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                🔄
+            </div>
+
+            <h3>
+                No follow-up patients
+            </h3>
+
+            <p>
+                Follow-up patients will appear here.
+            </p>
+
+        </div>
+
+    </div>
+
+
+{% endif %}
+
+
+</div>
+
+
 <script>
 
-async function saveFollowup(patient_id){
 
-    const btn=document.getElementById("btn_"+patient_id);
+// =====================================================
+// ELEMENTS
+// =====================================================
 
-    const next=document.getElementById("next_visit_"+patient_id).value;
+const doctorFilter =
+    document.getElementById(
+        "doctorFilter"
+    );
 
-    const notes=document.getElementById("notes_"+patient_id).value;
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
 
 
-    if(next===""){
-        alert("Select Next Visit Date");
+const followupFilter =
+    document.getElementById(
+        "followupFilter"
+    );
+
+
+const patientRows =
+    document.querySelectorAll(
+        ".patient-row"
+    );
+
+
+const doctorCards =
+    document.querySelectorAll(
+        ".doctor-card[data-doctor]"
+    );
+
+
+// =====================================================
+// DOCTOR FILTER
+// =====================================================
+
+const doctors =
+    new Set();
+
+
+doctorCards.forEach(
+    card => {
+
+        doctors.add(
+            card.dataset.doctor
+        );
+
+    }
+);
+
+
+[...doctors]
+    .sort()
+    .forEach(
+        doctor => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                doctor;
+
+            option.textContent =
+                "Dr. " +
+                doctor.replace(
+                    /\b\w/g,
+                    c => c.toUpperCase()
+                );
+
+            doctorFilter.appendChild(
+                option
+            );
+
+        }
+    );
+
+
+// =====================================================
+// FILTER
+// =====================================================
+
+function applyFilters() {
+
+    const doctor =
+        doctorFilter.value;
+
+
+    const search =
+        searchInput.value
+            .trim()
+            .toLowerCase();
+
+
+    const followup =
+        followupFilter.value;
+
+
+    let visible =
+        0;
+
+
+    doctorCards.forEach(
+        card => {
+
+            const cardDoctor =
+                card.dataset.doctor;
+
+
+            const doctorMatch =
+                doctor === "all" ||
+                cardDoctor === doctor;
+
+
+            let cardVisible =
+                false;
+
+
+            card
+                .querySelectorAll(
+                    ".patient-row"
+                )
+                .forEach(
+                    row => {
+
+                        const rowSearch =
+                            row.dataset.search
+                                .replace(
+                                    /\s+/g,
+                                    " "
+                                )
+                                .trim();
+
+
+                        const searchMatch =
+                            !search ||
+                            rowSearch.includes(
+                                search
+                            );
+
+
+                        const statusMatch =
+                            followup === "all" ||
+                            row.dataset.scheduled ===
+                                followup;
+
+
+                        const show =
+                            doctorMatch &&
+                            searchMatch &&
+                            statusMatch;
+
+
+                        row.style.display =
+                            show
+                            ? "grid"
+                            : "none";
+
+
+                        if (show) {
+
+                            cardVisible =
+                                true;
+
+                            visible++;
+
+                        }
+
+                    }
+                );
+
+
+            card.style.display =
+                cardVisible
+                ? "block"
+                : "none";
+
+        }
+    );
+
+
+    document.getElementById(
+        "totalPatients"
+    ).textContent =
+        visible;
+
+}
+
+
+// =====================================================
+// SUMMARY
+// =====================================================
+
+let scheduled =
+    0;
+
+let pending =
+    0;
+
+
+patientRows.forEach(
+    row => {
+
+        if (
+            row.dataset.scheduled ===
+            "scheduled"
+        ) {
+
+            scheduled++;
+
+        } else {
+
+            pending++;
+
+        }
+
+    }
+);
+
+
+document.getElementById(
+    "totalPatients"
+).textContent =
+    patientRows.length;
+
+
+document.getElementById(
+    "totalDoctors"
+).textContent =
+    doctors.size;
+
+
+document.getElementById(
+    "scheduledCount"
+).textContent =
+    scheduled;
+
+
+document.getElementById(
+    "pendingCount"
+).textContent =
+    pending;
+
+
+// =====================================================
+// EVENTS
+// =====================================================
+
+doctorFilter.addEventListener(
+    "change",
+    applyFilters
+);
+
+
+searchInput.addEventListener(
+    "input",
+    applyFilters
+);
+
+
+followupFilter.addEventListener(
+    "change",
+    applyFilters
+);
+
+
+// =====================================================
+// SAVE FOLLOW-UP
+// =====================================================
+
+async function saveFollowup(
+    patient_id
+) {
+
+    const btn =
+        document.getElementById(
+            "btn_" +
+            patient_id
+        );
+
+
+    const next =
+        document.getElementById(
+            "next_visit_" +
+            patient_id
+        ).value;
+
+
+    const notes =
+        document.getElementById(
+            "notes_" +
+            patient_id
+        ).value;
+
+
+    if (!next) {
+
+        alert(
+            "Please select the next visit date."
+        );
+
         return;
+
     }
 
 
-    btn.disabled=true;
-    btn.innerHTML="Sending Notification...";
+    btn.disabled =
+        true;
 
 
-    try{
+    btn.innerHTML =
+        "Saving...";
 
 
-        const response = await fetch("/save_followup",{
+    try {
 
-            method:"POST",
+        const body =
+            new URLSearchParams({
 
-            headers:{
-                "Content-Type":"application/x-www-form-urlencoded"
-            },
+                patient_id:
+                    patient_id,
 
-            body:
-            "patient_id="+encodeURIComponent(patient_id)+
-            "&next_visit_date="+encodeURIComponent(next)+
-            "&doctor_notes="+encodeURIComponent(notes)
+                next_visit_date:
+                    next,
 
-        });
+                doctor_notes:
+                    notes
+
+            });
 
 
+        const response =
+            await fetch(
+                "/save_followup",
+                {
 
-        const data = await response.json();
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/x-www-form-urlencoded"
+
+                    },
+
+                    body:
+                        body.toString()
+
+                }
+            );
+
+
+        const data =
+            await response.json();
 
 
         console.log(
-            "SERVER RESPONSE:",
+            "FOLLOW-UP RESPONSE:",
             data
         );
 
 
-
-        if(response.ok){
-
-
-            if(data.notification){
-
-                alert(
-                    "Follow-up saved.\nNotification sent successfully."
-                );
-
-            }
-            else{
-
-                alert(
-                    "Follow-up saved but notification failed."
-                );
-
-            }
-
-
-        }
-        else{
+        if (!response.ok) {
 
             alert(
-                data.error || "Failed"
+                data.error ||
+                "Unable to save follow-up."
             );
+
+            return;
 
         }
 
+
+        let message =
+            "Follow-up saved successfully.";
+
+
+        if (
+            data.notification
+        ) {
+
+            message +=
+                "\nNotification processed.";
+
+        }
+
+
+        if (
+            data.whatsapp
+        ) {
+
+            message +=
+                "\nWhatsApp processed.";
+
+        }
+
+
+        alert(
+            message
+        );
+
+
+        // Update status immediately
+        const row =
+            document.getElementById(
+                "btn_" +
+                patient_id
+            ).closest(
+                ".patient-row"
+            );
+
+
+        if (row) {
+
+            row.dataset.scheduled =
+                "scheduled";
+
+        }
+
+
+        // Update summary
+        scheduled++;
+
+        pending =
+            Math.max(
+                0,
+                pending - 1
+            );
+
+
+        document.getElementById(
+            "scheduledCount"
+        ).textContent =
+            scheduled;
+
+
+        document.getElementById(
+            "pendingCount"
+        ).textContent =
+            pending;
 
 
     }
-    catch(err){
+    catch(error) {
 
-        console.error(err);
+        console.error(
+            "FOLLOW-UP ERROR:",
+            error
+        );
+
 
         alert(
-            "Network Error"
+            "Network error. Please try again."
         );
 
     }
+    finally {
 
+        btn.disabled =
+            false;
 
+        btn.innerHTML =
+            "Save & Notify";
 
-    btn.disabled=false;
-    btn.innerHTML="Save";
-
+    }
 
 }
 
 
+// =====================================================
+// INITIAL FILTER
+// =====================================================
+
+applyFilters();
 
 </script>
 
+
 </body>
+
 </html>
