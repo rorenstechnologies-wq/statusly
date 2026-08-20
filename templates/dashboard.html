@@ -11,61 +11,89 @@
     >
 
     <meta
-        name="theme-color"
-        content="#0f172a"
+        name="description"
+        content="MediQueue Hospital Management Dashboard"
     >
 
     <title>MediQueue | Hospital Dashboard</title>
 
 
+    <!-- =====================================================
+         GOOGLE FONT
+    ====================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         ICONS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
     <style>
 
         /* =====================================================
-           RESET
-        ===================================================== */
+           GLOBAL
+        ====================================================== */
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family:
-                Inter,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Arial,
-                sans-serif;
         }
-
 
         :root {
 
             --primary: #2563eb;
-
             --primary-dark: #1d4ed8;
+            --primary-light: #eff6ff;
 
-            --secondary: #0ea5e9;
-
-            --success: #16a34a;
-
-            --danger: #dc2626;
-
+            --success: #10b981;
             --warning: #f59e0b;
+            --danger: #ef4444;
 
             --dark: #0f172a;
-
             --dark-2: #1e293b;
 
-            --text: #0f172a;
-
+            --text: #334155;
             --muted: #64748b;
 
             --border: #e2e8f0;
 
+            --background: #f8fafc;
             --white: #ffffff;
 
-            --background: #f8fafc;
+            --sidebar-width: 260px;
 
+            --radius: 16px;
+
+            --shadow:
+                0 10px 30px rgba(15, 23, 42, 0.06);
+
+        }
+
+
+        html {
+            scroll-behavior: smooth;
         }
 
 
@@ -73,8 +101,13 @@
 
             min-height: 100vh;
 
+            font-family:
+                "Inter",
+                Arial,
+                sans-serif;
+
             background:
-                #f8fafc;
+                var(--background);
 
             color:
                 var(--text);
@@ -82,64 +115,60 @@
         }
 
 
-        /* =====================================================
-           APP
-        ===================================================== */
+        button,
+        input,
+        textarea,
+        select {
 
-        .app {
+            font-family: inherit;
 
-            min-height: 100vh;
+        }
 
-            display: flex;
+
+        button {
+
+            cursor: pointer;
 
         }
 
 
         /* =====================================================
            SIDEBAR
-        ===================================================== */
+        ====================================================== */
 
         .sidebar {
-
-            width: 260px;
-
-            height: 100vh;
 
             position: fixed;
 
             left: 0;
-
             top: 0;
+            bottom: 0;
 
-            z-index: 100;
+            width: var(--sidebar-width);
+
+            background:
+                #ffffff;
+
+            border-right:
+                1px solid var(--border);
 
             display: flex;
 
             flex-direction: column;
 
-            background:
-                linear-gradient(
-                    180deg,
-                    #0f172a 0%,
-                    #111827 100%
-                );
-
-            color: white;
-
-            box-shadow:
-                10px 0 30px
-                rgba(15, 23, 42, 0.08);
+            z-index: 1000;
 
         }
 
 
-        /* =====================================================
-           LOGO
-        ===================================================== */
+        /* LOGO */
 
-        .logo {
+        .brand {
 
             height: 82px;
+
+            padding:
+                0 22px;
 
             display: flex;
 
@@ -147,19 +176,15 @@
 
             gap: 12px;
 
-            padding: 0 22px;
-
             border-bottom:
-                1px solid
-                rgba(255,255,255,0.08);
+                1px solid #f1f5f9;
 
         }
 
 
-        .logo-icon {
+        .brand-icon {
 
             width: 42px;
-
             height: 42px;
 
             border-radius: 12px;
@@ -167,26 +192,27 @@
             display: flex;
 
             align-items: center;
-
             justify-content: center;
 
-            font-size: 21px;
+            color: white;
+
+            font-size: 19px;
 
             background:
                 linear-gradient(
                     135deg,
                     #2563eb,
-                    #0ea5e9
+                    #4f46e5
                 );
 
             box-shadow:
-                0 8px 20px
-                rgba(37,99,235,0.35);
+                0 8px 18px
+                rgba(37,99,235,0.25);
 
         }
 
 
-        .logo-text {
+        .brand-text {
 
             display: flex;
 
@@ -195,36 +221,41 @@
         }
 
 
-        .logo-text strong {
+        .brand-name {
 
-            font-size: 19px;
+            font-size: 18px;
 
-            letter-spacing: -0.4px;
+            font-weight: 800;
+
+            color:
+                var(--dark);
+
+            letter-spacing:
+                -0.5px;
 
         }
 
 
-        .logo-text span {
+        .brand-subtitle {
 
             font-size: 11px;
 
             color:
-                #94a3b8;
+                var(--muted);
 
             margin-top: 2px;
 
         }
 
 
-        /* =====================================================
-           NAVIGATION
-        ===================================================== */
+        /* NAVIGATION */
 
-        .nav {
+        .sidebar-nav {
 
             flex: 1;
 
-            padding: 22px 14px;
+            padding:
+                22px 14px;
 
             overflow-y: auto;
 
@@ -233,33 +264,31 @@
 
         .nav-label {
 
-            font-size: 10px;
+            padding:
+                0 12px;
+
+            margin:
+                0 0 10px;
+
+            font-size: 11px;
 
             font-weight: 700;
 
-            letter-spacing: 1.2px;
-
-            text-transform: uppercase;
-
             color:
-                #64748b;
+                #94a3b8;
 
-            padding:
-                0 12px 10px;
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                0.08em;
 
         }
 
 
-        .nav-button {
+        .nav-item {
 
             width: 100%;
-
-            border: none;
-
-            background: transparent;
-
-            color:
-                #cbd5e1;
 
             display: flex;
 
@@ -270,11 +299,17 @@
             padding:
                 12px 13px;
 
-            margin-bottom: 5px;
+            margin-bottom: 4px;
+
+            border: none;
 
             border-radius: 10px;
 
-            cursor: pointer;
+            background:
+                transparent;
+
+            color:
+                #64748b;
 
             font-size: 14px;
 
@@ -283,148 +318,238 @@
             text-align: left;
 
             transition:
-                0.2s ease;
+                all 0.2s ease;
 
         }
 
 
-        .nav-button:hover {
+        .nav-item i {
 
-            background:
-                rgba(255,255,255,0.07);
-
-            color: white;
-
-            transform:
-                translateX(2px);
-
-        }
-
-
-        .nav-button.active {
-
-            color: white;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(37,99,235,0.95),
-                    rgba(14,165,233,0.9)
-                );
-
-            box-shadow:
-                0 8px 18px
-                rgba(37,99,235,0.20);
-
-        }
-
-
-        .nav-icon {
-
-            width: 21px;
+            width: 20px;
 
             text-align: center;
 
-            font-size: 17px;
+            font-size: 15px;
 
         }
 
 
-        /* =====================================================
-           SIDEBAR BOTTOM
-        ===================================================== */
+        .nav-item:hover {
+
+            background:
+                #f1f5f9;
+
+            color:
+                var(--dark);
+
+        }
+
+
+        .nav-item.active {
+
+            background:
+                var(--primary-light);
+
+            color:
+                var(--primary);
+
+            font-weight: 600;
+
+        }
+
+
+        .nav-item.active i {
+
+            color:
+                var(--primary);
+
+        }
+
+
+        .nav-badge {
+
+            margin-left: auto;
+
+            min-width: 22px;
+
+            height: 22px;
+
+            padding: 0 6px;
+
+            border-radius: 20px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background:
+                #dbeafe;
+
+            color:
+                #2563eb;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+        }
+
+
+        /* SIDEBAR BOTTOM */
 
         .sidebar-bottom {
 
-            padding: 15px;
+            padding:
+                14px;
 
             border-top:
-                1px solid
-                rgba(255,255,255,0.08);
+                1px solid var(--border);
 
         }
 
 
-        .logout {
-
-            width: 100%;
-
-            border: none;
-
-            background:
-                rgba(220,38,38,0.12);
-
-            color:
-                #fca5a5;
-
-            padding: 12px;
-
-            border-radius: 10px;
-
-            cursor: pointer;
-
-            font-size: 14px;
+        .profile-card {
 
             display: flex;
 
             align-items: center;
 
-            justify-content: center;
+            gap: 10px;
 
-            gap: 8px;
+            padding:
+                10px;
 
-            transition:
-                0.2s;
+            border-radius: 12px;
+
+            background:
+                #f8fafc;
+
+            margin-bottom: 8px;
 
         }
 
 
-        .logout:hover {
+        .profile-avatar {
+
+            width: 38px;
+            height: 38px;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
 
             background:
-                rgba(220,38,38,0.22);
+                #dbeafe;
 
-            color: white;
+            color:
+                #2563eb;
+
+            font-weight: 700;
+
+        }
+
+
+        .profile-info {
+
+            min-width: 0;
+
+            flex: 1;
+
+        }
+
+
+        .profile-name {
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            color:
+                var(--dark);
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+        }
+
+
+        .profile-role {
+
+            font-size: 10px;
+
+            color:
+                var(--muted);
+
+            margin-top: 2px;
+
+        }
+
+
+        .logout-btn {
+
+            color:
+                #ef4444 !important;
+
+        }
+
+
+        .logout-btn:hover {
+
+            background:
+                #fef2f2 !important;
+
+        }
+
+
+        /* =====================================================
+           MOBILE HEADER
+        ====================================================== */
+
+        .mobile-header {
+
+            display: none;
 
         }
 
 
         /* =====================================================
            MAIN
-        ===================================================== */
+        ====================================================== */
 
         .main {
 
-            width:
-                calc(100% - 260px);
+            margin-left:
+                var(--sidebar-width);
 
-            margin-left: 260px;
-
-            min-height: 100vh;
-
-            background:
-                #f8fafc;
+            min-height:
+                100vh;
 
         }
 
 
         /* =====================================================
            TOPBAR
-        ===================================================== */
+        ====================================================== */
 
         .topbar {
 
             height: 82px;
 
-            padding:
-                0 32px;
-
             background:
-                rgba(255,255,255,0.95);
+                rgba(255,255,255,0.92);
+
+            backdrop-filter:
+                blur(12px);
 
             border-bottom:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
             display: flex;
 
@@ -432,44 +557,46 @@
 
             justify-content: space-between;
 
+            padding:
+                0 32px;
+
             position: sticky;
 
             top: 0;
 
-            z-index: 50;
-
-            backdrop-filter:
-                blur(15px);
+            z-index: 100;
 
         }
 
 
-        .page-title h1 {
+        .page-heading h1 {
 
             font-size: 22px;
+
+            color:
+                var(--dark);
+
+            font-weight: 800;
 
             letter-spacing:
                 -0.5px;
 
-            color:
-                #0f172a;
-
         }
 
 
-        .page-title p {
+        .page-heading p {
 
-            font-size: 12px;
+            margin-top: 4px;
 
             color:
                 var(--muted);
 
-            margin-top: 3px;
+            font-size: 12px;
 
         }
 
 
-        .hospital-profile {
+        .topbar-right {
 
             display: flex;
 
@@ -480,65 +607,88 @@
         }
 
 
-        .hospital-avatar {
-
-            width: 40px;
-
-            height: 40px;
-
-            border-radius: 50%;
+        .hospital-pill {
 
             display: flex;
 
             align-items: center;
 
-            justify-content: center;
+            gap: 9px;
+
+            padding:
+                9px 13px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 10px;
 
             background:
-                #eff6ff;
+                white;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            color:
+                var(--dark);
+
+        }
+
+
+        .hospital-pill i {
 
             color:
                 var(--primary);
 
-            font-size: 18px;
-
         }
 
 
-        .hospital-profile-text {
+        .notification-btn {
 
-            display: flex;
+            width: 40px;
+            height: 40px;
 
-            flex-direction: column;
+            border:
+                1px solid var(--border);
 
-            align-items: flex-end;
+            border-radius: 10px;
 
-        }
-
-
-        .hospital-profile-text strong {
-
-            font-size: 13px;
+            background:
+                white;
 
             color:
-                #0f172a;
+                #64748b;
+
+            position: relative;
 
         }
 
 
-        .hospital-profile-text span {
+        .notification-dot {
 
-            font-size: 11px;
+            position: absolute;
 
-            color:
-                var(--muted);
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background:
+                #ef4444;
+
+            top: 8px;
+            right: 9px;
+
+            border:
+                2px solid white;
 
         }
 
 
         /* =====================================================
            CONTENT
-        ===================================================== */
+        ====================================================== */
 
         .content {
 
@@ -552,198 +702,177 @@
 
 
         /* =====================================================
-           HERO
-        ===================================================== */
+           WELCOME BANNER
+        ====================================================== */
 
-        .hero {
+        .welcome {
 
             position: relative;
 
             overflow: hidden;
 
-            border-radius: 20px;
+            border-radius:
+                20px;
 
             padding:
                 30px;
 
-            margin-bottom: 24px;
+            color:
+                white;
 
-            color: white;
+            margin-bottom:
+                24px;
 
             background:
                 linear-gradient(
                     135deg,
                     #1d4ed8 0%,
                     #2563eb 45%,
-                    #0ea5e9 100%
+                    #4f46e5 100%
                 );
 
             box-shadow:
-                0 18px 40px
+                0 15px 35px
                 rgba(37,99,235,0.20);
 
         }
 
 
-        .hero::before {
+        .welcome::before {
 
             content: "";
 
             position: absolute;
 
-            width: 300px;
-
-            height: 300px;
+            width: 220px;
+            height: 220px;
 
             border-radius: 50%;
 
             background:
                 rgba(255,255,255,0.08);
 
-            right: -80px;
-
-            top: -120px;
+            right: -70px;
+            top: -100px;
 
         }
 
 
-        .hero::after {
+        .welcome::after {
 
             content: "";
 
             position: absolute;
 
-            width: 180px;
-
-            height: 180px;
+            width: 150px;
+            height: 150px;
 
             border-radius: 50%;
 
             background:
                 rgba(255,255,255,0.06);
 
-            right: 180px;
-
+            right: 150px;
             bottom: -100px;
 
         }
 
 
-        .hero-content {
+        .welcome-content {
 
             position: relative;
 
             z-index: 2;
 
-            max-width: 720px;
-
         }
 
 
-        .hero-badge {
+        .welcome h2 {
 
-            display: inline-flex;
+            font-size: 25px;
 
-            align-items: center;
-
-            gap: 7px;
-
-            padding:
-                6px 10px;
-
-            border-radius: 30px;
-
-            background:
-                rgba(255,255,255,0.15);
-
-            font-size: 11px;
-
-            margin-bottom: 13px;
-
-        }
-
-
-        .status-dot {
-
-            width: 7px;
-
-            height: 7px;
-
-            border-radius: 50%;
-
-            background:
-                #86efac;
-
-            box-shadow:
-                0 0 0 4px
-                rgba(134,239,172,0.15);
-
-        }
-
-
-        .hero h2 {
-
-            font-size:
-                clamp(24px, 3vw, 34px);
-
-            letter-spacing:
-                -1px;
+            font-weight: 800;
 
             margin-bottom: 8px;
 
         }
 
 
-        .hero p {
+        .welcome p {
+
+            font-size: 13px;
 
             color:
                 rgba(255,255,255,0.82);
 
-            font-size: 14px;
+        }
 
-            line-height: 1.6;
+
+        .welcome-time {
+
+            margin-top: 18px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding:
+                8px 12px;
+
+            background:
+                rgba(255,255,255,0.12);
+
+            border:
+                1px solid rgba(255,255,255,0.16);
+
+            border-radius: 8px;
+
+            font-size: 11px;
 
         }
 
 
         /* =====================================================
-           STATS
-        ===================================================== */
+           STAT CARDS
+        ====================================================== */
 
-        .stats {
+        .stats-grid {
 
             display: grid;
 
             grid-template-columns:
                 repeat(4, 1fr);
 
-            gap: 16px;
+            gap: 18px;
 
-            margin-bottom: 24px;
+            margin-bottom:
+                24px;
 
         }
 
 
         .stat-card {
 
-            background: white;
+            background:
+                white;
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
-            border-radius: 15px;
+            border-radius:
+                var(--radius);
 
-            padding: 20px;
+            padding:
+                20px;
 
-            display: flex;
-
-            align-items: center;
-
-            gap: 14px;
+            box-shadow:
+                var(--shadow);
 
             transition:
-                0.2s ease;
+                transform .2s ease,
+                box-shadow .2s ease;
 
         }
 
@@ -754,27 +883,38 @@
                 translateY(-3px);
 
             box-shadow:
-                0 12px 30px
-                rgba(15,23,42,0.08);
+                0 15px 35px
+                rgba(15,23,42,0.09);
+
+        }
+
+
+        .stat-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 16px;
 
         }
 
 
         .stat-icon {
 
-            width: 48px;
+            width: 42px;
+            height: 42px;
 
-            height: 48px;
-
-            border-radius: 12px;
+            border-radius: 11px;
 
             display: flex;
 
             align-items: center;
-
             justify-content: center;
 
-            font-size: 21px;
+            font-size: 17px;
 
         }
 
@@ -793,10 +933,10 @@
         .green {
 
             background:
-                #f0fdf4;
+                #ecfdf5;
 
             color:
-                #16a34a;
+                #059669;
 
         }
 
@@ -804,10 +944,10 @@
         .orange {
 
             background:
-                #fff7ed;
+                #fffbeb;
 
             color:
-                #ea580c;
+                #d97706;
 
         }
 
@@ -815,104 +955,96 @@
         .purple {
 
             background:
-                #faf5ff;
+                #f5f3ff;
 
             color:
-                #9333ea;
+                #7c3aed;
 
         }
 
 
-        .stat-info span {
+        .stat-change {
 
-            display: block;
+            font-size: 11px;
+
+            font-weight: 600;
+
+            color:
+                #059669;
+
+            background:
+                #ecfdf5;
+
+            padding:
+                5px 7px;
+
+            border-radius:
+                6px;
+
+        }
+
+
+        .stat-value {
+
+            font-size: 27px;
+
+            font-weight: 800;
+
+            color:
+                var(--dark);
+
+        }
+
+
+        .stat-label {
+
+            font-size: 12px;
 
             color:
                 var(--muted);
 
-            font-size: 11px;
-
-            margin-bottom: 4px;
-
-        }
-
-
-        .stat-info strong {
-
-            font-size: 22px;
-
-            color:
-                #0f172a;
+            margin-top: 4px;
 
         }
 
 
         /* =====================================================
-           SECTION CARD
-        ===================================================== */
+           GRID
+        ====================================================== */
 
-        .section {
+        .dashboard-grid {
 
-            display: none;
+            display: grid;
 
-        }
+            grid-template-columns:
+                1.4fr 1fr;
 
-
-        .section.active {
-
-            display: block;
-
-            animation:
-                fadeIn 0.25s ease;
+            gap: 20px;
 
         }
 
 
-        @keyframes fadeIn {
+        .panel {
 
-            from {
-
-                opacity: 0;
-
-                transform:
-                    translateY(6px);
-
-            }
-
-            to {
-
-                opacity: 1;
-
-                transform:
-                    translateY(0);
-
-            }
-
-        }
-
-
-        .card {
-
-            background: white;
+            background:
+                white;
 
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
-            border-radius: 16px;
-
-            padding: 24px;
-
-            margin-bottom: 20px;
+            border-radius:
+                var(--radius);
 
             box-shadow:
-                0 5px 20px
-                rgba(15,23,42,0.03);
+                var(--shadow);
+
+            overflow:
+                hidden;
 
         }
 
 
-        .card-header {
+        .panel-header {
 
             display: flex;
 
@@ -920,51 +1052,131 @@
 
             justify-content: space-between;
 
-            gap: 15px;
+            padding:
+                20px 22px;
 
-            margin-bottom: 20px;
+            border-bottom:
+                1px solid var(--border);
 
         }
 
 
-        .card-header h2 {
+        .panel-title {
 
-            font-size: 18px;
+            font-size: 15px;
+
+            font-weight: 700;
 
             color:
-                #0f172a;
+                var(--dark);
 
         }
 
 
-        .card-header p {
+        .panel-subtitle {
+
+            font-size: 11px;
 
             color:
                 var(--muted);
 
-            font-size: 12px;
-
-            margin-top: 4px;
+            margin-top: 3px;
 
         }
 
 
-        .section-icon {
+        .panel-action {
 
-            width: 42px;
+            border: none;
 
-            height: 42px;
+            background:
+                transparent;
 
-            border-radius: 11px;
+            color:
+                var(--primary);
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+        }
+
+
+        /* =====================================================
+           QUICK ACTIONS
+        ====================================================== */
+
+        .quick-actions {
+
+            padding:
+                20px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+
+        }
+
+
+        .quick-action {
+
+            border:
+                1px solid var(--border);
+
+            background:
+                #f8fafc;
+
+            padding:
+                16px;
+
+            border-radius:
+                12px;
 
             display: flex;
 
             align-items: center;
 
-            justify-content: center;
+            gap: 12px;
+
+            text-align: left;
+
+            transition:
+                .2s;
+
+        }
+
+
+        .quick-action:hover {
+
+            border-color:
+                #bfdbfe;
 
             background:
                 #eff6ff;
+
+            transform:
+                translateY(-2px);
+
+        }
+
+
+        .quick-action-icon {
+
+            width: 38px;
+            height: 38px;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background:
+                #dbeafe;
 
             color:
                 #2563eb;
@@ -972,49 +1184,65 @@
         }
 
 
+        .quick-action strong {
+
+            display: block;
+
+            font-size: 12px;
+
+            color:
+                var(--dark);
+
+        }
+
+
+        .quick-action span {
+
+            display: block;
+
+            margin-top: 3px;
+
+            font-size: 10px;
+
+            color:
+                var(--muted);
+
+        }
+
+
         /* =====================================================
-           FORM
-        ===================================================== */
+           HOSPITAL DETAILS
+        ====================================================== */
 
-        .form-grid {
+        .hospital-form {
 
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 16px;
+            padding:
+                22px;
 
         }
 
 
         .form-group {
 
-            display: flex;
-
-            flex-direction: column;
-
-        }
-
-
-        .form-group.full {
-
-            grid-column:
-                1 / -1;
+            margin-bottom:
+                15px;
 
         }
 
 
-        .form-group label {
+        .form-label {
 
-            font-size: 12px;
+            display: block;
+
+            font-size: 11px;
 
             font-weight: 600;
 
             color:
-                #334155;
+                #475569;
 
-            margin-bottom: 6px;
+            margin-bottom:
+                7px;
 
         }
 
@@ -1026,26 +1254,28 @@
             width: 100%;
 
             border:
-                1px solid
-                var(--border);
-
-            background:
-                #fff;
-
-            color:
-                #0f172a;
+                1px solid var(--border);
 
             outline: none;
 
-            border-radius: 9px;
+            background:
+                #ffffff;
+
+            color:
+                var(--dark);
+
+            border-radius:
+                9px;
 
             padding:
-                12px 13px;
+                11px 12px;
 
-            font-size: 13px;
+            font-size:
+                13px;
 
             transition:
-                0.2s;
+                border-color .2s,
+                box-shadow .2s;
 
         }
 
@@ -1055,7 +1285,7 @@
         select:focus {
 
             border-color:
-                #60a5fa;
+                #93c5fd;
 
             box-shadow:
                 0 0 0 3px
@@ -1072,15 +1302,13 @@
             color:
                 #64748b;
 
-            cursor:
-                not-allowed;
-
         }
 
 
         textarea {
 
-            min-height: 120px;
+            min-height:
+                90px;
 
             resize:
                 vertical;
@@ -1088,125 +1316,95 @@
         }
 
 
-        /* =====================================================
-           BUTTONS
-        ===================================================== */
+        .form-row {
 
-        .actions {
+            display: grid;
 
-            display: flex;
+            grid-template-columns:
+                repeat(2, 1fr);
 
-            gap: 10px;
-
-            flex-wrap: wrap;
-
-            margin-top: 20px;
+            gap: 14px;
 
         }
 
 
-        .btn {
+        .save-btn {
+
+            width: 100%;
+
+            margin-top:
+                5px;
+
+            padding:
+                12px;
 
             border: none;
 
-            border-radius: 9px;
+            border-radius:
+                9px;
 
-            padding:
-                11px 17px;
+            background:
+                var(--primary);
 
-            font-size: 13px;
+            color:
+                white;
 
-            font-weight: 600;
+            font-size:
+                13px;
 
-            cursor: pointer;
+            font-weight:
+                600;
 
             transition:
-                0.2s;
+                .2s;
 
         }
 
 
-        .btn-primary {
-
-            color: white;
+        .save-btn:hover {
 
             background:
-                linear-gradient(
-                    135deg,
-                    #2563eb,
-                    #0ea5e9
-                );
-
-            box-shadow:
-                0 6px 15px
-                rgba(37,99,235,0.18);
-
-        }
-
-
-        .btn-primary:hover {
-
-            transform:
-                translateY(-1px);
-
-            box-shadow:
-                0 9px 20px
-                rgba(37,99,235,0.25);
-
-        }
-
-
-        .btn-secondary {
-
-            background:
-                #f1f5f9;
-
-            color:
-                #334155;
-
-        }
-
-
-        .btn-secondary:hover {
-
-            background:
-                #e2e8f0;
-
-        }
-
-
-        .btn-danger {
-
-            background:
-                #fef2f2;
-
-            color:
-                #dc2626;
+                var(--primary-dark);
 
         }
 
 
         /* =====================================================
-           DOCTORS
-        ===================================================== */
+           DOCTOR SECTION
+        ====================================================== */
+
+        .doctor-section {
+
+            margin-top:
+                20px;
+
+        }
+
+
+        .doctor-list {
+
+            padding:
+                0 22px 22px;
+
+        }
+
 
         .doctor-box {
 
+            padding:
+                17px;
+
             border:
-                1px solid
-                var(--border);
+                1px solid var(--border);
 
             border-radius:
-                13px;
-
-            padding:
-                18px;
-
-            margin-bottom:
-                15px;
+                12px;
 
             background:
-                #f8fafc;
+                #fafcff;
+
+            margin-top:
+                14px;
 
         }
 
@@ -1215,198 +1413,45 @@
 
             display: flex;
 
-            justify-content: space-between;
-
             align-items: center;
 
-            margin-bottom: 14px;
+            justify-content: space-between;
+
+            margin-bottom:
+                12px;
 
         }
 
 
         .doctor-title {
 
-            display: flex;
+            font-size:
+                13px;
 
-            align-items: center;
+            font-weight:
+                700;
 
-            gap: 10px;
+            color:
+                var(--dark);
 
         }
 
 
-        .doctor-avatar {
+        .remove-doctor {
 
-            width: 38px;
-
-            height: 38px;
-
-            border-radius: 50%;
+            border: none;
 
             background:
-                #dbeafe;
+                #fef2f2;
 
             color:
-                #2563eb;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-        }
-
-
-        .doctor-title h3 {
-
-            font-size: 14px;
-
-        }
-
-
-        .doctor-title span {
-
-            display: block;
-
-            color:
-                var(--muted);
-
-            font-size: 11px;
-
-            margin-top: 2px;
-
-        }
-
-
-        /* =====================================================
-           STATUS
-        ===================================================== */
-
-        #statusMessage {
-
-            display: none;
+                #ef4444;
 
             padding:
-                11px 13px;
-
-            margin-top:
-                15px;
+                6px 9px;
 
             border-radius:
-                9px;
-
-            font-size:
-                12px;
-
-        }
-
-
-        /* =====================================================
-           QUICK ACTIONS
-        ===================================================== */
-
-        .quick-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 14px;
-
-        }
-
-
-        .quick-card {
-
-            border:
-                1px solid
-                var(--border);
-
-            background:
-                white;
-
-            border-radius:
-                14px;
-
-            padding:
-                18px;
-
-            cursor:
-                pointer;
-
-            transition:
-                0.2s;
-
-        }
-
-
-        .quick-card:hover {
-
-            border-color:
-                #bfdbfe;
-
-            transform:
-                translateY(-3px);
-
-            box-shadow:
-                0 12px 25px
-                rgba(15,23,42,0.06);
-
-        }
-
-
-        .quick-card-icon {
-
-            width:
-                42px;
-
-            height:
-                42px;
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            border-radius:
-                10px;
-
-            background:
-                #eff6ff;
-
-            color:
-                #2563eb;
-
-            margin-bottom:
-                12px;
-
-        }
-
-
-        .quick-card strong {
-
-            display:
-                block;
-
-            font-size:
-                14px;
-
-            margin-bottom:
-                4px;
-
-        }
-
-
-        .quick-card span {
-
-            color:
-                var(--muted);
+                7px;
 
             font-size:
                 11px;
@@ -1414,49 +1459,83 @@
         }
 
 
-        /* =====================================================
-           MOBILE HEADER
-        ===================================================== */
+        .add-doctor {
 
-        .mobile-menu {
+            margin-top:
+                14px;
 
-            display: none;
-
-            border: none;
+            border:
+                1px dashed #93c5fd;
 
             background:
-                #f1f5f9;
+                #eff6ff;
 
-            width: 40px;
+            color:
+                #2563eb;
 
-            height: 40px;
+            padding:
+                10px 14px;
 
-            border-radius: 9px;
+            border-radius:
+                8px;
 
-            font-size: 19px;
+            font-size:
+                12px;
 
-            cursor: pointer;
+            font-weight:
+                600;
+
+        }
+
+
+        /* =====================================================
+           STATUS
+        ====================================================== */
+
+        #statusMessage {
+
+            display:
+                none;
+
+            margin-top:
+                12px;
+
+            padding:
+                10px 12px;
+
+            border-radius:
+                8px;
+
+            font-size:
+                12px;
 
         }
 
 
         /* =====================================================
            RESPONSIVE
-        ===================================================== */
+        ====================================================== */
 
         @media (max-width: 1100px) {
 
-            .stats {
+            .stats-grid {
 
                 grid-template-columns:
                     repeat(2, 1fr);
 
             }
 
+            .dashboard-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
         }
 
 
-        @media (max-width: 850px) {
+        @media (max-width: 768px) {
 
             .sidebar {
 
@@ -1464,12 +1543,12 @@
                     translateX(-100%);
 
                 transition:
-                    0.25s ease;
+                    transform .25s ease;
 
             }
 
 
-            .sidebar.open {
+            .sidebar.mobile-open {
 
                 transform:
                     translateX(0);
@@ -1479,25 +1558,72 @@
 
             .main {
 
-                width: 100%;
+                margin-left:
+                    0;
 
-                margin-left: 0;
+            }
+
+
+            .mobile-header {
+
+                display:
+                    flex;
+
+                height:
+                    64px;
+
+                background:
+                    white;
+
+                border-bottom:
+                    1px solid var(--border);
+
+                align-items:
+                    center;
+
+                justify-content:
+                    space-between;
+
+                padding:
+                    0 18px;
+
+                position:
+                    sticky;
+
+                top: 0;
+
+                z-index: 900;
 
             }
 
 
             .mobile-menu {
 
-                display:
-                    block;
+                width:
+                    38px;
+
+                height:
+                    38px;
+
+                border:
+                    1px solid var(--border);
+
+                border-radius:
+                    9px;
+
+                background:
+                    white;
+
+                color:
+                    var(--dark);
 
             }
 
 
             .topbar {
 
-                padding:
-                    0 20px;
+                display:
+                    none;
 
             }
 
@@ -1505,51 +1631,51 @@
             .content {
 
                 padding:
+                    20px 16px 40px;
+
+            }
+
+
+            .stats-grid {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap:
+                    12px;
+
+            }
+
+
+            .welcome {
+
+                padding:
+                    23px;
+
+            }
+
+
+            .welcome h2 {
+
+                font-size:
                     20px;
 
             }
 
 
-            .overlay-menu {
+            .form-row {
 
-                display:
-                    none;
-
-                position:
-                    fixed;
-
-                inset: 0;
-
-                background:
-                    rgba(15,23,42,0.4);
-
-                z-index:
-                    90;
-
-            }
-
-
-            .overlay-menu.show {
-
-                display:
-                    block;
+                grid-template-columns:
+                    1fr;
 
             }
 
         }
 
 
-        @media (max-width: 650px) {
+        @media (max-width: 480px) {
 
-            .stats {
-
-                grid-template-columns:
-                    1fr;
-
-            }
-
-
-            .form-grid {
+            .stats-grid {
 
                 grid-template-columns:
                     1fr;
@@ -1557,66 +1683,10 @@
             }
 
 
-            .form-group.full {
-
-                grid-column:
-                    auto;
-
-            }
-
-
-            .quick-grid {
+            .quick-actions {
 
                 grid-template-columns:
                     1fr;
-
-            }
-
-
-            .hospital-profile-text {
-
-                display:
-                    none;
-
-            }
-
-
-            .topbar {
-
-                height:
-                    70px;
-
-            }
-
-
-            .page-title h1 {
-
-                font-size:
-                    18px;
-
-            }
-
-
-            .page-title p {
-
-                display:
-                    none;
-
-            }
-
-
-            .hero {
-
-                padding:
-                    24px 20px;
-
-            }
-
-
-            .card {
-
-                padding:
-                    18px;
 
             }
 
@@ -1630,314 +1700,376 @@
 <body>
 
 
-<div class="app">
+<!-- =========================================================
+     SIDEBAR
+========================================================== -->
+
+<aside
+    class="sidebar"
+    id="sidebar"
+>
 
 
-    <!-- =====================================================
-         MOBILE OVERLAY
-    ===================================================== -->
+    <!-- BRAND -->
 
-    <div
-        class="overlay-menu"
-        id="overlayMenu"
-        onclick="closeSidebar()"
-    ></div>
+    <div class="brand">
 
+        <div class="brand-icon">
 
-    <!-- =====================================================
-         SIDEBAR
-    ===================================================== -->
+            <i class="fa-solid fa-heart-pulse"></i>
 
-    <aside
-        class="sidebar"
-        id="sidebar"
-    >
+        </div>
 
-        <div class="logo">
+        <div class="brand-text">
 
-            <div class="logo-icon">
-                🏥
+            <div class="brand-name">
+                MediQueue
             </div>
 
-            <div class="logo-text">
-
-                <strong>
-                    MediQueue
-                </strong>
-
-                <span>
-                    Hospital Management
-                </span>
-
+            <div class="brand-subtitle">
+                Healthcare Management
             </div>
 
         </div>
 
+    </div>
 
-        <nav class="nav">
 
-            <div class="nav-label">
-                Main Menu
+    <!-- NAVIGATION -->
+
+    <nav class="sidebar-nav">
+
+
+        <div class="nav-label">
+            Workspace
+        </div>
+
+
+        <button
+            class="nav-item active"
+            id="nav-dashboard"
+            onclick="showDashboard()"
+        >
+
+            <i class="fa-solid fa-grid-2"></i>
+
+            <span>
+                Dashboard
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            id="nav-hospital"
+            onclick="showSection('hospital')"
+        >
+
+            <i class="fa-solid fa-hospital"></i>
+
+            <span>
+                Hospital
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            id="nav-doctors"
+            onclick="showSection('doctor')"
+        >
+
+            <i class="fa-solid fa-user-doctor"></i>
+
+            <span>
+                Doctors
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            onclick="openAppointments()"
+        >
+
+            <i class="fa-solid fa-calendar-check"></i>
+
+            <span>
+                Appointments
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            onclick="openFollowups()"
+        >
+
+            <i class="fa-solid fa-arrows-rotate"></i>
+
+            <span>
+                Follow-ups
+            </span>
+
+        </button>
+
+
+        <button
+            class="nav-item"
+            onclick="openAnalytics()"
+        >
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            <span>
+                Analytics
+            </span>
+
+        </button>
+
+
+        <div
+            class="nav-label"
+            style="margin-top:25px;"
+        >
+            Management
+        </div>
+
+
+        <button
+            class="nav-item"
+            onclick="showSettings()"
+        >
+
+            <i class="fa-solid fa-sliders"></i>
+
+            <span>
+                Settings
+            </span>
+
+        </button>
+
+
+    </nav>
+
+
+    <!-- SIDEBAR BOTTOM -->
+
+    <div class="sidebar-bottom">
+
+
+        <div class="profile-card">
+
+            <div class="profile-avatar">
+
+                <i class="fa-solid fa-hospital"></i>
+
             </div>
 
 
-            <button
-                class="nav-button active"
-                id="nav-hospital"
-                onclick="showSection('hospital')"
-            >
+            <div class="profile-info">
 
-                <span class="nav-icon">
-                    🏥
-                </span>
-
-                <span>
-                    Hospital
-                </span>
-
-            </button>
-
-
-            <button
-                class="nav-button"
-                id="nav-doctor"
-                onclick="showSection('doctor')"
-            >
-
-                <span class="nav-icon">
-                    👨‍⚕️
-                </span>
-
-                <span>
-                    Doctors
-                </span>
-
-            </button>
-
-
-            <button
-                class="nav-button"
-                onclick="openAppointments()"
-            >
-
-                <span class="nav-icon">
-                    📅
-                </span>
-
-                <span>
-                    Appointments
-                </span>
-
-            </button>
-
-
-            <button
-                class="nav-button"
-                onclick="openFollowups()"
-            >
-
-                <span class="nav-icon">
-                    🔄
-                </span>
-
-                <span>
-                    Follow-ups
-                </span>
-
-            </button>
-
-
-            <button
-                class="nav-button"
-                onclick="openAnalytics()"
-            >
-
-                <span class="nav-icon">
-                    📊
-                </span>
-
-                <span>
-                    Analytics
-                </span>
-
-            </button>
-
-        </nav>
-
-
-        <div class="sidebar-bottom">
-
-            <button
-                class="logout"
-                onclick="logout()"
-            >
-
-                🚪
-
-                <span>
-                    Logout
-                </span>
-
-            </button>
-
-        </div>
-
-    </aside>
-
-
-    <!-- =====================================================
-         MAIN
-    ===================================================== -->
-
-    <main class="main">
-
-
-        <!-- =================================================
-             TOPBAR
-        ================================================= -->
-
-        <header class="topbar">
-
-            <div
-                style="
-                    display:flex;
-                    align-items:center;
-                    gap:12px;
-                "
-            >
-
-                <button
-                    class="mobile-menu"
-                    onclick="toggleSidebar()"
+                <div
+                    class="profile-name"
+                    id="sidebarHospitalName"
                 >
-                    ☰
-                </button>
+                    Hospital
+                </div>
 
-
-                <div class="page-title">
-
-                    <h1>
-                        Hospital Dashboard
-                    </h1>
-
-                    <p>
-                        Manage your hospital operations from one place
-                    </p>
-
+                <div class="profile-role">
+                    Administrator
                 </div>
 
             </div>
 
+        </div>
 
-            <div class="hospital-profile">
 
-                <div class="hospital-avatar">
-                    🏥
-                </div>
+        <button
+            class="nav-item logout-btn"
+            onclick="logout()"
+        >
 
-                <div class="hospital-profile-text">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
 
-                    <strong
-                        id="hospitalNameDisplay"
-                    >
-                        Loading...
-                    </strong>
+            <span>
+                Logout
+            </span>
 
-                    <span>
-                        Hospital Administrator
-                    </span>
+        </button>
 
-                </div>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================================================
+     MAIN
+========================================================== -->
+
+<div class="main">
+
+
+    <!-- MOBILE HEADER -->
+
+    <div class="mobile-header">
+
+        <button
+            class="mobile-menu"
+            onclick="toggleSidebar()"
+        >
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+
+        <strong>
+            MediQueue
+        </strong>
+
+
+        <button
+            class="mobile-menu"
+            onclick="openAnalytics()"
+        >
+
+            <i class="fa-solid fa-chart-line"></i>
+
+        </button>
+
+    </div>
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+
+        <div class="page-heading">
+
+            <h1>
+                Hospital Dashboard
+            </h1>
+
+            <p>
+                Manage your healthcare operations from one place.
+            </p>
+
+        </div>
+
+
+        <div class="topbar-right">
+
+
+            <div class="hospital-pill">
+
+                <i class="fa-solid fa-hospital"></i>
+
+                <span id="hospitalNameDisplay">
+                    Loading...
+                </span>
 
             </div>
 
-        </header>
+
+            <button
+                class="notification-btn"
+                title="Notifications"
+            >
+
+                <i class="fa-regular fa-bell"></i>
+
+                <span
+                    class="notification-dot"
+                ></span>
+
+            </button>
+
+
+        </div>
+
+    </header>
+
+
+    <!-- CONTENT -->
+
+    <main class="content">
 
 
         <!-- =================================================
-             CONTENT
-        ================================================= -->
+             DASHBOARD
+        ================================================== -->
 
-        <div class="content">
+        <section
+            id="dashboardSection"
+        >
 
 
-            <!-- =================================================
-                 HERO
-            ================================================= -->
+            <!-- WELCOME -->
 
-            <section class="hero">
+            <div class="welcome">
 
-                <div class="hero-content">
-
-                    <div class="hero-badge">
-
-                        <span class="status-dot"></span>
-
-                        System Online
-
-                    </div>
-
+                <div class="welcome-content">
 
                     <h2>
-                        Welcome to your hospital dashboard
+                        Welcome back 👋
                     </h2>
 
-
                     <p>
-                        Manage doctors, appointments,
-                        follow-ups and hospital information
-                        efficiently with MediQueue.
+                        Here's what's happening with your hospital today.
                     </p>
 
-                </div>
+                    <div class="welcome-time">
 
-            </section>
+                        <i class="fa-regular fa-clock"></i>
 
-
-            <!-- =================================================
-                 STATS
-            ================================================= -->
-
-            <section class="stats">
-
-
-                <div class="stat-card">
-
-                    <div class="stat-icon blue">
-                        👨‍⚕️
-                    </div>
-
-                    <div class="stat-info">
-
-                        <span>
-                            Medical Staff
+                        <span id="currentDate">
+                            Loading...
                         </span>
-
-                        <strong>
-                            —
-                        </strong>
 
                     </div>
 
                 </div>
 
+            </div>
+
+
+            <!-- STATISTICS -->
+
+            <div class="stats-grid">
+
 
                 <div class="stat-card">
 
-                    <div class="stat-icon green">
-                        📅
+                    <div class="stat-top">
+
+                        <div class="stat-icon blue">
+
+                            <i class="fa-solid fa-calendar-check"></i>
+
+                        </div>
+
+                        <div class="stat-change">
+                            Today
+                        </div>
+
                     </div>
 
-                    <div class="stat-info">
+                    <div
+                        class="stat-value"
+                        id="appointmentCount"
+                    >
+                        —
+                    </div>
 
-                        <span>
-                            Appointments
-                        </span>
-
-                        <strong>
-                            —
-                        </strong>
-
+                    <div class="stat-label">
+                        Today's Appointments
                     </div>
 
                 </div>
@@ -1945,20 +2077,29 @@
 
                 <div class="stat-card">
 
-                    <div class="stat-icon orange">
-                        🔄
+                    <div class="stat-top">
+
+                        <div class="stat-icon green">
+
+                            <i class="fa-solid fa-user-doctor"></i>
+
+                        </div>
+
+                        <div class="stat-change">
+                            Active
+                        </div>
+
                     </div>
 
-                    <div class="stat-info">
+                    <div
+                        class="stat-value"
+                        id="doctorCountDisplay"
+                    >
+                        1
+                    </div>
 
-                        <span>
-                            Follow-ups
-                        </span>
-
-                        <strong>
-                            —
-                        </strong>
-
+                    <div class="stat-label">
+                        Doctors
                     </div>
 
                 </div>
@@ -1966,388 +2107,591 @@
 
                 <div class="stat-card">
 
-                    <div class="stat-icon purple">
-                        📊
+                    <div class="stat-top">
+
+                        <div class="stat-icon orange">
+
+                            <i class="fa-solid fa-arrows-rotate"></i>
+
+                        </div>
+
+                        <div class="stat-change">
+                            Follow-up
+                        </div>
+
                     </div>
 
-                    <div class="stat-info">
+                    <div
+                        class="stat-value"
+                    >
+                        —
+                    </div>
 
-                        <span>
-                            Analytics
-                        </span>
-
-                        <strong>
-                            View
-                        </strong>
-
+                    <div class="stat-label">
+                        Patient Follow-ups
                     </div>
 
                 </div>
 
 
-            </section>
+                <div class="stat-card">
+
+                    <div class="stat-top">
+
+                        <div class="stat-icon purple">
+
+                            <i class="fa-solid fa-chart-line"></i>
+
+                        </div>
+
+                        <div class="stat-change">
+                            Live
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="stat-value"
+                    >
+                        100%
+                    </div>
+
+                    <div class="stat-label">
+                        System Availability
+                    </div>
+
+                </div>
 
 
-            <!-- =================================================
-                 HOSPITAL SECTION
-            ================================================= -->
+            </div>
 
-            <section
-                id="hospital"
-                class="section active"
-            >
 
-                <div class="card">
+            <!-- DASHBOARD PANELS -->
 
-                    <div class="card-header">
+            <div class="dashboard-grid">
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
 
                         <div>
 
-                            <h2>
-                                Hospital Information
-                            </h2>
+                            <div class="panel-title">
+                                Quick Actions
+                            </div>
 
-                            <p>
-                                Keep your hospital profile up to date.
-                            </p>
+                            <div class="panel-subtitle">
+                                Frequently used tools
+                            </div>
 
-                        </div>
-
-
-                        <div class="section-icon">
-                            🏥
                         </div>
 
                     </div>
 
 
-                    <div class="form-grid">
+                    <div class="quick-actions">
 
-
-                        <div class="form-group">
-
-                            <label>
-                                Hospital ID
-                            </label>
-
-                            <input
-                                id="hospital_id"
-                                placeholder="Hospital ID"
-                                disabled
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label>
-                                Hospital Name
-                            </label>
-
-                            <input
-                                id="hospital_name"
-                                placeholder="Enter hospital name"
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label>
-                                Date
-                            </label>
-
-                            <input
-                                id="date"
-                                type="date"
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label>
-                                Opening Time
-                            </label>
-
-                            <input
-                                id="open_time"
-                                type="time"
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label>
-                                Closing Time
-                            </label>
-
-                            <input
-                                id="close_time"
-                                type="time"
-                            >
-
-                        </div>
-
-
-                        <div class="form-group full">
-
-                            <label>
-                                Hospital Information
-                            </label>
-
-                            <textarea
-                                id="info"
-                                placeholder="Write a short description about your hospital..."
-                            ></textarea>
-
-                        </div>
-
-
-                    </div>
-
-
-                    <div class="actions">
 
                         <button
-                            class="btn btn-primary"
-                            onclick="saveHospital()"
+                            class="quick-action"
+                            onclick="showSection('hospital')"
                         >
-                            💾 Save Hospital
+
+                            <div class="quick-action-icon">
+
+                                <i class="fa-solid fa-hospital"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Hospital Profile
+                                </strong>
+
+                                <span>
+                                    Update hospital details
+                                </span>
+
+                            </div>
+
                         </button>
+
+
+                        <button
+                            class="quick-action"
+                            onclick="showSection('doctor')"
+                        >
+
+                            <div class="quick-action-icon">
+
+                                <i class="fa-solid fa-user-doctor"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Manage Doctors
+                                </strong>
+
+                                <span>
+                                    Add or update doctors
+                                </span>
+
+                            </div>
+
+                        </button>
+
+
+                        <button
+                            class="quick-action"
+                            onclick="openAppointments()"
+                        >
+
+                            <div class="quick-action-icon">
+
+                                <i class="fa-solid fa-calendar-days"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Appointments
+                                </strong>
+
+                                <span>
+                                    View patient appointments
+                                </span>
+
+                            </div>
+
+                        </button>
+
+
+                        <button
+                            class="quick-action"
+                            onclick="openAnalytics()"
+                        >
+
+                            <div class="quick-action-icon">
+
+                                <i class="fa-solid fa-chart-pie"></i>
+
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Analytics
+                                </strong>
+
+                                <span>
+                                    Track hospital performance
+                                </span>
+
+                            </div>
+
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- SYSTEM OVERVIEW -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <div class="panel-title">
+                                System Overview
+                            </div>
+
+                            <div class="panel-subtitle">
+                                Your MediQueue account
+                            </div>
+
+                        </div>
 
                     </div>
 
 
                     <div
-                        id="statusMessage"
-                    ></div>
+                        style="
+                            padding:22px;
+                        "
+                    >
+
+
+                        <div
+                            style="
+                                display:flex;
+                                align-items:center;
+                                justify-content:space-between;
+                                padding-bottom:16px;
+                                border-bottom:1px solid #e2e8f0;
+                            "
+                        >
+
+                            <span
+                                style="
+                                    font-size:12px;
+                                    color:#64748b;
+                                "
+                            >
+                                Subscription
+                            </span>
+
+                            <span
+                                style="
+                                    padding:5px 9px;
+                                    border-radius:6px;
+                                    background:#ecfdf5;
+                                    color:#059669;
+                                    font-size:11px;
+                                    font-weight:700;
+                                "
+                            >
+                                Active
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            style="
+                                display:flex;
+                                align-items:center;
+                                justify-content:space-between;
+                                padding:16px 0;
+                                border-bottom:1px solid #e2e8f0;
+                            "
+                        >
+
+                            <span
+                                style="
+                                    font-size:12px;
+                                    color:#64748b;
+                                "
+                            >
+                                Hospital ID
+                            </span>
+
+                            <strong
+                                id="dashboardHospitalId"
+                                style="
+                                    font-size:11px;
+                                    color:#334155;
+                                "
+                            >
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            style="
+                                display:flex;
+                                align-items:center;
+                                justify-content:space-between;
+                                padding-top:16px;
+                            "
+                        >
+
+                            <span
+                                style="
+                                    font-size:12px;
+                                    color:#64748b;
+                                "
+                            >
+                                Account Status
+                            </span>
+
+                            <span
+                                style="
+                                    display:flex;
+                                    align-items:center;
+                                    gap:6px;
+                                    font-size:11px;
+                                    color:#059669;
+                                    font-weight:600;
+                                "
+                            >
+
+                                <span
+                                    style="
+                                        width:7px;
+                                        height:7px;
+                                        border-radius:50%;
+                                        background:#10b981;
+                                    "
+                                ></span>
+
+                                Operational
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
 
                 </div>
 
 
-                <!-- =================================================
-                     QUICK ACTIONS
-                ================================================= -->
+            </div>
 
-                <div class="card">
+        </section>
 
-                    <div class="card-header">
 
-                        <div>
+        <!-- =================================================
+             HOSPITAL
+        ================================================== -->
 
-                            <h2>
-                                Quick Actions
-                            </h2>
+        <section
+            id="hospital"
+            class="section panel"
+            style="display:none;"
+        >
 
-                            <p>
-                                Access your most-used hospital tools.
-                            </p>
 
-                        </div>
+            <div class="panel-header">
 
+                <div>
+
+                    <div class="panel-title">
+                        Hospital Profile
                     </div>
 
-
-                    <div class="quick-grid">
-
-
-                        <div
-                            class="quick-card"
-                            onclick="showSection('doctor')"
-                        >
-
-                            <div class="quick-card-icon">
-                                👨‍⚕️
-                            </div>
-
-                            <strong>
-                                Manage Doctors
-                            </strong>
-
-                            <span>
-                                Add and manage your medical staff.
-                            </span>
-
-                        </div>
-
-
-                        <div
-                            class="quick-card"
-                            onclick="openAppointments()"
-                        >
-
-                            <div class="quick-card-icon">
-                                📅
-                            </div>
-
-                            <strong>
-                                Appointments
-                            </strong>
-
-                            <span>
-                                View and manage patient appointments.
-                            </span>
-
-                        </div>
-
-
-                        <div
-                            class="quick-card"
-                            onclick="openAnalytics()"
-                        >
-
-                            <div class="quick-card-icon">
-                                📊
-                            </div>
-
-                            <strong>
-                                Analytics
-                            </strong>
-
-                            <span>
-                                Monitor hospital performance.
-                            </span>
-
-                        </div>
-
-
+                    <div class="panel-subtitle">
+                        Manage your hospital information
                     </div>
 
                 </div>
 
-            </section>
+            </div>
 
 
-            <!-- =================================================
-                 DOCTOR SECTION
-            ================================================= -->
+            <div class="hospital-form">
 
-            <section
-                id="doctor"
-                class="section"
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Hospital ID
+                    </label>
+
+                    <input
+                        id="hospital_id"
+                        placeholder="Hospital ID"
+                        disabled
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Hospital Name
+                    </label>
+
+                    <input
+                        id="hospital_name"
+                        placeholder="Enter hospital name"
+                    >
+
+                </div>
+
+
+                <div class="form-row">
+
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Date
+                        </label>
+
+                        <input
+                            id="date"
+                            type="date"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Opening Time
+                        </label>
+
+                        <input
+                            id="open_time"
+                            type="time"
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Closing Time
+                    </label>
+
+                    <input
+                        id="close_time"
+                        type="time"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="form-label">
+                        Hospital Information
+                    </label>
+
+                    <textarea
+                        id="info"
+                        placeholder="Describe your hospital, services and facilities..."
+                    ></textarea>
+
+                </div>
+
+
+                <button
+                    class="save-btn"
+                    onclick="saveHospital()"
+                >
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    &nbsp;
+
+                    Save Hospital Information
+
+                </button>
+
+
+                <div id="statusMessage"></div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             DOCTORS
+        ================================================== -->
+
+        <section
+            id="doctor"
+            class="section panel"
+            style="display:none;"
+        >
+
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Medical Team
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Manage doctors and OPD information
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="doctor-list"
+                id="doctor-section"
             >
 
-                <div class="card">
 
-                    <div class="card-header">
-
-                        <div>
-
-                            <h2>
-                                Medical Team
-                            </h2>
-
-                            <p>
-                                Add and manage doctors working at your hospital.
-                            </p>
-
-                        </div>
+                <div class="doctor-box">
 
 
-                        <div class="section-icon">
-                            👨‍⚕️
+                    <div class="doctor-header">
+
+                        <div class="doctor-title">
+
+                            <i
+                                class="fa-solid fa-user-doctor"
+                                style="color:#2563eb;margin-right:6px;"
+                            ></i>
+
+                            Doctor 1
+
                         </div>
 
                     </div>
 
 
-                    <div id="doctor-section">
+                    <div class="form-group">
+
+                        <label class="form-label">
+                            Doctor Name
+                        </label>
+
+                        <input
+                            class="doctor_name"
+                            placeholder="Dr. John Smith"
+                        >
+
+                    </div>
 
 
-                        <div class="doctor-box">
+                    <div class="form-row">
 
 
-                            <div class="doctor-header">
+                        <div class="form-group">
 
-                                <div class="doctor-title">
+                            <label class="form-label">
+                                Specialization
+                            </label>
 
-                                    <div class="doctor-avatar">
-                                        👨‍⚕️
-                                    </div>
+                            <input
+                                class="specialization"
+                                placeholder="Cardiologist"
+                            >
 
-                                    <div>
-
-                                        <h3>
-                                            Doctor 1
-                                        </h3>
-
-                                        <span>
-                                            Medical professional
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
+                        </div>
 
 
-                            <div class="form-grid">
+                        <div class="form-group">
 
+                            <label class="form-label">
+                                OPD Time
+                            </label>
 
-                                <div class="form-group">
-
-                                    <label>
-                                        Doctor Name
-                                    </label>
-
-                                    <input
-                                        class="doctor_name"
-                                        placeholder="Enter doctor name"
-                                    >
-
-                                </div>
-
-
-                                <div class="form-group">
-
-                                    <label>
-                                        Specialization
-                                    </label>
-
-                                    <input
-                                        class="specialization"
-                                        placeholder="e.g. Cardiologist"
-                                    >
-
-                                </div>
-
-
-                                <div class="form-group">
-
-                                    <label>
-                                        OPD Time
-                                    </label>
-
-                                    <input
-                                        class="opd_time"
-                                        placeholder="e.g. 10:00 AM - 2:00 PM"
-                                    >
-
-                                </div>
-
-
-                                <div class="form-group">
-
-                                    <label>
-                                        Doctor Information
-                                    </label>
-
-                                    <input
-                                        class="doctor_info"
-                                        placeholder="Short professional information"
-                                    >
-
-                                </div>
-
-
-                            </div>
+                            <input
+                                class="opd_time"
+                                placeholder="10:00 AM - 2:00 PM"
+                            >
 
                         </div>
 
@@ -2355,43 +2699,128 @@
                     </div>
 
 
-                    <div class="actions">
+                    <div class="form-group">
 
-                        <button
-                            class="btn btn-secondary"
-                            onclick="addDoctor()"
-                        >
-                            + Add Doctor
-                        </button>
+                        <label class="form-label">
+                            Doctor Information
+                        </label>
+
+                        <textarea
+                            class="doctor_info"
+                            placeholder="Doctor experience, services and additional information..."
+                        ></textarea>
+
+                    </div>
 
 
-                        <button
-                            class="btn btn-primary"
-                            onclick="saveHospital()"
-                        >
-                            💾 Save Hospital & Doctors
-                        </button>
+                </div>
 
+
+            </div>
+
+
+            <div
+                style="
+                    padding:0 22px 22px;
+                "
+            >
+
+                <button
+                    class="add-doctor"
+                    onclick="addDoctor()"
+                >
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    &nbsp;
+
+                    Add Another Doctor
+
+                </button>
+
+
+                <button
+                    class="save-btn"
+                    onclick="saveHospital()"
+                    style="margin-top:12px;"
+                >
+
+                    <i class="fa-solid fa-floppy-disk"></i>
+
+                    &nbsp;
+
+                    Save Hospital & Doctors
+
+                </button>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- SETTINGS -->
+
+        <section
+            id="settings"
+            class="section panel"
+            style="display:none;"
+        >
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        Settings
+                    </div>
+
+                    <div class="panel-subtitle">
+                        Manage your MediQueue dashboard
                     </div>
 
                 </div>
 
-            </section>
+            </div>
 
 
-        </div>
+            <div
+                style="
+                    padding:25px;
+                "
+            >
+
+                <p
+                    style="
+                        color:#64748b;
+                        font-size:13px;
+                        line-height:1.7;
+                    "
+                >
+                    Dashboard settings and account preferences
+                    can be managed here.
+                </p>
+
+            </div>
+
+        </section>
+
 
     </main>
 
 </div>
 
 
+<!-- =========================================================
+     JAVASCRIPT
+========================================================== -->
+
 <script type="module">
 
 
-/* ============================================================
+/* =====================================================
    FIREBASE
-============================================================ */
+===================================================== */
 
 import {
     initializeApp
@@ -2409,9 +2838,9 @@ from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
 
-/* ============================================================
+/* =====================================================
    FIREBASE CONFIG
-============================================================ */
+===================================================== */
 
 const firebaseConfig = {
 
@@ -2439,9 +2868,9 @@ const firebaseConfig = {
 };
 
 
-/* ============================================================
-   INITIALIZE
-============================================================ */
+/* =====================================================
+   INITIALIZE FIREBASE
+===================================================== */
 
 const app =
     initializeApp(
@@ -2455,21 +2884,22 @@ const auth =
     );
 
 
-/* ============================================================
+/* =====================================================
    CURRENT USER
-============================================================ */
+===================================================== */
 
 let currentUser = null;
 
+let doctorCount = 1;
 
-/* ============================================================
+
+/* =====================================================
    AUTHENTICATION
-============================================================ */
+===================================================== */
 
 onAuthStateChanged(
     auth,
     async function(user) {
-
 
         console.log(
             "AUTH STATE:",
@@ -2493,11 +2923,6 @@ onAuthStateChanged(
 
         try {
 
-
-            /* ==================================================
-               FIREBASE TOKEN
-            ================================================== */
-
             const token =
                 await user.getIdToken(
                     true
@@ -2514,9 +2939,9 @@ onAuthStateChanged(
             }
 
 
-            /* ==================================================
+            /* =========================================
                CHECK SUBSCRIPTION
-            ================================================== */
+            ========================================== */
 
             const response =
                 await fetch(
@@ -2581,9 +3006,9 @@ onAuthStateChanged(
             }
 
 
-            /* ==================================================
-               SAVE UID
-            ================================================== */
+            /* =========================================
+               SAVE USER
+            ========================================== */
 
             localStorage.setItem(
                 "uid",
@@ -2591,9 +3016,9 @@ onAuthStateChanged(
             );
 
 
-            /* ==================================================
+            /* =========================================
                HOSPITAL ID
-            ================================================== */
+            ========================================== */
 
             const hospitalId =
                 localStorage.getItem(
@@ -2607,15 +3032,20 @@ onAuthStateChanged(
                 hospitalId;
 
 
-            /* ==================================================
+            document.getElementById(
+                "dashboardHospitalId"
+            ).innerText =
+                hospitalId || "Not assigned";
+
+
+            /* =========================================
                HOSPITAL NAME
-            ================================================== */
+            ========================================== */
 
             const hospitalName =
                 localStorage.getItem(
                     "hospitalName"
-                ) ||
-                "Hospital";
+                ) || "Your Hospital";
 
 
             document.getElementById(
@@ -2625,15 +3055,23 @@ onAuthStateChanged(
 
 
             document.getElementById(
-                "hospital_name"
-            ).value =
+                "sidebarHospitalName"
+            ).innerText =
                 hospitalName;
 
 
-            console.log(
-                "DASHBOARD ACCESS GRANTED"
-            );
+            /* =========================================
+               LOAD SAVED DATA
+            ========================================== */
 
+            loadSavedHospital();
+
+
+            /* =========================================
+               DATE
+            ========================================== */
+
+            updateDate();
 
         }
         catch(error) {
@@ -2652,9 +3090,88 @@ onAuthStateChanged(
 );
 
 
-/* ============================================================
+/* =====================================================
+   DATE
+===================================================== */
+
+function updateDate() {
+
+    const now =
+        new Date();
+
+
+    const formatted =
+        now.toLocaleDateString(
+            "en-IN",
+            {
+                weekday:
+                    "long",
+
+                day:
+                    "numeric",
+
+                month:
+                    "long",
+
+                year:
+                    "numeric"
+            }
+        );
+
+
+    const element =
+        document.getElementById(
+            "currentDate"
+        );
+
+
+    if (element) {
+
+        element.innerText =
+            formatted;
+
+    }
+
+}
+
+
+/* =====================================================
+   SHOW DASHBOARD
+===================================================== */
+
+window.showDashboard =
+function() {
+
+    document
+        .querySelectorAll(
+            ".section"
+        )
+        .forEach(
+            function(section) {
+
+                section.style.display =
+                    "none";
+
+            }
+        );
+
+
+    document.getElementById(
+        "dashboardSection"
+    ).style.display =
+        "block";
+
+
+    setActiveNav(
+        "nav-dashboard"
+    );
+
+};
+
+
+/* =====================================================
    SHOW SECTION
-============================================================ */
+===================================================== */
 
 window.showSection =
 function(id) {
@@ -2667,71 +3184,161 @@ function(id) {
         .forEach(
             function(section) {
 
-                section.classList.remove(
-                    "active"
-                );
+                section.style.display =
+                    "none";
 
             }
         );
 
 
-    document
-        .querySelectorAll(
-            ".nav-button"
-        )
-        .forEach(
-            function(button) {
-
-                button.classList.remove(
-                    "active"
-                );
-
-            }
-        );
+    document.getElementById(
+        "dashboardSection"
+    ).style.display =
+        "none";
 
 
-    const section =
+    const selected =
         document.getElementById(
             id
         );
 
 
-    if (section) {
+    if (selected) {
 
-        section.classList.add(
-            "active"
+        selected.style.display =
+            "block";
+
+    }
+
+
+    if (
+        id === "hospital"
+    ) {
+
+        setActiveNav(
+            "nav-hospital"
         );
 
     }
 
 
-    const nav =
-        document.getElementById(
-            "nav-" + id
-        );
+    if (
+        id === "doctor"
+    ) {
 
-
-    if (nav) {
-
-        nav.classList.add(
-            "active"
+        setActiveNav(
+            "nav-doctors"
         );
 
     }
 
 
-    closeSidebar();
+    window.scrollTo(
+        {
+            top: 0,
+            behavior: "smooth"
+        }
+    );
 
 };
 
 
-/* ============================================================
+/* =====================================================
+   SETTINGS
+===================================================== */
+
+window.showSettings =
+function() {
+
+    document
+        .querySelectorAll(
+            ".section"
+        )
+        .forEach(
+            function(section) {
+
+                section.style.display =
+                    "none";
+
+            }
+        );
+
+
+    document.getElementById(
+        "dashboardSection"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "settings"
+    ).style.display =
+        "block";
+
+
+    document
+        .querySelectorAll(
+            ".nav-item"
+        )
+        .forEach(
+            function(item) {
+
+                item.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+};
+
+
+/* =====================================================
+   ACTIVE NAV
+===================================================== */
+
+function setActiveNav(
+    id
+) {
+
+    document
+        .querySelectorAll(
+            ".nav-item"
+        )
+        .forEach(
+            function(item) {
+
+                item.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    const item =
+        document.getElementById(
+            id
+        );
+
+
+    if (item) {
+
+        item.classList.add(
+            "active"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
    APPOINTMENTS
-============================================================ */
+===================================================== */
 
 window.openAppointments =
 function() {
-
 
     const uid =
         localStorage.getItem(
@@ -2760,13 +3367,12 @@ function() {
 };
 
 
-/* ============================================================
+/* =====================================================
    FOLLOW UPS
-============================================================ */
+===================================================== */
 
 window.openFollowups =
 function() {
-
 
     const uid =
         localStorage.getItem(
@@ -2795,13 +3401,12 @@ function() {
 };
 
 
-/* ============================================================
+/* =====================================================
    ANALYTICS
-============================================================ */
+===================================================== */
 
 window.openAnalytics =
 function() {
-
 
     const uid =
         localStorage.getItem(
@@ -2830,16 +3435,12 @@ function() {
 };
 
 
-/* ============================================================
+/* =====================================================
    ADD DOCTOR
-============================================================ */
-
-let doctorCount = 1;
-
+===================================================== */
 
 window.addDoctor =
 function() {
-
 
     doctorCount++;
 
@@ -2866,62 +3467,55 @@ function() {
 
             <div class="doctor-title">
 
-                <div class="doctor-avatar">
-                    👨‍⚕️
-                </div>
+                <i
+                    class="fa-solid fa-user-doctor"
+                    style="color:#2563eb;margin-right:6px;"
+                ></i>
 
-                <div>
-
-                    <h3>
-                        Doctor ${doctorCount}
-                    </h3>
-
-                    <span>
-                        Medical professional
-                    </span>
-
-                </div>
+                Doctor ${doctorCount}
 
             </div>
 
-
             <button
                 type="button"
-                class="btn btn-danger"
-                onclick="this.closest('.doctor-box').remove()"
+                class="remove-doctor"
+                onclick="this.closest('.doctor-box').remove(); updateDoctorCount();"
             >
+
+                <i class="fa-solid fa-trash"></i>
+
                 Remove
+
             </button>
 
         </div>
 
 
-        <div class="form-grid">
+        <div class="form-group">
 
+            <label class="form-label">
+                Doctor Name
+            </label>
+
+            <input
+                class="doctor_name"
+                placeholder="Dr. John Smith"
+            >
+
+        </div>
+
+
+        <div class="form-row">
 
             <div class="form-group">
 
-                <label>
-                    Doctor Name
-                </label>
-
-                <input
-                    class="doctor_name"
-                    placeholder="Enter doctor name"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label>
+                <label class="form-label">
                     Specialization
                 </label>
 
                 <input
                     class="specialization"
-                    placeholder="e.g. Cardiologist"
+                    placeholder="Cardiologist"
                 >
 
             </div>
@@ -2929,31 +3523,30 @@ function() {
 
             <div class="form-group">
 
-                <label>
+                <label class="form-label">
                     OPD Time
                 </label>
 
                 <input
                     class="opd_time"
-                    placeholder="e.g. 10:00 AM - 2:00 PM"
+                    placeholder="10:00 AM - 2:00 PM"
                 >
 
             </div>
 
+        </div>
 
-            <div class="form-group">
 
-                <label>
-                    Doctor Information
-                </label>
+        <div class="form-group">
 
-                <input
-                    class="doctor_info"
-                    placeholder="Short professional information"
-                >
+            <label class="form-label">
+                Doctor Information
+            </label>
 
-            </div>
-
+            <textarea
+                class="doctor_info"
+                placeholder="Doctor experience, services and additional information..."
+            ></textarea>
 
         </div>
 
@@ -2964,16 +3557,67 @@ function() {
         newDoctor
     );
 
+
+    updateDoctorCount();
+
 };
 
 
-/* ============================================================
+/* =====================================================
+   UPDATE DOCTOR COUNT
+===================================================== */
+
+window.updateDoctorCount =
+function() {
+
+    const count =
+        document.querySelectorAll(
+            ".doctor-box"
+        ).length;
+
+
+    const display =
+        document.getElementById(
+            "doctorCountDisplay"
+        );
+
+
+    if (display) {
+
+        display.innerText =
+            count;
+
+    }
+
+};
+
+
+/* =====================================================
+   LOAD HOSPITAL
+===================================================== */
+
+async function loadSavedHospital() {
+
+    const hospitalName =
+        localStorage.getItem(
+            "hospitalName"
+        ) || "";
+
+
+    document.getElementById(
+        "hospital_name"
+    ).value =
+        hospitalName;
+
+}
+
+
+/* =====================================================
    SAVE HOSPITAL
-============================================================ */
+===================================================== */
 
 window.saveHospital =
 async function() {
-
 
     try {
 
@@ -3012,11 +3656,19 @@ async function() {
         }
 
 
+        /* =============================================
+           TOKEN
+        ============================================== */
+
         const token =
             await currentUser.getIdToken(
                 true
             );
 
+
+        /* =============================================
+           FORM DATA
+        ============================================== */
 
         const formData =
             new FormData();
@@ -3068,9 +3720,9 @@ async function() {
         );
 
 
-        /* ==================================================
+        /* =============================================
            DOCTORS
-        ================================================== */
+        ============================================== */
 
         const names =
             document.querySelectorAll(
@@ -3097,8 +3749,10 @@ async function() {
 
 
         names.forEach(
-            function(element, index) {
-
+            function(
+                element,
+                index
+            ) {
 
                 formData.append(
                     "doctor_name",
@@ -3109,60 +3763,33 @@ async function() {
                 formData.append(
                     "specialization",
                     specializations[index]
-                        .value
-                        .trim()
+                        ?.value
+                        ?.trim() || ""
                 );
 
 
                 formData.append(
                     "opd_time",
                     opdTimes[index]
-                        .value
-                        .trim()
+                        ?.value
+                        ?.trim() || ""
                 );
 
 
                 formData.append(
                     "doctor_info",
                     doctorInfos[index]
-                        .value
-                        .trim()
+                        ?.value
+                        ?.trim() || ""
                 );
 
-
             }
         );
 
 
-        /* ==================================================
-           SHOW SAVING STATE
-        ================================================== */
-
-        const saveButtons =
-            document.querySelectorAll(
-                ".btn-primary"
-            );
-
-
-        saveButtons.forEach(
-            function(button) {
-
-                button.disabled =
-                    true;
-
-                button.dataset.oldText =
-                    button.innerText;
-
-                button.innerText =
-                    "Saving...";
-
-            }
-        );
-
-
-        /* ==================================================
+        /* =============================================
            SEND TO BACKEND
-        ================================================== */
+        ============================================== */
 
         const response =
             await fetch(
@@ -3196,49 +3823,46 @@ async function() {
         );
 
 
-        /* ==================================================
+        /* =============================================
            SUCCESS
-        ================================================== */
+        ============================================== */
 
-        if (response.ok) {
+        if (
+            response.ok
+        ) {
 
-
-            const hospitalName =
+            const name =
                 document.getElementById(
                     "hospital_name"
-                )
-                .value
-                .trim();
+                ).value.trim();
 
 
             localStorage.setItem(
                 "hospitalName",
-                hospitalName
+                name
             );
 
 
             document.getElementById(
                 "hospitalNameDisplay"
             ).innerText =
-                hospitalName;
+                name || "Your Hospital";
 
 
-            showStatus(
-                "Hospital information saved successfully.",
-                "success"
+            document.getElementById(
+                "sidebarHospitalName"
+            ).innerText =
+                name || "Your Hospital";
+
+
+            alert(
+                "Hospital information saved successfully."
             );
 
 
-            setTimeout(
-                function() {
-
-                    window.location.href =
-                        "/hospital/" +
-                        uid;
-
-                },
-                1000
-            );
+            window.location.href =
+                "/hospital/" +
+                uid;
 
 
             return;
@@ -3246,9 +3870,9 @@ async function() {
         }
 
 
-        /* ==================================================
+        /* =============================================
            SUBSCRIPTION EXPIRED
-        ================================================== */
+        ============================================== */
 
         if (
             response.status === 403
@@ -3269,16 +3893,13 @@ async function() {
         }
 
 
-        showStatus(
+        alert(
             data.error ||
-            "Unable to save hospital.",
-            "error"
+            "Unable to save hospital."
         );
-
 
     }
     catch(error) {
-
 
         console.error(
             "SAVE HOSPITAL ERROR:",
@@ -3286,158 +3907,23 @@ async function() {
         );
 
 
-        showStatus(
-            "Unable to connect to server.",
-            "error"
+        alert(
+            "Unable to connect to server."
         );
-
-
-    }
-    finally {
-
-
-        document
-            .querySelectorAll(
-                ".btn-primary"
-            )
-            .forEach(
-                function(button) {
-
-                    button.disabled =
-                        false;
-
-                    if (
-                        button.dataset.oldText
-                    ) {
-
-                        button.innerText =
-                            button.dataset.oldText;
-
-                    }
-
-                }
-            );
-
 
     }
 
 };
 
 
-/* ============================================================
-   STATUS MESSAGE
-============================================================ */
-
-function showStatus(
-    message,
-    type
-) {
-
-
-    const status =
-        document.getElementById(
-            "statusMessage"
-        );
-
-
-    status.style.display =
-        "block";
-
-
-    status.innerText =
-        message;
-
-
-    if (
-        type === "success"
-    ) {
-
-        status.style.background =
-            "#f0fdf4";
-
-        status.style.color =
-            "#15803d";
-
-        status.style.border =
-            "1px solid #bbf7d0";
-
-    }
-    else {
-
-        status.style.background =
-            "#fef2f2";
-
-        status.style.color =
-            "#b91c1c";
-
-        status.style.border =
-            "1px solid #fecaca";
-
-    }
-
-}
-
-
-/* ============================================================
-   MOBILE SIDEBAR
-============================================================ */
-
-window.toggleSidebar =
-function() {
-
-    document
-        .getElementById(
-            "sidebar"
-        )
-        .classList.toggle(
-            "open"
-        );
-
-
-    document
-        .getElementById(
-            "overlayMenu"
-        )
-        .classList.toggle(
-            "show"
-        );
-
-};
-
-
-window.closeSidebar =
-function() {
-
-    document
-        .getElementById(
-            "sidebar"
-        )
-        .classList.remove(
-            "open"
-        );
-
-
-    document
-        .getElementById(
-            "overlayMenu"
-        )
-        .classList.remove(
-            "show"
-        );
-
-};
-
-
-/* ============================================================
+/* =====================================================
    LOGOUT
-============================================================ */
+===================================================== */
 
 window.logout =
 async function() {
 
-
     try {
-
 
         await signOut(
             auth
@@ -3462,10 +3948,8 @@ async function() {
         window.location.href =
             "/login-page";
 
-
     }
     catch(error) {
-
 
         console.error(
             "LOGOUT ERROR:",
@@ -3477,10 +3961,36 @@ async function() {
             "Logout failed."
         );
 
-
     }
 
 };
+
+
+/* =====================================================
+   MOBILE SIDEBAR
+===================================================== */
+
+window.toggleSidebar =
+function() {
+
+    const sidebar =
+        document.getElementById(
+            "sidebar"
+        );
+
+
+    sidebar.classList.toggle(
+        "mobile-open"
+    );
+
+};
+
+
+/* =====================================================
+   INITIAL STATE
+===================================================== */
+
+showDashboard();
 
 
 </script>
