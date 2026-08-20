@@ -17,7 +17,12 @@ from dotenv import load_dotenv
 from flask_cors import CORS
 
 import firebase_admin
-from firebase_admin import credentials, db, auth, messaging
+from firebase_admin import (
+    credentials,
+    db,
+    auth,
+    messaging
+)
 
 
 # ============================================================
@@ -32,6 +37,7 @@ load_dotenv()
 # ============================================================
 
 app = Flask(__name__)
+
 CORS(app)
 
 
@@ -75,54 +81,6 @@ if not firebase_admin._apps:
 
 
 # ============================================================
-# AISENSY
-# ============================================================
-
-AISENSY_API_KEY = os.environ.get(
-    "AISENSY_API_KEY",
-    ""
-).strip()
-
-AISENSY_API_URL = (
-    "https://backend.aisensy.com/"
-    "campaign/t1/api/v2"
-)
-
-AISENSY_APPOINTMENT_CAMPAIGN = (
-    "MediQueue Appointment Confirmation"
-)
-
-AISENSY_FOLLOWUP_CAMPAIGN = (
-    "mediqueue_followup_reminder"
-)
-
-
-# ============================================================
-# CASHFREE
-# ============================================================
-
-CASHFREE_CLIENT_ID = os.environ.get(
-    "CASHFREE_CLIENT_ID",
-    ""
-).strip()
-
-CASHFREE_CLIENT_SECRET = os.environ.get(
-    "CASHFREE_CLIENT_SECRET",
-    ""
-).strip()
-
-CASHFREE_BASE_URL = os.environ.get(
-    "CASHFREE_BASE_URL",
-    "https://api.cashfree.com/pg"
-).strip().rstrip("/")
-
-CASHFREE_API_VERSION = os.environ.get(
-    "CASHFREE_API_VERSION",
-    "2025-01-01"
-).strip()
-
-
-# ============================================================
 # STATUSLY
 # ============================================================
 
@@ -130,184 +88,6 @@ STATUSLY_BASE_URL = os.environ.get(
     "STATUSLY_BASE_URL",
     "https://statusly.in"
 ).strip().rstrip("/")
-
-
-# ============================================================
-# SUBSCRIPTION PLANS
-# ============================================================
-
-PLANS = {
-
-    "basic": {
-        "amount": 1,
-        "duration_days": 30
-    },
-
-    "standard": {
-        "amount": 1000,
-        "duration_days": 180
-    },
-
-    "premium": {
-        "amount": 2000,
-        "duration_days": 365
-    }
-
-}
-
-
-# ============================================================
-# UTILITY
-# ============================================================
-
-def format_whatsapp_number(mobile):
-
-    if not mobile:
-        return ""
-
-    mobile = str(mobile).strip()
-
-    mobile = "".join(
-        filter(
-            str.isdigit,
-            mobile
-        )
-    )
-
-    if len(mobile) == 10:
-        mobile = "91" + mobile
-
-    return mobile
-
-
-# ============================================================
-# FIREBASE AUTH
-# ============================================================
-
-def get_authenticated_user():
-
-    authorization = request.headers.get(
-        "Authorization",
-        ""
-    ).strip()
-
-    if not authorization:
-        print("AUTH ERROR: Authorization missing")
-        return None
-
-    if not authorization.startswith("Bearer "):
-        print("AUTH ERROR: Invalid Authorization format")
-        return None
-
-    token = authorization[7:].strip()
-
-    if not token:
-        return None
-
-    try:
-
-        decoded = auth.verify_id_token(token)
-
-        print(
-            "AUTH SUCCESS:",
-            decoded.get("uid")
-        )
-
-        return decoded
-
-    except Exception as e:
-
-        print(
-            "FIREBASE AUTH ERROR:",
-            str(e)
-        )
-
-        traceback.print_exc()
-
-        return None
-
-
-# ============================================================
-# GET SUBSCRIPTION
-# ============================================================
-
-def get_subscription(uid):
-
-    if not uid:
-        return None
-
-    return db.reference(
-        "subscriptions"
-    ).child(
-        uid
-    ).get()
-
-
-def subscription_is_active(uid):
-
-    subscription = get_subscription(uid)
-
-    if not subscription:
-        return False
-
-    if subscription.get("payment_status") != "PAID":
-        return False
-
-    expiry_string = subscription.get("expiry")
-
-    if not expiry_string:
-        return False
-
-    try:
-
-        expiry = datetime.fromisoformat(
-            expiry_string
-        )
-
-        return datetime.utcnow() < expiry
-
-    except Exception:
-
-        return False
-
-
-# ============================================================
-# CASHFREE HEADERS
-# ============================================================
-
-def cashfree_headers():
-
-    return {
-
-        "x-client-id":
-            CASHFREE_CLIENT_ID,
-
-        "x-client-secret":
-            CASHFREE_CLIENT_SECRET,
-
-        "x-api-version":
-            CASHFREE_API_VERSION,
-
-        "Content-Type":
-            "application/json",
-
-        "Accept":
-            "application/json"
-
-    }
-
-
-# ============================================================
-# FIREBASE SERVICE WORKER
-# ============================================================
-
-@app.route("/firebase-messaging-sw.js")
-def firebase_sw():
-
-    return send_from_directory(
-        "static",
-        "firebase-messaging-sw.js"
-    )
 
 
 # ============================================================
@@ -335,68 +115,6 @@ def login_page():
 
 
 # ============================================================
-# LOGIN
-# ============================================================
-
-@app.route(
-    "/login",
-    methods=["POST"]
-)
-def login():
-
-    try:
-
-        decoded = get_authenticated_user()
-
-        if not decoded:
-
-            return jsonify({
-                "success": False,
-                "error": "Authentication required"
-            }), 401
-
-        uid = decoded.get("uid")
-
-        hospital = db.reference(
-            f"hospitals/{uid}"
-        ).get() or {}
-
-        return jsonify({
-
-            "success": True,
-
-            "uid":
-                uid,
-
-            "hospitalId":
-                hospital.get(
-                    "hospitalId",
-                    uid
-                ),
-
-            "hospitalName":
-                hospital.get(
-                    "hospital_name",
-                    ""
-                )
-
-        })
-
-    except Exception as e:
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success": False,
-
-            "error":
-                str(e)
-
-        }), 500
-
-
-# ============================================================
 # DASHBOARD
 # ============================================================
 
@@ -406,210 +124,6 @@ def dashboard():
     return render_template(
         "dashboard.html"
     )
-
-
-# ============================================================
-# PAYMENT PAGE
-# ============================================================
-
-@app.route("/payment")
-def payment():
-
-    return render_template(
-        "payment.html"
-    )
-
-
-# ============================================================
-# DASHBOARD DATA
-# ============================================================
-
-@app.route(
-    "/api/dashboard",
-    methods=["GET"]
-)
-def dashboard_data():
-
-    try:
-
-        decoded = get_authenticated_user()
-
-        if not decoded:
-
-            return jsonify({
-                "success": False,
-                "error": "Authentication required"
-            }), 401
-
-        uid = decoded.get("uid")
-
-        # ----------------------------------------------------
-        # HOSPITAL
-        # ----------------------------------------------------
-
-        hospital = db.reference(
-            f"hospitals/{uid}"
-        ).get() or {}
-
-        # ----------------------------------------------------
-        # SUBSCRIPTION
-        # ----------------------------------------------------
-
-        subscription = get_subscription(uid)
-
-        active = subscription_is_active(uid)
-
-        # ----------------------------------------------------
-        # APPOINTMENTS
-        # ----------------------------------------------------
-
-        all_appointments = db.reference(
-            "appointments"
-        ).get() or {}
-
-        appointments = []
-
-        for appointment_id, patient in all_appointments.items():
-
-            if patient.get("hospital_id") != uid:
-                continue
-
-            patient = dict(patient)
-
-            patient["id"] = appointment_id
-
-            appointments.append(patient)
-
-        # newest first
-        appointments.reverse()
-
-        # ----------------------------------------------------
-        # DOCTORS
-        # ----------------------------------------------------
-
-        doctors = hospital.get(
-            "doctors",
-            []
-        )
-
-        # ----------------------------------------------------
-        # TODAY
-        # ----------------------------------------------------
-
-        today = datetime.now().strftime(
-            "%Y-%m-%d"
-        )
-
-        today_appointments = []
-
-        for patient in appointments:
-
-            if patient.get(
-                "appointment_date"
-            ) == today:
-
-                today_appointments.append(
-                    patient
-                )
-
-        # ----------------------------------------------------
-        # FOLLOWUPS
-        # ----------------------------------------------------
-
-        followups = []
-
-        for patient in appointments:
-
-            if patient.get(
-                "next_visit_date"
-            ):
-
-                followups.append(patient)
-
-        # ----------------------------------------------------
-        # URLS
-        # ----------------------------------------------------
-
-        hospital_url = (
-            f"{STATUSLY_BASE_URL}"
-            f"/hospital/{uid}"
-        )
-
-        booking_url = (
-            f"{STATUSLY_BASE_URL}"
-            f"/hospital/{uid}/book"
-        )
-
-        return jsonify({
-
-            "success": True,
-
-            "uid":
-                uid,
-
-            "hospital":
-                hospital,
-
-            "subscription":
-                subscription or {},
-
-            "subscription_active":
-                active,
-
-            "doctors":
-                doctors,
-
-            "appointments":
-                appointments,
-
-            "today_appointments":
-                today_appointments,
-
-            "followups":
-                followups,
-
-            "stats": {
-
-                "doctors":
-                    len(doctors),
-
-                "appointments":
-                    len(appointments),
-
-                "today":
-                    len(today_appointments),
-
-                "followups":
-                    len(followups)
-
-            },
-
-            "hospital_url":
-                hospital_url,
-
-            "booking_url":
-                booking_url
-
-        })
-
-    except Exception as e:
-
-        print(
-            "DASHBOARD ERROR:",
-            str(e)
-        )
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "error":
-                str(e)
-
-        }), 500
 
 
 # ============================================================
@@ -624,20 +138,14 @@ def save_hospital():
 
     try:
 
-        # IMPORTANT:
-        # UID comes from Firebase token
-        # NOT from form data.
+        # ----------------------------------------------------
+        # UID
+        # ----------------------------------------------------
 
-        decoded = get_authenticated_user()
-
-        if not decoded:
-
-            return jsonify({
-                "success": False,
-                "error": "Authentication required"
-            }), 401
-
-        uid = decoded.get("uid")
+        uid = request.form.get(
+            "uid",
+            ""
+        ).strip()
 
         if not uid:
 
@@ -646,21 +154,65 @@ def save_hospital():
                 "error": "UID missing"
             }), 400
 
+
         # ----------------------------------------------------
-        # SUBSCRIPTION
+        # CHECK SUBSCRIPTION
         # ----------------------------------------------------
 
-        if not subscription_is_active(uid):
+        subscription = db.reference(
+            "subscriptions"
+        ).child(
+            uid
+        ).get()
+
+        if not subscription:
 
             return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Active subscription required"
-
+                "success": False,
+                "error": "Active subscription required"
             }), 403
+
+
+        if subscription.get("payment_status") != "PAID":
+
+            return jsonify({
+                "success": False,
+                "error": "Subscription is not active"
+            }), 403
+
+
+        expiry_string = subscription.get(
+            "expiry"
+        )
+
+        if not expiry_string:
+
+            return jsonify({
+                "success": False,
+                "error": "Subscription expiry missing"
+            }), 403
+
+
+        try:
+
+            expiry = datetime.fromisoformat(
+                expiry_string
+            )
+
+            if datetime.utcnow() >= expiry:
+
+                return jsonify({
+                    "success": False,
+                    "error": "Subscription expired"
+                }), 403
+
+        except Exception:
+
+            return jsonify({
+                "success": False,
+                "error": "Invalid subscription expiry"
+            }), 403
+
 
         # ----------------------------------------------------
         # DOCTORS
@@ -682,32 +234,43 @@ def save_hospital():
             "doctor_info"
         )
 
+
         doctors = []
 
-        count = min(
+        count = max(
             len(names),
             len(specs),
             len(times),
             len(infos)
         )
 
+
         for i in range(count):
 
             doctors.append({
 
                 "doctor_name":
-                    names[i],
+                    names[i]
+                    if i < len(names)
+                    else "",
 
                 "specialization":
-                    specs[i],
+                    specs[i]
+                    if i < len(specs)
+                    else "",
 
                 "opd_time":
-                    times[i],
+                    times[i]
+                    if i < len(times)
+                    else "",
 
                 "doctor_info":
                     infos[i]
+                    if i < len(infos)
+                    else ""
 
             })
+
 
         # ----------------------------------------------------
         # HOSPITAL DATA
@@ -718,14 +281,11 @@ def save_hospital():
             "uid":
                 uid,
 
-            "hospitalId":
-                uid,
-
             "hospital_name":
                 request.form.get(
                     "hospital_name",
                     ""
-                ),
+                ).strip(),
 
             "date":
                 request.form.get(
@@ -759,6 +319,11 @@ def save_hospital():
 
         }
 
+
+        # ----------------------------------------------------
+        # SAVE
+        # ----------------------------------------------------
+
         db.reference(
             "hospitals"
         ).child(
@@ -766,6 +331,33 @@ def save_hospital():
         ).set(
             hospital_data
         )
+
+
+        # ----------------------------------------------------
+        # IMPORTANT URLs
+        # ----------------------------------------------------
+
+        hospital_url = (
+            f"{STATUSLY_BASE_URL}"
+            f"/hospital/"
+            f"{uid}"
+        )
+
+        booking_url = (
+            f"{STATUSLY_BASE_URL}"
+            f"/hospital/"
+            f"{uid}"
+            f"/book"
+        )
+
+
+        print("=" * 60)
+        print("HOSPITAL SAVED")
+        print("UID:", uid)
+        print("HOSPITAL URL:", hospital_url)
+        print("BOOKING URL:", booking_url)
+        print("=" * 60)
+
 
         return jsonify({
 
@@ -779,12 +371,13 @@ def save_hospital():
                 uid,
 
             "hospital_url":
-                f"{STATUSLY_BASE_URL}/hospital/{uid}",
+                hospital_url,
 
             "booking_url":
-                f"{STATUSLY_BASE_URL}/hospital/{uid}/book"
+                booking_url
 
         })
+
 
     except Exception as e:
 
@@ -807,7 +400,7 @@ def save_hospital():
 
 
 # ============================================================
-# HOSPITAL PAGE
+# HOSPITAL PUBLIC PAGE
 # ============================================================
 
 @app.route(
@@ -817,20 +410,47 @@ def save_hospital():
 def hospital_page(uid):
 
     print(
-        "HOSPITAL PAGE:",
+        "=========================================="
+    )
+
+    print(
+        "HOSPITAL PAGE REQUEST"
+    )
+
+    print(
+        "UID:",
         uid
     )
 
+    print(
+        "URL:",
+        request.url
+    )
+
+    print(
+        "=========================================="
+    )
+
+
     hospital = db.reference(
-        f"hospitals/{uid}"
+        "hospitals"
+    ).child(
+        uid
     ).get()
 
+
     if not hospital:
+
+        print(
+            "HOSPITAL NOT FOUND:",
+            uid
+        )
 
         return (
             "Hospital not found",
             404
         )
+
 
     return render_template(
 
@@ -844,7 +464,7 @@ def hospital_page(uid):
 
 
 # ============================================================
-# BOOK PAGE
+# BOOKING PAGE
 # ============================================================
 
 @app.route(
@@ -853,9 +473,18 @@ def hospital_page(uid):
 )
 def book_page(uid):
 
+    print(
+        "BOOK PAGE REQUEST:",
+        uid
+    )
+
+
     hospital = db.reference(
-        f"hospitals/{uid}"
+        "hospitals"
+    ).child(
+        uid
     ).get()
+
 
     if not hospital:
 
@@ -863,6 +492,7 @@ def book_page(uid):
             "Hospital not found",
             404
         )
+
 
     return render_template(
 
@@ -876,211 +506,30 @@ def book_page(uid):
 
 
 # ============================================================
-# APPOINTMENTS PAGE
+# TEST HOSPITAL ROUTE
 # ============================================================
 
 @app.route(
-    "/appointments/<uid>",
-    methods=["GET"]
+    "/test-hospital/<uid>"
 )
-def appointments(uid):
+def test_hospital(uid):
 
-    data = db.reference(
-        "appointments"
-    ).get() or {}
+    hospital = db.reference(
+        "hospitals"
+    ).child(
+        uid
+    ).get()
 
-    patients = []
 
-    for key, patient in data.items():
+    return jsonify({
 
-        if patient.get(
-            "hospital_id"
-        ) != uid:
+        "uid":
+            uid,
 
-            continue
+        "hospital":
+            hospital
 
-        patient = dict(patient)
-
-        patient["id"] = key
-
-        patients.append(
-            patient
-        )
-
-    return render_template(
-
-        "appointments.html",
-
-        patients=patients,
-
-        uid=uid
-
-    )
-
-
-# ============================================================
-# FOLLOWUPS PAGE
-# ============================================================
-
-@app.route(
-    "/followups/<uid>",
-    methods=["GET"]
-)
-def followups(uid):
-
-    data = db.reference(
-        "appointments"
-    ).get() or {}
-
-    patients = []
-
-    for key, patient in data.items():
-
-        if patient.get(
-            "hospital_id"
-        ) != uid:
-
-            continue
-
-        patient = dict(patient)
-
-        patient["id"] = key
-
-        patients.append(
-            patient
-        )
-
-    return render_template(
-
-        "followups.html",
-
-        patients=patients,
-
-        uid=uid
-
-    )
-
-
-# ============================================================
-# SAVE FOLLOWUP
-# ============================================================
-
-@app.route(
-    "/save_followup",
-    methods=["POST"]
-)
-def save_followup():
-
-    try:
-
-        decoded = get_authenticated_user()
-
-        if not decoded:
-
-            return jsonify({
-                "success": False,
-                "error": "Authentication required"
-            }), 401
-
-        uid = decoded.get("uid")
-
-        patient_id = request.form.get(
-            "patient_id"
-        )
-
-        next_visit_date = request.form.get(
-            "next_visit_date"
-        )
-
-        doctor_notes = request.form.get(
-            "doctor_notes"
-        )
-
-        if not patient_id:
-
-            return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Patient ID missing"
-
-            }), 400
-
-        patient_ref = db.reference(
-            "appointments"
-        ).child(
-            patient_id
-        )
-
-        patient = patient_ref.get()
-
-        if not patient:
-
-            return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Patient not found"
-
-            }), 404
-
-        # IMPORTANT:
-        # Prevent editing another hospital's patient.
-
-        if patient.get(
-            "hospital_id"
-        ) != uid:
-
-            return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Unauthorized"
-
-            }), 403
-
-        patient_ref.update({
-
-            "next_visit_date":
-                next_visit_date,
-
-            "doctor_notes":
-                doctor_notes,
-
-            "followup_created_at":
-                datetime.utcnow().isoformat()
-
-        })
-
-        return jsonify({
-
-            "success":
-                True,
-
-            "message":
-                "Follow-up saved"
-
-        })
-
-    except Exception as e:
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "error":
-                str(e)
-
-        }), 500
+    })
 
 
 # ============================================================
