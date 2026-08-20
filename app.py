@@ -5,8 +5,7 @@ import firebase_admin
 from firebase_admin import credentials, db, auth, messaging
 
 from datetime import datetime, timedelta
-from collections import Counter, defaultdict
-from zoneinfo import ZoneInfo
+from collections import Counter
 
 import json
 import os
@@ -25,25 +24,6 @@ load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
-
-
-# ============================================================
-# TIMEZONE
-# ============================================================
-
-INDIA_TZ = ZoneInfo("Asia/Kolkata")
-
-
-def india_now():
-    return datetime.now(INDIA_TZ)
-
-
-def utc_now():
-    return datetime.utcnow()
-
-
-def today_india():
-    return india_now().strftime("%Y-%m-%d")
 
 
 # ============================================================
@@ -69,9 +49,7 @@ except json.JSONDecodeError as e:
         f"FIREBASE_SERVICE_ACCOUNT contains invalid JSON: {e}"
     )
 
-
 if not firebase_admin._apps:
-
     cred = credentials.Certificate(
         firebase_service_account
     )
@@ -142,7 +120,6 @@ STATUSLY_BASE_URL = os.environ.get(
 # ============================================================
 
 PLANS = {
-
     "basic": {
         "amount": 1,
         "duration_days": 30
@@ -157,7 +134,6 @@ PLANS = {
         "amount": 2000,
         "duration_days": 365
     }
-
 }
 
 
@@ -165,8 +141,11 @@ PLANS = {
 # COMMON HELPERS
 # ============================================================
 
-def format_whatsapp_number(mobile):
+def utc_now():
+    return datetime.utcnow()
 
+
+def format_whatsapp_number(mobile):
     if not mobile:
         return ""
 
@@ -184,23 +163,12 @@ def format_whatsapp_number(mobile):
 
 
 def cashfree_headers():
-
     return {
-
-        "x-client-id":
-            CASHFREE_CLIENT_ID,
-
-        "x-client-secret":
-            CASHFREE_CLIENT_SECRET,
-
-        "x-api-version":
-            CASHFREE_API_VERSION,
-
-        "Content-Type":
-            "application/json",
-
-        "Accept":
-            "application/json"
+        "x-client-id": CASHFREE_CLIENT_ID,
+        "x-client-secret": CASHFREE_CLIENT_SECRET,
+        "x-api-version": CASHFREE_API_VERSION,
+        "Content-Type": "application/json",
+        "Accept": "application/json"
     }
 
 
@@ -216,30 +184,21 @@ def get_authenticated_user():
     )
 
     if not authorization:
-        print(
-            "AUTH ERROR: Authorization header missing"
-        )
+        print("AUTH ERROR: Authorization header missing")
         return None
 
     if not authorization.startswith("Bearer "):
-        print(
-            "AUTH ERROR: Invalid Authorization format"
-        )
+        print("AUTH ERROR: Invalid Authorization format")
         return None
 
     token = authorization[7:].strip()
 
     if not token:
-        print(
-            "AUTH ERROR: Firebase token missing"
-        )
+        print("AUTH ERROR: Firebase token missing")
         return None
 
     try:
-
-        decoded = auth.verify_id_token(
-            token
-        )
+        decoded = auth.verify_id_token(token)
 
         print(
             "FIREBASE USER:",
@@ -250,19 +209,13 @@ def get_authenticated_user():
         return decoded
 
     except Exception as e:
-
-        print(
-            "FIREBASE AUTH ERROR:",
-            str(e)
-        )
-
+        print("FIREBASE AUTH ERROR:", str(e))
         traceback.print_exc()
-
         return None
 
 
 # ============================================================
-# SUBSCRIPTION
+# SUBSCRIPTION HELPERS
 # ============================================================
 
 def get_subscription(uid):
@@ -271,9 +224,7 @@ def get_subscription(uid):
         return None
 
     return (
-        db.reference(
-            "subscriptions"
-        )
+        db.reference("subscriptions")
         .child(uid)
         .get()
     )
@@ -286,20 +237,15 @@ def subscription_is_active(uid):
     if not subscription:
         return False
 
-    if subscription.get(
-        "payment_status"
-    ) != "PAID":
+    if subscription.get("payment_status") != "PAID":
         return False
 
-    expiry_string = subscription.get(
-        "expiry"
-    )
+    expiry_string = subscription.get("expiry")
 
     if not expiry_string:
         return False
 
     try:
-
         expiry = datetime.fromisoformat(
             expiry_string
         )
@@ -307,12 +253,10 @@ def subscription_is_active(uid):
         return utc_now() < expiry
 
     except Exception as e:
-
         print(
             "SUBSCRIPTION EXPIRY ERROR:",
             str(e)
         )
-
         return False
 
 
@@ -335,34 +279,22 @@ def firebase_sw():
 
 @app.route("/")
 def home():
-
-    return render_template(
-        "index.html"
-    )
+    return render_template("index.html")
 
 
 @app.route("/login-page")
 def login_page():
-
-    return render_template(
-        "login.html"
-    )
+    return render_template("login.html")
 
 
 @app.route("/payment")
 def payment():
-
-    return render_template(
-        "payment.html"
-    )
+    return render_template("payment.html")
 
 
 @app.route("/dashboard")
 def dashboard():
-
-    return render_template(
-        "dashboard.html"
-    )
+    return render_template("dashboard.html")
 
 
 @app.route("/temp-dash")
@@ -383,10 +315,7 @@ def temp_dash():
 # LOGIN
 # ============================================================
 
-@app.route(
-    "/login",
-    methods=["POST"]
-)
+@app.route("/login", methods=["POST"])
 def login():
 
     try:
@@ -394,10 +323,8 @@ def login():
         decoded = get_authenticated_user()
 
         if not decoded:
-
             return jsonify({
-                "error":
-                    "Authentication required"
+                "error": "Authentication required"
             }), 401
 
         uid = decoded.get("uid")
@@ -411,8 +338,7 @@ def login():
 
         return jsonify({
 
-            "uid":
-                uid,
+            "uid": uid,
 
             "hospitalId":
                 hospital.get(
@@ -425,20 +351,16 @@ def login():
                     "hospital_name",
                     ""
                 )
+
         })
 
     except Exception as e:
 
-        print(
-            "LOGIN ERROR:",
-            str(e)
-        )
-
+        print("LOGIN ERROR:", str(e))
         traceback.print_exc()
 
         return jsonify({
-            "error":
-                str(e)
+            "error": str(e)
         }), 401
 
 
@@ -457,29 +379,17 @@ def create_payment_order():
         decoded = get_authenticated_user()
 
         if not decoded:
-
             return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Authentication required"
-
+                "success": False,
+                "error": "Authentication required"
             }), 401
 
         uid = decoded.get("uid")
 
         if not uid:
-
             return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "UID missing"
-
+                "success": False,
+                "error": "UID missing"
             }), 400
 
         data = request.get_json(
@@ -494,47 +404,26 @@ def create_payment_order():
         ).lower()
 
         if plan not in PLANS:
-
             return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Invalid plan"
-
+                "success": False,
+                "error": "Invalid plan"
             }), 400
 
         plan_data = PLANS[plan]
 
         amount = plan_data["amount"]
-
-        duration_days = plan_data[
-            "duration_days"
-        ]
+        duration_days = plan_data["duration_days"]
 
         if not CASHFREE_CLIENT_ID:
-
             return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "CASHFREE_CLIENT_ID is missing"
-
+                "success": False,
+                "error": "CASHFREE_CLIENT_ID is missing"
             }), 500
 
         if not CASHFREE_CLIENT_SECRET:
-
             return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "CASHFREE_CLIENT_SECRET is missing"
-
+                "success": False,
+                "error": "CASHFREE_CLIENT_SECRET is missing"
             }), 500
 
         customer_name = data.get(
@@ -566,15 +455,9 @@ def create_payment_order():
             customer_phone = customer_phone[-10:]
 
         if len(customer_phone) != 10:
-
             return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Valid 10 digit customer phone is required"
-
+                "success": False,
+                "error": "Valid 10 digit customer phone is required"
             }), 400
 
         order_id = (
@@ -626,6 +509,8 @@ def create_payment_order():
                 f"Statusly {plan} subscription"
         }
 
+        print("Creating Cashfree order:", order_id)
+
         response = requests.post(
 
             f"{CASHFREE_BASE_URL}/orders",
@@ -647,8 +532,7 @@ def create_payment_order():
 
             return jsonify({
 
-                "success":
-                    False,
+                "success": False,
 
                 "error":
                     "Cashfree order creation failed",
@@ -671,8 +555,7 @@ def create_payment_order():
 
             return jsonify({
 
-                "success":
-                    False,
+                "success": False,
 
                 "error":
                     "payment_session_id missing",
@@ -756,11 +639,9 @@ def create_payment_order():
 
         return jsonify({
 
-            "success":
-                False,
+            "success": False,
 
-            "error":
-                str(e)
+            "error": str(e)
 
         }), 500
 
@@ -774,9 +655,7 @@ def activate_subscription(order_id):
     try:
 
         payment_ref = (
-            db.reference(
-                "payment_orders"
-            )
+            db.reference("payment_orders")
             .child(order_id)
         )
 
@@ -785,12 +664,8 @@ def activate_subscription(order_id):
         if not payment_order:
 
             return {
-
-                "success":
-                    False,
-
-                "error":
-                    "Local payment order not found"
+                "success": False,
+                "error": "Local payment order not found"
             }
 
         if payment_order.get(
@@ -798,12 +673,8 @@ def activate_subscription(order_id):
         ):
 
             return {
-
-                "success":
-                    True,
-
-                "already_activated":
-                    True
+                "success": True,
+                "already_activated": True
             }
 
         uid = payment_order.get("uid")
@@ -814,22 +685,15 @@ def activate_subscription(order_id):
         )
 
         if not uid or not plan:
-
             return {
-
-                "success":
-                    False,
-
-                "error":
-                    "Payment order data incomplete"
+                "success": False,
+                "error": "Payment order data incomplete"
             }
 
         expiry = (
             utc_now()
             + timedelta(
-                days=int(
-                    duration_days
-                )
+                days=int(duration_days)
             )
         )
 
@@ -851,10 +715,7 @@ def activate_subscription(order_id):
 
                 payments = response.json()
 
-                if isinstance(
-                    payments,
-                    list
-                ):
+                if isinstance(payments, list):
 
                     for payment in payments:
 
@@ -932,6 +793,12 @@ def activate_subscription(order_id):
                 utc_now().isoformat()
         })
 
+        print(
+            "SUBSCRIPTION ACTIVATED:",
+            uid,
+            plan
+        )
+
         return {
 
             "success":
@@ -973,9 +840,7 @@ def cashfree_order_status(order_id):
     try:
 
         local_order = (
-            db.reference(
-                "payment_orders"
-            )
+            db.reference("payment_orders")
             .child(order_id)
             .get()
         )
@@ -1024,6 +889,12 @@ def cashfree_order_status(order_id):
 
         status = cashfree_order.get(
             "order_status"
+        )
+
+        print(
+            "CASHFREE ORDER STATUS:",
+            order_id,
+            status
         )
 
         if status == "PAID":
@@ -1195,9 +1066,13 @@ def check_subscription():
 
         uid = decoded.get("uid")
 
-        subscription = get_subscription(uid)
+        subscription = get_subscription(
+            uid
+        )
 
-        active = subscription_is_active(uid)
+        active = subscription_is_active(
+            uid
+        )
 
         return jsonify({
 
@@ -1247,6 +1122,10 @@ def save_hospital():
 
     try:
 
+        # ----------------------------------------------------
+        # AUTHENTICATE USER
+        # ----------------------------------------------------
+
         decoded = get_authenticated_user()
 
         if not decoded:
@@ -1275,6 +1154,10 @@ def save_hospital():
 
             }), 400
 
+        # ----------------------------------------------------
+        # CHECK SUBSCRIPTION
+        # ----------------------------------------------------
+
         if not subscription_is_active(uid):
 
             return jsonify({
@@ -1286,6 +1169,10 @@ def save_hospital():
                     "Active subscription required"
 
             }), 403
+
+        # ----------------------------------------------------
+        # DOCTORS
+        # ----------------------------------------------------
 
         names = request.form.getlist(
             "doctor_name"
@@ -1328,6 +1215,10 @@ def save_hospital():
                 "doctor_info":
                     infos[i]
             })
+
+        # ----------------------------------------------------
+        # HOSPITAL DATA
+        # ----------------------------------------------------
 
         hospital_data = {
 
@@ -1557,11 +1448,6 @@ def book_appointment():
                     "address"
                 ),
 
-            "village":
-                request.form.get(
-                    "village"
-                ),
-
             "appointment_date":
                 request.form.get(
                     "appointment_date"
@@ -1573,16 +1459,12 @@ def book_appointment():
                 ),
 
             "created_at":
-                utc_now().isoformat(),
-
-            "created_at_india":
-                india_now().isoformat()
+                utc_now().isoformat()
         }
 
         ref = (
-            db.reference(
-                "appointments"
-            ).push(appointment)
+            db.reference("appointments")
+            .push(appointment)
         )
 
         patient_id = ref.key
@@ -1660,6 +1542,10 @@ def book_appointment():
                 )
 
                 break
+
+        # ----------------------------------------------------
+        # SUCCESS PAGE
+        # ----------------------------------------------------
 
         return render_template(
 
@@ -1751,483 +1637,6 @@ def get_hospital_appointments(hospital_id):
 
 
 # ============================================================
-# ANALYTICS DATE HELPERS
-# ============================================================
-
-def safe_date(value):
-
-    if not value:
-        return None
-
-    value = str(value).strip()
-
-    formats = [
-
-        "%Y-%m-%d",
-        "%d-%m-%Y",
-        "%d/%m/%Y",
-        "%m/%d/%Y"
-    ]
-
-    for fmt in formats:
-
-        try:
-
-            return datetime.strptime(
-                value,
-                fmt
-            ).strftime("%Y-%m-%d")
-
-        except Exception:
-            pass
-
-    return value
-
-
-def parse_appointment_time(value):
-
-    if not value:
-        return None
-
-    value = str(
-        value
-    ).strip()
-
-    formats = [
-
-        "%H:%M",
-        "%H:%M:%S",
-        "%I:%M %p",
-        "%I:%M:%S %p",
-        "%I %p",
-        "%H"
-    ]
-
-    for fmt in formats:
-
-        try:
-
-            return datetime.strptime(
-                value.upper(),
-                fmt
-            )
-
-        except Exception:
-            pass
-
-    return None
-
-
-def get_week_key(date_string):
-
-    parsed = safe_date(
-        date_string
-    )
-
-    if not parsed:
-        return None
-
-    try:
-
-        dt = datetime.strptime(
-            parsed,
-            "%Y-%m-%d"
-        )
-
-        iso_year, iso_week, _ = (
-            dt.isocalendar()
-        )
-
-        return (
-            f"{iso_year}-W"
-            f"{iso_week:02d}"
-        )
-
-    except Exception:
-
-        return None
-
-
-def get_month_key(date_string):
-
-    parsed = safe_date(
-        date_string
-    )
-
-    if not parsed:
-        return None
-
-    try:
-
-        dt = datetime.strptime(
-            parsed,
-            "%Y-%m-%d"
-        )
-
-        return dt.strftime(
-            "%Y-%m"
-        )
-
-    except Exception:
-
-        return None
-
-
-def appointment_hour_label(time_value):
-
-    parsed = parse_appointment_time(
-        time_value
-    )
-
-    if not parsed:
-        return "Unknown"
-
-    return f"{parsed.hour:02d}:00"
-
-
-def appointment_hour_display(time_value):
-
-    parsed = parse_appointment_time(
-        time_value
-    )
-
-    if not parsed:
-        return "Unknown"
-
-    return datetime(
-        2000,
-        1,
-        1,
-        parsed.hour,
-        0
-    ).strftime(
-        "%I %p"
-    )
-
-
-# ============================================================
-# NEW DYNAMIC DOCTOR ANALYTICS ENGINE
-# ============================================================
-
-def build_doctor_analytics(
-    hospital_id,
-    appointments=None,
-    hospital=None
-):
-
-    """
-    Creates complete dynamic analytics for every doctor.
-
-    Includes:
-
-        total appointments
-
-        daily
-        weekly
-        monthly
-
-        hourly
-
-        working hours
-
-        appointments by working hour
-
-        gender
-
-        age
-
-    New doctors automatically appear.
-
-    New appointments automatically change counts
-    whenever this function is called.
-    """
-
-    if appointments is None:
-
-        appointments = get_hospital_appointments(
-            hospital_id
-        )
-
-    if hospital is None:
-
-        hospital = (
-            db.reference(
-                f"hospitals/{hospital_id}"
-            ).get()
-            or {}
-        )
-
-    doctor_data = {}
-
-    # --------------------------------------------------------
-    # DOCTORS CONFIGURED IN HOSPITAL
-    # --------------------------------------------------------
-
-    for doctor in hospital.get(
-        "doctors",
-        []
-    ):
-
-        if not isinstance(
-            doctor,
-            dict
-        ):
-            continue
-
-        doctor_name = str(
-            doctor.get(
-                "doctor_name",
-                ""
-            )
-        ).strip()
-
-        if not doctor_name:
-            continue
-
-        doctor_data[doctor_name] = {
-
-            "doctor_name":
-                doctor_name,
-
-            "specialization":
-                doctor.get(
-                    "specialization",
-                    ""
-                ),
-
-            "working_hours":
-                doctor.get(
-                    "opd_time",
-                    ""
-                ),
-
-            "total_appointments":
-                0,
-
-            "daily":
-                Counter(),
-
-            "weekly":
-                Counter(),
-
-            "monthly":
-                Counter(),
-
-            "hourly":
-                Counter(),
-
-            "working_hour_appointments":
-                Counter()
-        }
-
-    # --------------------------------------------------------
-    # PROCESS EVERY APPOINTMENT
-    # --------------------------------------------------------
-
-    for appointment in appointments:
-
-        doctor_name = str(
-            appointment.get(
-                "doctor_name",
-                ""
-            )
-        ).strip()
-
-        if not doctor_name:
-            doctor_name = "Unknown"
-
-        # ----------------------------------------------------
-        # AUTO CREATE DOCTOR
-        # ----------------------------------------------------
-
-        if doctor_name not in doctor_data:
-
-            doctor_data[doctor_name] = {
-
-                "doctor_name":
-                    doctor_name,
-
-                "specialization":
-                    "",
-
-                "working_hours":
-                    "",
-
-                "total_appointments":
-                    0,
-
-                "daily":
-                    Counter(),
-
-                "weekly":
-                    Counter(),
-
-                "monthly":
-                    Counter(),
-
-                "hourly":
-                    Counter(),
-
-                "working_hour_appointments":
-                    Counter()
-            }
-
-        doctor = doctor_data[doctor_name]
-
-        # ----------------------------------------------------
-        # TOTAL
-        # ----------------------------------------------------
-
-        doctor[
-            "total_appointments"
-        ] += 1
-
-        # ----------------------------------------------------
-        # DATE
-        # ----------------------------------------------------
-
-        date = safe_date(
-            appointment.get(
-                "appointment_date"
-            )
-        )
-
-        if date:
-
-            doctor[
-                "daily"
-            ][date] += 1
-
-            week = get_week_key(
-                date
-            )
-
-            if week:
-
-                doctor[
-                    "weekly"
-                ][week] += 1
-
-            month = get_month_key(
-                date
-            )
-
-            if month:
-
-                doctor[
-                    "monthly"
-                ][month] += 1
-
-        # ----------------------------------------------------
-        # TIME
-        # ----------------------------------------------------
-
-        parsed_time = parse_appointment_time(
-            appointment.get(
-                "appointment_time"
-            )
-        )
-
-        if parsed_time:
-
-            hour = parsed_time.hour
-
-            hour_display = datetime(
-                2000,
-                1,
-                1,
-                hour,
-                0
-            ).strftime(
-                "%I %p"
-            )
-
-            doctor[
-                "hourly"
-            ][hour_display] += 1
-
-            doctor[
-                "working_hour_appointments"
-            ][
-                f"{hour:02d}:00"
-            ] += 1
-
-    # --------------------------------------------------------
-    # CONVERT COUNTERS TO JSON
-    # --------------------------------------------------------
-
-    final = {}
-
-    for doctor_name in sorted(
-        doctor_data.keys()
-    ):
-
-        doctor = doctor_data[
-            doctor_name
-        ]
-
-        final[doctor_name] = {
-
-            "doctor_name":
-                doctor["doctor_name"],
-
-            "specialization":
-                doctor["specialization"],
-
-            "working_hours":
-                doctor["working_hours"],
-
-            "total_appointments":
-                doctor["total_appointments"],
-
-            "daily":
-                dict(
-                    sorted(
-                        doctor[
-                            "daily"
-                        ].items()
-                    )
-                ),
-
-            "weekly":
-                dict(
-                    sorted(
-                        doctor[
-                            "weekly"
-                        ].items()
-                    )
-                ),
-
-            "monthly":
-                dict(
-                    sorted(
-                        doctor[
-                            "monthly"
-                        ].items()
-                    )
-                ),
-
-            "hourly":
-                dict(
-                    doctor[
-                        "hourly"
-                    ]
-                ),
-
-            "working_hour_appointments":
-                dict(
-                    sorted(
-                        doctor[
-                            "working_hour_appointments"
-                        ].items()
-                    )
-                )
-        }
-
-    return final
-
-
-# ============================================================
 # ANALYTICS OVERVIEW
 # ============================================================
 
@@ -2244,11 +1653,11 @@ def analytics_overview(hospital_id):
             )
         )
 
-        today = today_india()
+        today = datetime.now().strftime(
+            "%Y-%m-%d"
+        )
 
         gender_counts = Counter()
-
-        today_count = 0
 
         for appointment in appointments:
 
@@ -2259,21 +1668,7 @@ def analytics_overview(hospital_id):
                 )
             ).strip().lower()
 
-            if not gender:
-                gender = "unknown"
-
-            gender_counts[
-                gender
-            ] += 1
-
-            date = safe_date(
-                appointment.get(
-                    "appointment_date"
-                )
-            )
-
-            if date == today:
-                today_count += 1
+            gender_counts[gender] += 1
 
         return jsonify({
 
@@ -2284,7 +1679,13 @@ def analytics_overview(hospital_id):
                 len(appointments),
 
             "today_appointments":
-                today_count,
+                sum(
+                    1
+                    for a in appointments
+                    if a.get(
+                        "appointment_date"
+                    ) == today
+                ),
 
             "male":
                 gender_counts.get(
@@ -2307,11 +1708,7 @@ def analytics_overview(hospital_id):
                         "male",
                         "female"
                     ]
-                ),
-
-            "updated_at":
-                india_now().isoformat()
-
+                )
         })
 
     except Exception as e:
@@ -2368,11 +1765,7 @@ def analytics_gender(hospital_id):
                 True,
 
             "data":
-                dict(gender),
-
-            "updated_at":
-                india_now().isoformat()
-
+                dict(gender)
         })
 
     except Exception as e:
@@ -2444,38 +1837,13 @@ def analytics_age(hospital_id):
 
             age_groups[group] += 1
 
-        order = [
-
-            "0-18",
-            "19-30",
-            "31-45",
-            "46-60",
-            "60+",
-            "Unknown"
-
-        ]
-
-        ordered = {}
-
-        for group in order:
-
-            if group in age_groups:
-
-                ordered[group] = (
-                    age_groups[group]
-                )
-
         return jsonify({
 
             "success":
                 True,
 
             "data":
-                ordered,
-
-            "updated_at":
-                india_now().isoformat()
-
+                dict(age_groups)
         })
 
     except Exception as e:
@@ -2494,7 +1862,7 @@ def analytics_age(hospital_id):
 
 
 # ============================================================
-# DOCTOR TOTAL ANALYTICS
+# DOCTOR ANALYTICS
 # ============================================================
 
 @app.route(
@@ -2534,11 +1902,7 @@ def analytics_doctors(hospital_id):
             "data":
                 dict(
                     doctors.most_common()
-                ),
-
-            "updated_at":
-                india_now().isoformat()
-
+                )
         })
 
     except Exception as e:
@@ -2557,360 +1921,7 @@ def analytics_doctors(hospital_id):
 
 
 # ============================================================
-# NEW: DOCTOR DAY-WISE
-# ============================================================
-
-@app.route(
-    "/api/analytics/doctor-daily/<hospital_id>"
-)
-def analytics_doctor_daily(hospital_id):
-
-    try:
-
-        appointments = (
-            get_hospital_appointments(
-                hospital_id
-            )
-        )
-
-        hospital = (
-            db.reference(
-                f"hospitals/{hospital_id}"
-            ).get()
-            or {}
-        )
-
-        doctor_analytics = build_doctor_analytics(
-            hospital_id,
-            appointments,
-            hospital
-        )
-
-        return jsonify({
-
-            "success":
-                True,
-
-            "data": {
-
-                doctor:
-                    info["daily"]
-
-                for doctor, info
-                in doctor_analytics.items()
-            },
-
-            "doctor_details":
-                doctor_analytics,
-
-            "updated_at":
-                india_now().isoformat()
-
-        })
-
-    except Exception as e:
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "error":
-                str(e)
-
-        }), 500
-
-
-# ============================================================
-# NEW: DOCTOR WEEK-WISE
-# ============================================================
-
-@app.route(
-    "/api/analytics/doctor-weekly/<hospital_id>"
-)
-def analytics_doctor_weekly(hospital_id):
-
-    try:
-
-        appointments = (
-            get_hospital_appointments(
-                hospital_id
-            )
-        )
-
-        hospital = (
-            db.reference(
-                f"hospitals/{hospital_id}"
-            ).get()
-            or {}
-        )
-
-        doctor_analytics = build_doctor_analytics(
-            hospital_id,
-            appointments,
-            hospital
-        )
-
-        return jsonify({
-
-            "success":
-                True,
-
-            "data": {
-
-                doctor:
-                    info["weekly"]
-
-                for doctor, info
-                in doctor_analytics.items()
-            },
-
-            "doctor_details":
-                doctor_analytics,
-
-            "updated_at":
-                india_now().isoformat()
-
-        })
-
-    except Exception as e:
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "error":
-                str(e)
-
-        }), 500
-
-
-# ============================================================
-# NEW: DOCTOR MONTH-WISE
-# ============================================================
-
-@app.route(
-    "/api/analytics/doctor-monthly/<hospital_id>"
-)
-def analytics_doctor_monthly(hospital_id):
-
-    try:
-
-        appointments = (
-            get_hospital_appointments(
-                hospital_id
-            )
-        )
-
-        hospital = (
-            db.reference(
-                f"hospitals/{hospital_id}"
-            ).get()
-            or {}
-        )
-
-        doctor_analytics = build_doctor_analytics(
-            hospital_id,
-            appointments,
-            hospital
-        )
-
-        return jsonify({
-
-            "success":
-                True,
-
-            "data": {
-
-                doctor:
-                    info["monthly"]
-
-                for doctor, info
-                in doctor_analytics.items()
-            },
-
-            "doctor_details":
-                doctor_analytics,
-
-            "updated_at":
-                india_now().isoformat()
-
-        })
-
-    except Exception as e:
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "error":
-                str(e)
-
-        }), 500
-
-
-# ============================================================
-# NEW: DOCTOR WORKING HOURS
-# ============================================================
-
-@app.route(
-    "/api/analytics/doctor-working-hours/<hospital_id>"
-)
-def analytics_doctor_working_hours(hospital_id):
-
-    try:
-
-        appointments = (
-            get_hospital_appointments(
-                hospital_id
-            )
-        )
-
-        hospital = (
-            db.reference(
-                f"hospitals/{hospital_id}"
-            ).get()
-            or {}
-        )
-
-        doctor_analytics = build_doctor_analytics(
-            hospital_id,
-            appointments,
-            hospital
-        )
-
-        result = {}
-
-        for doctor, info in doctor_analytics.items():
-
-            result[doctor] = {
-
-                "doctor_name":
-                    info["doctor_name"],
-
-                "specialization":
-                    info["specialization"],
-
-                "working_hours":
-                    info["working_hours"],
-
-                "total_appointments":
-                    info["total_appointments"],
-
-                "appointments_by_hour":
-                    info[
-                        "working_hour_appointments"
-                    ],
-
-                "hourly":
-                    info["hourly"]
-
-            }
-
-        return jsonify({
-
-            "success":
-                True,
-
-            "data":
-                result,
-
-            "updated_at":
-                india_now().isoformat()
-
-        })
-
-    except Exception as e:
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "error":
-                str(e)
-
-        }), 500
-
-
-# ============================================================
-# NEW: COMPLETE DOCTOR ANALYTICS
-# ============================================================
-
-@app.route(
-    "/api/analytics/doctors-all/<hospital_id>"
-)
-def analytics_doctors_all(hospital_id):
-
-    try:
-
-        appointments = (
-            get_hospital_appointments(
-                hospital_id
-            )
-        )
-
-        hospital = (
-            db.reference(
-                f"hospitals/{hospital_id}"
-            ).get()
-            or {}
-        )
-
-        doctor_analytics = build_doctor_analytics(
-            hospital_id,
-            appointments,
-            hospital
-        )
-
-        return jsonify({
-
-            "success":
-                True,
-
-            "updated_at":
-                india_now().isoformat(),
-
-            "total_doctors":
-                len(doctor_analytics),
-
-            "doctors":
-                doctor_analytics
-
-        })
-
-    except Exception as e:
-
-        print(
-            "DOCTOR ALL ANALYTICS ERROR:",
-            str(e)
-        )
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "error":
-                str(e)
-
-        }), 500
-
-
-# ============================================================
-# DAY-WISE ANALYTICS
+# DAILY ANALYTICS
 # ============================================================
 
 @app.route(
@@ -2930,14 +1941,12 @@ def analytics_daily(hospital_id):
 
         for appointment in appointments:
 
-            date = safe_date(
-                appointment.get(
-                    "appointment_date"
-                )
+            date = appointment.get(
+                "appointment_date"
             )
 
             if date:
-                daily[date] += 1
+                daily[str(date)] += 1
 
         return jsonify({
 
@@ -2949,73 +1958,7 @@ def analytics_daily(hospital_id):
                     sorted(
                         daily.items()
                     )
-                ),
-
-            "updated_at":
-                india_now().isoformat()
-
-        })
-
-    except Exception as e:
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "error":
-                str(e)
-
-        }), 500
-
-
-# ============================================================
-# WEEK-WISE ANALYTICS
-# ============================================================
-
-@app.route(
-    "/api/analytics/weekly/<hospital_id>"
-)
-def analytics_weekly(hospital_id):
-
-    try:
-
-        appointments = (
-            get_hospital_appointments(
-                hospital_id
-            )
-        )
-
-        weekly = Counter()
-
-        for appointment in appointments:
-
-            week = get_week_key(
-                appointment.get(
-                    "appointment_date"
                 )
-            )
-
-            if week:
-                weekly[week] += 1
-
-        return jsonify({
-
-            "success":
-                True,
-
-            "data":
-                dict(
-                    sorted(
-                        weekly.items()
-                    )
-                ),
-
-            "updated_at":
-                india_now().isoformat()
-
         })
 
     except Exception as e:
@@ -3034,69 +1977,7 @@ def analytics_weekly(hospital_id):
 
 
 # ============================================================
-# MONTH-WISE ANALYTICS
-# ============================================================
-
-@app.route(
-    "/api/analytics/monthly/<hospital_id>"
-)
-def analytics_monthly(hospital_id):
-
-    try:
-
-        appointments = (
-            get_hospital_appointments(
-                hospital_id
-            )
-        )
-
-        monthly = Counter()
-
-        for appointment in appointments:
-
-            month = get_month_key(
-                appointment.get(
-                    "appointment_date"
-                )
-            )
-
-            if month:
-                monthly[month] += 1
-
-        return jsonify({
-
-            "success":
-                True,
-
-            "data":
-                dict(
-                    sorted(
-                        monthly.items()
-                    )
-                ),
-
-            "updated_at":
-                india_now().isoformat()
-
-        })
-
-    except Exception as e:
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "error":
-                str(e)
-
-        }), 500
-
-
-# ============================================================
-# TIME / HOURLY ANALYTICS
+# TIME ANALYTICS
 # ============================================================
 
 @app.route(
@@ -3116,36 +1997,17 @@ def analytics_time(hospital_id):
 
         for appointment in appointments:
 
-            label = appointment_hour_label(
+            time = str(
                 appointment.get(
-                    "appointment_time"
+                    "appointment_time",
+                    "Unknown"
                 )
-            )
+            ).strip()
 
-            times[label] += 1
+            if not time:
+                time = "Unknown"
 
-        known = {}
-
-        for hour in range(24):
-
-            label = f"{hour:02d}:00"
-
-            if label in times:
-
-                display = datetime(
-                    2000,
-                    1,
-                    1,
-                    hour,
-                    0
-                ).strftime(
-                    "%I %p"
-                )
-
-                known[display] = times[label]
-
-        if "Unknown" in times:
-            known["Unknown"] = times["Unknown"]
+            times[time] += 1
 
         return jsonify({
 
@@ -3153,154 +2015,7 @@ def analytics_time(hospital_id):
                 True,
 
             "data":
-                known,
-
-            "updated_at":
-                india_now().isoformat()
-
-        })
-
-    except Exception as e:
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "error":
-                str(e)
-
-        }), 500
-
-
-# ============================================================
-# LEGACY DOCTOR HOURS API
-# ============================================================
-
-@app.route(
-    "/api/analytics/doctor-hours/<hospital_id>"
-)
-def analytics_doctor_hours(hospital_id):
-
-    try:
-
-        appointments = (
-            get_hospital_appointments(
-                hospital_id
-            )
-        )
-
-        hospital = (
-            db.reference(
-                f"hospitals/{hospital_id}"
-            ).get()
-            or {}
-        )
-
-        doctor_analytics = build_doctor_analytics(
-            hospital_id,
-            appointments,
-            hospital
-        )
-
-        result = {}
-
-        for doctor, info in doctor_analytics.items():
-
-            result[doctor] = {
-
-                "working_hours":
-                    info["working_hours"],
-
-                "appointments":
-                    info["total_appointments"],
-
-                "appointment_hours":
-                    info[
-                        "working_hour_appointments"
-                    ]
-
-            }
-
-        return jsonify({
-
-            "success":
-                True,
-
-            "data":
-                result,
-
-            "updated_at":
-                india_now().isoformat()
-
-        })
-
-    except Exception as e:
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "error":
-                str(e)
-
-        }), 500
-
-
-# ============================================================
-# LEGACY DOCTOR HOURLY
-# ============================================================
-
-@app.route(
-    "/api/analytics/doctor-hourly/<hospital_id>"
-)
-def analytics_doctor_hourly(hospital_id):
-
-    try:
-
-        appointments = (
-            get_hospital_appointments(
-                hospital_id
-            )
-        )
-
-        hospital = (
-            db.reference(
-                f"hospitals/{hospital_id}"
-            ).get()
-            or {}
-        )
-
-        doctor_analytics = build_doctor_analytics(
-            hospital_id,
-            appointments,
-            hospital
-        )
-
-        result = {}
-
-        for doctor, info in doctor_analytics.items():
-
-            result[doctor] = info[
-                "hourly"
-            ]
-
-        return jsonify({
-
-            "success":
-                True,
-
-            "data":
-                result,
-
-            "updated_at":
-                india_now().isoformat()
-
+                dict(times)
         })
 
     except Exception as e:
@@ -3368,443 +2083,10 @@ def analytics_location(hospital_id):
             "data":
                 dict(
                     locations.most_common()
-                ),
-
-            "updated_at":
-                india_now().isoformat()
-
+                )
         })
 
     except Exception as e:
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "error":
-                str(e)
-
-        }), 500
-
-
-# ============================================================
-# COMPLETE ANALYTICS API
-# ============================================================
-
-@app.route(
-    "/api/analytics/all/<hospital_id>"
-)
-def analytics_all(hospital_id):
-
-    try:
-
-        appointments = (
-            get_hospital_appointments(
-                hospital_id
-            )
-        )
-
-        hospital = (
-            db.reference(
-                f"hospitals/{hospital_id}"
-            ).get()
-            or {}
-        )
-
-        # ----------------------------------------------------
-        # OVERVIEW
-        # ----------------------------------------------------
-
-        genders = Counter()
-
-        today = today_india()
-
-        today_appointments = 0
-
-        # ----------------------------------------------------
-        # AGE
-        # ----------------------------------------------------
-
-        age_groups = Counter()
-
-        # ----------------------------------------------------
-        # DOCTORS
-        # ----------------------------------------------------
-
-        doctors = Counter()
-
-        # ----------------------------------------------------
-        # DAILY
-        # ----------------------------------------------------
-
-        daily = Counter()
-
-        # ----------------------------------------------------
-        # WEEKLY
-        # ----------------------------------------------------
-
-        weekly = Counter()
-
-        # ----------------------------------------------------
-        # MONTHLY
-        # ----------------------------------------------------
-
-        monthly = Counter()
-
-        # ----------------------------------------------------
-        # TIME
-        # ----------------------------------------------------
-
-        times = Counter()
-
-        # ----------------------------------------------------
-        # LOCATIONS
-        # ----------------------------------------------------
-
-        locations = Counter()
-
-        for appointment in appointments:
-
-            # ------------------------------------------------
-            # GENDER
-            # ------------------------------------------------
-
-            gender = str(
-                appointment.get(
-                    "gender",
-                    "Unknown"
-                )
-            ).strip().title()
-
-            if not gender:
-                gender = "Unknown"
-
-            genders[gender] += 1
-
-            # ------------------------------------------------
-            # TODAY
-            # ------------------------------------------------
-
-            appointment_date = safe_date(
-                appointment.get(
-                    "appointment_date"
-                )
-            )
-
-            if appointment_date == today:
-                today_appointments += 1
-
-            # ------------------------------------------------
-            # AGE
-            # ------------------------------------------------
-
-            try:
-
-                age = int(
-                    appointment.get(
-                        "age",
-                        0
-                    )
-                )
-
-            except Exception:
-
-                age = 0
-
-            if age <= 0:
-                age_group = "Unknown"
-
-            elif age <= 18:
-                age_group = "0-18"
-
-            elif age <= 30:
-                age_group = "19-30"
-
-            elif age <= 45:
-                age_group = "31-45"
-
-            elif age <= 60:
-                age_group = "46-60"
-
-            else:
-                age_group = "60+"
-
-            age_groups[
-                age_group
-            ] += 1
-
-            # ------------------------------------------------
-            # DOCTOR
-            # ------------------------------------------------
-
-            doctor = str(
-                appointment.get(
-                    "doctor_name",
-                    "Unknown"
-                )
-            ).strip()
-
-            if not doctor:
-                doctor = "Unknown"
-
-            doctors[
-                doctor
-            ] += 1
-
-            # ------------------------------------------------
-            # DAILY / WEEKLY / MONTHLY
-            # ------------------------------------------------
-
-            if appointment_date:
-
-                daily[
-                    appointment_date
-                ] += 1
-
-                week = get_week_key(
-                    appointment_date
-                )
-
-                if week:
-                    weekly[week] += 1
-
-                month = get_month_key(
-                    appointment_date
-                )
-
-                if month:
-                    monthly[month] += 1
-
-            # ------------------------------------------------
-            # TIME
-            # ------------------------------------------------
-
-            parsed_time = parse_appointment_time(
-                appointment.get(
-                    "appointment_time"
-                )
-            )
-
-            if parsed_time:
-
-                hour_label = datetime(
-                    2000,
-                    1,
-                    1,
-                    parsed_time.hour,
-                    0
-                ).strftime(
-                    "%I %p"
-                )
-
-                times[
-                    hour_label
-                ] += 1
-
-            else:
-
-                times[
-                    "Unknown"
-                ] += 1
-
-            # ------------------------------------------------
-            # LOCATION
-            # ------------------------------------------------
-
-            location = (
-                appointment.get(
-                    "village"
-                )
-                or
-                appointment.get(
-                    "address"
-                )
-                or
-                "Unknown"
-            )
-
-            location = str(
-                location
-            ).strip()
-
-            if not location:
-                location = "Unknown"
-
-            locations[
-                location
-            ] += 1
-
-        # ----------------------------------------------------
-        # COMPLETE DYNAMIC DOCTOR DATA
-        # ----------------------------------------------------
-
-        doctor_analytics = build_doctor_analytics(
-            hospital_id,
-            appointments,
-            hospital
-        )
-
-        # ----------------------------------------------------
-        # RESPONSE
-        # ----------------------------------------------------
-
-        return jsonify({
-
-            "success":
-                True,
-
-            "updated_at":
-                india_now().isoformat(),
-
-            "overview": {
-
-                "total_patients":
-                    len(appointments),
-
-                "today_appointments":
-                    today_appointments,
-
-                "male":
-                    genders.get(
-                        "Male",
-                        0
-                    ),
-
-                "female":
-                    genders.get(
-                        "Female",
-                        0
-                    ),
-
-                "other":
-                    sum(
-                        value
-                        for key, value
-                        in genders.items()
-                        if key not in [
-                            "Male",
-                            "Female"
-                        ]
-                    )
-            },
-
-            "gender":
-                dict(genders),
-
-            "age":
-                dict(age_groups),
-
-            "doctors":
-                dict(
-                    doctors.most_common()
-                ),
-
-            "daily":
-                dict(
-                    sorted(
-                        daily.items()
-                    )
-                ),
-
-            "weekly":
-                dict(
-                    sorted(
-                        weekly.items()
-                    )
-                ),
-
-            "monthly":
-                dict(
-                    sorted(
-                        monthly.items()
-                    )
-                ),
-
-            "time":
-                dict(times),
-
-            "location":
-                dict(
-                    locations.most_common()
-                ),
-
-            # ------------------------------------------------
-            # NEW
-            # ------------------------------------------------
-
-            "doctor_analytics":
-                doctor_analytics,
-
-            "doctors_daywise": {
-
-                doctor:
-                    info["daily"]
-
-                for doctor, info
-                in doctor_analytics.items()
-            },
-
-            "doctors_weekwise": {
-
-                doctor:
-                    info["weekly"]
-
-                for doctor, info
-                in doctor_analytics.items()
-            },
-
-            "doctors_monthwise": {
-
-                doctor:
-                    info["monthly"]
-
-                for doctor, info
-                in doctor_analytics.items()
-            },
-
-            "doctors_hourwise": {
-
-                doctor:
-                    info["hourly"]
-
-                for doctor, info
-                in doctor_analytics.items()
-            },
-
-            "doctor_working_hours": {
-
-                doctor: {
-
-                    "working_hours":
-                        info["working_hours"],
-
-                    "appointments":
-                        info[
-                            "total_appointments"
-                        ],
-
-                    "appointments_by_hour":
-                        info[
-                            "working_hour_appointments"
-                        ]
-
-                }
-
-                for doctor, info
-                in doctor_analytics.items()
-            }
-
-        })
-
-    except Exception as e:
-
-        print(
-            "ALL ANALYTICS ERROR:",
-            str(e)
-        )
 
         traceback.print_exc()
 
@@ -3906,9 +2188,7 @@ def save_followup():
             }), 400
 
         patient_ref = (
-            db.reference(
-                "appointments"
-            )
+            db.reference("appointments")
             .child(patient_id)
         )
 
@@ -3936,7 +2216,6 @@ def save_followup():
 
             "followup_created_at":
                 utc_now().isoformat()
-
         })
 
         fcm_result = send_notification(
@@ -3962,7 +2241,6 @@ def save_followup():
 
             "whatsapp":
                 whatsapp_result
-
         })
 
     except Exception as e:
@@ -4036,7 +2314,6 @@ def save_token():
 
             "message":
                 "Token saved"
-
         })
 
     except Exception as e:
@@ -4151,6 +2428,11 @@ def send_notification(patient_id):
             message
         )
 
+        print(
+            "FCM SUCCESS:",
+            response
+        )
+
         return response
 
     except Exception as e:
@@ -4182,7 +2464,7 @@ def send_notification(patient_id):
 
 
 # ============================================================
-# AISENSY APPOINTMENT
+# AISENSY APPOINTMENT CONFIRMATION
 # ============================================================
 
 def send_aisensy_appointment_confirmation(
@@ -4200,12 +2482,8 @@ def send_aisensy_appointment_confirmation(
     if not patient:
 
         return {
-
-            "success":
-                False,
-
-            "error":
-                "Patient not found"
+            "success": False,
+            "error": "Patient not found"
         }
 
     mobile = patient.get(
@@ -4215,12 +2493,8 @@ def send_aisensy_appointment_confirmation(
     if not mobile:
 
         return {
-
-            "success":
-                False,
-
-            "error":
-                "Patient mobile number missing"
+            "success": False,
+            "error": "Patient mobile number missing"
         }
 
     recipient = format_whatsapp_number(
@@ -4230,23 +2504,15 @@ def send_aisensy_appointment_confirmation(
     if not recipient:
 
         return {
-
-            "success":
-                False,
-
-            "error":
-                "Invalid mobile number"
+            "success": False,
+            "error": "Invalid mobile number"
         }
 
     if not AISENSY_API_KEY:
 
         return {
-
-            "success":
-                False,
-
-            "error":
-                "AISENSY_API_KEY is missing"
+            "success": False,
+            "error": "AISENSY_API_KEY is missing"
         }
 
     hospital_id = patient.get(
@@ -4312,7 +2578,6 @@ def send_aisensy_appointment_confirmation(
             appointment_time,
 
             patient_id
-
         ]
     }
 
@@ -4325,6 +2590,12 @@ def send_aisensy_appointment_confirmation(
             json=payload,
 
             timeout=30
+        )
+
+        print(
+            "AISENSY APPOINTMENT:",
+            response.status_code,
+            response.text
         )
 
         return {
@@ -4341,6 +2612,11 @@ def send_aisensy_appointment_confirmation(
 
     except Exception as e:
 
+        print(
+            "AISENSY APPOINTMENT ERROR:",
+            str(e)
+        )
+
         return {
 
             "success":
@@ -4355,9 +2631,7 @@ def send_aisensy_appointment_confirmation(
 # AISENSY FOLLOW-UP
 # ============================================================
 
-def send_whatsapp_followup(
-    patient_id
-):
+def send_whatsapp_followup(patient_id):
 
     patient = (
         db.reference(
@@ -4370,12 +2644,8 @@ def send_whatsapp_followup(
     if not patient:
 
         return {
-
-            "success":
-                False,
-
-            "error":
-                "Patient not found"
+            "success": False,
+            "error": "Patient not found"
         }
 
     mobile = patient.get(
@@ -4385,12 +2655,8 @@ def send_whatsapp_followup(
     if not mobile:
 
         return {
-
-            "success":
-                False,
-
-            "error":
-                "Patient mobile number missing"
+            "success": False,
+            "error": "Patient mobile number missing"
         }
 
     recipient = format_whatsapp_number(
@@ -4400,23 +2666,15 @@ def send_whatsapp_followup(
     if not recipient:
 
         return {
-
-            "success":
-                False,
-
-            "error":
-                "Invalid mobile number"
+            "success": False,
+            "error": "Invalid mobile number"
         }
 
     if not AISENSY_API_KEY:
 
         return {
-
-            "success":
-                False,
-
-            "error":
-                "AISENSY_API_KEY is missing"
+            "success": False,
+            "error": "AISENSY_API_KEY is missing"
         }
 
     hospital_id = patient.get(
@@ -4473,7 +2731,6 @@ def send_whatsapp_followup(
             doctor_name,
 
             next_visit_date
-
         ]
     }
 
@@ -4486,6 +2743,12 @@ def send_whatsapp_followup(
             json=payload,
 
             timeout=30
+        )
+
+        print(
+            "AISENSY FOLLOW-UP:",
+            response.status_code,
+            response.text
         )
 
         return {
@@ -4501,6 +2764,11 @@ def send_whatsapp_followup(
         }
 
     except Exception as e:
+
+        print(
+            "AISENSY FOLLOW-UP ERROR:",
+            str(e)
+        )
 
         return {
 
@@ -4567,108 +2835,13 @@ def whatsapp_webhook():
 
 
 # ============================================================
-# ANALYTICS PAGE
-# ============================================================
-
-@app.route(
-    "/analytics/<uid>"
-)
-def analytics_page(uid):
-
-    hospital = (
-        db.reference(
-            f"hospitals/{uid}"
-        ).get()
-        or {}
-    )
-
-    if not hospital:
-
-        return (
-            "Hospital not found",
-            404
-        )
-
-    return render_template(
-
-        "analytics.html",
-
-        uid=uid,
-
-        hospital=hospital
-    )
-
-
-# ============================================================
-# HEALTH CHECK
-# ============================================================
-
-@app.route(
-    "/health"
-)
-def health():
-
-    return jsonify({
-
-        "success":
-            True,
-
-        "service":
-            "MediQueue",
-
-        "time":
-            india_now().isoformat()
-
-    })
-
-@app.route("/api/hospital/<uid>", methods=["GET"])
-def api_hospital(uid):
-
-    try:
-
-        hospital = (
-            db.reference(
-                f"hospitals/{uid}"
-            ).get()
-            or {}
-        )
-
-        if not hospital:
-
-            return jsonify({
-                "success": False,
-                "error": "Hospital not found"
-            }), 404
-
-        return jsonify({
-            "success": True,
-            "hospital": hospital
-        })
-
-    except Exception as e:
-
-        print(
-            "API HOSPITAL ERROR:",
-            str(e)
-        )
-
-        traceback.print_exc()
-
-        return jsonify({
-            "success": False,
-            "error": str(e)
-        }), 500
-# ============================================================
 # RUN
 # ============================================================
 
 if __name__ == "__main__":
 
     app.run(
-
         debug=True,
-
         host="0.0.0.0",
-
         port=5000
     )
