@@ -10,7 +10,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Statusly Dashboard</title>
+    <title>Hospital Dashboard</title>
 
     <style>
 
@@ -22,429 +22,399 @@
         }
 
         body {
-            background: #f5f7fb;
-            color: #172033;
-        }
 
-        /* =========================
-           LAYOUT
-        ========================= */
-
-        .layout {
-            display: flex;
             min-height: 100vh;
+
+            background:
+                url("https://images.unsplash.com/photo-1586773860418-d37222d8fce3")
+                no-repeat
+                center center /
+                cover;
+
         }
 
-        /* =========================
+        .overlay {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            background:
+                rgba(0, 0, 0, 0.65);
+
+        }
+
+        /* =================================================
            SIDEBAR
-        ========================= */
+        ================================================= */
 
         .sidebar {
-            width: 250px;
-            background: #111827;
+
+            width: 230px;
+
+            min-height: 100vh;
+
+            padding: 20px;
+
+            background:
+                rgba(0, 0, 0, 0.88);
+
             color: white;
-            padding: 22px 15px;
+
             position: fixed;
+
             left: 0;
             top: 0;
             bottom: 0;
+
             overflow-y: auto;
+
         }
 
-        .logo {
-            font-size: 25px;
-            font-weight: 800;
-            padding: 10px 12px 30px;
+        .sidebar h2 {
+
+            text-align: center;
+
+            margin-bottom: 20px;
+
+            font-size: 22px;
+
         }
 
-        .logo span {
-            color: #38bdf8;
-        }
+        .sidebar button {
 
-        .menu {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .menu button,
-        .menu a {
             width: 100%;
-            border: 0;
-            background: transparent;
-            color: #cbd5e1;
-            padding: 13px 14px;
-            border-radius: 10px;
-            text-align: left;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 14px;
-        }
 
-        .menu button:hover,
-        .menu a:hover,
-        .menu .active {
-            background: #1e293b;
-            color: white;
-        }
+            padding: 13px;
 
-        /* =========================
-           MAIN
-        ========================= */
+            margin: 7px 0;
 
-        .main {
-            margin-left: 250px;
-            width: calc(100% - 250px);
-            min-height: 100vh;
-        }
-
-        /* =========================
-           TOPBAR
-        ========================= */
-
-        .topbar {
-            height: 75px;
-            background: white;
-            border-bottom: 1px solid #e5e7eb;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-        }
-
-        .hospital-title {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .hospital-id {
-            font-size: 12px;
-            color: #64748b;
-            margin-top: 4px;
-        }
-
-        .logout {
             border: none;
-            background: #ef4444;
-            color: white;
-            padding: 10px 17px;
+
             border-radius: 8px;
+
             cursor: pointer;
-            font-weight: 600;
+
+            background: #3498db;
+
+            color: white;
+
+            font-size: 15px;
+
+            transition: 0.2s;
+
         }
 
-        /* =========================
+        .sidebar button:hover {
+
+            background: #217dbb;
+
+        }
+
+        .logout-btn {
+
+            background: #e74c3c !important;
+
+        }
+
+        .logout-btn:hover {
+
+            background: #c0392b !important;
+
+        }
+
+        /* =================================================
            CONTENT
-        ========================= */
+        ================================================= */
 
         .content {
-            padding: 30px;
-        }
 
-        .welcome {
-            background: linear-gradient(
-                135deg,
-                #0f172a,
-                #1e3a8a
-            );
+            margin-left: 230px;
+
+            width: calc(100% - 230px);
+
+            min-height: 100vh;
+
+            padding: 30px;
 
             color: white;
-            padding: 28px;
-            border-radius: 16px;
-            margin-bottom: 25px;
+
         }
 
-        .welcome h1 {
-            font-size: 27px;
-            margin-bottom: 8px;
+        .topbar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 20px;
+
         }
 
-        .welcome p {
-            color: #cbd5e1;
+        .topbar h1 {
+
+            font-size: 30px;
+
         }
 
-        /* =========================
-           CARDS
-        ========================= */
+        .hospital-name-display {
 
-        .cards {
-            display: grid;
-            grid-template-columns:
-                repeat(4, 1fr);
+            padding: 10px 16px;
 
-            gap: 18px;
+            border-radius: 8px;
 
-            margin-bottom: 25px;
+            background:
+                rgba(255,255,255,0.12);
+
+            backdrop-filter: blur(8px);
+
         }
+
+        /* =================================================
+           CARD
+        ================================================= */
 
         .card {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 14px;
+
+            background:
+                rgba(255,255,255,0.12);
+
+            backdrop-filter: blur(12px);
+
             padding: 22px;
-            box-shadow:
-                0 4px 15px rgba(
-                    15,
-                    23,
-                    42,
-                    0.04
-                );
-        }
 
-        .card-title {
-            color: #64748b;
-            font-size: 13px;
-            margin-bottom: 10px;
-        }
-
-        .card-number {
-            font-size: 30px;
-            font-weight: 800;
-        }
-
-        /* =========================
-           GRID
-        ========================= */
-
-        .grid {
-            display: grid;
-            grid-template-columns:
-                1.5fr 1fr;
-
-            gap: 20px;
-        }
-
-        .section {
-            background: white;
-            border-radius: 14px;
-            border: 1px solid #e5e7eb;
-            padding: 22px;
             margin-bottom: 20px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 10px 25px
+                rgba(0,0,0,0.25);
+
         }
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
+        .card h2 {
+
+            margin-bottom: 15px;
+
         }
 
-        .section-header h2 {
-            font-size: 17px;
-        }
+        /* =================================================
+           INPUTS
+        ================================================= */
 
-        /* =========================
-           LINKS
-        ========================= */
+        input,
+        textarea,
+        select {
 
-        .link-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 14px;
-            margin-bottom: 12px;
-        }
-
-        .link-label {
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 6px;
-        }
-
-        .link-row {
-            display: flex;
-            gap: 8px;
-        }
-
-        .link-input {
-            flex: 1;
-            border: 1px solid #cbd5e1;
-            border-radius: 7px;
-            padding: 9px;
-            font-size: 12px;
-            background: white;
-        }
-
-        .copy-btn {
-            border: none;
-            background: #2563eb;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 7px;
-            cursor: pointer;
-        }
-
-        .open-btn {
-            display: inline-block;
-            margin-top: 8px;
-            text-decoration: none;
-            color: #2563eb;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        /* =========================
-           SUBSCRIPTION
-        ========================= */
-
-        .subscription {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: #f8fafc;
-            border-radius: 10px;
-        }
-
-        .status-active {
-            color: #16a34a;
-            font-weight: 700;
-        }
-
-        .status-expired {
-            color: #dc2626;
-            font-weight: 700;
-        }
-
-        .payment-btn {
-            display: inline-block;
-            margin-top: 14px;
-            background: #2563eb;
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 13px;
-        }
-
-        /* =========================
-           TABLE
-        ========================= */
-
-        .table-wrapper {
-            overflow-x: auto;
-        }
-
-        table {
             width: 100%;
-            border-collapse: collapse;
-            min-width: 650px;
-        }
 
-        th {
-            text-align: left;
-            background: #f8fafc;
-            color: #64748b;
-            font-size: 12px;
             padding: 12px;
+
+            margin: 8px 0;
+
+            border: none;
+
+            outline: none;
+
+            border-radius: 8px;
+
+            background: white;
+
+            color: #222;
+
         }
 
-        td {
-            padding: 13px 12px;
-            border-top: 1px solid #eef2f7;
-            font-size: 13px;
+        textarea {
+
+            min-height: 100px;
+
+            resize: vertical;
+
         }
 
-        .empty {
-            text-align: center;
-            color: #94a3b8;
-            padding: 25px;
+        input:disabled {
+
+            background: #ddd;
+
+            color: #555;
+
         }
 
-        /* =========================
-           DOCTORS
-        ========================= */
+        /* =================================================
+           BUTTONS
+        ================================================= */
 
-        .doctor {
-            border: 1px solid #e5e7eb;
+        button {
+
+            cursor: pointer;
+
+        }
+
+        button.save {
+
+            background: #27ae60;
+
+            color: white;
+
+            padding: 12px 18px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            margin-top: 10px;
+
+        }
+
+        button.save:hover {
+
+            background: #1f8a4c;
+
+        }
+
+        button.add {
+
+            background: #8e44ad;
+
+            color: white;
+
+            padding: 11px 16px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            margin-top: 10px;
+
+        }
+
+        button.add:hover {
+
+            background: #71368a;
+
+        }
+
+        /* =================================================
+           DOCTOR BOX
+        ================================================= */
+
+        .doctor-box {
+
+            background:
+                rgba(255,255,255,0.08);
+
+            padding: 15px;
+
+            margin: 15px 0;
+
             border-radius: 10px;
-            padding: 14px;
-            margin-bottom: 10px;
+
         }
 
-        .doctor-name {
-            font-weight: 700;
-            margin-bottom: 4px;
+        .doctor-box h3 {
+
+            margin-bottom: 8px;
+
         }
 
-        .doctor-specialization {
-            color: #2563eb;
-            font-size: 12px;
-        }
+        .remove-doctor {
 
-        .doctor-time {
-            color: #64748b;
-            font-size: 12px;
+            background: #e74c3c;
+
+            color: white;
+
+            padding: 8px 12px;
+
+            border: none;
+
+            border-radius: 6px;
+
             margin-top: 5px;
+
         }
 
-        /* =========================
-           MOBILE
-        ========================= */
+        /* =================================================
+           STATUS
+        ================================================= */
 
-        .mobile-header {
+        #statusMessage {
+
+            margin-top: 15px;
+
+            padding: 12px;
+
             display: none;
-        }
 
-        @media (
-            max-width: 1000px
-        ) {
+            border-radius: 8px;
 
-            .cards {
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-            .grid {
-                grid-template-columns: 1fr;
-            }
+            background:
+                rgba(255,255,255,0.15);
 
         }
 
-        @media (
-            max-width: 700px
-        ) {
+        /* =================================================
+           MOBILE
+        ================================================= */
+
+        @media (max-width: 768px) {
 
             .sidebar {
-                display: none;
-            }
 
-            .main {
-                margin-left: 0;
                 width: 100%;
+
+                min-height: auto;
+
+                position: relative;
+
             }
 
-            .topbar {
-                padding: 0 15px;
+            .overlay {
+
+                display: block;
+
             }
 
             .content {
-                padding: 15px;
-            }
 
-            .cards {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
+                margin-left: 0;
 
-            .card {
-                padding: 16px;
-            }
+                width: 100%;
 
-            .card-number {
-                font-size: 24px;
-            }
-
-            .welcome {
                 padding: 20px;
+
             }
 
-            .welcome h1 {
-                font-size: 22px;
+            .sidebar {
+
+                display: flex;
+
+                flex-wrap: wrap;
+
+                gap: 8px;
+
             }
 
-            .hospital-title {
-                font-size: 16px;
+            .sidebar h2 {
+
+                width: 100%;
+
+            }
+
+            .sidebar button {
+
+                width: calc(50% - 4px);
+
+                margin: 0;
+
             }
 
         }
@@ -456,1118 +426,1036 @@
 
 <body>
 
-<div class="layout">
+<div class="overlay">
 
 
-    <!-- =====================================================
+    <!-- =================================================
          SIDEBAR
-    ====================================================== -->
+    ================================================= -->
 
     <aside class="sidebar">
 
-        <div class="logo">
-            Status<span>ly</span>
-        </div>
+        <h2>
+            🏥 MediQueue
+        </h2>
 
-        <div class="menu">
 
-            <a
-                href="#"
-                class="active"
-            >
-                Dashboard
-            </a>
+        <button
+            onclick="showSection('hospital')"
+        >
+            🏥 Hospital
+        </button>
 
-            <a
-                id="hospitalMenu"
-                href="#"
-            >
-                Hospital Page
-            </a>
 
-            <a
-                id="bookingMenu"
-                href="#"
-            >
-                Book Appointment
-            </a>
+        <button
+            onclick="showSection('doctor')"
+        >
+            👨‍⚕️ Doctors
+        </button>
 
-            <a
-                id="appointmentsMenu"
-                href="#"
-            >
-                Appointments
-            </a>
 
-            <a
-                id="followupsMenu"
-                href="#"
-            >
-                Follow-ups
-            </a>
+        <button
+            onclick="openAppointments()"
+        >
+            📅 Appointments
+        </button>
 
-            <a href="/payment">
-                Subscription
-            </a>
 
-        </div>
+        <button
+            onclick="openFollowups()"
+        >
+            🔄 Follow-ups
+        </button>
+
+
+        <button
+            class="logout-btn"
+            onclick="logout()"
+        >
+            🚪 Logout
+        </button>
 
     </aside>
 
 
-    <!-- =====================================================
-         MAIN
-    ====================================================== -->
+    <!-- =================================================
+         MAIN CONTENT
+    ================================================= -->
 
-    <main class="main">
+    <main class="content">
 
 
-        <!-- TOPBAR -->
+        <div class="topbar">
 
-        <header class="topbar">
+            <h1>
+                Hospital Dashboard
+            </h1>
 
-            <div>
-
-                <div
-                    class="hospital-title"
-                    id="topHospitalName"
-                >
-                    Loading...
-                </div>
-
-                <div
-                    class="hospital-id"
-                    id="topHospitalId"
-                >
-                    Loading...
-                </div>
-
-            </div>
-
-            <button
-                class="logout"
-                onclick="logout()"
+            <div
+                id="hospitalNameDisplay"
+                class="hospital-name-display"
             >
-                Logout
-            </button>
-
-        </header>
-
-
-        <!-- CONTENT -->
-
-        <div class="content">
-
-
-            <!-- WELCOME -->
-
-            <div class="welcome">
-
-                <h1>
-                    Welcome to Statusly 👋
-                </h1>
-
-                <p>
-                    Manage your hospital,
-                    doctors, appointments and
-                    patient follow-ups.
-                </p>
-
+                Loading...
             </div>
-
-
-            <!-- STATISTICS -->
-
-            <div class="cards">
-
-
-                <div class="card">
-
-                    <div class="card-title">
-                        Total Doctors
-                    </div>
-
-                    <div
-                        class="card-number"
-                        id="doctorCount"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-
-                <div class="card">
-
-                    <div class="card-title">
-                        Today's Appointments
-                    </div>
-
-                    <div
-                        class="card-number"
-                        id="todayCount"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-
-                <div class="card">
-
-                    <div class="card-title">
-                        Total Appointments
-                    </div>
-
-                    <div
-                        class="card-number"
-                        id="appointmentCount"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-
-                <div class="card">
-
-                    <div class="card-title">
-                        Follow-ups
-                    </div>
-
-                    <div
-                        class="card-number"
-                        id="followupCount"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-            <div class="grid">
-
-
-                <!-- LEFT -->
-
-                <div>
-
-
-                    <!-- TODAY APPOINTMENTS -->
-
-                    <div class="section">
-
-                        <div class="section-header">
-
-                            <h2>
-                                Today's Appointments
-                            </h2>
-
-                        </div>
-
-                        <div class="table-wrapper">
-
-                            <table>
-
-                                <thead>
-
-                                    <tr>
-
-                                        <th>
-                                            Patient No.
-                                        </th>
-
-                                        <th>
-                                            Patient
-                                        </th>
-
-                                        <th>
-                                            Doctor
-                                        </th>
-
-                                        <th>
-                                            Time
-                                        </th>
-
-                                        <th>
-                                            Mobile
-                                        </th>
-
-                                    </tr>
-
-                                </thead>
-
-                                <tbody
-                                    id="appointmentTable"
-                                >
-
-                                </tbody>
-
-                            </table>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- HOSPITAL LINKS -->
-
-                    <div class="section">
-
-                        <div class="section-header">
-
-                            <h2>
-                                Hospital Links
-                            </h2>
-
-                        </div>
-
-
-                        <div class="link-box">
-
-                            <div class="link-label">
-                                Hospital Page
-                            </div>
-
-                            <div class="link-row">
-
-                                <input
-                                    id="hospitalUrl"
-                                    class="link-input"
-                                    readonly
-                                >
-
-                                <button
-                                    class="copy-btn"
-                                    onclick="copyUrl('hospitalUrl')"
-                                >
-                                    Copy
-                                </button>
-
-                            </div>
-
-                            <a
-                                id="hospitalOpen"
-                                class="open-btn"
-                                target="_blank"
-                            >
-                                Open Hospital Page →
-                            </a>
-
-                        </div>
-
-
-                        <div class="link-box">
-
-                            <div class="link-label">
-                                Appointment Booking Page
-                            </div>
-
-                            <div class="link-row">
-
-                                <input
-                                    id="bookingUrl"
-                                    class="link-input"
-                                    readonly
-                                >
-
-                                <button
-                                    class="copy-btn"
-                                    onclick="copyUrl('bookingUrl')"
-                                >
-                                    Copy
-                                </button>
-
-                            </div>
-
-                            <a
-                                id="bookingOpen"
-                                class="open-btn"
-                                target="_blank"
-                            >
-                                Open Booking Page →
-                            </a>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-                <!-- RIGHT -->
-
-                <div>
-
-
-                    <!-- SUBSCRIPTION -->
-
-                    <div class="section">
-
-                        <div class="section-header">
-
-                            <h2>
-                                Subscription
-                            </h2>
-
-                        </div>
-
-
-                        <div class="subscription">
-
-                            <div>
-
-                                <div
-                                    id="planName"
-                                    style="font-weight:700"
-                                >
-                                    No Plan
-                                </div>
-
-                                <div
-                                    id="expiryDate"
-                                    style="
-                                        font-size:12px;
-                                        color:#64748b;
-                                        margin-top:5px;
-                                    "
-                                >
-                                    -
-                                </div>
-
-                            </div>
-
-                            <div
-                                id="subscriptionStatus"
-                            >
-                                -
-                            </div>
-
-                        </div>
-
-
-                        <a
-                            href="/payment"
-                            class="payment-btn"
-                        >
-                            Manage Subscription
-                        </a>
-
-                    </div>
-
-
-                    <!-- DOCTORS -->
-
-                    <div class="section">
-
-                        <div class="section-header">
-
-                            <h2>
-                                Doctors
-                            </h2>
-
-                        </div>
-
-                        <div
-                            id="doctorList"
-                        >
-
-                            <div class="empty">
-                                Loading doctors...
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
 
         </div>
+
+
+        <!-- =================================================
+             HOSPITAL SECTION
+        ================================================= -->
+
+        <section
+            id="hospital"
+            class="section card"
+        >
+
+            <h2>
+                Hospital Details
+            </h2>
+
+
+            <input
+                id="hospital_id"
+                placeholder="Hospital ID"
+                disabled
+            >
+
+
+            <input
+                id="hospital_name"
+                placeholder="Hospital Name"
+            >
+
+
+            <input
+                id="date"
+                type="date"
+            >
+
+
+            <input
+                id="open_time"
+                type="time"
+            >
+
+
+            <input
+                id="close_time"
+                type="time"
+            >
+
+
+            <textarea
+                id="info"
+                placeholder="Hospital Information"
+            ></textarea>
+
+
+            <button
+                class="save"
+                onclick="saveHospital()"
+            >
+                💾 Save Hospital
+            </button>
+
+
+            <div id="statusMessage"></div>
+
+        </section>
+
+
+        <!-- =================================================
+             DOCTOR SECTION
+        ================================================= -->
+
+        <section
+            id="doctor"
+            class="section card"
+            style="display:none;"
+        >
+
+            <h2>
+                Doctor Details
+            </h2>
+
+
+            <div id="doctor-section">
+
+
+                <div class="doctor-box">
+
+                    <h3>
+                        Doctor 1
+                    </h3>
+
+
+                    <input
+                        class="doctor_name"
+                        placeholder="Doctor Name"
+                    >
+
+
+                    <input
+                        class="specialization"
+                        placeholder="Specialization"
+                    >
+
+
+                    <input
+                        class="opd_time"
+                        placeholder="OPD Time"
+                    >
+
+
+                    <textarea
+                        class="doctor_info"
+                        placeholder="Doctor Information"
+                    ></textarea>
+
+                </div>
+
+
+            </div>
+
+
+            <button
+                class="add"
+                onclick="addDoctor()"
+            >
+                + Add Doctor
+            </button>
+
+
+            <button
+                class="save"
+                onclick="saveHospital()"
+            >
+                💾 Save Hospital & Doctors
+            </button>
+
+        </section>
+
 
     </main>
 
 </div>
 
 
-<!-- =========================================================
-     FIREBASE
-========================================================== -->
-
 <script type="module">
 
-    import {
-        initializeApp
-    } from
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+// =====================================================
+// FIREBASE
+// =====================================================
+
+import {
+    initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 
 
-    import {
-        getAuth,
-        onAuthStateChanged,
-        signOut
-    } from
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"; 
- 
- 
-    // ====================================================== 
-    // YOUR FIREBASE CONFIG 
-    // ====================================================== 
- 
-    const firebaseConfig = { 
- 
-        apiKey: 
-            "{{ firebase_api_key|default('') }}", 
- 
-        authDomain: 
-            "{{ firebase_auth_domain|default('') }}", 
- 
-        databaseURL: 
-            "{{ firebase_database_url|default('') }}", 
- 
-        projectId: 
-            "{{ firebase_project_id|default('') }}", 
- 
-        storageBucket: 
-            "{{ firebase_storage_bucket|default('') }}", 
- 
-        messagingSenderId: 
-            "{{ firebase_messaging_sender_id|default('') }}" 
- 
-    }; 
- 
- 
-    /* 
-        IMPORTANT: 
- 
-        If your Firebase config is already inside 
-        another JS file, use that file instead. 
- 
-        Do NOT put Firebase service-account credentials here. 
-    */ 
- 
- 
-    const app = initializeApp( 
-        firebaseConfig 
-    ); 
- 
-    const auth = 
-        getAuth(app); 
- 
- 
-    // ====================================================== 
-    // AUTH 
-    // ====================================================== 
- 
-    onAuthStateChanged( 
-        auth, 
-        async (user) => { 
- 
-            if (!user) { 
- 
-                window.location.href = 
-                    "/login-page"; 
- 
-                return; 
-            } 
- 
- 
-            try { 
- 
-                const token = 
-                    await user.getIdToken( 
-                        true 
-                    ); 
- 
-                await loadDashboard( 
-                    token 
-                ); 
- 
-            } catch (error) { 
- 
-                console.error( 
-                    error 
-                ); 
- 
-                alert( 
-                    "Unable to load dashboard." 
-                ); 
- 
-            } 
- 
-        } 
-    ); 
- 
- 
-    // ====================================================== 
-    // LOAD DASHBOARD 
-    // ====================================================== 
- 
-    async function loadDashboard( 
-        token 
-    ) { 
- 
-        const response = 
-            await fetch( 
-                "/api/dashboard", 
-                { 
- 
-                    method: "GET", 
- 
-                    headers: { 
- 
-                        "Authorization": 
-                            `Bearer ${token}` 
- 
-                    } 
- 
-                } 
-            ); 
- 
- 
-        const data = 
-            await response.json(); 
- 
- 
-        if (!response.ok || 
-            !data.success) { 
- 
-            console.error( 
-                data 
-            ); 
- 
-            alert( 
-                data.error || 
-                "Dashboard loading failed" 
-            ); 
- 
-            return; 
-        } 
- 
- 
-        renderDashboard( 
-            data 
-        ); 
- 
-    } 
- 
- 
-    // ====================================================== 
-    // RENDER 
-    // ====================================================== 
- 
-    function renderDashboard( 
-        data 
-    ) { 
- 
-        const hospital = 
-            data.hospital || {}; 
- 
-        const stats = 
-            data.stats || {}; 
- 
-        const subscription = 
-            data.subscription || {}; 
- 
- 
-        // ----------------------------------------------- 
-        // HOSPITAL 
-        // ----------------------------------------------- 
- 
-        const hospitalName = 
-            hospital.hospital_name || 
-            "Hospital"; 
- 
- 
-        document.getElementById( 
-            "topHospitalName" 
-        ).textContent = 
-            hospitalName; 
- 
- 
-        document.getElementById( 
-            "topHospitalId" 
-        ).textContent = 
-            "Hospital ID: " + 
-            data.uid; 
- 
- 
-        // ----------------------------------------------- 
-        // STATS 
-        // ----------------------------------------------- 
- 
-        document.getElementById( 
-            "doctorCount" 
-        ).textContent = 
-            stats.doctors || 0; 
- 
- 
-        document.getElementById( 
-            "todayCount" 
-        ).textContent = 
-            stats.today || 0; 
- 
- 
-        document.getElementById( 
-            "appointmentCount" 
-        ).textContent = 
-            stats.appointments || 0; 
- 
- 
-        document.getElementById( 
-            "followupCount" 
-        ).textContent = 
-            stats.followups || 0; 
- 
- 
-        // ----------------------------------------------- 
-        // LINKS 
-        // ----------------------------------------------- 
- 
-        const hospitalUrl = 
-            data.hospital_url; 
- 
- 
-        const bookingUrl = 
-            data.booking_url; 
- 
- 
-        document.getElementById( 
-            "hospitalUrl" 
-        ).value = 
-            hospitalUrl; 
- 
- 
-        document.getElementById( 
-            "bookingUrl" 
-        ).value = 
-            bookingUrl; 
- 
- 
-        document.getElementById( 
-            "hospitalOpen" 
-        ).href = 
-            hospitalUrl; 
- 
- 
-        document.getElementById( 
-            "bookingOpen" 
-        ).href = 
-            bookingUrl; 
- 
- 
-        // ----------------------------------------------- 
-        // MENU LINKS 
-        // ----------------------------------------------- 
- 
-        document.getElementById( 
-            "hospitalMenu" 
-        ).href = 
-            hospitalUrl; 
- 
- 
-        document.getElementById( 
-            "bookingMenu" 
-        ).href = 
-            bookingUrl; 
- 
- 
-        document.getElementById( 
-            "appointmentsMenu" 
-        ).href = 
-            `/appointments/${data.uid}`; 
- 
- 
-        document.getElementById( 
-            "followupsMenu" 
-        ).href = 
-            `/followups/${data.uid}`; 
- 
- 
-        // ----------------------------------------------- 
-        // SUBSCRIPTION 
-        // ----------------------------------------------- 
- 
-        const plan = 
-            subscription.plan || 
-            "No Plan"; 
- 
- 
-        document.getElementById( 
-            "planName" 
-        ).textContent = 
-            plan.toUpperCase(); 
- 
- 
-        document.getElementById( 
-            "expiryDate" 
-        ).textContent = 
-            subscription.expiry 
-                ? "Expiry: " + 
-                  formatDate( 
-                      subscription.expiry 
-                  ) 
-                : "Expiry: -"; 
- 
- 
-        const status = 
-            document.getElementById( 
-                "subscriptionStatus" 
-            ); 
- 
- 
-        if (data.subscription_active) { 
- 
-            status.textContent = 
-                "ACTIVE"; 
- 
-            status.className = 
-                "status-active"; 
- 
-        } else { 
- 
-            status.textContent = 
-                "EXPIRED"; 
- 
-            status.className = 
-                "status-expired"; 
- 
-        } 
- 
- 
-        // ----------------------------------------------- 
-        // APPOINTMENTS 
-        // ----------------------------------------------- 
- 
-        renderAppointments( 
-            data.today_appointments || [] 
-        ); 
- 
- 
-        // ----------------------------------------------- 
-        // DOCTORS 
-        // ----------------------------------------------- 
- 
-        renderDoctors( 
-            data.doctors || [] 
-        ); 
- 
-    } 
- 
- 
-    // ====================================================== 
-    // APPOINTMENTS 
-    // ====================================================== 
- 
-    function renderAppointments( 
-        appointments 
-    ) { 
- 
-        const table = 
-            document.getElementById( 
-                "appointmentTable" 
-            ); 
- 
- 
-        table.innerHTML = ""; 
- 
- 
-        if (!appointments.length) { 
- 
-            table.innerHTML = ` 
- 
-                <tr> 
- 
-                    <td 
-                        colspan="5" 
-                        class="empty" 
-                    > 
-                        No appointments for today. 
-                    </td> 
- 
-                </tr> 
- 
-            `; 
- 
-            return; 
-        } 
- 
- 
-        appointments.forEach( 
-            patient => { 
- 
-                const row = 
-                    document.createElement( 
-                        "tr" 
-                    ); 
- 
- 
-                row.innerHTML = ` 
- 
-                    <td> 
-                        #${escapeHtml( 
-                            patient.patient_no || "-" 
-                        )} 
-                    </td> 
- 
-                    <td> 
-                        ${escapeHtml( 
-                            patient.patient_name || "-" 
-                        )} 
-                    </td> 
- 
-                    <td> 
-                        ${escapeHtml( 
-                            patient.doctor_name || "-" 
-                        )} 
-                    </td> 
- 
-                    <td> 
-                        ${escapeHtml( 
-                            patient.appointment_time || "-" 
-                        )} 
-                    </td> 
- 
-                    <td> 
-                        ${escapeHtml( 
-                            patient.mobile || "-" 
-                        )} 
-                    </td> 
- 
-                `; 
- 
- 
-                table.appendChild( 
-                    row 
-                ); 
- 
-            } 
-        ); 
- 
-    } 
- 
- 
-    // ====================================================== 
-    // DOCTORS 
-    // ====================================================== 
- 
-    function renderDoctors( 
-        doctors 
-    ) { 
- 
-        const container = 
-            document.getElementById( 
-                "doctorList" 
-            ); 
- 
- 
-        container.innerHTML = ""; 
- 
- 
-        if (!doctors.length) { 
- 
-            container.innerHTML = ` 
- 
-                <div class="empty"> 
-                    No doctors added. 
-                </div> 
- 
-            `; 
- 
-            return; 
-        } 
- 
- 
-        doctors.forEach( 
-            doctor => { 
- 
-                const div = 
-                    document.createElement( 
-                        "div" 
-                    ); 
- 
- 
-                div.className = 
-                    "doctor"; 
- 
- 
-                div.innerHTML = ` 
- 
-                    <div class="doctor-name"> 
-                        ${escapeHtml( 
-                            doctor.doctor_name || "-" 
-                        )} 
-                    </div> 
- 
-                    <div class="doctor-specialization"> 
-                        ${escapeHtml( 
-                            doctor.specialization || "-" 
-                        )} 
-                    </div> 
- 
-                    <div class="doctor-time"> 
-                        OPD: ${escapeHtml( 
-                            doctor.opd_time || "-" 
-                        )} 
-                    </div> 
- 
-                `; 
- 
- 
-                container.appendChild( 
-                    div 
-                ); 
- 
-            } 
-        ); 
- 
-    } 
- 
- 
-    // ====================================================== 
-    // COPY 
-    // ====================================================== 
- 
-    window.copyUrl = 
-        async function( 
-            elementId 
-        ) { 
- 
-            const input = 
-                document.getElementById( 
-                    elementId 
-                ); 
- 
- 
-            try { 
- 
-                await navigator.clipboard.writeText( 
-                    input.value 
-                ); 
- 
-                alert( 
-                    "Link copied!" 
-                ); 
- 
-            } catch (error) { 
- 
-                input.select(); 
- 
-                document.execCommand( 
-                    "copy" 
-                ); 
- 
-                alert( 
-                    "Link copied!" 
-                ); 
- 
-            } 
- 
-        }; 
- 
- 
-    // ====================================================== 
-    // LOGOUT 
-    // ====================================================== 
- 
-    window.logout = 
-        async function() { 
- 
-            try { 
- 
-                await signOut( 
-                    auth 
-                ); 
- 
-                window.location.href = 
-                    "/login-page"; 
- 
-            } catch (error) { 
- 
-                console.error( 
-                    error 
-                ); 
- 
-            } 
- 
-        }; 
- 
- 
-    // ====================================================== 
-    // DATE 
-    // ====================================================== 
- 
-    function formatDate( 
-        value 
-    ) { 
- 
-        try { 
- 
-            return new Date( 
-                value 
-            ).toLocaleDateString( 
-                "en-IN", 
-                { 
-                    day: "2-digit", 
-                    month: "short", 
-                    year: "numeric" 
-                } 
-            ); 
- 
-        } catch { 
- 
-            return value; 
- 
-        } 
- 
-    } 
- 
- 
-    // ====================================================== 
-    // HTML ESCAPE 
-    // ====================================================== 
- 
-    function escapeHtml( 
-        value 
-    ) { 
- 
-        return String( 
-            value 
-        ) 
-        .replace( 
-            /&/g, 
-            "&amp;" 
-        ) 
-        .replace( 
-            /</g, 
-            "&lt;" 
-        ) 
-        .replace( 
-            />/g, 
-            "&gt;" 
-        ) 
-        .replace( 
-            /"/g, 
-            "&quot;" 
-        ) 
-        .replace( 
-            /'/g, 
-            "&#039;" 
-        ); 
- 
-    } 
- 
-</script> 
- 
- 
-</body> 
- 
-</html> 
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+}
+from
+"https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+
+// =====================================================
+// FIREBASE CONFIG
+// =====================================================
+
+const firebaseConfig = {
+
+    apiKey:
+        "AIzaSyDbHoUVO_oXHCnY040sBLOiXVS6s6xJEb8",
+
+    authDomain:
+        "hospital-57fc8.firebaseapp.com",
+
+    databaseURL:
+        "https://hospital-57fc8-default-rtdb.firebaseio.com",
+
+    projectId:
+        "hospital-57fc8",
+
+    storageBucket:
+        "hospital-57fc8.firebasestorage.app",
+
+    messagingSenderId:
+        "711314420912",
+
+    appId:
+        "1:711314420912:web:14ec889664980679a13775"
+
+};
+
+
+// =====================================================
+// INITIALIZE
+// =====================================================
+
+const app =
+    initializeApp(
+        firebaseConfig
+    );
+
+
+const auth =
+    getAuth(
+        app
+    );
+
+
+// =====================================================
+// CURRENT USER
+// =====================================================
+
+let currentUser = null;
+
+
+// =====================================================
+// DASHBOARD AUTHENTICATION
+// =====================================================
+
+onAuthStateChanged(
+    auth,
+    async function(user) {
+
+        console.log(
+            "AUTH STATE:",
+            user
+        );
+
+
+        if (!user) {
+
+            console.log(
+                "User not logged in"
+            );
+
+            window.location.href =
+                "/login-page";
+
+            return;
+        }
+
+
+        currentUser =
+            user;
+
+
+        try {
+
+            // ---------------------------------------------
+            // GET FRESH FIREBASE TOKEN
+            // ---------------------------------------------
+
+            const token =
+                await user.getIdToken(
+                    true
+                );
+
+
+            if (!token) {
+
+                window.location.href =
+                    "/login-page";
+
+                return;
+            }
+
+
+            // ---------------------------------------------
+            // CHECK SUBSCRIPTION
+            // ---------------------------------------------
+
+            const response =
+                await fetch(
+                    "/check-subscription",
+                    {
+
+                        method:
+                            "POST",
+
+                        headers: {
+
+                            "Authorization":
+                                "Bearer " + token,
+
+                            "Content-Type":
+                                "application/json"
+
+                        }
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            console.log(
+                "SUBSCRIPTION:",
+                data
+            );
+
+
+            if (!response.ok) {
+
+                alert(
+                    data.error ||
+                    "Unable to verify subscription."
+                );
+
+                window.location.href =
+                    "/login-page";
+
+                return;
+            }
+
+
+            // ---------------------------------------------
+            // EXPIRED / NO SUBSCRIPTION
+            // ---------------------------------------------
+
+            if (
+                data.active !== true
+            ) {
+
+                alert(
+                    "Your subscription has expired or is not active."
+                );
+
+                window.location.href =
+                    "/payment";
+
+                return;
+            }
+
+
+            // ---------------------------------------------
+            // ACTIVE SUBSCRIPTION
+            // ---------------------------------------------
+
+            console.log(
+                "DASHBOARD ACCESS GRANTED"
+            );
+
+
+            // SAVE UID
+            localStorage.setItem(
+                "uid",
+                user.uid
+            );
+
+
+            // SHOW HOSPITAL ID
+            const hospitalId =
+                localStorage.getItem(
+                    "hospitalId"
+                ) || "";
+
+
+            document.getElementById(
+                "hospital_id"
+            ).value =
+                hospitalId;
+
+
+            // SHOW HOSPITAL NAME
+            const hospitalName =
+                localStorage.getItem(
+                    "hospitalName"
+                ) || "Hospital";
+
+
+            document.getElementById(
+                "hospitalNameDisplay"
+            ).innerText =
+                hospitalName;
+
+
+            // LOAD STORED HOSPITAL INFO
+            loadSavedHospital();
+
+        }
+        catch(error) {
+
+            console.error(
+                "DASHBOARD ERROR:",
+                error
+            );
+
+            window.location.href =
+                "/login-page";
+
+        }
+
+    }
+);
+
+
+// =====================================================
+// SHOW SECTION
+// =====================================================
+
+window.showSection =
+function(id) {
+
+    document
+        .querySelectorAll(".section")
+        .forEach(
+            function(section) {
+
+                section.style.display =
+                    "none";
+
+            }
+        );
+
+
+    const selected =
+        document.getElementById(
+            id
+        );
+
+
+    if (selected) {
+
+        selected.style.display =
+            "block";
+
+    }
+
+};
+
+
+// =====================================================
+// OPEN APPOINTMENTS
+// =====================================================
+
+window.openAppointments =
+function() {
+
+    const uid =
+        localStorage.getItem(
+            "uid"
+        );
+
+
+    if (!uid) {
+
+        alert(
+            "Login required!"
+        );
+
+        window.location.href =
+            "/login-page";
+
+        return;
+    }
+
+
+    window.location.href =
+        "/appointments/" +
+        uid;
+
+};
+
+
+// =====================================================
+// OPEN FOLLOW-UPS
+// =====================================================
+
+window.openFollowups =
+function() {
+
+    const uid =
+        localStorage.getItem(
+            "uid"
+        );
+
+
+    if (!uid) {
+
+        alert(
+            "Login required!"
+        );
+
+        window.location.href =
+            "/login-page";
+
+        return;
+    }
+
+
+    window.location.href =
+        "/followups/" +
+        uid;
+
+};
+
+
+// =====================================================
+// ADD DOCTOR
+// =====================================================
+
+let doctorCount = 1;
+
+
+window.addDoctor =
+function() {
+
+    doctorCount++;
+
+
+    const doctorSection =
+        document.getElementById(
+            "doctor-section"
+        );
+
+
+    const newDoctor =
+        document.createElement(
+            "div"
+        );
+
+
+    newDoctor.className =
+        "doctor-box";
+
+
+    newDoctor.innerHTML = `
+
+        <h3>
+            Doctor ${doctorCount}
+        </h3>
+
+        <input
+            class="doctor_name"
+            placeholder="Doctor Name"
+        >
+
+        <input
+            class="specialization"
+            placeholder="Specialization"
+        >
+
+        <input
+            class="opd_time"
+            placeholder="OPD Time"
+        >
+
+        <textarea
+            class="doctor_info"
+            placeholder="Doctor Information"
+        ></textarea>
+
+        <button
+            type="button"
+            class="remove-doctor"
+            onclick="this.parentElement.remove()"
+        >
+            Remove
+        </button>
+
+    `;
+
+
+    doctorSection.appendChild(
+        newDoctor
+    );
+
+};
+
+
+// =====================================================
+// LOAD SAVED HOSPITAL
+// =====================================================
+
+async function loadSavedHospital() {
+
+    const uid =
+        localStorage.getItem(
+            "uid"
+        );
+
+
+    if (!uid) {
+
+        return;
+    }
+
+
+    /*
+      Your existing /hospital/<uid> route
+      returns HTML, not JSON.
+
+      Therefore we don't fetch it here.
+
+      The form will show stored local values.
+    */
+
+
+    const hospitalName =
+        localStorage.getItem(
+            "hospitalName"
+        ) || "";
+
+
+    document.getElementById(
+        "hospital_name"
+    ).value =
+        hospitalName;
+
+}
+
+
+// =====================================================
+// SAVE HOSPITAL
+// =====================================================
+
+window.saveHospital =
+async function() {
+
+    try {
+
+        const uid =
+            localStorage.getItem(
+                "uid"
+            );
+
+
+        if (!uid) {
+
+            alert(
+                "Login required!"
+            );
+
+            window.location.href =
+                "/login-page";
+
+            return;
+        }
+
+
+        // ---------------------------------------------
+        // CHECK FIREBASE USER
+        // ---------------------------------------------
+
+        if (!currentUser) {
+
+            alert(
+                "Login session expired."
+            );
+
+            window.location.href =
+                "/login-page";
+
+            return;
+        }
+
+
+        // ---------------------------------------------
+        // GET FRESH TOKEN
+        // ---------------------------------------------
+
+        const token =
+            await currentUser.getIdToken(
+                true
+            );
+
+
+        // ---------------------------------------------
+        // FORM DATA
+        // ---------------------------------------------
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "uid",
+            uid
+        );
+
+
+        formData.append(
+            "hospital_name",
+            document.getElementById(
+                "hospital_name"
+            ).value.trim()
+        );
+
+
+        formData.append(
+            "date",
+            document.getElementById(
+                "date"
+            ).value
+        );
+
+
+        formData.append(
+            "open_time",
+            document.getElementById(
+                "open_time"
+            ).value
+        );
+
+
+        formData.append(
+            "close_time",
+            document.getElementById(
+                "close_time"
+            ).value
+        );
+
+
+        formData.append(
+            "info",
+            document.getElementById(
+                "info"
+            ).value.trim()
+        );
+
+
+        // ---------------------------------------------
+        // DOCTORS
+        // ---------------------------------------------
+
+        const names =
+            document.querySelectorAll(
+                ".doctor_name"
+            );
+
+
+        const specializations =
+            document.querySelectorAll(
+                ".specialization"
+            );
+
+
+        const opdTimes =
+            document.querySelectorAll(
+                ".opd_time"
+            );
+
+
+        const doctorInfos =
+            document.querySelectorAll(
+                ".doctor_info"
+            );
+
+
+        names.forEach(
+            function(element, index) {
+
+                formData.append(
+                    "doctor_name",
+                    element.value.trim()
+                );
+
+
+                formData.append(
+                    "specialization",
+                    specializations[index]
+                        .value
+                        .trim()
+                );
+
+
+                formData.append(
+                    "opd_time",
+                    opdTimes[index]
+                        .value
+                        .trim()
+                );
+
+
+                formData.append(
+                    "doctor_info",
+                    doctorInfos[index]
+                        .value
+                        .trim()
+                );
+
+            }
+        );
+
+
+        // ---------------------------------------------
+        // SEND TO VERCEL BACKEND
+        // ---------------------------------------------
+
+        const response =
+            await fetch(
+                "/save_hospital",
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + token
+
+                    },
+
+                    body:
+                        formData
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "SAVE HOSPITAL RESPONSE:",
+            data
+        );
+
+
+        // ---------------------------------------------
+        // SUCCESS
+        // ---------------------------------------------
+
+        if (response.ok) {
+
+            localStorage.setItem(
+                "hospitalName",
+                document.getElementById(
+                    "hospital_name"
+                ).value.trim()
+            );
+
+
+            alert(
+                "Hospital saved successfully."
+            );
+
+
+            window.location.href =
+                "/hospital/" +
+                uid;
+
+
+            return;
+        }
+
+
+        // ---------------------------------------------
+        // EXPIRED SUBSCRIPTION
+        // ---------------------------------------------
+
+        if (
+            response.status === 403
+        ) {
+
+            alert(
+                data.error ||
+                "Your subscription has expired."
+            );
+
+
+            window.location.href =
+                "/payment";
+
+
+            return;
+        }
+
+
+        alert(
+            data.error ||
+            "Unable to save hospital."
+        );
+
+    }
+    catch(error) {
+
+        console.error(
+            "SAVE HOSPITAL ERROR:",
+            error
+        );
+
+
+        alert(
+            "Unable to connect to server."
+        );
+
+    }
+
+};
+
+
+// =====================================================
+// LOGOUT
+// =====================================================
+
+window.logout =
+async function() {
+
+    try {
+
+        await signOut(
+            auth
+        );
+
+
+        localStorage.removeItem(
+            "uid"
+        );
+
+        localStorage.removeItem(
+            "hospitalId"
+        );
+
+        localStorage.removeItem(
+            "hospitalName"
+        );
+
+
+        window.location.href =
+            "/login-page";
+
+    }
+    catch(error) {
+
+        console.error(
+            "LOGOUT ERROR:",
+            error
+        );
+
+        alert(
+            "Logout failed."
+        );
+
+    }
+
+};
+
+
+// =====================================================
+// DEFAULT SECTION
+// =====================================================
+
+showSection(
+    "hospital"
+);
+
+</script>
+
+</body>
+
+</html>
