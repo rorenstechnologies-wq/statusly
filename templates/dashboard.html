@@ -3,1695 +3,1645 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <meta
-        name="description"
-        content="MediQueue Hospital Management Dashboard"
-    >
-    <title>Statusly | Smart Healthcare Management</title>
+<meta
+    name="description"
+    content="Statusly Smart Healthcare Management Dashboard"
+>
 
+<title>Statusly | Smart Healthcare Management</title>
 
-    <!-- =====================================================
-         GOOGLE FONT
-    ====================================================== -->
 
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
+<!-- GOOGLE FONT -->
 
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
+<link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
+<link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+>
 
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
 
-    <!-- =====================================================
-         ICONS
-    ====================================================== -->
 
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
+<!-- FONT AWESOME -->
 
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
 
-    <style>
 
-        /* =====================================================
-           GLOBAL
-        ====================================================== */
+<style>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+/* =========================================================
+   GLOBAL
+========================================================= */
 
-        :root {
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --primary-light: #eff6ff;
+:root {
 
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #eff6ff;
 
-            --dark: #0f172a;
-            --dark-2: #1e293b;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
 
-            --text: #334155;
-            --muted: #64748b;
+    --dark: #0f172a;
+    --dark-2: #1e293b;
 
-            --border: #e2e8f0;
+    --text: #334155;
+    --muted: #64748b;
 
-            --background: #f8fafc;
-            --white: #ffffff;
+    --border: #e2e8f0;
 
-            --sidebar-width: 260px;
+    --background: #f8fafc;
+    --white: #ffffff;
 
-            --radius: 16px;
+    --sidebar-width: 260px;
 
-            --shadow:
-                0 10px 30px rgba(15, 23, 42, 0.06);
+    --radius: 16px;
 
-        }
+    --shadow:
+        0 10px 30px rgba(15, 23, 42, 0.06);
+}
 
+html {
+    scroll-behavior: smooth;
+}
 
-        html {
-            scroll-behavior: smooth;
-        }
+body {
 
+    min-height: 100vh;
 
-        body {
+    font-family:
+        "Inter",
+        Arial,
+        sans-serif;
 
-            min-height: 100vh;
+    background:
+        var(--background);
 
-            font-family:
-                "Inter",
-                Arial,
-                sans-serif;
+    color:
+        var(--text);
+}
 
-            background:
-                var(--background);
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+}
 
-            color:
-                var(--text);
+button {
+    cursor: pointer;
+}
 
-        }
 
+/* =========================================================
+   SIDEBAR
+========================================================= */
 
-        button,
-        input,
-        textarea,
-        select {
+.sidebar {
 
-            font-family: inherit;
+    position: fixed;
 
-        }
+    left: 0;
+    top: 0;
+    bottom: 0;
 
+    width:
+        var(--sidebar-width);
 
-        button {
+    background:
+        white;
 
-            cursor: pointer;
+    border-right:
+        1px solid var(--border);
 
-        }
+    display:
+        flex;
 
+    flex-direction:
+        column;
 
-        /* =====================================================
-           SIDEBAR
-        ====================================================== */
+    z-index:
+        1000;
+}
 
-        .sidebar {
 
-            position: fixed;
+/* BRAND */
 
-            left: 0;
-            top: 0;
-            bottom: 0;
+.brand {
 
-            width: var(--sidebar-width);
+    height:
+        82px;
 
-            background:
-                #ffffff;
+    padding:
+        0 22px;
 
-            border-right:
-                1px solid var(--border);
+    display:
+        flex;
 
-            display: flex;
+    align-items:
+        center;
 
-            flex-direction: column;
+    gap:
+        12px;
 
-            z-index: 1000;
+    border-bottom:
+        1px solid #f1f5f9;
+}
 
-        }
+.brand-icon {
 
+    width:
+        42px;
 
-        /* LOGO */
+    height:
+        42px;
 
-        .brand {
+    border-radius:
+        12px;
 
-            height: 82px;
+    display:
+        flex;
 
-            padding:
-                0 22px;
+    align-items:
+        center;
 
-            display: flex;
+    justify-content:
+        center;
 
-            align-items: center;
+    color:
+        white;
 
-            gap: 12px;
+    font-size:
+        19px;
 
-            border-bottom:
-                1px solid #f1f5f9;
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #4f46e5
+        );
 
-        }
+    box-shadow:
+        0 8px 18px
+        rgba(37,99,235,0.25);
+}
 
+.brand-text {
 
-        .brand-icon {
+    display:
+        flex;
 
-            width: 42px;
-            height: 42px;
+    flex-direction:
+        column;
+}
 
-            border-radius: 12px;
+.brand-name {
 
-            display: flex;
+    font-size:
+        18px;
 
-            align-items: center;
-            justify-content: center;
+    font-weight:
+        800;
 
-            color: white;
+    color:
+        var(--dark);
 
-            font-size: 19px;
+    letter-spacing:
+        -0.5px;
+}
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #2563eb,
-                    #4f46e5
-                );
+.brand-subtitle {
 
-            box-shadow:
-                0 8px 18px
-                rgba(37,99,235,0.25);
+    font-size:
+        11px;
 
-        }
+    color:
+        var(--muted);
 
+    margin-top:
+        2px;
+}
 
-        .brand-text {
 
-            display: flex;
+/* NAVIGATION */
 
-            flex-direction: column;
+.sidebar-nav {
 
-        }
+    flex:
+        1;
 
+    padding:
+        22px 14px;
 
-        .brand-name {
+    overflow-y:
+        auto;
+}
 
-            font-size: 18px;
+.nav-label {
 
-            font-weight: 800;
+    padding:
+        0 12px;
 
-            color:
-                var(--dark);
+    margin:
+        0 0 10px;
 
-            letter-spacing:
-                -0.5px;
+    font-size:
+        11px;
 
-        }
+    font-weight:
+        700;
 
+    color:
+        #94a3b8;
 
-        .brand-subtitle {
+    text-transform:
+        uppercase;
 
-            font-size: 11px;
+    letter-spacing:
+        0.08em;
+}
 
-            color:
-                var(--muted);
+.nav-item {
 
-            margin-top: 2px;
+    width:
+        100%;
 
-        }
+    display:
+        flex;
 
+    align-items:
+        center;
 
-        /* NAVIGATION */
+    gap:
+        13px;
 
-        .sidebar-nav {
+    padding:
+        12px 13px;
 
-            flex: 1;
+    margin-bottom:
+        4px;
 
-            padding:
-                22px 14px;
+    border:
+        none;
 
-            overflow-y: auto;
+    border-radius:
+        10px;
 
-        }
+    background:
+        transparent;
 
+    color:
+        #64748b;
 
-        .nav-label {
+    font-size:
+        14px;
 
-            padding:
-                0 12px;
+    font-weight:
+        500;
 
-            margin:
-                0 0 10px;
+    text-align:
+        left;
 
-            font-size: 11px;
+    transition:
+        all .2s ease;
+}
 
-            font-weight: 700;
+.nav-item i {
 
-            color:
-                #94a3b8;
+    width:
+        20px;
 
-            text-transform:
-                uppercase;
+    text-align:
+        center;
 
-            letter-spacing:
-                0.08em;
+    font-size:
+        15px;
+}
 
-        }
+.nav-item:hover {
 
+    background:
+        #f1f5f9;
 
-        .nav-item {
+    color:
+        var(--dark);
+}
 
-            width: 100%;
+.nav-item.active {
 
-            display: flex;
+    background:
+        var(--primary-light);
 
-            align-items: center;
+    color:
+        var(--primary);
 
-            gap: 13px;
+    font-weight:
+        600;
+}
 
-            padding:
-                12px 13px;
 
-            margin-bottom: 4px;
+/* SIDEBAR BOTTOM */
 
-            border: none;
+.sidebar-bottom {
 
-            border-radius: 10px;
+    padding:
+        14px;
 
-            background:
-                transparent;
+    border-top:
+        1px solid var(--border);
+}
 
-            color:
-                #64748b;
+.profile-card {
 
-            font-size: 14px;
+    display:
+        flex;
 
-            font-weight: 500;
+    align-items:
+        center;
 
-            text-align: left;
+    gap:
+        10px;
 
-            transition:
-                all 0.2s ease;
+    padding:
+        10px;
 
-        }
+    border-radius:
+        12px;
 
+    background:
+        #f8fafc;
 
-        .nav-item i {
+    margin-bottom:
+        8px;
+}
 
-            width: 20px;
+.profile-avatar {
 
-            text-align: center;
+    width:
+        38px;
 
-            font-size: 15px;
+    height:
+        38px;
 
-        }
+    border-radius:
+        10px;
 
+    display:
+        flex;
 
-        .nav-item:hover {
+    align-items:
+        center;
 
-            background:
-                #f1f5f9;
+    justify-content:
+        center;
 
-            color:
-                var(--dark);
+    background:
+        #dbeafe;
 
-        }
+    color:
+        #2563eb;
 
+    font-weight:
+        700;
+}
 
-        .nav-item.active {
+.profile-info {
 
-            background:
-                var(--primary-light);
+    min-width:
+        0;
 
-            color:
-                var(--primary);
+    flex:
+        1;
+}
 
-            font-weight: 600;
+.profile-name {
 
-        }
+    font-size:
+        12px;
 
+    font-weight:
+        700;
 
-        .nav-item.active i {
+    color:
+        var(--dark);
 
-            color:
-                var(--primary);
+    white-space:
+        nowrap;
 
-        }
+    overflow:
+        hidden;
 
+    text-overflow:
+        ellipsis;
+}
 
-        .nav-badge {
+.profile-role {
 
-            margin-left: auto;
+    font-size:
+        10px;
 
-            min-width: 22px;
+    color:
+        var(--muted);
 
-            height: 22px;
+    margin-top:
+        2px;
+}
 
-            padding: 0 6px;
+.logout-btn {
+    color:
+        #ef4444 !important;
+}
 
-            border-radius: 20px;
+.logout-btn:hover {
+    background:
+        #fef2f2 !important;
+}
 
-            display: flex;
 
-            align-items: center;
-            justify-content: center;
+/* =========================================================
+   MAIN
+========================================================= */
 
-            background:
-                #dbeafe;
+.main {
 
-            color:
-                #2563eb;
+    margin-left:
+        var(--sidebar-width);
 
-            font-size: 11px;
+    min-height:
+        100vh;
+}
 
-            font-weight: 700;
 
-        }
+/* =========================================================
+   MOBILE HEADER
+========================================================= */
 
+.mobile-header {
 
-        /* SIDEBAR BOTTOM */
+    display:
+        none;
+}
 
-        .sidebar-bottom {
 
-            padding:
-                14px;
+/* =========================================================
+   TOPBAR
+========================================================= */
 
-            border-top:
-                1px solid var(--border);
+.topbar {
 
-        }
+    height:
+        82px;
 
+    background:
+        rgba(255,255,255,.92);
 
-        .profile-card {
+    backdrop-filter:
+        blur(12px);
 
-            display: flex;
+    border-bottom:
+        1px solid var(--border);
 
-            align-items: center;
+    display:
+        flex;
 
-            gap: 10px;
+    align-items:
+        center;
 
-            padding:
-                10px;
+    justify-content:
+        space-between;
 
-            border-radius: 12px;
+    padding:
+        0 32px;
 
-            background:
-                #f8fafc;
+    position:
+        sticky;
 
-            margin-bottom: 8px;
+    top:
+        0;
 
-        }
+    z-index:
+        100;
+}
 
+.page-heading h1 {
 
-        .profile-avatar {
+    font-size:
+        22px;
 
-            width: 38px;
-            height: 38px;
+    color:
+        var(--dark);
 
-            border-radius: 10px;
+    font-weight:
+        800;
+}
 
-            display: flex;
+.page-heading p {
 
-            align-items: center;
-            justify-content: center;
+    margin-top:
+        4px;
 
-            background:
-                #dbeafe;
+    color:
+        var(--muted);
 
-            color:
-                #2563eb;
+    font-size:
+        12px;
+}
 
-            font-weight: 700;
+.topbar-right {
 
-        }
+    display:
+        flex;
 
+    align-items:
+        center;
 
-        .profile-info {
+    gap:
+        12px;
+}
 
-            min-width: 0;
+.hospital-pill {
 
-            flex: 1;
+    display:
+        flex;
 
-        }
+    align-items:
+        center;
 
+    gap:
+        9px;
 
-        .profile-name {
+    padding:
+        9px 13px;
 
-            font-size: 12px;
+    border:
+        1px solid var(--border);
 
-            font-weight: 700;
+    border-radius:
+        10px;
 
-            color:
-                var(--dark);
+    background:
+        white;
 
-            white-space: nowrap;
+    font-size:
+        13px;
 
-            overflow: hidden;
+    font-weight:
+        600;
 
-            text-overflow: ellipsis;
+    color:
+        var(--dark);
+}
 
-        }
+.hospital-pill i {
+    color:
+        var(--primary);
+}
 
+.notification-btn {
 
-        .profile-role {
+    width:
+        40px;
 
-            font-size: 10px;
+    height:
+        40px;
 
-            color:
-                var(--muted);
+    border:
+        1px solid var(--border);
 
-            margin-top: 2px;
+    border-radius:
+        10px;
 
-        }
+    background:
+        white;
 
+    color:
+        #64748b;
 
-        .logout-btn {
+    position:
+        relative;
+}
 
-            color:
-                #ef4444 !important;
+.notification-dot {
 
-        }
+    position:
+        absolute;
 
+    width:
+        7px;
 
-        .logout-btn:hover {
+    height:
+        7px;
 
-            background:
-                #fef2f2 !important;
+    border-radius:
+        50%;
 
-        }
+    background:
+        #ef4444;
 
+    top:
+        8px;
 
-        /* =====================================================
-           MOBILE HEADER
-        ====================================================== */
+    right:
+        9px;
 
-        .mobile-header {
+    border:
+        2px solid white;
+}
 
-            display: none;
 
-        }
+/* =========================================================
+   CONTENT
+========================================================= */
 
+.content {
 
-        /* =====================================================
-           MAIN
-        ====================================================== */
+    padding:
+        30px 32px 50px;
 
-        .main {
+    max-width:
+        1600px;
+}
 
-            margin-left:
-                var(--sidebar-width);
 
-            min-height:
-                100vh;
+/* =========================================================
+   WELCOME
+========================================================= */
 
-        }
+.welcome {
 
+    position:
+        relative;
 
-        /* =====================================================
-           TOPBAR
-        ====================================================== */
+    overflow:
+        hidden;
 
-        .topbar {
+    border-radius:
+        20px;
 
-            height: 82px;
+    padding:
+        30px;
 
-            background:
-                rgba(255,255,255,0.92);
+    color:
+        white;
 
-            backdrop-filter:
-                blur(12px);
+    margin-bottom:
+        24px;
 
-            border-bottom:
-                1px solid var(--border);
+    background:
+        linear-gradient(
+            135deg,
+            #1d4ed8 0%,
+            #2563eb 45%,
+            #4f46e5 100%
+        );
 
-            display: flex;
+    box-shadow:
+        0 15px 35px
+        rgba(37,99,235,.20);
+}
 
-            align-items: center;
+.welcome::before {
 
-            justify-content: space-between;
+    content:
+        "";
 
-            padding:
-                0 32px;
+    position:
+        absolute;
 
-            position: sticky;
+    width:
+        220px;
 
-            top: 0;
+    height:
+        220px;
 
-            z-index: 100;
+    border-radius:
+        50%;
 
-        }
+    background:
+        rgba(255,255,255,.08);
 
+    right:
+        -70px;
 
-        .page-heading h1 {
+    top:
+        -100px;
+}
 
-            font-size: 22px;
+.welcome::after {
 
-            color:
-                var(--dark);
+    content:
+        "";
 
-            font-weight: 800;
+    position:
+        absolute;
 
-            letter-spacing:
-                -0.5px;
+    width:
+        150px;
 
-        }
+    height:
+        150px;
 
+    border-radius:
+        50%;
 
-        .page-heading p {
+    background:
+        rgba(255,255,255,.06);
 
-            margin-top: 4px;
+    right:
+        150px;
 
-            color:
-                var(--muted);
+    bottom:
+        -100px;
+}
 
-            font-size: 12px;
+.welcome-content {
 
-        }
+    position:
+        relative;
 
+    z-index:
+        2;
+}
 
-        .topbar-right {
+.welcome h2 {
 
-            display: flex;
+    font-size:
+        25px;
 
-            align-items: center;
+    font-weight:
+        800;
 
-            gap: 12px;
+    margin-bottom:
+        8px;
+}
 
-        }
+.welcome p {
 
+    font-size:
+        13px;
 
-        .hospital-pill {
+    color:
+        rgba(255,255,255,.82);
+}
 
-            display: flex;
+.welcome-time {
 
-            align-items: center;
+    margin-top:
+        18px;
 
-            gap: 9px;
+    display:
+        inline-flex;
 
-            padding:
-                9px 13px;
+    align-items:
+        center;
 
-            border:
-                1px solid var(--border);
+    gap:
+        8px;
 
-            border-radius: 10px;
+    padding:
+        8px 12px;
 
-            background:
-                white;
+    background:
+        rgba(255,255,255,.12);
 
-            font-size: 13px;
+    border:
+        1px solid rgba(255,255,255,.16);
 
-            font-weight: 600;
+    border-radius:
+        8px;
 
-            color:
-                var(--dark);
+    font-size:
+        11px;
+}
 
-        }
 
+/* =========================================================
+   STATS
+========================================================= */
 
-        .hospital-pill i {
+.stats-grid {
 
-            color:
-                var(--primary);
+    display:
+        grid;
 
-        }
+    grid-template-columns:
+        repeat(4,1fr);
 
+    gap:
+        18px;
 
-        .notification-btn {
+    margin-bottom:
+        24px;
+}
 
-            width: 40px;
-            height: 40px;
+.stat-card {
 
-            border:
-                1px solid var(--border);
+    background:
+        white;
 
-            border-radius: 10px;
+    border:
+        1px solid var(--border);
 
-            background:
-                white;
+    border-radius:
+        var(--radius);
 
-            color:
-                #64748b;
+    padding:
+        20px;
 
-            position: relative;
+    box-shadow:
+        var(--shadow);
 
-        }
+    transition:
+        .2s;
+}
 
+.stat-card:hover {
 
-        .notification-dot {
+    transform:
+        translateY(-3px);
 
-            position: absolute;
+    box-shadow:
+        0 15px 35px
+        rgba(15,23,42,.09);
+}
 
-            width: 7px;
-            height: 7px;
+.stat-top {
 
-            border-radius: 50%;
+    display:
+        flex;
 
-            background:
-                #ef4444;
+    align-items:
+        center;
 
-            top: 8px;
-            right: 9px;
+    justify-content:
+        space-between;
 
-            border:
-                2px solid white;
+    margin-bottom:
+        16px;
+}
 
-        }
+.stat-icon {
 
+    width:
+        42px;
 
-        /* =====================================================
-           CONTENT
-        ====================================================== */
+    height:
+        42px;
 
-        .content {
+    border-radius:
+        11px;
 
-            padding:
-                30px 32px 50px;
+    display:
+        flex;
 
-            max-width:
-                1600px;
+    align-items:
+        center;
 
-        }
+    justify-content:
+        center;
 
+    font-size:
+        17px;
+}
 
-        /* =====================================================
-           WELCOME BANNER
-        ====================================================== */
+.blue {
 
-        .welcome {
+    background:
+        #eff6ff;
 
-            position: relative;
+    color:
+        #2563eb;
+}
 
-            overflow: hidden;
+.green {
 
-            border-radius:
-                20px;
+    background:
+        #ecfdf5;
 
-            padding:
-                30px;
+    color:
+        #059669;
+}
 
-            color:
-                white;
+.orange {
 
-            margin-bottom:
-                24px;
+    background:
+        #fffbeb;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #1d4ed8 0%,
-                    #2563eb 45%,
-                    #4f46e5 100%
-                );
+    color:
+        #d97706;
+}
 
-            box-shadow:
-                0 15px 35px
-                rgba(37,99,235,0.20);
+.purple {
 
-        }
+    background:
+        #f5f3ff;
 
+    color:
+        #7c3aed;
+}
 
-        .welcome::before {
+.stat-change {
 
-            content: "";
+    font-size:
+        11px;
 
-            position: absolute;
+    font-weight:
+        600;
 
-            width: 220px;
-            height: 220px;
+    color:
+        #059669;
 
-            border-radius: 50%;
+    background:
+        #ecfdf5;
 
-            background:
-                rgba(255,255,255,0.08);
+    padding:
+        5px 7px;
 
-            right: -70px;
-            top: -100px;
+    border-radius:
+        6px;
+}
 
-        }
+.stat-value {
 
+    font-size:
+        27px;
 
-        .welcome::after {
+    font-weight:
+        800;
 
-            content: "";
+    color:
+        var(--dark);
+}
 
-            position: absolute;
+.stat-label {
 
-            width: 150px;
-            height: 150px;
+    font-size:
+        12px;
 
-            border-radius: 50%;
+    color:
+        var(--muted);
 
-            background:
-                rgba(255,255,255,0.06);
+    margin-top:
+        4px;
+}
 
-            right: 150px;
-            bottom: -100px;
 
-        }
+/* =========================================================
+   DASHBOARD GRID
+========================================================= */
 
+.dashboard-grid {
 
-        .welcome-content {
+    display:
+        grid;
 
-            position: relative;
+    grid-template-columns:
+        1.4fr 1fr;
 
-            z-index: 2;
+    gap:
+        20px;
+}
 
-        }
+.panel {
 
+    background:
+        white;
 
-        .welcome h2 {
+    border:
+        1px solid var(--border);
 
-            font-size: 25px;
+    border-radius:
+        var(--radius);
 
-            font-weight: 800;
+    box-shadow:
+        var(--shadow);
 
-            margin-bottom: 8px;
+    overflow:
+        hidden;
+}
 
-        }
+.panel-header {
 
+    display:
+        flex;
 
-        .welcome p {
+    align-items:
+        center;
 
-            font-size: 13px;
+    justify-content:
+        space-between;
 
-            color:
-                rgba(255,255,255,0.82);
+    padding:
+        20px 22px;
 
-        }
+    border-bottom:
+        1px solid var(--border);
+}
 
+.panel-title {
 
-        .welcome-time {
+    font-size:
+        15px;
 
-            margin-top: 18px;
+    font-weight:
+        700;
 
-            display: inline-flex;
+    color:
+        var(--dark);
+}
 
-            align-items: center;
+.panel-subtitle {
 
-            gap: 8px;
+    font-size:
+        11px;
 
-            padding:
-                8px 12px;
+    color:
+        var(--muted);
 
-            background:
-                rgba(255,255,255,0.12);
+    margin-top:
+        3px;
+}
 
-            border:
-                1px solid rgba(255,255,255,0.16);
 
-            border-radius: 8px;
+/* =========================================================
+   QUICK ACTIONS
+========================================================= */
 
-            font-size: 11px;
+.quick-actions {
 
-        }
+    padding:
+        20px;
 
+    display:
+        grid;
 
-        /* =====================================================
-           STAT CARDS
-        ====================================================== */
+    grid-template-columns:
+        repeat(2,1fr);
 
-        .stats-grid {
+    gap:
+        12px;
+}
 
-            display: grid;
+.quick-action {
 
-            grid-template-columns:
-                repeat(4, 1fr);
+    border:
+        1px solid var(--border);
 
-            gap: 18px;
+    background:
+        #f8fafc;
 
-            margin-bottom:
-                24px;
+    padding:
+        16px;
 
-        }
+    border-radius:
+        12px;
 
+    display:
+        flex;
 
-        .stat-card {
+    align-items:
+        center;
 
-            background:
-                white;
+    gap:
+        12px;
 
-            border:
-                1px solid var(--border);
+    text-align:
+        left;
 
-            border-radius:
-                var(--radius);
+    transition:
+        .2s;
+}
 
-            padding:
-                20px;
+.quick-action:hover {
 
-            box-shadow:
-                var(--shadow);
+    border-color:
+        #bfdbfe;
 
-            transition:
-                transform .2s ease,
-                box-shadow .2s ease;
+    background:
+        #eff6ff;
 
-        }
+    transform:
+        translateY(-2px);
+}
 
+.quick-action-icon {
 
-        .stat-card:hover {
+    width:
+        38px;
 
-            transform:
-                translateY(-3px);
+    height:
+        38px;
 
-            box-shadow:
-                0 15px 35px
-                rgba(15,23,42,0.09);
+    border-radius:
+        10px;
 
-        }
+    display:
+        flex;
 
+    align-items:
+        center;
 
-        .stat-top {
+    justify-content:
+        center;
 
-            display: flex;
+    background:
+        #dbeafe;
 
-            align-items: center;
+    color:
+        #2563eb;
+}
 
-            justify-content: space-between;
+.quick-action strong {
 
-            margin-bottom: 16px;
+    display:
+        block;
 
-        }
+    font-size:
+        12px;
 
+    color:
+        var(--dark);
+}
 
-        .stat-icon {
+.quick-action span {
 
-            width: 42px;
-            height: 42px;
+    display:
+        block;
 
-            border-radius: 11px;
+    margin-top:
+        3px;
 
-            display: flex;
+    font-size:
+        10px;
 
-            align-items: center;
-            justify-content: center;
+    color:
+        var(--muted);
+}
 
-            font-size: 17px;
 
-        }
+/* =========================================================
+   FORM
+========================================================= */
 
+.hospital-form {
 
-        .blue {
+    padding:
+        22px;
+}
 
-            background:
-                #eff6ff;
+.form-group {
 
-            color:
-                #2563eb;
+    margin-bottom:
+        15px;
+}
 
-        }
+.form-label {
 
+    display:
+        block;
 
-        .green {
+    font-size:
+        11px;
 
-            background:
-                #ecfdf5;
+    font-weight:
+        600;
 
-            color:
-                #059669;
+    color:
+        #475569;
 
-        }
+    margin-bottom:
+        7px;
+}
 
+input,
+textarea,
+select {
 
-        .orange {
+    width:
+        100%;
 
-            background:
-                #fffbeb;
+    border:
+        1px solid var(--border);
 
-            color:
-                #d97706;
+    outline:
+        none;
 
-        }
+    background:
+        white;
 
+    color:
+        var(--dark);
 
-        .purple {
+    border-radius:
+        9px;
 
-            background:
-                #f5f3ff;
+    padding:
+        11px 12px;
 
-            color:
-                #7c3aed;
+    font-size:
+        13px;
 
-        }
+    transition:
+        .2s;
+}
 
+input:focus,
+textarea:focus,
+select:focus {
 
-        .stat-change {
+    border-color:
+        #93c5fd;
 
-            font-size: 11px;
+    box-shadow:
+        0 0 0 3px
+        rgba(37,99,235,.08);
+}
 
-            font-weight: 600;
+input:disabled {
 
-            color:
-                #059669;
+    background:
+        #f1f5f9;
 
-            background:
-                #ecfdf5;
+    color:
+        #64748b;
+}
 
-            padding:
-                5px 7px;
+textarea {
 
-            border-radius:
-                6px;
+    min-height:
+        90px;
 
-        }
+    resize:
+        vertical;
+}
 
+.form-row {
 
-        .stat-value {
+    display:
+        grid;
 
-            font-size: 27px;
+    grid-template-columns:
+        repeat(2,1fr);
 
-            font-weight: 800;
+    gap:
+        14px;
+}
 
-            color:
-                var(--dark);
+.save-btn {
 
-        }
+    width:
+        100%;
 
+    margin-top:
+        5px;
 
-        .stat-label {
+    padding:
+        12px;
 
-            font-size: 12px;
+    border:
+        none;
 
-            color:
-                var(--muted);
+    border-radius:
+        9px;
 
-            margin-top: 4px;
+    background:
+        var(--primary);
 
-        }
+    color:
+        white;
 
+    font-size:
+        13px;
 
-        /* =====================================================
-           GRID
-        ====================================================== */
+    font-weight:
+        600;
 
-        .dashboard-grid {
+    transition:
+        .2s;
+}
 
-            display: grid;
+.save-btn:hover {
 
-            grid-template-columns:
-                1.4fr 1fr;
+    background:
+        var(--primary-dark);
+}
 
-            gap: 20px;
+.save-btn:disabled {
 
-        }
+    opacity:
+        .7;
 
+    cursor:
+        not-allowed;
+}
 
-        .panel {
 
-            background:
-                white;
+/* =========================================================
+   DOCTORS
+========================================================= */
 
-            border:
-                1px solid var(--border);
+.doctor-list {
 
-            border-radius:
-                var(--radius);
+    padding:
+        0 22px 22px;
+}
 
-            box-shadow:
-                var(--shadow);
+.doctor-box {
 
-            overflow:
-                hidden;
+    padding:
+        17px;
 
-        }
+    border:
+        1px solid var(--border);
 
+    border-radius:
+        12px;
 
-        .panel-header {
+    background:
+        #fafcff;
 
-            display: flex;
+    margin-top:
+        14px;
+}
 
-            align-items: center;
+.doctor-header {
 
-            justify-content: space-between;
+    display:
+        flex;
 
-            padding:
-                20px 22px;
+    align-items:
+        center;
 
-            border-bottom:
-                1px solid var(--border);
+    justify-content:
+        space-between;
 
-        }
+    margin-bottom:
+        12px;
+}
 
+.doctor-title {
 
-        .panel-title {
+    font-size:
+        13px;
 
-            font-size: 15px;
+    font-weight:
+        700;
 
-            font-weight: 700;
+    color:
+        var(--dark);
+}
 
-            color:
-                var(--dark);
+.remove-doctor {
 
-        }
+    border:
+        none;
 
+    background:
+        #fef2f2;
 
-        .panel-subtitle {
+    color:
+        #ef4444;
 
-            font-size: 11px;
+    padding:
+        6px 9px;
 
-            color:
-                var(--muted);
+    border-radius:
+        7px;
 
-            margin-top: 3px;
+    font-size:
+        11px;
+}
 
-        }
+.add-doctor {
 
+    margin-top:
+        14px;
 
-        .panel-action {
+    border:
+        1px dashed #93c5fd;
 
-            border: none;
+    background:
+        #eff6ff;
 
-            background:
-                transparent;
+    color:
+        #2563eb;
 
-            color:
-                var(--primary);
+    padding:
+        10px 14px;
 
-            font-size: 12px;
+    border-radius:
+        8px;
 
-            font-weight: 600;
+    font-size:
+        12px;
 
-        }
+    font-weight:
+        600;
+}
 
 
-        /* =====================================================
-           QUICK ACTIONS
-        ====================================================== */
+/* =========================================================
+   STATUS
+========================================================= */
 
-        .quick-actions {
+#statusMessage {
 
-            padding:
-                20px;
+    display:
+        none;
 
-            display: grid;
+    margin-top:
+        12px;
 
-            grid-template-columns:
-                repeat(2, 1fr);
+    padding:
+        10px 12px;
 
-            gap: 12px;
+    border-radius:
+        8px;
 
-        }
+    font-size:
+        12px;
+}
 
 
-        .quick-action {
+/* =========================================================
+   MOBILE
+========================================================= */
 
-            border:
-                1px solid var(--border);
+@media (max-width:1100px) {
 
-            background:
-                #f8fafc;
+    .stats-grid {
 
-            padding:
-                16px;
+        grid-template-columns:
+            repeat(2,1fr);
+    }
 
-            border-radius:
-                12px;
+    .dashboard-grid {
 
-            display: flex;
+        grid-template-columns:
+            1fr;
+    }
+}
 
-            align-items: center;
 
-            gap: 12px;
+@media (max-width:768px) {
 
-            text-align: left;
+    .sidebar {
 
-            transition:
-                .2s;
+        transform:
+            translateX(-100%);
 
-        }
+        transition:
+            transform .25s ease;
+    }
 
+    .sidebar.mobile-open {
 
-        .quick-action:hover {
+        transform:
+            translateX(0);
+    }
 
-            border-color:
-                #bfdbfe;
+    .main {
 
-            background:
-                #eff6ff;
+        margin-left:
+            0;
+    }
 
-            transform:
-                translateY(-2px);
+    .mobile-header {
 
-        }
+        display:
+            flex;
 
+        height:
+            64px;
 
-        .quick-action-icon {
+        background:
+            white;
 
-            width: 38px;
-            height: 38px;
+        border-bottom:
+            1px solid var(--border);
 
-            border-radius: 10px;
+        align-items:
+            center;
 
-            display: flex;
+        justify-content:
+            space-between;
 
-            align-items: center;
-            justify-content: center;
+        padding:
+            0 18px;
 
-            background:
-                #dbeafe;
+        position:
+            sticky;
 
-            color:
-                #2563eb;
+        top:
+            0;
 
-        }
+        z-index:
+            900;
+    }
 
+    .mobile-menu {
 
-        .quick-action strong {
+        width:
+            38px;
 
-            display: block;
+        height:
+            38px;
 
-            font-size: 12px;
+        border:
+            1px solid var(--border);
 
-            color:
-                var(--dark);
+        border-radius:
+            9px;
 
-        }
+        background:
+            white;
 
+        color:
+            var(--dark);
+    }
 
-        .quick-action span {
+    .topbar {
 
-            display: block;
+        display:
+            none;
+    }
 
-            margin-top: 3px;
+    .content {
 
-            font-size: 10px;
+        padding:
+            20px 16px 40px;
+    }
 
-            color:
-                var(--muted);
+    .stats-grid {
 
-        }
+        grid-template-columns:
+            1fr 1fr;
 
+        gap:
+            12px;
+    }
 
-        /* =====================================================
-           HOSPITAL DETAILS
-        ====================================================== */
+    .welcome {
 
-        .hospital-form {
+        padding:
+            23px;
+    }
 
-            padding:
-                22px;
+    .welcome h2 {
 
-        }
+        font-size:
+            20px;
+    }
 
+    .form-row {
 
-        .form-group {
+        grid-template-columns:
+            1fr;
+    }
+}
 
-            margin-bottom:
-                15px;
 
-        }
+@media (max-width:480px) {
 
+    .stats-grid {
 
-        .form-label {
+        grid-template-columns:
+            1fr;
+    }
 
-            display: block;
+    .quick-actions {
 
-            font-size: 11px;
+        grid-template-columns:
+            1fr;
+    }
+}
 
-            font-weight: 600;
-
-            color:
-                #475569;
-
-            margin-bottom:
-                7px;
-
-        }
-
-
-        input,
-        textarea,
-        select {
-
-            width: 100%;
-
-            border:
-                1px solid var(--border);
-
-            outline: none;
-
-            background:
-                #ffffff;
-
-            color:
-                var(--dark);
-
-            border-radius:
-                9px;
-
-            padding:
-                11px 12px;
-
-            font-size:
-                13px;
-
-            transition:
-                border-color .2s,
-                box-shadow .2s;
-
-        }
-
-
-        input:focus,
-        textarea:focus,
-        select:focus {
-
-            border-color:
-                #93c5fd;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(37,99,235,0.08);
-
-        }
-
-
-        input:disabled {
-
-            background:
-                #f1f5f9;
-
-            color:
-                #64748b;
-
-        }
-
-
-        textarea {
-
-            min-height:
-                90px;
-
-            resize:
-                vertical;
-
-        }
-
-
-        .form-row {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 14px;
-
-        }
-
-
-        .save-btn {
-
-            width: 100%;
-
-            margin-top:
-                5px;
-
-            padding:
-                12px;
-
-            border: none;
-
-            border-radius:
-                9px;
-
-            background:
-                var(--primary);
-
-            color:
-                white;
-
-            font-size:
-                13px;
-
-            font-weight:
-                600;
-
-            transition:
-                .2s;
-
-        }
-
-
-        .save-btn:hover {
-
-            background:
-                var(--primary-dark);
-
-        }
-
-
-        /* =====================================================
-           DOCTOR SECTION
-        ====================================================== */
-
-        .doctor-section {
-
-            margin-top:
-                20px;
-
-        }
-
-
-        .doctor-list {
-
-            padding:
-                0 22px 22px;
-
-        }
-
-
-        .doctor-box {
-
-            padding:
-                17px;
-
-            border:
-                1px solid var(--border);
-
-            border-radius:
-                12px;
-
-            background:
-                #fafcff;
-
-            margin-top:
-                14px;
-
-        }
-
-
-        .doctor-header {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            margin-bottom:
-                12px;
-
-        }
-
-
-        .doctor-title {
-
-            font-size:
-                13px;
-
-            font-weight:
-                700;
-
-            color:
-                var(--dark);
-
-        }
-
-
-        .remove-doctor {
-
-            border: none;
-
-            background:
-                #fef2f2;
-
-            color:
-                #ef4444;
-
-            padding:
-                6px 9px;
-
-            border-radius:
-                7px;
-
-            font-size:
-                11px;
-
-        }
-
-
-        .add-doctor {
-
-            margin-top:
-                14px;
-
-            border:
-                1px dashed #93c5fd;
-
-            background:
-                #eff6ff;
-
-            color:
-                #2563eb;
-
-            padding:
-                10px 14px;
-
-            border-radius:
-                8px;
-
-            font-size:
-                12px;
-
-            font-weight:
-                600;
-
-        }
-
-
-        /* =====================================================
-           STATUS
-        ====================================================== */
-
-        #statusMessage {
-
-            display:
-                none;
-
-            margin-top:
-                12px;
-
-            padding:
-                10px 12px;
-
-            border-radius:
-                8px;
-
-            font-size:
-                12px;
-
-        }
-
-
-        /* =====================================================
-           RESPONSIVE
-        ====================================================== */
-
-        @media (max-width: 1100px) {
-
-            .stats-grid {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-
-            }
-
-            .dashboard-grid {
-
-                grid-template-columns:
-                    1fr;
-
-            }
-
-        }
-
-
-        @media (max-width: 768px) {
-
-            .sidebar {
-
-                transform:
-                    translateX(-100%);
-
-                transition:
-                    transform .25s ease;
-
-            }
-
-
-            .sidebar.mobile-open {
-
-                transform:
-                    translateX(0);
-
-            }
-
-
-            .main {
-
-                margin-left:
-                    0;
-
-            }
-
-
-            .mobile-header {
-
-                display:
-                    flex;
-
-                height:
-                    64px;
-
-                background:
-                    white;
-
-                border-bottom:
-                    1px solid var(--border);
-
-                align-items:
-                    center;
-
-                justify-content:
-                    space-between;
-
-                padding:
-                    0 18px;
-
-                position:
-                    sticky;
-
-                top: 0;
-
-                z-index: 900;
-
-            }
-
-
-            .mobile-menu {
-
-                width:
-                    38px;
-
-                height:
-                    38px;
-
-                border:
-                    1px solid var(--border);
-
-                border-radius:
-                    9px;
-
-                background:
-                    white;
-
-                color:
-                    var(--dark);
-
-            }
-
-
-            .topbar {
-
-                display:
-                    none;
-
-            }
-
-
-            .content {
-
-                padding:
-                    20px 16px 40px;
-
-            }
-
-
-            .stats-grid {
-
-                grid-template-columns:
-                    1fr 1fr;
-
-                gap:
-                    12px;
-
-            }
-
-
-            .welcome {
-
-                padding:
-                    23px;
-
-            }
-
-
-            .welcome h2 {
-
-                font-size:
-                    20px;
-
-            }
-
-
-            .form-row {
-
-                grid-template-columns:
-                    1fr;
-
-            }
-
-        }
-
-
-        @media (max-width: 480px) {
-
-            .stats-grid {
-
-                grid-template-columns:
-                    1fr;
-
-            }
-
-
-            .quick-actions {
-
-                grid-template-columns:
-                    1fr;
-
-            }
-
-        }
-
-    </style>
+</style>
 
 </head>
 
@@ -1701,15 +1651,12 @@
 
 <!-- =========================================================
      SIDEBAR
-========================================================== -->
+========================================================= -->
 
 <aside
     class="sidebar"
     id="sidebar"
 >
-
-
-    <!-- BRAND -->
 
     <div class="brand">
 
@@ -1734,10 +1681,7 @@
     </div>
 
 
-    <!-- NAVIGATION -->
-
     <nav class="sidebar-nav">
-
 
         <div class="nav-label">
             Workspace
@@ -1750,7 +1694,7 @@
             onclick="showDashboard()"
         >
 
-            <i class="fa-solid fa-grid-2"></i>
+            <i class="fa-solid fa-table-cells-large"></i>
 
             <span>
                 Dashboard
@@ -1852,14 +1796,10 @@
 
         </button>
 
-
     </nav>
 
 
-    <!-- SIDEBAR BOTTOM -->
-
     <div class="sidebar-bottom">
-
 
         <div class="profile-card">
 
@@ -1868,7 +1808,6 @@
                 <i class="fa-solid fa-hospital"></i>
 
             </div>
-
 
             <div class="profile-info">
 
@@ -1901,7 +1840,6 @@
 
         </button>
 
-
     </div>
 
 </aside>
@@ -1909,7 +1847,7 @@
 
 <!-- =========================================================
      MAIN
-========================================================== -->
+========================================================= -->
 
 <div class="main">
 
@@ -1929,7 +1867,7 @@
 
 
         <strong>
-            Statusly 
+            Statusly
         </strong>
 
 
@@ -1949,7 +1887,6 @@
 
     <header class="topbar">
 
-
         <div class="page-heading">
 
             <h1>
@@ -1964,7 +1901,6 @@
 
 
         <div class="topbar-right">
-
 
             <div class="hospital-pill">
 
@@ -1984,19 +1920,18 @@
 
                 <i class="fa-regular fa-bell"></i>
 
-                <span
-                    class="notification-dot"
-                ></span>
+                <span class="notification-dot"></span>
 
             </button>
-
 
         </div>
 
     </header>
 
 
-    <!-- CONTENT -->
+    <!-- =====================================================
+         CONTENT
+    ====================================================== -->
 
     <main class="content">
 
@@ -2005,12 +1940,8 @@
              DASHBOARD
         ================================================== -->
 
-        <section
-            id="dashboardSection"
-        >
+        <section id="dashboardSection">
 
-
-            <!-- WELCOME -->
 
             <div class="welcome">
 
@@ -2023,6 +1954,7 @@
                     <p>
                         Here's what's happening with your hospital today.
                     </p>
+
 
                     <div class="welcome-time">
 
@@ -2094,7 +2026,7 @@
                         class="stat-value"
                         id="doctorCountDisplay"
                     >
-                        1
+                        0
                     </div>
 
                     <div class="stat-label">
@@ -2122,6 +2054,7 @@
 
                     <div
                         class="stat-value"
+                        id="followupCount"
                     >
                         —
                     </div>
@@ -2149,9 +2082,7 @@
 
                     </div>
 
-                    <div
-                        class="stat-value"
-                    >
+                    <div class="stat-value">
                         100%
                     </div>
 
@@ -2160,7 +2091,6 @@
                     </div>
 
                 </div>
-
 
             </div>
 
@@ -2297,7 +2227,6 @@
 
                         </button>
 
-
                     </div>
 
                 </div>
@@ -2324,64 +2253,50 @@
                     </div>
 
 
-                    <div
-                        style="
-                            padding:22px;
-                        "
-                    >
+                    <div style="padding:22px;">
 
 
-                        <div
-                            style="
-                                display:flex;
-                                align-items:center;
-                                justify-content:space-between;
-                                padding-bottom:16px;
-                                border-bottom:1px solid #e2e8f0;
-                            "
-                        >
+                        <div style="
+                            display:flex;
+                            align-items:center;
+                            justify-content:space-between;
+                            padding-bottom:16px;
+                            border-bottom:1px solid #e2e8f0;
+                        ">
 
-                            <span
-                                style="
-                                    font-size:12px;
-                                    color:#64748b;
-                                "
-                            >
+                            <span style="
+                                font-size:12px;
+                                color:#64748b;
+                            ">
                                 Subscription
                             </span>
 
-                            <span
-                                style="
-                                    padding:5px 9px;
-                                    border-radius:6px;
-                                    background:#ecfdf5;
-                                    color:#059669;
-                                    font-size:11px;
-                                    font-weight:700;
-                                "
-                            >
+                            <span style="
+                                padding:5px 9px;
+                                border-radius:6px;
+                                background:#ecfdf5;
+                                color:#059669;
+                                font-size:11px;
+                                font-weight:700;
+                            ">
                                 Active
                             </span>
 
                         </div>
 
 
-                        <div
-                            style="
-                                display:flex;
-                                align-items:center;
-                                justify-content:space-between;
-                                padding:16px 0;
-                                border-bottom:1px solid #e2e8f0;
-                            "
-                        >
+                        <div style="
+                            display:flex;
+                            align-items:center;
+                            justify-content:space-between;
+                            padding:16px 0;
+                            border-bottom:1px solid #e2e8f0;
+                        ">
 
-                            <span
-                                style="
-                                    font-size:12px;
-                                    color:#64748b;
-                                "
-                            >
+                            <span style="
+                                font-size:12px;
+                                color:#64748b;
+                            ">
                                 Hospital ID
                             </span>
 
@@ -2398,43 +2313,35 @@
                         </div>
 
 
-                        <div
-                            style="
-                                display:flex;
-                                align-items:center;
-                                justify-content:space-between;
-                                padding-top:16px;
-                            "
-                        >
+                        <div style="
+                            display:flex;
+                            align-items:center;
+                            justify-content:space-between;
+                            padding-top:16px;
+                        ">
 
-                            <span
-                                style="
-                                    font-size:12px;
-                                    color:#64748b;
-                                "
-                            >
+                            <span style="
+                                font-size:12px;
+                                color:#64748b;
+                            ">
                                 Account Status
                             </span>
 
-                            <span
-                                style="
-                                    display:flex;
-                                    align-items:center;
-                                    gap:6px;
-                                    font-size:11px;
-                                    color:#059669;
-                                    font-weight:600;
-                                "
-                            >
+                            <span style="
+                                display:flex;
+                                align-items:center;
+                                gap:6px;
+                                font-size:11px;
+                                color:#059669;
+                                font-weight:600;
+                            ">
 
-                                <span
-                                    style="
-                                        width:7px;
-                                        height:7px;
-                                        border-radius:50%;
-                                        background:#10b981;
-                                    "
-                                ></span>
+                                <span style="
+                                    width:7px;
+                                    height:7px;
+                                    border-radius:50%;
+                                    background:#10b981;
+                                "></span>
 
                                 Operational
 
@@ -2442,11 +2349,9 @@
 
                         </div>
 
-
                     </div>
 
                 </div>
-
 
             </div>
 
@@ -2462,7 +2367,6 @@
             class="section panel"
             style="display:none;"
         >
-
 
             <div class="panel-header">
 
@@ -2515,7 +2419,6 @@
 
                 <div class="form-row">
 
-
                     <div class="form-group">
 
                         <label class="form-label">
@@ -2542,7 +2445,6 @@
                         >
 
                     </div>
-
 
                 </div>
 
@@ -2591,7 +2493,6 @@
 
                 <div id="statusMessage"></div>
 
-
             </div>
 
         </section>
@@ -2606,7 +2507,6 @@
             class="section panel"
             style="display:none;"
         >
-
 
             <div class="panel-header">
 
@@ -2630,99 +2530,12 @@
                 id="doctor-section"
             >
 
-
-                <div class="doctor-box">
-
-
-                    <div class="doctor-header">
-
-                        <div class="doctor-title">
-
-                            <i
-                                class="fa-solid fa-user-doctor"
-                                style="color:#2563eb;margin-right:6px;"
-                            ></i>
-
-                            Doctor 1
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label class="form-label">
-                            Doctor Name
-                        </label>
-
-                        <input
-                            class="doctor_name"
-                            placeholder="Dr. Rajesh Patil"
-                        >
-
-                    </div>
-
-
-                    <div class="form-row">
-
-
-                        <div class="form-group">
-
-                            <label class="form-label">
-                                Specialization
-                            </label>
-
-                            <input
-                                class="specialization"
-                                placeholder="Cardiologist"
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label class="form-label">
-                                OPD Time
-                            </label>
-
-                            <input
-                                class="opd_time"
-                                placeholder="10:00 AM - 2:00 PM"
-                            >
-
-                        </div>
-
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label class="form-label">
-                            Doctor Information
-                        </label>
-
-                        <textarea
-                            class="doctor_info"
-                            placeholder="Doctor experience, services and additional information..."
-                        ></textarea>
-
-                    </div>
-
-
-                </div>
-
+                <!-- Doctors loaded by JavaScript -->
 
             </div>
 
 
-            <div
-                style="
-                    padding:0 22px 22px;
-                "
-            >
+            <div style="padding:0 22px 22px;">
 
                 <button
                     class="add-doctor"
@@ -2754,11 +2567,12 @@
 
             </div>
 
-
         </section>
 
 
-        <!-- SETTINGS -->
+        <!-- =================================================
+             SETTINGS
+        ================================================== -->
 
         <section
             id="settings"
@@ -2775,7 +2589,7 @@
                     </div>
 
                     <div class="panel-subtitle">
-                        Manage your MediQueue dashboard
+                        Manage your Statusly dashboard
                     </div>
 
                 </div>
@@ -2783,21 +2597,17 @@
             </div>
 
 
-            <div
-                style="
-                    padding:25px;
-                "
-            >
+            <div style="padding:25px;">
 
-                <p
-                    style="
-                        color:#64748b;
-                        font-size:13px;
-                        line-height:1.7;
-                    "
-                >
+                <p style="
+                    color:#64748b;
+                    font-size:13px;
+                    line-height:1.7;
+                ">
+
                     Dashboard settings and account preferences
                     can be managed here.
+
                 </p>
 
             </div>
@@ -2812,19 +2622,18 @@
 
 <!-- =========================================================
      JAVASCRIPT
-========================================================== -->
+========================================================= -->
 
 <script type="module">
 
 
-/* =====================================================
+/* =========================================================
    FIREBASE
-===================================================== */
+========================================================= */
 
 import {
     initializeApp
-}
-from
+} from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 
 
@@ -2832,14 +2641,13 @@ import {
     getAuth,
     onAuthStateChanged,
     signOut
-}
-from
+} from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
 
-/* =====================================================
+/* =========================================================
    FIREBASE CONFIG
-===================================================== */
+========================================================= */
 
 const firebaseConfig = {
 
@@ -2867,9 +2675,9 @@ const firebaseConfig = {
 };
 
 
-/* =====================================================
-   INITIALIZE FIREBASE
-===================================================== */
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
 const app =
     initializeApp(
@@ -2883,18 +2691,13 @@ const auth =
     );
 
 
-/* =====================================================
-   CURRENT USER
-===================================================== */
-
-let currentUser = null;
-
-let doctorCount = 1;
+let currentUser =
+    null;
 
 
-/* =====================================================
-   AUTHENTICATION
-===================================================== */
+/* =========================================================
+   AUTH STATE
+========================================================= */
 
 onAuthStateChanged(
     auth,
@@ -2928,21 +2731,11 @@ onAuthStateChanged(
                 );
 
 
-            if (!token) {
-
-                window.location.href =
-                    "/login-page";
-
-                return;
-
-            }
-
-
-            /* =========================================
+            /* =============================================
                CHECK SUBSCRIPTION
-            ========================================== */
+            ============================================= */
 
-            const response =
+            const subscriptionResponse =
                 await fetch(
                     "/check-subscription",
                     {
@@ -2964,25 +2757,23 @@ onAuthStateChanged(
                 );
 
 
-            const data =
-                await response.json();
+            const subscriptionData =
+                await safeJson(
+                    subscriptionResponse
+                );
 
 
             console.log(
                 "SUBSCRIPTION:",
-                data
+                subscriptionData
             );
 
 
-            if (!response.ok) {
+            if (
+                subscriptionResponse.status === 401
+            ) {
 
-                alert(
-                    data.error ||
-                    "Unable to verify subscription."
-                );
-
-                window.location.href =
-                    "/login-page";
+                await logoutUser();
 
                 return;
 
@@ -2990,7 +2781,38 @@ onAuthStateChanged(
 
 
             if (
-                data.active !== true
+                subscriptionResponse.status === 403
+            ) {
+
+                alert(
+                    subscriptionData.error ||
+                    "Your subscription has expired."
+                );
+
+                window.location.href =
+                    "/payment";
+
+                return;
+
+            }
+
+
+            if (
+                !subscriptionResponse.ok
+            ) {
+
+                alert(
+                    subscriptionData.error ||
+                    "Unable to verify subscription."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                subscriptionData.active !== true
             ) {
 
                 alert(
@@ -3005,9 +2827,9 @@ onAuthStateChanged(
             }
 
 
-            /* =========================================
-               SAVE USER
-            ========================================== */
+            /* =============================================
+               UID
+            ============================================= */
 
             localStorage.setItem(
                 "uid",
@@ -3015,62 +2837,18 @@ onAuthStateChanged(
             );
 
 
-            /* =========================================
-               HOSPITAL ID
-            ========================================== */
+            /* =============================================
+               LOAD HOSPITAL
+            ============================================= */
 
-            const hospitalId =
-                localStorage.getItem(
-                    "hospitalId"
-                ) || "";
+            await loadHospital(
+                token,
+                user.uid
+            );
 
-
-            document.getElementById(
-                "hospital_id"
-            ).value =
-                hospitalId;
-
-
-            document.getElementById(
-                "dashboardHospitalId"
-            ).innerText =
-                hospitalId || "Not assigned";
-
-
-            /* =========================================
-               HOSPITAL NAME
-            ========================================== */
-
-            const hospitalName =
-                localStorage.getItem(
-                    "hospitalName"
-                ) || "Your Hospital";
-
-
-            document.getElementById(
-                "hospitalNameDisplay"
-            ).innerText =
-                hospitalName;
-
-
-            document.getElementById(
-                "sidebarHospitalName"
-            ).innerText =
-                hospitalName;
-
-
-            /* =========================================
-               LOAD SAVED DATA
-            ========================================== */
-
-            loadSavedHospital();
-
-
-            /* =========================================
-               DATE
-            ========================================== */
 
             updateDate();
+
 
         }
         catch(error) {
@@ -3080,387 +2858,442 @@ onAuthStateChanged(
                 error
             );
 
-            window.location.href =
-                "/login-page";
-
         }
 
     }
 );
 
 
-/* =====================================================
-   DATE
-===================================================== */
-
-function updateDate() {
-
-    const now =
-        new Date();
-
-
-    const formatted =
-        now.toLocaleDateString(
-            "en-IN",
-            {
-                weekday:
-                    "long",
-
-                day:
-                    "numeric",
-
-                month:
-                    "long",
-
-                year:
-                    "numeric"
-            }
-        );
-
-
-    const element =
-        document.getElementById(
-            "currentDate"
-        );
-
-
-    if (element) {
-
-        element.innerText =
-            formatted;
-
-    }
-
-}
-
-
-/* =====================================================
-   SHOW DASHBOARD
-===================================================== */
-
-window.showDashboard =
-function() {
-
-    document
-        .querySelectorAll(
-            ".section"
-        )
-        .forEach(
-            function(section) {
-
-                section.style.display =
-                    "none";
-
-            }
-        );
-
-
-    document.getElementById(
-        "dashboardSection"
-    ).style.display =
-        "block";
-
-
-    setActiveNav(
-        "nav-dashboard"
-    );
-
-};
-
-
-/* =====================================================
-   SHOW SECTION
-===================================================== */
-
-window.showSection =
-function(id) {
-
-
-    document
-        .querySelectorAll(
-            ".section"
-        )
-        .forEach(
-            function(section) {
-
-                section.style.display =
-                    "none";
-
-            }
-        );
-
-
-    document.getElementById(
-        "dashboardSection"
-    ).style.display =
-        "none";
-
-
-    const selected =
-        document.getElementById(
-            id
-        );
-
-
-    if (selected) {
-
-        selected.style.display =
-            "block";
-
-    }
-
-
-    if (
-        id === "hospital"
-    ) {
-
-        setActiveNav(
-            "nav-hospital"
-        );
-
-    }
-
-
-    if (
-        id === "doctor"
-    ) {
-
-        setActiveNav(
-            "nav-doctors"
-        );
-
-    }
-
-
-    window.scrollTo(
-        {
-            top: 0,
-            behavior: "smooth"
-        }
-    );
-
-};
-
-
-/* =====================================================
-   SETTINGS
-===================================================== */
-
-window.showSettings =
-function() {
-
-    document
-        .querySelectorAll(
-            ".section"
-        )
-        .forEach(
-            function(section) {
-
-                section.style.display =
-                    "none";
-
-            }
-        );
-
-
-    document.getElementById(
-        "dashboardSection"
-    ).style.display =
-        "none";
-
-
-    document.getElementById(
-        "settings"
-    ).style.display =
-        "block";
-
-
-    document
-        .querySelectorAll(
-            ".nav-item"
-        )
-        .forEach(
-            function(item) {
-
-                item.classList.remove(
-                    "active"
-                );
-
-            }
-        );
-
-};
-
-
-/* =====================================================
-   ACTIVE NAV
-===================================================== */
-
-function setActiveNav(
-    id
+/* =========================================================
+   LOAD HOSPITAL
+========================================================= */
+
+async function loadHospital(
+    token,
+    uid
 ) {
 
-    document
-        .querySelectorAll(
-            ".nav-item"
-        )
-        .forEach(
-            function(item) {
+    try {
 
-                item.classList.remove(
-                    "active"
-                );
+        const response =
+            await fetch(
+                "/hospital-data/" +
+                encodeURIComponent(uid),
+                {
 
-            }
+                    method:
+                        "GET",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + token,
+
+                        "Content-Type":
+                            "application/json"
+
+                    }
+
+                }
+            );
+
+
+        if (
+            response.status === 401
+        ) {
+
+            await logoutUser();
+
+            return;
+
+        }
+
+
+        if (
+            response.status === 403
+        ) {
+
+            const data =
+                await safeJson(response);
+
+            alert(
+                data.error ||
+                "Subscription inactive."
+            );
+
+            window.location.href =
+                "/payment";
+
+            return;
+
+        }
+
+
+        if (
+            !response.ok
+        ) {
+
+            console.warn(
+                "Hospital API returned:",
+                response.status
+            );
+
+            loadLocalData();
+
+            return;
+
+        }
+
+
+        const responseData =
+            await response.json();
+
+
+        console.log(
+            "HOSPITAL DATA:",
+            responseData
         );
 
 
-    const item =
-        document.getElementById(
-            id
+        const hospital =
+            responseData.hospital ||
+            responseData.data ||
+            responseData;
+
+
+        populateHospital(
+            hospital
         );
 
+    }
+    catch(error) {
 
-    if (item) {
-
-        item.classList.add(
-            "active"
+        console.error(
+            "LOAD HOSPITAL ERROR:",
+            error
         );
+
+        loadLocalData();
 
     }
 
 }
 
 
-/* =====================================================
-   APPOINTMENTS
-===================================================== */
+/* =========================================================
+   POPULATE HOSPITAL
+========================================================= */
 
-window.openAppointments =
-function() {
+function populateHospital(
+    data
+) {
 
-    const uid =
-        localStorage.getItem(
-            "uid"
-        );
+    if (
+        !data ||
+        typeof data !== "object"
+    ) {
 
-
-    if (!uid) {
-
-        alert(
-            "Login required!"
-        );
-
-        window.location.href =
-            "/login-page";
+        loadLocalData();
 
         return;
 
     }
 
 
-    window.location.href =
-        "/appointments/" +
-        uid;
-
-};
-
-
-/* =====================================================
-   FOLLOW UPS
-===================================================== */
-
-window.openFollowups =
-function() {
-
-    const uid =
+    const hospitalId =
+        data.hospital_id ||
+        data.hospitalId ||
+        data.id ||
         localStorage.getItem(
-            "uid"
-        );
+            "hospitalId"
+        ) ||
+        "";
 
 
-    if (!uid) {
-
-        alert(
-            "Login required!"
-        );
-
-        window.location.href =
-            "/login-page";
-
-        return;
-
-    }
-
-
-    window.location.href =
-        "/followups/" +
-        uid;
-
-};
-
-
-/* =====================================================
-   ANALYTICS
-===================================================== */
-
-window.openAnalytics =
-function() {
-
-    const uid =
+    const hospitalName =
+        data.hospital_name ||
+        data.hospitalName ||
+        data.name ||
         localStorage.getItem(
-            "uid"
-        );
+            "hospitalName"
+        ) ||
+        "Your Hospital";
 
 
-    if (!uid) {
-
-        alert(
-            "Login required!"
-        );
-
-        window.location.href =
-            "/login-page";
-
-        return;
-
-    }
+    const date =
+        data.date ||
+        data.entry_date ||
+        "";
 
 
-    window.location.href =
-        "/analytics/" +
-        uid;
-
-};
-
-
-/* =====================================================
-   ADD DOCTOR
-===================================================== */
-
-window.addDoctor =
-function() {
-
-    doctorCount++;
+    const openTime =
+        data.open_time ||
+        data.opening_time ||
+        "";
 
 
-    const doctorSection =
+    const closeTime =
+        data.close_time ||
+        data.closing_time ||
+        "";
+
+
+    const info =
+        data.info ||
+        data.hospital_info ||
+        data.description ||
+        "";
+
+
+    /* SAVE CACHE */
+
+    localStorage.setItem(
+        "hospitalId",
+        hospitalId
+    );
+
+
+    localStorage.setItem(
+        "hospitalName",
+        hospitalName
+    );
+
+
+    /* FORM */
+
+    document.getElementById(
+        "hospital_id"
+    ).value =
+        hospitalId;
+
+
+    document.getElementById(
+        "hospital_name"
+    ).value =
+        hospitalName;
+
+
+    document.getElementById(
+        "date"
+    ).value =
+        date;
+
+
+    document.getElementById(
+        "open_time"
+    ).value =
+        openTime;
+
+
+    document.getElementById(
+        "close_time"
+    ).value =
+        closeTime;
+
+
+    document.getElementById(
+        "info"
+    ).value =
+        info;
+
+
+    /* HEADER */
+
+    document.getElementById(
+        "hospitalNameDisplay"
+    ).innerText =
+        hospitalName;
+
+
+    document.getElementById(
+        "sidebarHospitalName"
+    ).innerText =
+        hospitalName;
+
+
+    document.getElementById(
+        "dashboardHospitalId"
+    ).innerText =
+        hospitalId ||
+        "Not assigned";
+
+
+    /* DOCTORS */
+
+    const doctors =
+        data.doctors ||
+        data.doctor_list ||
+        [];
+
+
+    loadDoctors(
+        doctors
+    );
+
+}
+
+
+/* =========================================================
+   LOAD LOCAL FALLBACK
+========================================================= */
+
+function loadLocalData() {
+
+    const hospitalId =
+        localStorage.getItem(
+            "hospitalId"
+        ) || "";
+
+
+    const hospitalName =
+        localStorage.getItem(
+            "hospitalName"
+        ) || "Your Hospital";
+
+
+    document.getElementById(
+        "hospital_id"
+    ).value =
+        hospitalId;
+
+
+    document.getElementById(
+        "hospital_name"
+    ).value =
+        hospitalName;
+
+
+    document.getElementById(
+        "hospitalNameDisplay"
+    ).innerText =
+        hospitalName;
+
+
+    document.getElementById(
+        "sidebarHospitalName"
+    ).innerText =
+        hospitalName;
+
+
+    document.getElementById(
+        "dashboardHospitalId"
+    ).innerText =
+        hospitalId ||
+        "Not assigned";
+
+
+    loadDoctors([]);
+
+}
+
+
+/* =========================================================
+   LOAD DOCTORS
+========================================================= */
+
+function loadDoctors(
+    doctors
+) {
+
+    const section =
         document.getElementById(
             "doctor-section"
         );
 
 
-    const newDoctor =
+    section.innerHTML = "";
+
+
+    if (
+        !Array.isArray(doctors) ||
+        doctors.length === 0
+    ) {
+
+        createDoctor(
+            1,
+            {},
+            false
+        );
+
+        updateDoctorCount();
+
+        return;
+
+    }
+
+
+    doctors.forEach(
+        function(
+            doctor,
+            index
+        ) {
+
+            createDoctor(
+                index + 1,
+                doctor,
+                index > 0
+            );
+
+        }
+    );
+
+
+    updateDoctorCount();
+
+}
+
+
+/* =========================================================
+   CREATE DOCTOR
+========================================================= */
+
+function createDoctor(
+    number,
+    doctor,
+    removable
+) {
+
+    const section =
+        document.getElementById(
+            "doctor-section"
+        );
+
+
+    const box =
         document.createElement(
             "div"
         );
 
 
-    newDoctor.className =
+    box.className =
         "doctor-box";
 
 
-    newDoctor.innerHTML = `
+    const name =
+        doctor.doctor_name ||
+        doctor.name ||
+        "";
+
+
+    const specialization =
+        doctor.specialization ||
+        doctor.speciality ||
+        "";
+
+
+    const opd =
+        doctor.opd_time ||
+        doctor.opdTime ||
+        "";
+
+
+    const info =
+        doctor.doctor_info ||
+        doctor.info ||
+        "";
+
+
+    box.innerHTML = `
 
         <div class="doctor-header">
 
@@ -3471,21 +3304,33 @@ function() {
                     style="color:#2563eb;margin-right:6px;"
                 ></i>
 
-                Doctor ${doctorCount}
+                Doctor ${number}
 
             </div>
 
-            <button
-                type="button"
-                class="remove-doctor"
-                onclick="this.closest('.doctor-box').remove(); updateDoctorCount();"
-            >
 
-                <i class="fa-solid fa-trash"></i>
+            ${
+                removable
+                ?
+                `
+                <button
+                    type="button"
+                    class="remove-doctor"
+                    onclick="
+                        this.closest('.doctor-box').remove();
+                        renumberDoctors();
+                    "
+                >
 
-                Remove
+                    <i class="fa-solid fa-trash"></i>
 
-            </button>
+                    Remove
+
+                </button>
+                `
+                :
+                ""
+            }
 
         </div>
 
@@ -3498,7 +3343,8 @@ function() {
 
             <input
                 class="doctor_name"
-                placeholder="Dr. John Smith"
+                value="${escapeHtml(name)}"
+                placeholder="Dr. Rajesh Patil"
             >
 
         </div>
@@ -3514,6 +3360,7 @@ function() {
 
                 <input
                     class="specialization"
+                    value="${escapeHtml(specialization)}"
                     placeholder="Cardiologist"
                 >
 
@@ -3528,6 +3375,7 @@ function() {
 
                 <input
                     class="opd_time"
+                    value="${escapeHtml(opd)}"
                     placeholder="10:00 AM - 2:00 PM"
                 >
 
@@ -3545,28 +3393,25 @@ function() {
             <textarea
                 class="doctor_info"
                 placeholder="Doctor experience, services and additional information..."
-            ></textarea>
+            >${escapeHtml(info)}</textarea>
 
         </div>
 
     `;
 
 
-    doctorSection.appendChild(
-        newDoctor
+    section.appendChild(
+        box
     );
 
-
-    updateDoctorCount();
-
-};
+}
 
 
-/* =====================================================
-   UPDATE DOCTOR COUNT
-===================================================== */
+/* =========================================================
+   ADD DOCTOR
+========================================================= */
 
-window.updateDoctorCount =
+window.addDoctor =
 function() {
 
     const count =
@@ -3575,89 +3420,108 @@ function() {
         ).length;
 
 
-    const display =
-        document.getElementById(
-            "doctorCountDisplay"
-        );
+    createDoctor(
+        count + 1,
+        {},
+        true
+    );
 
 
-    if (display) {
-
-        display.innerText =
-            count;
-
-    }
+    updateDoctorCount();
 
 };
 
 
-/* =====================================================
-   LOAD HOSPITAL
-===================================================== */
+/* =========================================================
+   RENUMBER
+========================================================= */
 
-async function loadSavedHospital() {
+function renumberDoctors() {
 
-    const hospitalName =
-        localStorage.getItem(
-            "hospitalName"
-        ) || "";
+    const boxes =
+        document.querySelectorAll(
+            ".doctor-box"
+        );
 
 
-    document.getElementById(
-        "hospital_name"
-    ).value =
-        hospitalName;
+    boxes.forEach(
+        function(
+            box,
+            index
+        ) {
+
+            const title =
+                box.querySelector(
+                    ".doctor-title"
+                );
+
+
+            if (title) {
+
+                title.innerHTML = `
+
+                    <i
+                        class="fa-solid fa-user-doctor"
+                        style="color:#2563eb;margin-right:6px;"
+                    ></i>
+
+                    Doctor ${index + 1}
+
+                `;
+
+            }
+
+        }
+    );
+
+
+    updateDoctorCount();
 
 }
 
 
-/* =====================================================
+/* =========================================================
+   DOCTOR COUNT
+========================================================= */
+
+function updateDoctorCount() {
+
+    const count =
+        document.querySelectorAll(
+            ".doctor-box"
+        ).length;
+
+
+    document.getElementById(
+        "doctorCountDisplay"
+    ).innerText =
+        count;
+
+}
+
+
+/* =========================================================
    SAVE HOSPITAL
-===================================================== */
+========================================================= */
 
 window.saveHospital =
 async function() {
 
+    if (!currentUser) {
+
+        alert(
+            "Login session expired."
+        );
+
+        window.location.href =
+            "/login-page";
+
+        return;
+
+    }
+
+
     try {
-
-
-        const uid =
-            localStorage.getItem(
-                "uid"
-            );
-
-
-        if (!uid) {
-
-            alert(
-                "Login required!"
-            );
-
-            window.location.href =
-                "/login-page";
-
-            return;
-
-        }
-
-
-        if (!currentUser) {
-
-            alert(
-                "Login session expired."
-            );
-
-            window.location.href =
-                "/login-page";
-
-            return;
-
-        }
-
-
-        /* =============================================
-           TOKEN
-        ============================================== */
 
         const token =
             await currentUser.getIdToken(
@@ -3665,17 +3529,13 @@ async function() {
             );
 
 
-        /* =============================================
-           FORM DATA
-        ============================================== */
-
         const formData =
             new FormData();
 
 
         formData.append(
             "uid",
-            uid
+            currentUser.uid
         );
 
 
@@ -3719,76 +3579,106 @@ async function() {
         );
 
 
-        /* =============================================
-           DOCTORS
-        ============================================== */
+        /* DOCTORS */
 
-        const names =
-            document.querySelectorAll(
-                ".doctor_name"
+        document
+            .querySelectorAll(
+                ".doctor-box"
+            )
+            .forEach(
+                function(box) {
+
+                    const name =
+                        box.querySelector(
+                            ".doctor_name"
+                        )?.value.trim() || "";
+
+
+                    const specialization =
+                        box.querySelector(
+                            ".specialization"
+                        )?.value.trim() || "";
+
+
+                    const opd =
+                        box.querySelector(
+                            ".opd_time"
+                        )?.value.trim() || "";
+
+
+                    const info =
+                        box.querySelector(
+                            ".doctor_info"
+                        )?.value.trim() || "";
+
+
+                    if (
+                        !name &&
+                        !specialization &&
+                        !opd &&
+                        !info
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    formData.append(
+                        "doctor_name",
+                        name
+                    );
+
+
+                    formData.append(
+                        "specialization",
+                        specialization
+                    );
+
+
+                    formData.append(
+                        "opd_time",
+                        opd
+                    );
+
+
+                    formData.append(
+                        "doctor_info",
+                        info
+                    );
+
+                }
             );
 
 
-        const specializations =
+        /* BUTTON */
+
+        const buttons =
             document.querySelectorAll(
-                ".specialization"
+                ".save-btn"
             );
 
 
-        const opdTimes =
-            document.querySelectorAll(
-                ".opd_time"
-            );
+        buttons.forEach(
+            function(button) {
 
+                button.disabled =
+                    true;
 
-        const doctorInfos =
-            document.querySelectorAll(
-                ".doctor_info"
-            );
+                button.dataset.old =
+                    button.innerHTML;
 
-
-        names.forEach(
-            function(
-                element,
-                index
-            ) {
-
-                formData.append(
-                    "doctor_name",
-                    element.value.trim()
-                );
-
-
-                formData.append(
-                    "specialization",
-                    specializations[index]
-                        ?.value
-                        ?.trim() || ""
-                );
-
-
-                formData.append(
-                    "opd_time",
-                    opdTimes[index]
-                        ?.value
-                        ?.trim() || ""
-                );
-
-
-                formData.append(
-                    "doctor_info",
-                    doctorInfos[index]
-                        ?.value
-                        ?.trim() || ""
-                );
+                button.innerHTML = `
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    &nbsp;
+                    Saving...
+                `;
 
             }
         );
 
 
-        /* =============================================
-           SEND TO BACKEND
-        ============================================== */
+        /* REQUEST */
 
         const response =
             await fetch(
@@ -3813,7 +3703,9 @@ async function() {
 
 
         const data =
-            await response.json();
+            await safeJson(
+                response
+            );
 
 
         console.log(
@@ -3822,56 +3714,16 @@ async function() {
         );
 
 
-        /* =============================================
-           SUCCESS
-        ============================================== */
-
         if (
-            response.ok
+            response.status === 401
         ) {
 
-            const name =
-                document.getElementById(
-                    "hospital_name"
-                ).value.trim();
-
-
-            localStorage.setItem(
-                "hospitalName",
-                name
-            );
-
-
-            document.getElementById(
-                "hospitalNameDisplay"
-            ).innerText =
-                name || "Your Hospital";
-
-
-            document.getElementById(
-                "sidebarHospitalName"
-            ).innerText =
-                name || "Your Hospital";
-
-
-            alert(
-                "Hospital information saved successfully."
-            );
-
-
-            window.location.href =
-                "/hospital/" +
-                uid;
-
+            await logoutUser();
 
             return;
 
         }
 
-
-        /* =============================================
-           SUBSCRIPTION EXPIRED
-        ============================================== */
 
         if (
             response.status === 403
@@ -3882,70 +3734,555 @@ async function() {
                 "Your subscription has expired."
             );
 
-
             window.location.href =
                 "/payment";
-
 
             return;
 
         }
 
 
-        alert(
-            data.error ||
-            "Unable to save hospital."
+        if (
+            !response.ok
+        ) {
+
+            alert(
+                data.error ||
+                data.message ||
+                "Unable to save hospital."
+            );
+
+            return;
+
+        }
+
+
+        /* CACHE */
+
+        const hospitalName =
+            document.getElementById(
+                "hospital_name"
+            ).value.trim();
+
+
+        localStorage.setItem(
+            "hospitalName",
+            hospitalName
         );
+
+
+        /* HEADER */
+
+        document.getElementById(
+            "hospitalNameDisplay"
+        ).innerText =
+            hospitalName ||
+            "Your Hospital";
+
+
+        document.getElementById(
+            "sidebarHospitalName"
+        ).innerText =
+            hospitalName ||
+            "Your Hospital";
+
+
+        /* SUCCESS */
+
+        showStatus(
+            "Hospital information saved successfully."
+        );
+
+
+        alert(
+            "Hospital information saved successfully."
+        );
+
+
+        /*
+         * Stay on dashboard.
+         */
+
+        showDashboard();
+
+
+        /*
+         * Refresh from backend.
+         */
+
+        try {
+
+            const freshToken =
+                await currentUser.getIdToken(
+                    true
+                );
+
+
+            await loadHospital(
+                freshToken,
+                currentUser.uid
+            );
+
+        }
+        catch(error) {
+
+            console.warn(
+                "Refresh failed:",
+                error
+            );
+
+        }
 
     }
     catch(error) {
 
         console.error(
-            "SAVE HOSPITAL ERROR:",
+            "SAVE ERROR:",
             error
         );
-
 
         alert(
             "Unable to connect to server."
         );
 
     }
+    finally {
+
+        document
+            .querySelectorAll(
+                ".save-btn"
+            )
+            .forEach(
+                function(button) {
+
+                    button.disabled =
+                        false;
+
+
+                    if (
+                        button.dataset.old
+                    ) {
+
+                        button.innerHTML =
+                            button.dataset.old;
+
+                    }
+
+                }
+            );
+
+    }
 
 };
 
 
-/* =====================================================
+/* =========================================================
+   STATUS
+========================================================= */
+
+function showStatus(
+    message
+) {
+
+    const element =
+        document.getElementById(
+            "statusMessage"
+        );
+
+
+    if (!element) {
+
+        return;
+
+    }
+
+
+    element.style.display =
+        "block";
+
+
+    element.style.background =
+        "#ecfdf5";
+
+
+    element.style.color =
+        "#059669";
+
+
+    element.innerText =
+        message;
+
+
+    setTimeout(
+        function() {
+
+            element.style.display =
+                "none";
+
+        },
+        4000
+    );
+
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+function updateDate() {
+
+    const now =
+        new Date();
+
+
+    const formatted =
+        now.toLocaleDateString(
+            "en-IN",
+            {
+
+                weekday:
+                    "long",
+
+                day:
+                    "numeric",
+
+                month:
+                    "long",
+
+                year:
+                    "numeric"
+
+            }
+        );
+
+
+    document.getElementById(
+        "currentDate"
+    ).innerText =
+        formatted;
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+window.showDashboard =
+function() {
+
+    document
+        .querySelectorAll(
+            ".section"
+        )
+        .forEach(
+            function(section) {
+
+                section.style.display =
+                    "none";
+
+            }
+        );
+
+
+    document.getElementById(
+        "dashboardSection"
+    ).style.display =
+        "block";
+
+
+    setActiveNav(
+        "nav-dashboard"
+    );
+
+
+    closeSidebar();
+
+};
+
+
+/* =========================================================
+   SHOW SECTION
+========================================================= */
+
+window.showSection =
+function(id) {
+
+    document
+        .querySelectorAll(
+            ".section"
+        )
+        .forEach(
+            function(section) {
+
+                section.style.display =
+                    "none";
+
+            }
+        );
+
+
+    document.getElementById(
+        "dashboardSection"
+    ).style.display =
+        "none";
+
+
+    const section =
+        document.getElementById(
+            id
+        );
+
+
+    if (section) {
+
+        section.style.display =
+            "block";
+
+    }
+
+
+    if (
+        id === "hospital"
+    ) {
+
+        setActiveNav(
+            "nav-hospital"
+        );
+
+    }
+
+
+    if (
+        id === "doctor"
+    ) {
+
+        setActiveNav(
+            "nav-doctors"
+        );
+
+    }
+
+
+    closeSidebar();
+
+
+    window.scrollTo(
+        {
+            top:
+                0,
+
+            behavior:
+                "smooth"
+        }
+    );
+
+};
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+window.showSettings =
+function() {
+
+    document
+        .querySelectorAll(
+            ".section"
+        )
+        .forEach(
+            function(section) {
+
+                section.style.display =
+                    "none";
+
+            }
+        );
+
+
+    document.getElementById(
+        "dashboardSection"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "settings"
+    ).style.display =
+        "block";
+
+
+    setActiveNav(
+        null
+    );
+
+
+    closeSidebar();
+
+};
+
+
+/* =========================================================
+   ACTIVE NAV
+========================================================= */
+
+function setActiveNav(
+    id
+) {
+
+    document
+        .querySelectorAll(
+            ".nav-item"
+        )
+        .forEach(
+            function(item) {
+
+                item.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    if (!id) {
+
+        return;
+
+    }
+
+
+    const item =
+        document.getElementById(
+            id
+        );
+
+
+    if (item) {
+
+        item.classList.add(
+            "active"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   APPOINTMENTS
+========================================================= */
+
+window.openAppointments =
+function() {
+
+    const uid =
+        currentUser?.uid ||
+        localStorage.getItem(
+            "uid"
+        );
+
+
+    if (!uid) {
+
+        window.location.href =
+            "/login-page";
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "/appointments/" +
+        encodeURIComponent(uid);
+
+};
+
+
+/* =========================================================
+   FOLLOWUPS
+========================================================= */
+
+window.openFollowups =
+function() {
+
+    const uid =
+        currentUser?.uid ||
+        localStorage.getItem(
+            "uid"
+        );
+
+
+    if (!uid) {
+
+        window.location.href =
+            "/login-page";
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "/followups/" +
+        encodeURIComponent(uid);
+
+};
+
+
+/* =========================================================
+   ANALYTICS
+========================================================= */
+
+window.openAnalytics =
+function() {
+
+    const uid =
+        currentUser?.uid ||
+        localStorage.getItem(
+            "uid"
+        );
+
+
+    if (!uid) {
+
+        window.location.href =
+            "/login-page";
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "/analytics/" +
+        encodeURIComponent(uid);
+
+};
+
+
+/* =========================================================
    LOGOUT
-===================================================== */
+========================================================= */
 
 window.logout =
 async function() {
+
+    await logoutUser();
+
+};
+
+
+async function logoutUser() {
 
     try {
 
         await signOut(
             auth
         );
-
-
-        localStorage.removeItem(
-            "uid"
-        );
-
-
-        localStorage.removeItem(
-            "hospitalId"
-        );
-
-
-        localStorage.removeItem(
-            "hospitalName"
-        );
-
-
-        window.location.href =
-            "/login-page";
 
     }
     catch(error) {
@@ -3955,19 +4292,31 @@ async function() {
             error
         );
 
-
-        alert(
-            "Logout failed."
-        );
-
     }
 
-};
+
+    localStorage.removeItem(
+        "uid"
+    );
+
+    localStorage.removeItem(
+        "hospitalId"
+    );
+
+    localStorage.removeItem(
+        "hospitalName"
+    );
 
 
-/* =====================================================
+    window.location.href =
+        "/login-page";
+
+}
+
+
+/* =========================================================
    MOBILE SIDEBAR
-===================================================== */
+========================================================= */
 
 window.toggleSidebar =
 function() {
@@ -3985,15 +4334,91 @@ function() {
 };
 
 
-/* =====================================================
-   INITIAL STATE
-===================================================== */
+function closeSidebar() {
+
+    const sidebar =
+        document.getElementById(
+            "sidebar"
+        );
+
+
+    if (sidebar) {
+
+        sidebar.classList.remove(
+            "mobile-open"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   SAFE JSON
+========================================================= */
+
+async function safeJson(
+    response
+) {
+
+    try {
+
+        return await response.json();
+
+    }
+    catch {
+
+        return {};
+
+    }
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+   INITIAL
+========================================================= */
 
 showDashboard();
 
+updateDate();
 
 </script>
-
 
 </body>
 
