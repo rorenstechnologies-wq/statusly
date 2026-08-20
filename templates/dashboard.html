@@ -10,6 +10,11 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="theme-color"
+        content="#0f172a"
+    >
+
     <title>MediQueue | Hospital Dashboard</title>
 
 
@@ -20,53 +25,72 @@
         ===================================================== */
 
         * {
-
             box-sizing: border-box;
-
             margin: 0;
-
             padding: 0;
-
             font-family:
                 Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
                 Arial,
-                Helvetica,
                 sans-serif;
-
         }
 
 
-        /* =====================================================
-           BODY
-        ===================================================== */
+        :root {
+
+            --primary: #2563eb;
+
+            --primary-dark: #1d4ed8;
+
+            --secondary: #0ea5e9;
+
+            --success: #16a34a;
+
+            --danger: #dc2626;
+
+            --warning: #f59e0b;
+
+            --dark: #0f172a;
+
+            --dark-2: #1e293b;
+
+            --text: #0f172a;
+
+            --muted: #64748b;
+
+            --border: #e2e8f0;
+
+            --white: #ffffff;
+
+            --background: #f8fafc;
+
+        }
+
 
         body {
 
             min-height: 100vh;
 
             background:
-                url("https://images.unsplash.com/photo-1586773860418-d37222d8fce3")
-                no-repeat
-                center center /
-                cover;
+                #f8fafc;
 
-            color: white;
+            color:
+                var(--text);
 
         }
 
 
         /* =====================================================
-           OVERLAY
+           APP
         ===================================================== */
 
-        .overlay {
+        .app {
 
             min-height: 100vh;
 
             display: flex;
-
-            background:
-                rgba(3, 7, 18, 0.72);
 
         }
 
@@ -77,20 +101,9 @@
 
         .sidebar {
 
-            width: 250px;
+            width: 260px;
 
             height: 100vh;
-
-            padding: 22px 16px;
-
-            background:
-                rgba(8, 15, 28, 0.97);
-
-            border-right:
-                1px solid
-                rgba(255,255,255,0.08);
-
-            color: white;
 
             position: fixed;
 
@@ -98,22 +111,35 @@
 
             top: 0;
 
+            z-index: 100;
+
             display: flex;
 
             flex-direction: column;
 
-            z-index: 1000;
+            background:
+                linear-gradient(
+                    180deg,
+                    #0f172a 0%,
+                    #111827 100%
+                );
 
-            overflow-y: auto;
+            color: white;
+
+            box-shadow:
+                10px 0 30px
+                rgba(15, 23, 42, 0.08);
 
         }
 
 
         /* =====================================================
-           BRAND
+           LOGO
         ===================================================== */
 
-        .brand {
+        .logo {
+
+            height: 82px;
 
             display: flex;
 
@@ -121,12 +147,7 @@
 
             gap: 12px;
 
-            padding:
-                8px
-                10px
-                24px;
-
-            margin-bottom: 10px;
+            padding: 0 22px;
 
             border-bottom:
                 1px solid
@@ -135,11 +156,11 @@
         }
 
 
-        .brand-icon {
+        .logo-icon {
 
-            width: 44px;
+            width: 42px;
 
-            height: 44px;
+            height: 42px;
 
             border-radius: 12px;
 
@@ -149,70 +170,48 @@
 
             justify-content: center;
 
+            font-size: 21px;
+
             background:
                 linear-gradient(
                     135deg,
-                    #3498db,
-                    #2563eb
+                    #2563eb,
+                    #0ea5e9
                 );
-
-            font-size: 21px;
 
             box-shadow:
                 0 8px 20px
-                rgba(37,99,235,0.30);
+                rgba(37,99,235,0.35);
 
         }
 
 
-        .brand-name {
+        .logo-text {
 
-            font-size: 18px;
+            display: flex;
 
-            font-weight: 700;
-
-            letter-spacing: 0.2px;
+            flex-direction: column;
 
         }
 
 
-        .brand-subtitle {
+        .logo-text strong {
+
+            font-size: 19px;
+
+            letter-spacing: -0.4px;
+
+        }
+
+
+        .logo-text span {
 
             font-size: 11px;
 
-            color: #94a3b8;
+            color:
+                #94a3b8;
 
-            margin-top: 3px;
-
-        }
-
-
-        /* =====================================================
-           SIDEBAR SECTION
-        ===================================================== */
-
-        .sidebar-section {
-
-            margin-top: 18px;
-
-        }
-
-
-        .sidebar-label {
-
-            padding:
-                0
-                12px;
-
-            margin-bottom: 7px;
-
-            color: #64748b;
-
-            font-size: 10px;
-
-            font-weight: 700;
-
-            letter-spacing: 1.2px;
+            margin-top: 2px;
 
         }
 
@@ -221,34 +220,61 @@
            NAVIGATION
         ===================================================== */
 
-        .nav-btn {
+        .nav {
+
+            flex: 1;
+
+            padding: 22px 14px;
+
+            overflow-y: auto;
+
+        }
+
+
+        .nav-label {
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.2px;
+
+            text-transform: uppercase;
+
+            color:
+                #64748b;
+
+            padding:
+                0 12px 10px;
+
+        }
+
+
+        .nav-button {
 
             width: 100%;
 
-            min-height: 46px;
+            border: none;
 
-            padding:
-                11px
-                13px;
+            background: transparent;
 
-            margin: 3px 0;
+            color:
+                #cbd5e1;
 
             display: flex;
 
             align-items: center;
 
-            gap: 12px;
+            gap: 13px;
 
-            border:
-                1px solid
-                transparent;
+            padding:
+                12px 13px;
+
+            margin-bottom: 5px;
 
             border-radius: 10px;
 
-            background:
-                transparent;
-
-            color: #cbd5e1;
+            cursor: pointer;
 
             font-size: 14px;
 
@@ -256,18 +282,13 @@
 
             text-align: left;
 
-            cursor: pointer;
-
             transition:
-                background 0.2s ease,
-                color 0.2s ease,
-                transform 0.2s ease,
-                border 0.2s ease;
+                0.2s ease;
 
         }
 
 
-        .nav-btn:hover {
+        .nav-button:hover {
 
             background:
                 rgba(255,255,255,0.07);
@@ -280,27 +301,27 @@
         }
 
 
-        .nav-btn.active {
+        .nav-button.active {
+
+            color: white;
 
             background:
                 linear-gradient(
-                    90deg,
-                    rgba(52,152,219,0.22),
-                    rgba(52,152,219,0.08)
+                    135deg,
+                    rgba(37,99,235,0.95),
+                    rgba(14,165,233,0.9)
                 );
 
-            border:
-                1px solid
-                rgba(52,152,219,0.25);
-
-            color: white;
+            box-shadow:
+                0 8px 18px
+                rgba(37,99,235,0.20);
 
         }
 
 
         .nav-icon {
 
-            width: 24px;
+            width: 21px;
 
             text-align: center;
 
@@ -315,9 +336,7 @@
 
         .sidebar-bottom {
 
-            margin-top: auto;
-
-            padding-top: 15px;
+            padding: 15px;
 
             border-top:
                 1px solid
@@ -326,19 +345,193 @@
         }
 
 
-        .logout-btn {
+        .logout {
 
-            color: #fca5a5;
+            width: 100%;
+
+            border: none;
+
+            background:
+                rgba(220,38,38,0.12);
+
+            color:
+                #fca5a5;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            transition:
+                0.2s;
 
         }
 
 
-        .logout-btn:hover {
+        .logout:hover {
 
             background:
-                rgba(231,76,60,0.12);
+                rgba(220,38,38,0.22);
 
-            color: #fecaca;
+            color: white;
+
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+
+            width:
+                calc(100% - 260px);
+
+            margin-left: 260px;
+
+            min-height: 100vh;
+
+            background:
+                #f8fafc;
+
+        }
+
+
+        /* =====================================================
+           TOPBAR
+        ===================================================== */
+
+        .topbar {
+
+            height: 82px;
+
+            padding:
+                0 32px;
+
+            background:
+                rgba(255,255,255,0.95);
+
+            border-bottom:
+                1px solid
+                var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 50;
+
+            backdrop-filter:
+                blur(15px);
+
+        }
+
+
+        .page-title h1 {
+
+            font-size: 22px;
+
+            letter-spacing:
+                -0.5px;
+
+            color:
+                #0f172a;
+
+        }
+
+
+        .page-title p {
+
+            font-size: 12px;
+
+            color:
+                var(--muted);
+
+            margin-top: 3px;
+
+        }
+
+
+        .hospital-profile {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .hospital-avatar {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                #eff6ff;
+
+            color:
+                var(--primary);
+
+            font-size: 18px;
+
+        }
+
+
+        .hospital-profile-text {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: flex-end;
+
+        }
+
+
+        .hospital-profile-text strong {
+
+            font-size: 13px;
+
+            color:
+                #0f172a;
+
+        }
+
+
+        .hospital-profile-text span {
+
+            font-size: 11px;
+
+            color:
+                var(--muted);
 
         }
 
@@ -349,141 +542,438 @@
 
         .content {
 
-            margin-left: 250px;
+            padding:
+                30px 32px 50px;
 
-            width:
-                calc(100% - 250px);
-
-            min-height: 100vh;
-
-            padding: 30px;
-
-            color: white;
+            max-width:
+                1600px;
 
         }
 
 
         /* =====================================================
-           TOP BAR
+           HERO
         ===================================================== */
 
-        .topbar {
+        .hero {
 
-            display: flex;
+            position: relative;
 
-            justify-content: space-between;
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            padding:
+                30px;
+
+            margin-bottom: 24px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #1d4ed8 0%,
+                    #2563eb 45%,
+                    #0ea5e9 100%
+                );
+
+            box-shadow:
+                0 18px 40px
+                rgba(37,99,235,0.20);
+
+        }
+
+
+        .hero::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 300px;
+
+            height: 300px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,0.08);
+
+            right: -80px;
+
+            top: -120px;
+
+        }
+
+
+        .hero::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+
+            height: 180px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,0.06);
+
+            right: 180px;
+
+            bottom: -100px;
+
+        }
+
+
+        .hero-content {
+
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 720px;
+
+        }
+
+
+        .hero-badge {
+
+            display: inline-flex;
 
             align-items: center;
 
-            gap: 15px;
-
-            flex-wrap: wrap;
-
-            margin-bottom: 25px;
-
-        }
-
-
-        .topbar-left h1 {
-
-            font-size: 30px;
-
-            font-weight: 700;
-
-            margin-bottom: 6px;
-
-        }
-
-
-        .topbar-left p {
-
-            color:
-                #cbd5e1;
-
-            font-size: 14px;
-
-        }
-
-
-        .hospital-name-display {
+            gap: 7px;
 
             padding:
-                10px
-                16px;
+                6px 10px;
 
-            border-radius: 10px;
+            border-radius: 30px;
 
             background:
-                rgba(255,255,255,0.10);
+                rgba(255,255,255,0.15);
 
-            border:
-                1px solid
-                rgba(255,255,255,0.10);
+            font-size: 11px;
 
-            backdrop-filter:
-                blur(10px);
+            margin-bottom: 13px;
 
-            color: white;
+        }
+
+
+        .status-dot {
+
+            width: 7px;
+
+            height: 7px;
+
+            border-radius: 50%;
+
+            background:
+                #86efac;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(134,239,172,0.15);
+
+        }
+
+
+        .hero h2 {
+
+            font-size:
+                clamp(24px, 3vw, 34px);
+
+            letter-spacing:
+                -1px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .hero p {
+
+            color:
+                rgba(255,255,255,0.82);
 
             font-size: 14px;
 
-            font-weight: 600;
+            line-height: 1.6;
 
         }
 
 
         /* =====================================================
-           CARD
+           STATS
         ===================================================== */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 16px;
+
+            margin-bottom: 24px;
+
+        }
+
+
+        .stat-card {
+
+            background: white;
+
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 15px;
+
+            padding: 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            transition:
+                0.2s ease;
+
+        }
+
+
+        .stat-card:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(15,23,42,0.08);
+
+        }
+
+
+        .stat-icon {
+
+            width: 48px;
+
+            height: 48px;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 21px;
+
+        }
+
+
+        .blue {
+
+            background:
+                #eff6ff;
+
+            color:
+                #2563eb;
+
+        }
+
+
+        .green {
+
+            background:
+                #f0fdf4;
+
+            color:
+                #16a34a;
+
+        }
+
+
+        .orange {
+
+            background:
+                #fff7ed;
+
+            color:
+                #ea580c;
+
+        }
+
+
+        .purple {
+
+            background:
+                #faf5ff;
+
+            color:
+                #9333ea;
+
+        }
+
+
+        .stat-info span {
+
+            display: block;
+
+            color:
+                var(--muted);
+
+            font-size: 11px;
+
+            margin-bottom: 4px;
+
+        }
+
+
+        .stat-info strong {
+
+            font-size: 22px;
+
+            color:
+                #0f172a;
+
+        }
+
+
+        /* =====================================================
+           SECTION CARD
+        ===================================================== */
+
+        .section {
+
+            display: none;
+
+        }
+
+
+        .section.active {
+
+            display: block;
+
+            animation:
+                fadeIn 0.25s ease;
+
+        }
+
+
+        @keyframes fadeIn {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(6px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
 
         .card {
 
-            background:
-                rgba(255,255,255,0.10);
+            background: white;
 
-            backdrop-filter:
-                blur(15px);
+            border:
+                1px solid
+                var(--border);
+
+            border-radius: 16px;
 
             padding: 24px;
 
             margin-bottom: 20px;
 
-            border-radius: 16px;
-
-            border:
-                1px solid
-                rgba(255,255,255,0.10);
-
             box-shadow:
-                0 15px 35px
-                rgba(0,0,0,0.22);
+                0 5px 20px
+                rgba(15,23,42,0.03);
 
         }
 
 
-        .card h2 {
+        .card-header {
 
-            margin-bottom: 18px;
+            display: flex;
 
-            font-size: 20px;
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
 
         }
 
 
-        .card-description {
+        .card-header h2 {
+
+            font-size: 18px;
 
             color:
-                #cbd5e1;
+                #0f172a;
 
-            font-size: 13px;
+        }
 
-            margin-bottom: 18px;
+
+        .card-header p {
+
+            color:
+                var(--muted);
+
+            font-size: 12px;
+
+            margin-top: 4px;
+
+        }
+
+
+        .section-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            border-radius: 11px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                #eff6ff;
+
+            color:
+                #2563eb;
 
         }
 
 
         /* =====================================================
-           FORM GRID
+           FORM
         ===================================================== */
 
         .form-grid {
@@ -491,16 +981,23 @@
             display: grid;
 
             grid-template-columns:
-                repeat(2, minmax(0,1fr));
+                repeat(2, 1fr);
 
-            gap:
-                10px
-                15px;
+            gap: 16px;
 
         }
 
 
-        .form-full {
+        .form-group {
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+
+        .form-group.full {
 
             grid-column:
                 1 / -1;
@@ -508,9 +1005,19 @@
         }
 
 
-        /* =====================================================
-           INPUTS
-        ===================================================== */
+        .form-group label {
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            color:
+                #334155;
+
+            margin-bottom: 6px;
+
+        }
+
 
         input,
         textarea,
@@ -518,29 +1025,27 @@
 
             width: 100%;
 
-            padding: 13px 14px;
-
-            margin: 6px 0;
-
             border:
                 1px solid
-                #e2e8f0;
+                var(--border);
+
+            background:
+                #fff;
+
+            color:
+                #0f172a;
 
             outline: none;
 
             border-radius: 9px;
 
-            background:
-                #ffffff;
+            padding:
+                12px 13px;
 
-            color:
-                #1e293b;
-
-            font-size: 14px;
+            font-size: 13px;
 
             transition:
-                border 0.2s,
-                box-shadow 0.2s;
+                0.2s;
 
         }
 
@@ -550,20 +1055,11 @@
         select:focus {
 
             border-color:
-                #3498db;
+                #60a5fa;
 
             box-shadow:
                 0 0 0 3px
-                rgba(52,152,219,0.15);
-
-        }
-
-
-        textarea {
-
-            min-height: 110px;
-
-            resize: vertical;
+                rgba(37,99,235,0.08);
 
         }
 
@@ -571,30 +1067,23 @@
         input:disabled {
 
             background:
-                #e2e8f0;
+                #f1f5f9;
 
             color:
                 #64748b;
 
+            cursor:
+                not-allowed;
+
         }
 
 
-        /* =====================================================
-           LABEL
-        ===================================================== */
+        textarea {
 
-        .input-label {
+            min-height: 120px;
 
-            display: block;
-
-            color:
-                #e2e8f0;
-
-            font-size: 12px;
-
-            font-weight: 600;
-
-            margin-top: 8px;
+            resize:
+                vertical;
 
         }
 
@@ -603,111 +1092,121 @@
            BUTTONS
         ===================================================== */
 
-        button {
+        .actions {
 
-            cursor: pointer;
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-top: 20px;
 
         }
 
 
-        .save {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #27ae60,
-                    #16a34a
-                );
-
-            color: white;
-
-            padding:
-                12px
-                18px;
+        .btn {
 
             border: none;
 
             border-radius: 9px;
 
-            font-size: 14px;
+            padding:
+                11px 17px;
+
+            font-size: 13px;
 
             font-weight: 600;
 
-            margin-top: 12px;
+            cursor: pointer;
 
             transition:
-                transform 0.2s,
-                box-shadow 0.2s;
+                0.2s;
 
         }
 
 
-        .save:hover {
+        .btn-primary {
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #0ea5e9
+                );
+
+            box-shadow:
+                0 6px 15px
+                rgba(37,99,235,0.18);
+
+        }
+
+
+        .btn-primary:hover {
 
             transform:
                 translateY(-1px);
 
             box-shadow:
-                0 8px 20px
-                rgba(22,163,74,0.25);
+                0 9px 20px
+                rgba(37,99,235,0.25);
 
         }
 
 
-        .add {
+        .btn-secondary {
 
             background:
-                linear-gradient(
-                    135deg,
-                    #8e44ad,
-                    #7c3aed
-                );
+                #f1f5f9;
 
-            color: white;
-
-            padding:
-                11px
-                16px;
-
-            border: none;
-
-            border-radius: 9px;
-
-            margin-top: 12px;
-
-            font-size: 14px;
-
-            font-weight: 600;
+            color:
+                #334155;
 
         }
 
 
-        .add:hover {
+        .btn-secondary:hover {
 
-            opacity: 0.9;
+            background:
+                #e2e8f0;
+
+        }
+
+
+        .btn-danger {
+
+            background:
+                #fef2f2;
+
+            color:
+                #dc2626;
 
         }
 
 
         /* =====================================================
-           DOCTOR BOX
+           DOCTORS
         ===================================================== */
 
         .doctor-box {
 
-            background:
-                rgba(255,255,255,0.07);
-
-            padding: 18px;
-
-            margin:
-                15px 0;
-
-            border-radius: 12px;
-
             border:
                 1px solid
-                rgba(255,255,255,0.08);
+                var(--border);
+
+            border-radius:
+                13px;
+
+            padding:
+                18px;
+
+            margin-bottom:
+                15px;
+
+            background:
+                #f8fafc;
 
         }
 
@@ -720,42 +1219,62 @@
 
             align-items: center;
 
-            margin-bottom: 10px;
+            margin-bottom: 14px;
 
         }
 
 
-        .doctor-box h3 {
+        .doctor-title {
 
-            font-size: 16px;
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
 
         }
 
 
-        .remove-doctor {
+        .doctor-avatar {
+
+            width: 38px;
+
+            height: 38px;
+
+            border-radius: 50%;
 
             background:
-                #e74c3c;
+                #dbeafe;
 
-            color: white;
+            color:
+                #2563eb;
 
-            padding:
-                7px
-                11px;
+            display: flex;
 
-            border: none;
+            align-items: center;
 
-            border-radius: 7px;
-
-            font-size: 12px;
+            justify-content: center;
 
         }
 
 
-        .remove-doctor:hover {
+        .doctor-title h3 {
 
-            background:
-                #c0392b;
+            font-size: 14px;
+
+        }
+
+
+        .doctor-title span {
+
+            display: block;
+
+            color:
+                var(--muted);
+
+            font-size: 11px;
+
+            margin-top: 2px;
 
         }
 
@@ -766,119 +1285,266 @@
 
         #statusMessage {
 
-            margin-top: 15px;
-
-            padding: 12px;
-
             display: none;
 
-            border-radius: 8px;
+            padding:
+                11px 13px;
 
-            background:
-                rgba(255,255,255,0.10);
+            margin-top:
+                15px;
 
-            font-size: 13px;
+            border-radius:
+                9px;
+
+            font-size:
+                12px;
 
         }
 
 
         /* =====================================================
-           EMPTY / INFO BOX
+           QUICK ACTIONS
         ===================================================== */
 
-        .info-box {
+        .quick-grid {
 
-            padding: 20px;
+            display: grid;
 
-            border-radius: 12px;
+            grid-template-columns:
+                repeat(3, 1fr);
 
-            background:
-                rgba(52,152,219,0.10);
+            gap: 14px;
+
+        }
+
+
+        .quick-card {
 
             border:
                 1px solid
-                rgba(52,152,219,0.18);
+                var(--border);
+
+            background:
+                white;
+
+            border-radius:
+                14px;
+
+            padding:
+                18px;
+
+            cursor:
+                pointer;
+
+            transition:
+                0.2s;
+
+        }
+
+
+        .quick-card:hover {
+
+            border-color:
+                #bfdbfe;
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 12px 25px
+                rgba(15,23,42,0.06);
+
+        }
+
+
+        .quick-card-icon {
+
+            width:
+                42px;
+
+            height:
+                42px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                10px;
+
+            background:
+                #eff6ff;
 
             color:
-                #dbeafe;
+                #2563eb;
 
-            font-size: 14px;
+            margin-bottom:
+                12px;
 
-            line-height: 1.6;
+        }
+
+
+        .quick-card strong {
+
+            display:
+                block;
+
+            font-size:
+                14px;
+
+            margin-bottom:
+                4px;
+
+        }
+
+
+        .quick-card span {
+
+            color:
+                var(--muted);
+
+            font-size:
+                11px;
 
         }
 
 
         /* =====================================================
-           MOBILE
+           MOBILE HEADER
         ===================================================== */
 
-        @media (max-width: 768px) {
+        .mobile-menu {
+
+            display: none;
+
+            border: none;
+
+            background:
+                #f1f5f9;
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 9px;
+
+            font-size: 19px;
+
+            cursor: pointer;
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1100px) {
+
+            .stats {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 850px) {
 
             .sidebar {
 
-                width: 100%;
+                transform:
+                    translateX(-100%);
 
-                height: auto;
-
-                min-height: auto;
-
-                position: relative;
-
-                padding: 15px;
+                transition:
+                    0.25s ease;
 
             }
 
 
-            .overlay {
+            .sidebar.open {
 
-                display: block;
+                transform:
+                    translateX(0);
+
+            }
+
+
+            .main {
+
+                width: 100%;
+
+                margin-left: 0;
+
+            }
+
+
+            .mobile-menu {
+
+                display:
+                    block;
+
+            }
+
+
+            .topbar {
+
+                padding:
+                    0 20px;
 
             }
 
 
             .content {
 
-                margin-left: 0;
-
-                width: 100%;
-
-                padding: 20px;
+                padding:
+                    20px;
 
             }
 
 
-            .brand {
+            .overlay-menu {
 
-                margin-bottom: 5px;
+                display:
+                    none;
 
-            }
+                position:
+                    fixed;
 
+                inset: 0;
 
-            .sidebar-section {
+                background:
+                    rgba(15,23,42,0.4);
 
-                margin-top: 12px;
-
-            }
-
-
-            .sidebar-label {
-
-                display: none;
+                z-index:
+                    90;
 
             }
 
 
-            .nav-btn {
+            .overlay-menu.show {
 
-                width: 100%;
+                display:
+                    block;
 
             }
 
+        }
 
-            .sidebar-bottom {
 
-                margin-top: 15px;
+        @media (max-width: 650px) {
+
+            .stats {
+
+                grid-template-columns:
+                    1fr;
 
             }
 
@@ -891,7 +1557,7 @@
             }
 
 
-            .form-full {
+            .form-group.full {
 
                 grid-column:
                     auto;
@@ -899,47 +1565,58 @@
             }
 
 
-            .topbar-left h1 {
+            .quick-grid {
 
-                font-size: 24px;
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .hospital-profile-text {
+
+                display:
+                    none;
 
             }
 
 
-            .hospital-name-display {
+            .topbar {
 
-                width: 100%;
-
-                text-align: center;
+                height:
+                    70px;
 
             }
 
-        }
+
+            .page-title h1 {
+
+                font-size:
+                    18px;
+
+            }
 
 
-        /* =====================================================
-           SMALL MOBILE
-        ===================================================== */
+            .page-title p {
 
-        @media (max-width: 480px) {
+                display:
+                    none;
 
-            .content {
+            }
 
-                padding: 15px;
+
+            .hero {
+
+                padding:
+                    24px 20px;
 
             }
 
 
             .card {
 
-                padding: 17px;
-
-            }
-
-
-            .brand {
-
-                padding-bottom: 18px;
+                padding:
+                    18px;
 
             }
 
@@ -953,66 +1630,61 @@
 <body>
 
 
-<div class="overlay">
+<div class="app">
+
+
+    <!-- =====================================================
+         MOBILE OVERLAY
+    ===================================================== -->
+
+    <div
+        class="overlay-menu"
+        id="overlayMenu"
+        onclick="closeSidebar()"
+    ></div>
 
 
     <!-- =====================================================
          SIDEBAR
     ===================================================== -->
 
-    <aside class="sidebar">
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
 
+        <div class="logo">
 
-        <!-- BRAND -->
-
-        <div class="brand">
-
-            <div class="brand-icon">
-
+            <div class="logo-icon">
                 🏥
-
             </div>
 
+            <div class="logo-text">
 
-            <div>
-
-                <div class="brand-name">
-
+                <strong>
                     MediQueue
+                </strong>
 
-                </div>
-
-
-                <div class="brand-subtitle">
-
-                    Hospital Portal
-
-                </div>
+                <span>
+                    Hospital Management
+                </span>
 
             </div>
 
         </div>
 
 
-        <!-- =================================================
-             MAIN
-        ================================================= -->
+        <nav class="nav">
 
-        <div class="sidebar-section">
-
-            <div class="sidebar-label">
-
-                MAIN
-
+            <div class="nav-label">
+                Main Menu
             </div>
 
 
             <button
-                class="nav-btn active"
-                onclick="
-                    showSection('hospital');
-                    setActiveNav(this);
-                "
+                class="nav-button active"
+                id="nav-hospital"
+                onclick="showSection('hospital')"
             >
 
                 <span class="nav-icon">
@@ -1027,11 +1699,9 @@
 
 
             <button
-                class="nav-btn"
-                onclick="
-                    showSection('doctor');
-                    setActiveNav(this);
-                "
+                class="nav-button"
+                id="nav-doctor"
+                onclick="showSection('doctor')"
             >
 
                 <span class="nav-icon">
@@ -1044,24 +1714,9 @@
 
             </button>
 
-        </div>
-
-
-        <!-- =================================================
-             OPERATIONS
-        ================================================= -->
-
-        <div class="sidebar-section">
-
-            <div class="sidebar-label">
-
-                OPERATIONS
-
-            </div>
-
 
             <button
-                class="nav-btn"
+                class="nav-button"
                 onclick="openAppointments()"
             >
 
@@ -1077,7 +1732,7 @@
 
 
             <button
-                class="nav-btn"
+                class="nav-button"
                 onclick="openFollowups()"
             >
 
@@ -1091,24 +1746,9 @@
 
             </button>
 
-        </div>
-
-
-        <!-- =================================================
-             INSIGHTS
-        ================================================= -->
-
-        <div class="sidebar-section">
-
-            <div class="sidebar-label">
-
-                INSIGHTS
-
-            </div>
-
 
             <button
-                class="nav-btn"
+                class="nav-button"
                 onclick="openAnalytics()"
             >
 
@@ -1122,39 +1762,17 @@
 
             </button>
 
+        </nav>
 
-            <button
-                class="nav-btn"
-                onclick="openConnect()"
-            >
-
-                <span class="nav-icon">
-                    🔗
-                </span>
-
-                <span>
-                    Connect
-                </span>
-
-            </button>
-
-        </div>
-
-
-        <!-- =================================================
-             LOGOUT
-        ================================================= -->
 
         <div class="sidebar-bottom">
 
             <button
-                class="nav-btn logout-btn"
+                class="logout"
                 onclick="logout()"
             >
 
-                <span class="nav-icon">
-                    🚪
-                </span>
+                🚪
 
                 <span>
                     Logout
@@ -1164,257 +1782,241 @@
 
         </div>
 
-
     </aside>
 
 
     <!-- =====================================================
-         MAIN CONTENT
+         MAIN
     ===================================================== -->
 
-    <main class="content">
+    <main class="main">
 
 
         <!-- =================================================
              TOPBAR
         ================================================= -->
 
-        <div class="topbar">
-
-
-            <div class="topbar-left">
-
-                <h1>
-                    Hospital Dashboard
-                </h1>
-
-
-                <p>
-                    Manage your hospital, doctors and services
-                    from one place.
-                </p>
-
-            </div>
-
+        <header class="topbar">
 
             <div
-                id="hospitalNameDisplay"
-                class="hospital-name-display"
+                style="
+                    display:flex;
+                    align-items:center;
+                    gap:12px;
+                "
             >
 
-                Loading...
+                <button
+                    class="mobile-menu"
+                    onclick="toggleSidebar()"
+                >
+                    ☰
+                </button>
+
+
+                <div class="page-title">
+
+                    <h1>
+                        Hospital Dashboard
+                    </h1>
+
+                    <p>
+                        Manage your hospital operations from one place
+                    </p>
+
+                </div>
 
             </div>
 
 
-        </div>
+            <div class="hospital-profile">
+
+                <div class="hospital-avatar">
+                    🏥
+                </div>
+
+                <div class="hospital-profile-text">
+
+                    <strong
+                        id="hospitalNameDisplay"
+                    >
+                        Loading...
+                    </strong>
+
+                    <span>
+                        Hospital Administrator
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
 
 
         <!-- =================================================
-             HOSPITAL SECTION
+             CONTENT
         ================================================= -->
 
-        <section
-            id="hospital"
-            class="section card"
-        >
+        <div class="content">
 
 
-            <h2>
-                Hospital Details
-            </h2>
+            <!-- =================================================
+                 HERO
+            ================================================= -->
+
+            <section class="hero">
+
+                <div class="hero-content">
+
+                    <div class="hero-badge">
+
+                        <span class="status-dot"></span>
+
+                        System Online
+
+                    </div>
 
 
-            <p class="card-description">
-
-                Update your hospital information and operating
-                hours.
-
-            </p>
+                    <h2>
+                        Welcome to your hospital dashboard
+                    </h2>
 
 
-            <div class="form-grid">
+                    <p>
+                        Manage doctors, appointments,
+                        follow-ups and hospital information
+                        efficiently with MediQueue.
+                    </p>
+
+                </div>
+
+            </section>
 
 
-                <!-- HOSPITAL ID -->
+            <!-- =================================================
+                 STATS
+            ================================================= -->
 
-                <div>
-
-                    <label
-                        class="input-label"
-                        for="hospital_id"
-                    >
-                        Hospital ID
-                    </label>
+            <section class="stats">
 
 
-                    <input
-                        id="hospital_id"
-                        placeholder="Hospital ID"
-                        disabled
-                    >
+                <div class="stat-card">
+
+                    <div class="stat-icon blue">
+                        👨‍⚕️
+                    </div>
+
+                    <div class="stat-info">
+
+                        <span>
+                            Medical Staff
+                        </span>
+
+                        <strong>
+                            —
+                        </strong>
+
+                    </div>
 
                 </div>
 
 
-                <!-- HOSPITAL NAME -->
+                <div class="stat-card">
 
-                <div>
+                    <div class="stat-icon green">
+                        📅
+                    </div>
 
-                    <label
-                        class="input-label"
-                        for="hospital_name"
-                    >
-                        Hospital Name
-                    </label>
+                    <div class="stat-info">
 
+                        <span>
+                            Appointments
+                        </span>
 
-                    <input
-                        id="hospital_name"
-                        placeholder="Enter hospital name"
-                    >
+                        <strong>
+                            —
+                        </strong>
 
-                </div>
-
-
-                <!-- DATE -->
-
-                <div>
-
-                    <label
-                        class="input-label"
-                        for="date"
-                    >
-                        Date
-                    </label>
-
-
-                    <input
-                        id="date"
-                        type="date"
-                    >
+                    </div>
 
                 </div>
 
 
-                <!-- OPEN TIME -->
+                <div class="stat-card">
 
-                <div>
+                    <div class="stat-icon orange">
+                        🔄
+                    </div>
 
-                    <label
-                        class="input-label"
-                        for="open_time"
-                    >
-                        Opening Time
-                    </label>
+                    <div class="stat-info">
 
+                        <span>
+                            Follow-ups
+                        </span>
 
-                    <input
-                        id="open_time"
-                        type="time"
-                    >
+                        <strong>
+                            —
+                        </strong>
 
-                </div>
-
-
-                <!-- CLOSE TIME -->
-
-                <div>
-
-                    <label
-                        class="input-label"
-                        for="close_time"
-                    >
-                        Closing Time
-                    </label>
-
-
-                    <input
-                        id="close_time"
-                        type="time"
-                    >
+                    </div>
 
                 </div>
 
 
-                <!-- INFO -->
+                <div class="stat-card">
 
-                <div class="form-full">
+                    <div class="stat-icon purple">
+                        📊
+                    </div>
 
-                    <label
-                        class="input-label"
-                        for="info"
-                    >
-                        Hospital Information
-                    </label>
+                    <div class="stat-info">
 
+                        <span>
+                            Analytics
+                        </span>
 
-                    <textarea
-                        id="info"
-                        placeholder="Enter hospital information, services, facilities, etc."
-                    ></textarea>
+                        <strong>
+                            View
+                        </strong>
+
+                    </div>
 
                 </div>
 
 
-            </div>
+            </section>
 
 
-            <button
-                class="save"
-                onclick="saveHospital()"
+            <!-- =================================================
+                 HOSPITAL SECTION
+            ================================================= -->
+
+            <section
+                id="hospital"
+                class="section active"
             >
 
-                💾 Save Hospital
+                <div class="card">
 
-            </button>
+                    <div class="card-header">
 
+                        <div>
 
-            <div
-                id="statusMessage"
-            ></div>
+                            <h2>
+                                Hospital Information
+                            </h2>
 
+                            <p>
+                                Keep your hospital profile up to date.
+                            </p>
 
-        </section>
-
-
-        <!-- =================================================
-             DOCTOR SECTION
-        ================================================= -->
-
-        <section
-            id="doctor"
-            class="section card"
-            style="display:none;"
-        >
+                        </div>
 
 
-            <h2>
-                Doctor Management
-            </h2>
-
-
-            <p class="card-description">
-
-                Add and manage doctors available at your
-                hospital.
-
-            </p>
-
-
-            <div id="doctor-section">
-
-
-                <!-- DOCTOR 1 -->
-
-                <div class="doctor-box">
-
-
-                    <div class="doctor-header">
-
-                        <h3>
-                            Doctor 1
-                        </h3>
+                        <div class="section-icon">
+                            🏥
+                        </div>
 
                     </div>
 
@@ -1422,69 +2024,86 @@
                     <div class="form-grid">
 
 
-                        <div>
+                        <div class="form-group">
 
-                            <label
-                                class="input-label"
-                            >
-                                Doctor Name
+                            <label>
+                                Hospital ID
                             </label>
 
-
                             <input
-                                class="doctor_name"
-                                placeholder="Doctor Name"
+                                id="hospital_id"
+                                placeholder="Hospital ID"
+                                disabled
                             >
 
                         </div>
 
 
-                        <div>
+                        <div class="form-group">
 
-                            <label
-                                class="input-label"
-                            >
-                                Specialization
+                            <label>
+                                Hospital Name
                             </label>
 
-
                             <input
-                                class="specialization"
-                                placeholder="e.g. Cardiologist"
+                                id="hospital_name"
+                                placeholder="Enter hospital name"
                             >
 
                         </div>
 
 
-                        <div>
+                        <div class="form-group">
 
-                            <label
-                                class="input-label"
-                            >
-                                OPD Time
+                            <label>
+                                Date
                             </label>
 
-
                             <input
-                                class="opd_time"
-                                placeholder="e.g. 10:00 AM - 2:00 PM"
+                                id="date"
+                                type="date"
                             >
 
                         </div>
 
 
-                        <div class="form-full">
+                        <div class="form-group">
 
-                            <label
-                                class="input-label"
-                            >
-                                Doctor Information
+                            <label>
+                                Opening Time
                             </label>
 
+                            <input
+                                id="open_time"
+                                type="time"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Closing Time
+                            </label>
+
+                            <input
+                                id="close_time"
+                                type="time"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group full">
+
+                            <label>
+                                Hospital Information
+                            </label>
 
                             <textarea
-                                class="doctor_info"
-                                placeholder="Doctor information"
+                                id="info"
+                                placeholder="Write a short description about your hospital..."
                             ></textarea>
 
                         </div>
@@ -1493,51 +2112,286 @@
                     </div>
 
 
+                    <div class="actions">
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="saveHospital()"
+                        >
+                            💾 Save Hospital
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="statusMessage"
+                    ></div>
+
                 </div>
 
 
-            </div>
+                <!-- =================================================
+                     QUICK ACTIONS
+                ================================================= -->
+
+                <div class="card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Quick Actions
+                            </h2>
+
+                            <p>
+                                Access your most-used hospital tools.
+                            </p>
+
+                        </div>
+
+                    </div>
 
 
-            <button
-                class="add"
-                onclick="addDoctor()"
+                    <div class="quick-grid">
+
+
+                        <div
+                            class="quick-card"
+                            onclick="showSection('doctor')"
+                        >
+
+                            <div class="quick-card-icon">
+                                👨‍⚕️
+                            </div>
+
+                            <strong>
+                                Manage Doctors
+                            </strong>
+
+                            <span>
+                                Add and manage your medical staff.
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="quick-card"
+                            onclick="openAppointments()"
+                        >
+
+                            <div class="quick-card-icon">
+                                📅
+                            </div>
+
+                            <strong>
+                                Appointments
+                            </strong>
+
+                            <span>
+                                View and manage patient appointments.
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="quick-card"
+                            onclick="openAnalytics()"
+                        >
+
+                            <div class="quick-card-icon">
+                                📊
+                            </div>
+
+                            <strong>
+                                Analytics
+                            </strong>
+
+                            <span>
+                                Monitor hospital performance.
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 DOCTOR SECTION
+            ================================================= -->
+
+            <section
+                id="doctor"
+                class="section"
             >
 
-                + Add Doctor
+                <div class="card">
 
-            </button>
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Medical Team
+                            </h2>
+
+                            <p>
+                                Add and manage doctors working at your hospital.
+                            </p>
+
+                        </div>
 
 
-            <button
-                class="save"
-                onclick="saveHospital()"
-            >
+                        <div class="section-icon">
+                            👨‍⚕️
+                        </div>
 
-                💾 Save Hospital & Doctors
-
-            </button>
+                    </div>
 
 
-        </section>
+                    <div id="doctor-section">
 
+
+                        <div class="doctor-box">
+
+
+                            <div class="doctor-header">
+
+                                <div class="doctor-title">
+
+                                    <div class="doctor-avatar">
+                                        👨‍⚕️
+                                    </div>
+
+                                    <div>
+
+                                        <h3>
+                                            Doctor 1
+                                        </h3>
+
+                                        <span>
+                                            Medical professional
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-grid">
+
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Doctor Name
+                                    </label>
+
+                                    <input
+                                        class="doctor_name"
+                                        placeholder="Enter doctor name"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Specialization
+                                    </label>
+
+                                    <input
+                                        class="specialization"
+                                        placeholder="e.g. Cardiologist"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label>
+                                        OPD Time
+                                    </label>
+
+                                    <input
+                                        class="opd_time"
+                                        placeholder="e.g. 10:00 AM - 2:00 PM"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Doctor Information
+                                    </label>
+
+                                    <input
+                                        class="doctor_info"
+                                        placeholder="Short professional information"
+                                    >
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        <button
+                            class="btn btn-secondary"
+                            onclick="addDoctor()"
+                        >
+                            + Add Doctor
+                        </button>
+
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="saveHospital()"
+                        >
+                            💾 Save Hospital & Doctors
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </div>
 
     </main>
-
 
 </div>
 
 
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
-
 <script type="module">
 
 
-/* =====================================================
-   FIREBASE IMPORTS
-===================================================== */
+/* ============================================================
+   FIREBASE
+============================================================ */
 
 import {
     initializeApp
@@ -1555,9 +2409,9 @@ from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
 
-/* =====================================================
+/* ============================================================
    FIREBASE CONFIG
-===================================================== */
+============================================================ */
 
 const firebaseConfig = {
 
@@ -1585,9 +2439,9 @@ const firebaseConfig = {
 };
 
 
-/* =====================================================
-   INITIALIZE FIREBASE
-===================================================== */
+/* ============================================================
+   INITIALIZE
+============================================================ */
 
 const app =
     initializeApp(
@@ -1601,16 +2455,16 @@ const auth =
     );
 
 
-/* =====================================================
+/* ============================================================
    CURRENT USER
-===================================================== */
+============================================================ */
 
 let currentUser = null;
 
 
-/* =====================================================
+/* ============================================================
    AUTHENTICATION
-===================================================== */
+============================================================ */
 
 onAuthStateChanged(
     auth,
@@ -1623,15 +2477,7 @@ onAuthStateChanged(
         );
 
 
-        /* ---------------------------------------------
-           NO USER
-        --------------------------------------------- */
-
         if (!user) {
-
-            console.log(
-                "User not logged in"
-            );
 
             window.location.href =
                 "/login-page";
@@ -1648,9 +2494,9 @@ onAuthStateChanged(
         try {
 
 
-            /* -----------------------------------------
-               GET FRESH FIREBASE TOKEN
-            ----------------------------------------- */
+            /* ==================================================
+               FIREBASE TOKEN
+            ================================================== */
 
             const token =
                 await user.getIdToken(
@@ -1668,9 +2514,9 @@ onAuthStateChanged(
             }
 
 
-            /* -----------------------------------------
+            /* ==================================================
                CHECK SUBSCRIPTION
-            ----------------------------------------- */
+            ================================================== */
 
             const response =
                 await fetch(
@@ -1704,10 +2550,6 @@ onAuthStateChanged(
             );
 
 
-            /* -----------------------------------------
-               SUBSCRIPTION REQUEST FAILED
-            ----------------------------------------- */
-
             if (!response.ok) {
 
                 alert(
@@ -1722,10 +2564,6 @@ onAuthStateChanged(
 
             }
 
-
-            /* -----------------------------------------
-               SUBSCRIPTION NOT ACTIVE
-            ----------------------------------------- */
 
             if (
                 data.active !== true
@@ -1743,18 +2581,9 @@ onAuthStateChanged(
             }
 
 
-            /* -----------------------------------------
-               ACCESS GRANTED
-            ----------------------------------------- */
-
-            console.log(
-                "DASHBOARD ACCESS GRANTED"
-            );
-
-
-            /* -----------------------------------------
+            /* ==================================================
                SAVE UID
-            ----------------------------------------- */
+            ================================================== */
 
             localStorage.setItem(
                 "uid",
@@ -1762,9 +2591,9 @@ onAuthStateChanged(
             );
 
 
-            /* -----------------------------------------
+            /* ==================================================
                HOSPITAL ID
-            ----------------------------------------- */
+            ================================================== */
 
             const hospitalId =
                 localStorage.getItem(
@@ -1778,9 +2607,9 @@ onAuthStateChanged(
                 hospitalId;
 
 
-            /* -----------------------------------------
+            /* ==================================================
                HOSPITAL NAME
-            ----------------------------------------- */
+            ================================================== */
 
             const hospitalName =
                 localStorage.getItem(
@@ -1795,22 +2624,24 @@ onAuthStateChanged(
                 hospitalName;
 
 
-            /* -----------------------------------------
-               LOAD SAVED DATA
-            ----------------------------------------- */
+            document.getElementById(
+                "hospital_name"
+            ).value =
+                hospitalName;
 
-            loadSavedHospital();
+
+            console.log(
+                "DASHBOARD ACCESS GRANTED"
+            );
 
 
         }
         catch(error) {
 
-
             console.error(
                 "DASHBOARD ERROR:",
                 error
             );
-
 
             window.location.href =
                 "/login-page";
@@ -1821,9 +2652,9 @@ onAuthStateChanged(
 );
 
 
-/* =====================================================
+/* ============================================================
    SHOW SECTION
-===================================================== */
+============================================================ */
 
 window.showSection =
 function(id) {
@@ -1836,45 +2667,7 @@ function(id) {
         .forEach(
             function(section) {
 
-                section.style.display =
-                    "none";
-
-            }
-        );
-
-
-    const selected =
-        document.getElementById(
-            id
-        );
-
-
-    if (selected) {
-
-        selected.style.display =
-            "block";
-
-    }
-
-};
-
-
-/* =====================================================
-   ACTIVE NAVIGATION
-===================================================== */
-
-window.setActiveNav =
-function(button) {
-
-
-    document
-        .querySelectorAll(
-            ".nav-btn"
-        )
-        .forEach(
-            function(btn) {
-
-                btn.classList.remove(
+                section.classList.remove(
                     "active"
                 );
 
@@ -1882,16 +2675,59 @@ function(button) {
         );
 
 
-    button.classList.add(
-        "active"
-    );
+    document
+        .querySelectorAll(
+            ".nav-button"
+        )
+        .forEach(
+            function(button) {
+
+                button.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    const section =
+        document.getElementById(
+            id
+        );
+
+
+    if (section) {
+
+        section.classList.add(
+            "active"
+        );
+
+    }
+
+
+    const nav =
+        document.getElementById(
+            "nav-" + id
+        );
+
+
+    if (nav) {
+
+        nav.classList.add(
+            "active"
+        );
+
+    }
+
+
+    closeSidebar();
 
 };
 
 
-/* =====================================================
-   OPEN APPOINTMENTS
-===================================================== */
+/* ============================================================
+   APPOINTMENTS
+============================================================ */
 
 window.openAppointments =
 function() {
@@ -1924,9 +2760,9 @@ function() {
 };
 
 
-/* =====================================================
-   OPEN FOLLOW-UPS
-===================================================== */
+/* ============================================================
+   FOLLOW UPS
+============================================================ */
 
 window.openFollowups =
 function() {
@@ -1959,9 +2795,9 @@ function() {
 };
 
 
-/* =====================================================
-   OPEN ANALYTICS
-===================================================== */
+/* ============================================================
+   ANALYTICS
+============================================================ */
 
 window.openAnalytics =
 function() {
@@ -1994,44 +2830,9 @@ function() {
 };
 
 
-/* =====================================================
-   OPEN CONNECT
-===================================================== */
-
-window.openConnect =
-function() {
-
-
-    const uid =
-        localStorage.getItem(
-            "uid"
-        );
-
-
-    if (!uid) {
-
-        alert(
-            "Login required!"
-        );
-
-        window.location.href =
-            "/login-page";
-
-        return;
-
-    }
-
-
-    window.location.href =
-        "/connect/" +
-        uid;
-
-};
-
-
-/* =====================================================
+/* ============================================================
    ADD DOCTOR
-===================================================== */
+============================================================ */
 
 let doctorCount = 1;
 
@@ -2063,14 +2864,31 @@ function() {
 
         <div class="doctor-header">
 
-            <h3>
-                Doctor ${doctorCount}
-            </h3>
+            <div class="doctor-title">
+
+                <div class="doctor-avatar">
+                    👨‍⚕️
+                </div>
+
+                <div>
+
+                    <h3>
+                        Doctor ${doctorCount}
+                    </h3>
+
+                    <span>
+                        Medical professional
+                    </span>
+
+                </div>
+
+            </div>
+
 
             <button
                 type="button"
-                class="remove-doctor"
-                onclick="removeDoctor(this)"
+                class="btn btn-danger"
+                onclick="this.closest('.doctor-box').remove()"
             >
                 Remove
             </button>
@@ -2081,23 +2899,23 @@ function() {
         <div class="form-grid">
 
 
-            <div>
+            <div class="form-group">
 
-                <label class="input-label">
+                <label>
                     Doctor Name
                 </label>
 
                 <input
                     class="doctor_name"
-                    placeholder="Doctor Name"
+                    placeholder="Enter doctor name"
                 >
 
             </div>
 
 
-            <div>
+            <div class="form-group">
 
-                <label class="input-label">
+                <label>
                     Specialization
                 </label>
 
@@ -2109,9 +2927,9 @@ function() {
             </div>
 
 
-            <div>
+            <div class="form-group">
 
-                <label class="input-label">
+                <label>
                     OPD Time
                 </label>
 
@@ -2123,16 +2941,16 @@ function() {
             </div>
 
 
-            <div class="form-full">
+            <div class="form-group">
 
-                <label class="input-label">
+                <label>
                     Doctor Information
                 </label>
 
-                <textarea
+                <input
                     class="doctor_info"
-                    placeholder="Doctor information"
-                ></textarea>
+                    placeholder="Short professional information"
+                >
 
             </div>
 
@@ -2149,66 +2967,9 @@ function() {
 };
 
 
-/* =====================================================
-   REMOVE DOCTOR
-===================================================== */
-
-window.removeDoctor =
-function(button) {
-
-
-    const box =
-        button.closest(
-            ".doctor-box"
-        );
-
-
-    if (box) {
-
-        box.remove();
-
-    }
-
-};
-
-
-/* =====================================================
-   LOAD SAVED HOSPITAL
-===================================================== */
-
-async function loadSavedHospital() {
-
-
-    const uid =
-        localStorage.getItem(
-            "uid"
-        );
-
-
-    if (!uid) {
-
-        return;
-
-    }
-
-
-    const hospitalName =
-        localStorage.getItem(
-            "hospitalName"
-        ) || "";
-
-
-    document.getElementById(
-        "hospital_name"
-    ).value =
-        hospitalName;
-
-}
-
-
-/* =====================================================
+/* ============================================================
    SAVE HOSPITAL
-===================================================== */
+============================================================ */
 
 window.saveHospital =
 async function() {
@@ -2216,10 +2977,6 @@ async function() {
 
     try {
 
-
-        /* ---------------------------------------------
-           UID
-        --------------------------------------------- */
 
         const uid =
             localStorage.getItem(
@@ -2241,10 +2998,6 @@ async function() {
         }
 
 
-        /* ---------------------------------------------
-           FIREBASE USER
-        --------------------------------------------- */
-
         if (!currentUser) {
 
             alert(
@@ -2259,19 +3012,11 @@ async function() {
         }
 
 
-        /* ---------------------------------------------
-           FRESH TOKEN
-        --------------------------------------------- */
-
         const token =
             await currentUser.getIdToken(
                 true
             );
 
-
-        /* ---------------------------------------------
-           FORM DATA
-        --------------------------------------------- */
 
         const formData =
             new FormData();
@@ -2285,59 +3030,47 @@ async function() {
 
         formData.append(
             "hospital_name",
-            document
-                .getElementById(
-                    "hospital_name"
-                )
-                .value
-                .trim()
+            document.getElementById(
+                "hospital_name"
+            ).value.trim()
         );
 
 
         formData.append(
             "date",
-            document
-                .getElementById(
-                    "date"
-                )
-                .value
+            document.getElementById(
+                "date"
+            ).value
         );
 
 
         formData.append(
             "open_time",
-            document
-                .getElementById(
-                    "open_time"
-                )
-                .value
+            document.getElementById(
+                "open_time"
+            ).value
         );
 
 
         formData.append(
             "close_time",
-            document
-                .getElementById(
-                    "close_time"
-                )
-                .value
+            document.getElementById(
+                "close_time"
+            ).value
         );
 
 
         formData.append(
             "info",
-            document
-                .getElementById(
-                    "info"
-                )
-                .value
-                .trim()
+            document.getElementById(
+                "info"
+            ).value.trim()
         );
 
 
-        /* ---------------------------------------------
+        /* ==================================================
            DOCTORS
-        --------------------------------------------- */
+        ================================================== */
 
         const names =
             document.querySelectorAll(
@@ -2364,10 +3097,7 @@ async function() {
 
 
         names.forEach(
-            function(
-                element,
-                index
-            ) {
+            function(element, index) {
 
 
                 formData.append(
@@ -2399,13 +3129,40 @@ async function() {
                         .trim()
                 );
 
+
             }
         );
 
 
-        /* ---------------------------------------------
-           SEND REQUEST
-        --------------------------------------------- */
+        /* ==================================================
+           SHOW SAVING STATE
+        ================================================== */
+
+        const saveButtons =
+            document.querySelectorAll(
+                ".btn-primary"
+            );
+
+
+        saveButtons.forEach(
+            function(button) {
+
+                button.disabled =
+                    true;
+
+                button.dataset.oldText =
+                    button.innerText;
+
+                button.innerText =
+                    "Saving...";
+
+            }
+        );
+
+
+        /* ==================================================
+           SEND TO BACKEND
+        ================================================== */
 
         const response =
             await fetch(
@@ -2418,8 +3175,7 @@ async function() {
                     headers: {
 
                         "Authorization":
-                            "Bearer " +
-                            token
+                            "Bearer " + token
 
                     },
 
@@ -2435,25 +3191,24 @@ async function() {
 
 
         console.log(
-            "SAVE HOSPITAL RESPONSE:",
+            "SAVE RESPONSE:",
             data
         );
 
 
-        /* ---------------------------------------------
+        /* ==================================================
            SUCCESS
-        --------------------------------------------- */
+        ================================================== */
 
         if (response.ok) {
 
 
             const hospitalName =
-                document
-                    .getElementById(
-                        "hospital_name"
-                    )
-                    .value
-                    .trim();
+                document.getElementById(
+                    "hospital_name"
+                )
+                .value
+                .trim();
 
 
             localStorage.setItem(
@@ -2465,18 +3220,25 @@ async function() {
             document.getElementById(
                 "hospitalNameDisplay"
             ).innerText =
-                hospitalName ||
-                "Hospital";
+                hospitalName;
 
 
-            alert(
-                "Hospital saved successfully."
+            showStatus(
+                "Hospital information saved successfully.",
+                "success"
             );
 
 
-            window.location.href =
-                "/hospital/" +
-                uid;
+            setTimeout(
+                function() {
+
+                    window.location.href =
+                        "/hospital/" +
+                        uid;
+
+                },
+                1000
+            );
 
 
             return;
@@ -2484,14 +3246,13 @@ async function() {
         }
 
 
-        /* ---------------------------------------------
+        /* ==================================================
            SUBSCRIPTION EXPIRED
-        --------------------------------------------- */
+        ================================================== */
 
         if (
             response.status === 403
         ) {
-
 
             alert(
                 data.error ||
@@ -2508,13 +3269,10 @@ async function() {
         }
 
 
-        /* ---------------------------------------------
-           OTHER ERROR
-        --------------------------------------------- */
-
-        alert(
+        showStatus(
             data.error ||
-            "Unable to save hospital."
+            "Unable to save hospital.",
+            "error"
         );
 
 
@@ -2528,18 +3286,151 @@ async function() {
         );
 
 
-        alert(
-            "Unable to connect to server."
+        showStatus(
+            "Unable to connect to server.",
+            "error"
         );
+
+
+    }
+    finally {
+
+
+        document
+            .querySelectorAll(
+                ".btn-primary"
+            )
+            .forEach(
+                function(button) {
+
+                    button.disabled =
+                        false;
+
+                    if (
+                        button.dataset.oldText
+                    ) {
+
+                        button.innerText =
+                            button.dataset.oldText;
+
+                    }
+
+                }
+            );
+
 
     }
 
 };
 
 
-/* =====================================================
+/* ============================================================
+   STATUS MESSAGE
+============================================================ */
+
+function showStatus(
+    message,
+    type
+) {
+
+
+    const status =
+        document.getElementById(
+            "statusMessage"
+        );
+
+
+    status.style.display =
+        "block";
+
+
+    status.innerText =
+        message;
+
+
+    if (
+        type === "success"
+    ) {
+
+        status.style.background =
+            "#f0fdf4";
+
+        status.style.color =
+            "#15803d";
+
+        status.style.border =
+            "1px solid #bbf7d0";
+
+    }
+    else {
+
+        status.style.background =
+            "#fef2f2";
+
+        status.style.color =
+            "#b91c1c";
+
+        status.style.border =
+            "1px solid #fecaca";
+
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE SIDEBAR
+============================================================ */
+
+window.toggleSidebar =
+function() {
+
+    document
+        .getElementById(
+            "sidebar"
+        )
+        .classList.toggle(
+            "open"
+        );
+
+
+    document
+        .getElementById(
+            "overlayMenu"
+        )
+        .classList.toggle(
+            "show"
+        );
+
+};
+
+
+window.closeSidebar =
+function() {
+
+    document
+        .getElementById(
+            "sidebar"
+        )
+        .classList.remove(
+            "open"
+        );
+
+
+    document
+        .getElementById(
+            "overlayMenu"
+        )
+        .classList.remove(
+            "show"
+        );
+
+};
+
+
+/* ============================================================
    LOGOUT
-===================================================== */
+============================================================ */
 
 window.logout =
 async function() {
@@ -2586,18 +3477,11 @@ async function() {
             "Logout failed."
         );
 
+
     }
 
 };
 
-
-/* =====================================================
-   DEFAULT SECTION
-===================================================== */
-
-showSection(
-    "hospital"
-);
 
 </script>
 
