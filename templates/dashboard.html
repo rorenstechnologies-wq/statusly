@@ -22,7 +22,6 @@
         }
 
         body {
-
             min-height: 100vh;
 
             background:
@@ -30,18 +29,15 @@
                 no-repeat
                 center center /
                 cover;
-
         }
 
         .overlay {
-
             min-height: 100vh;
 
             display: flex;
 
             background:
                 rgba(0, 0, 0, 0.65);
-
         }
 
         /* =================================================
@@ -68,7 +64,6 @@
             bottom: 0;
 
             overflow-y: auto;
-
         }
 
         .sidebar h2 {
@@ -78,7 +73,6 @@
             margin-bottom: 20px;
 
             font-size: 22px;
-
         }
 
         .sidebar button {
@@ -102,25 +96,21 @@
             font-size: 15px;
 
             transition: 0.2s;
-
         }
 
         .sidebar button:hover {
 
             background: #217dbb;
-
         }
 
         .logout-btn {
 
             background: #e74c3c !important;
-
         }
 
         .logout-btn:hover {
 
             background: #c0392b !important;
-
         }
 
         /* =================================================
@@ -138,7 +128,6 @@
             padding: 30px;
 
             color: white;
-
         }
 
         .topbar {
@@ -154,13 +143,11 @@
             flex-wrap: wrap;
 
             margin-bottom: 20px;
-
         }
 
         .topbar h1 {
 
             font-size: 30px;
-
         }
 
         .hospital-name-display {
@@ -173,7 +160,6 @@
                 rgba(255,255,255,0.12);
 
             backdrop-filter: blur(8px);
-
         }
 
         /* =================================================
@@ -196,13 +182,11 @@
             box-shadow:
                 0 10px 25px
                 rgba(0,0,0,0.25);
-
         }
 
         .card h2 {
 
             margin-bottom: 15px;
-
         }
 
         /* =================================================
@@ -228,7 +212,6 @@
             background: white;
 
             color: #222;
-
         }
 
         textarea {
@@ -236,7 +219,6 @@
             min-height: 100px;
 
             resize: vertical;
-
         }
 
         input:disabled {
@@ -244,7 +226,6 @@
             background: #ddd;
 
             color: #555;
-
         }
 
         /* =================================================
@@ -254,7 +235,6 @@
         button {
 
             cursor: pointer;
-
         }
 
         button.save {
@@ -272,13 +252,11 @@
             font-size: 15px;
 
             margin-top: 10px;
-
         }
 
         button.save:hover {
 
             background: #1f8a4c;
-
         }
 
         button.add {
@@ -294,13 +272,11 @@
             border-radius: 8px;
 
             margin-top: 10px;
-
         }
 
         button.add:hover {
 
             background: #71368a;
-
         }
 
         /* =================================================
@@ -317,13 +293,11 @@
             margin: 15px 0;
 
             border-radius: 10px;
-
         }
 
         .doctor-box h3 {
 
             margin-bottom: 8px;
-
         }
 
         .remove-doctor {
@@ -339,7 +313,6 @@
             border-radius: 6px;
 
             margin-top: 5px;
-
         }
 
         /* =================================================
@@ -358,7 +331,6 @@
 
             background:
                 rgba(255,255,255,0.15);
-
         }
 
         /* =================================================
@@ -374,13 +346,11 @@
                 min-height: auto;
 
                 position: relative;
-
             }
 
             .overlay {
 
                 display: block;
-
             }
 
             .content {
@@ -390,7 +360,6 @@
                 width: 100%;
 
                 padding: 20px;
-
             }
 
             .sidebar {
@@ -400,13 +369,11 @@
                 flex-wrap: wrap;
 
                 gap: 8px;
-
             }
 
             .sidebar h2 {
 
                 width: 100%;
-
             }
 
             .sidebar button {
@@ -414,7 +381,6 @@
                 width: calc(50% - 4px);
 
                 margin: 0;
-
             }
 
         }
@@ -465,6 +431,17 @@
             onclick="openFollowups()"
         >
             🔄 Follow-ups
+        </button>
+
+
+        <!-- =================================================
+             ANALYTICS BUTTON
+        ================================================= -->
+
+        <button
+            onclick="openAnalytics()"
+        >
+            📊 Analytics
         </button>
 
 
@@ -645,9 +622,9 @@
 <script type="module">
 
 
-// =====================================================
-// FIREBASE
-// =====================================================
+/* =====================================================
+   FIREBASE
+===================================================== */
 
 import {
     initializeApp
@@ -665,9 +642,9 @@ from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
 
-// =====================================================
-// FIREBASE CONFIG
-// =====================================================
+/* =====================================================
+   FIREBASE CONFIG
+===================================================== */
 
 const firebaseConfig = {
 
@@ -695,9 +672,9 @@ const firebaseConfig = {
 };
 
 
-// =====================================================
-// INITIALIZE
-// =====================================================
+/* =====================================================
+   INITIALIZE
+===================================================== */
 
 const app =
     initializeApp(
@@ -711,16 +688,16 @@ const auth =
     );
 
 
-// =====================================================
-// CURRENT USER
-// =====================================================
+/* =====================================================
+   CURRENT USER
+===================================================== */
 
 let currentUser = null;
 
 
-// =====================================================
-// DASHBOARD AUTHENTICATION
-// =====================================================
+/* =====================================================
+   DASHBOARD AUTHENTICATION
+===================================================== */
 
 onAuthStateChanged(
     auth,
@@ -751,9 +728,9 @@ onAuthStateChanged(
 
         try {
 
-            // ---------------------------------------------
-            // GET FRESH FIREBASE TOKEN
-            // ---------------------------------------------
+            /* -----------------------------------------
+               GET FRESH FIREBASE TOKEN
+            ----------------------------------------- */
 
             const token =
                 await user.getIdToken(
@@ -770,9 +747,9 @@ onAuthStateChanged(
             }
 
 
-            // ---------------------------------------------
-            // CHECK SUBSCRIPTION
-            // ---------------------------------------------
+            /* -----------------------------------------
+               CHECK SUBSCRIPTION
+            ----------------------------------------- */
 
             const response =
                 await fetch(
@@ -820,9 +797,9 @@ onAuthStateChanged(
             }
 
 
-            // ---------------------------------------------
-            // EXPIRED / NO SUBSCRIPTION
-            // ---------------------------------------------
+            /* -----------------------------------------
+               EXPIRED / NO SUBSCRIPTION
+            ----------------------------------------- */
 
             if (
                 data.active !== true
@@ -839,23 +816,25 @@ onAuthStateChanged(
             }
 
 
-            // ---------------------------------------------
-            // ACTIVE SUBSCRIPTION
-            // ---------------------------------------------
+            /* -----------------------------------------
+               ACTIVE SUBSCRIPTION
+            ----------------------------------------- */
 
             console.log(
                 "DASHBOARD ACCESS GRANTED"
             );
 
 
-            // SAVE UID
             localStorage.setItem(
                 "uid",
                 user.uid
             );
 
 
-            // SHOW HOSPITAL ID
+            /* -----------------------------------------
+               SHOW HOSPITAL ID
+            ----------------------------------------- */
+
             const hospitalId =
                 localStorage.getItem(
                     "hospitalId"
@@ -868,7 +847,10 @@ onAuthStateChanged(
                 hospitalId;
 
 
-            // SHOW HOSPITAL NAME
+            /* -----------------------------------------
+               SHOW HOSPITAL NAME
+            ----------------------------------------- */
+
             const hospitalName =
                 localStorage.getItem(
                     "hospitalName"
@@ -881,7 +863,10 @@ onAuthStateChanged(
                 hospitalName;
 
 
-            // LOAD STORED HOSPITAL INFO
+            /* -----------------------------------------
+               LOAD STORED HOSPITAL INFO
+            ----------------------------------------- */
+
             loadSavedHospital();
 
         }
@@ -901,9 +886,9 @@ onAuthStateChanged(
 );
 
 
-// =====================================================
-// SHOW SECTION
-// =====================================================
+/* =====================================================
+   SHOW SECTION
+===================================================== */
 
 window.showSection =
 function(id) {
@@ -936,9 +921,9 @@ function(id) {
 };
 
 
-// =====================================================
-// OPEN APPOINTMENTS
-// =====================================================
+/* =====================================================
+   OPEN APPOINTMENTS
+===================================================== */
 
 window.openAppointments =
 function() {
@@ -969,9 +954,9 @@ function() {
 };
 
 
-// =====================================================
-// OPEN FOLLOW-UPS
-// =====================================================
+/* =====================================================
+   OPEN FOLLOW-UPS
+===================================================== */
 
 window.openFollowups =
 function() {
@@ -1002,9 +987,42 @@ function() {
 };
 
 
-// =====================================================
-// ADD DOCTOR
-// =====================================================
+/* =====================================================
+   OPEN ANALYTICS
+===================================================== */
+
+window.openAnalytics =
+function() {
+
+    const uid =
+        localStorage.getItem(
+            "uid"
+        );
+
+
+    if (!uid) {
+
+        alert(
+            "Login required!"
+        );
+
+        window.location.href =
+            "/login-page";
+
+        return;
+    }
+
+
+    window.location.href =
+        "/analytics/" +
+        uid;
+
+};
+
+
+/* =====================================================
+   ADD DOCTOR
+===================================================== */
 
 let doctorCount = 1;
 
@@ -1075,9 +1093,9 @@ function() {
 };
 
 
-// =====================================================
-// LOAD SAVED HOSPITAL
-// =====================================================
+/* =====================================================
+   LOAD SAVED HOSPITAL
+===================================================== */
 
 async function loadSavedHospital() {
 
@@ -1091,16 +1109,6 @@ async function loadSavedHospital() {
 
         return;
     }
-
-
-    /*
-      Your existing /hospital/<uid> route
-      returns HTML, not JSON.
-
-      Therefore we don't fetch it here.
-
-      The form will show stored local values.
-    */
 
 
     const hospitalName =
@@ -1117,9 +1125,9 @@ async function loadSavedHospital() {
 }
 
 
-// =====================================================
-// SAVE HOSPITAL
-// =====================================================
+/* =====================================================
+   SAVE HOSPITAL
+===================================================== */
 
 window.saveHospital =
 async function() {
@@ -1145,10 +1153,6 @@ async function() {
         }
 
 
-        // ---------------------------------------------
-        // CHECK FIREBASE USER
-        // ---------------------------------------------
-
         if (!currentUser) {
 
             alert(
@@ -1162,19 +1166,11 @@ async function() {
         }
 
 
-        // ---------------------------------------------
-        // GET FRESH TOKEN
-        // ---------------------------------------------
-
         const token =
             await currentUser.getIdToken(
                 true
             );
 
-
-        // ---------------------------------------------
-        // FORM DATA
-        // ---------------------------------------------
 
         const formData =
             new FormData();
@@ -1225,10 +1221,6 @@ async function() {
             ).value.trim()
         );
 
-
-        // ---------------------------------------------
-        // DOCTORS
-        // ---------------------------------------------
 
         const names =
             document.querySelectorAll(
@@ -1290,10 +1282,6 @@ async function() {
         );
 
 
-        // ---------------------------------------------
-        // SEND TO VERCEL BACKEND
-        // ---------------------------------------------
-
         const response =
             await fetch(
                 "/save_hospital",
@@ -1326,10 +1314,6 @@ async function() {
         );
 
 
-        // ---------------------------------------------
-        // SUCCESS
-        // ---------------------------------------------
-
         if (response.ok) {
 
             localStorage.setItem(
@@ -1353,10 +1337,6 @@ async function() {
             return;
         }
 
-
-        // ---------------------------------------------
-        // EXPIRED SUBSCRIPTION
-        // ---------------------------------------------
 
         if (
             response.status === 403
@@ -1399,9 +1379,9 @@ async function() {
 };
 
 
-// =====================================================
-// LOGOUT
-// =====================================================
+/* =====================================================
+   LOGOUT
+===================================================== */
 
 window.logout =
 async function() {
@@ -1437,6 +1417,7 @@ async function() {
             error
         );
 
+
         alert(
             "Logout failed."
         );
@@ -1446,9 +1427,9 @@ async function() {
 };
 
 
-// =====================================================
-// DEFAULT SECTION
-// =====================================================
+/* =====================================================
+   DEFAULT SECTION
+===================================================== */
 
 showSection(
     "hospital"
