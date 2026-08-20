@@ -1,1127 +1,1573 @@
-from flask import (
-    Flask,
-    render_template,
-    request,
-    jsonify,
-    send_from_directory
-)
+<!DOCTYPE html>
+<html lang="en">
 
-import json
-import os
-import traceback
-import uuid
-from datetime import datetime, timedelta
+<head>
 
-import requests
-from dotenv import load_dotenv
-from flask_cors import CORS
+    <meta charset="UTF-8">
 
-import firebase_admin
-from firebase_admin import credentials, db, auth, messaging
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
+    <title>Statusly Dashboard</title>
 
-# ============================================================
-# LOAD ENV
-# ============================================================
+    <style>
 
-load_dotenv()
-
-
-# ============================================================
-# FLASK
-# ============================================================
-
-app = Flask(__name__)
-CORS(app)
-
-
-# ============================================================
-# FIREBASE
-# ============================================================
-
-FIREBASE_SERVICE_ACCOUNT = os.environ.get(
-    "FIREBASE_SERVICE_ACCOUNT",
-    ""
-).strip()
-
-if not FIREBASE_SERVICE_ACCOUNT:
-    raise RuntimeError(
-        "FIREBASE_SERVICE_ACCOUNT environment variable is missing"
-    )
-
-try:
-    firebase_service_account = json.loads(
-        FIREBASE_SERVICE_ACCOUNT
-    )
-except json.JSONDecodeError as e:
-    raise RuntimeError(
-        f"FIREBASE_SERVICE_ACCOUNT contains invalid JSON: {e}"
-    )
-
-
-if not firebase_admin._apps:
-
-    cred = credentials.Certificate(
-        firebase_service_account
-    )
-
-    firebase_admin.initialize_app(
-        cred,
-        {
-            "databaseURL":
-                "https://hospital-57fc8-default-rtdb.firebaseio.com"
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
         }
-    )
 
-
-# ============================================================
-# AISENSY
-# ============================================================
-
-AISENSY_API_KEY = os.environ.get(
-    "AISENSY_API_KEY",
-    ""
-).strip()
-
-AISENSY_API_URL = (
-    "https://backend.aisensy.com/"
-    "campaign/t1/api/v2"
-)
-
-AISENSY_APPOINTMENT_CAMPAIGN = (
-    "MediQueue Appointment Confirmation"
-)
-
-AISENSY_FOLLOWUP_CAMPAIGN = (
-    "mediqueue_followup_reminder"
-)
-
-
-# ============================================================
-# CASHFREE
-# ============================================================
-
-CASHFREE_CLIENT_ID = os.environ.get(
-    "CASHFREE_CLIENT_ID",
-    ""
-).strip()
-
-CASHFREE_CLIENT_SECRET = os.environ.get(
-    "CASHFREE_CLIENT_SECRET",
-    ""
-).strip()
-
-CASHFREE_BASE_URL = os.environ.get(
-    "CASHFREE_BASE_URL",
-    "https://api.cashfree.com/pg"
-).strip().rstrip("/")
-
-CASHFREE_API_VERSION = os.environ.get(
-    "CASHFREE_API_VERSION",
-    "2025-01-01"
-).strip()
-
-
-# ============================================================
-# STATUSLY
-# ============================================================
-
-STATUSLY_BASE_URL = os.environ.get(
-    "STATUSLY_BASE_URL",
-    "https://statusly.in"
-).strip().rstrip("/")
-
-
-# ============================================================
-# SUBSCRIPTION PLANS
-# ============================================================
-
-PLANS = {
-
-    "basic": {
-        "amount": 1,
-        "duration_days": 30
-    },
-
-    "standard": {
-        "amount": 1000,
-        "duration_days": 180
-    },
-
-    "premium": {
-        "amount": 2000,
-        "duration_days": 365
-    }
-
-}
-
-
-# ============================================================
-# UTILITY
-# ============================================================
-
-def format_whatsapp_number(mobile):
-
-    if not mobile:
-        return ""
-
-    mobile = str(mobile).strip()
-
-    mobile = "".join(
-        filter(
-            str.isdigit,
-            mobile
-        )
-    )
-
-    if len(mobile) == 10:
-        mobile = "91" + mobile
-
-    return mobile
-
-
-# ============================================================
-# FIREBASE AUTH
-# ============================================================
-
-def get_authenticated_user():
-
-    authorization = request.headers.get(
-        "Authorization",
-        ""
-    ).strip()
-
-    if not authorization:
-        print("AUTH ERROR: Authorization missing")
-        return None
-
-    if not authorization.startswith("Bearer "):
-        print("AUTH ERROR: Invalid Authorization format")
-        return None
-
-    token = authorization[7:].strip()
-
-    if not token:
-        return None
-
-    try:
-
-        decoded = auth.verify_id_token(token)
-
-        print(
-            "AUTH SUCCESS:",
-            decoded.get("uid")
-        )
-
-        return decoded
-
-    except Exception as e:
-
-        print(
-            "FIREBASE AUTH ERROR:",
-            str(e)
-        )
-
-        traceback.print_exc()
-
-        return None
-
-
-# ============================================================
-# GET SUBSCRIPTION
-# ============================================================
-
-def get_subscription(uid):
-
-    if not uid:
-        return None
-
-    return db.reference(
-        "subscriptions"
-    ).child(
-        uid
-    ).get()
-
-
-def subscription_is_active(uid):
-
-    subscription = get_subscription(uid)
-
-    if not subscription:
-        return False
-
-    if subscription.get("payment_status") != "PAID":
-        return False
-
-    expiry_string = subscription.get("expiry")
-
-    if not expiry_string:
-        return False
-
-    try:
-
-        expiry = datetime.fromisoformat(
-            expiry_string
-        )
-
-        return datetime.utcnow() < expiry
-
-    except Exception:
-
-        return False
-
-
-# ============================================================
-# CASHFREE HEADERS
-# ============================================================
-
-def cashfree_headers():
-
-    return {
-
-        "x-client-id":
-            CASHFREE_CLIENT_ID,
-
-        "x-client-secret":
-            CASHFREE_CLIENT_SECRET,
-
-        "x-api-version":
-            CASHFREE_API_VERSION,
-
-        "Content-Type":
-            "application/json",
-
-        "Accept":
-            "application/json"
-
-    }
-
-
-# ============================================================
-# FIREBASE SERVICE WORKER
-# ============================================================
-
-@app.route("/firebase-messaging-sw.js")
-def firebase_sw():
-
-    return send_from_directory(
-        "static",
-        "firebase-messaging-sw.js"
-    )
-
-
-# ============================================================
-# HOME
-# ============================================================
-
-@app.route("/")
-def home():
-
-    return render_template(
-        "index.html"
-    )
-
-
-# ============================================================
-# LOGIN PAGE
-# ============================================================
-
-@app.route("/login-page")
-def login_page():
-
-    return render_template(
-        "login.html"
-    )
-
-
-# ============================================================
-# LOGIN
-# ============================================================
-
-@app.route(
-    "/login",
-    methods=["POST"]
-)
-def login():
-
-    try:
-
-        decoded = get_authenticated_user()
-
-        if not decoded:
-
-            return jsonify({
-                "success": False,
-                "error": "Authentication required"
-            }), 401
-
-        uid = decoded.get("uid")
-
-        hospital = db.reference(
-            f"hospitals/{uid}"
-        ).get() or {}
-
-        return jsonify({
-
-            "success": True,
-
-            "uid":
-                uid,
-
-            "hospitalId":
-                hospital.get(
-                    "hospitalId",
-                    uid
-                ),
-
-            "hospitalName":
-                hospital.get(
-                    "hospital_name",
-                    ""
-                )
-
-        })
-
-    except Exception as e:
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success": False,
-
-            "error":
-                str(e)
-
-        }), 500
-
-
-# ============================================================
-# DASHBOARD
-# ============================================================
-
-@app.route("/dashboard")
-def dashboard():
-
-    return render_template(
-        "dashboard.html"
-    )
-
-
-# ============================================================
-# PAYMENT PAGE
-# ============================================================
-
-@app.route("/payment")
-def payment():
-
-    return render_template(
-        "payment.html"
-    )
-
-
-# ============================================================
-# DASHBOARD DATA
-# ============================================================
-
-@app.route(
-    "/api/dashboard",
-    methods=["GET"]
-)
-def dashboard_data():
-
-    try:
-
-        decoded = get_authenticated_user()
-
-        if not decoded:
-
-            return jsonify({
-                "success": False,
-                "error": "Authentication required"
-            }), 401
-
-        uid = decoded.get("uid")
-
-        # ----------------------------------------------------
-        # HOSPITAL
-        # ----------------------------------------------------
-
-        hospital = db.reference(
-            f"hospitals/{uid}"
-        ).get() or {}
-
-        # ----------------------------------------------------
-        # SUBSCRIPTION
-        # ----------------------------------------------------
-
-        subscription = get_subscription(uid)
-
-        active = subscription_is_active(uid)
-
-        # ----------------------------------------------------
-        # APPOINTMENTS
-        # ----------------------------------------------------
-
-        all_appointments = db.reference(
-            "appointments"
-        ).get() or {}
-
-        appointments = []
-
-        for appointment_id, patient in all_appointments.items():
-
-            if patient.get("hospital_id") != uid:
-                continue
-
-            patient = dict(patient)
-
-            patient["id"] = appointment_id
-
-            appointments.append(patient)
-
-        # newest first
-        appointments.reverse()
-
-        # ----------------------------------------------------
-        # DOCTORS
-        # ----------------------------------------------------
-
-        doctors = hospital.get(
-            "doctors",
-            []
-        )
-
-        # ----------------------------------------------------
-        # TODAY
-        # ----------------------------------------------------
-
-        today = datetime.now().strftime(
-            "%Y-%m-%d"
-        )
-
-        today_appointments = []
-
-        for patient in appointments:
-
-            if patient.get(
-                "appointment_date"
-            ) == today:
-
-                today_appointments.append(
-                    patient
-                )
-
-        # ----------------------------------------------------
-        # FOLLOWUPS
-        # ----------------------------------------------------
-
-        followups = []
-
-        for patient in appointments:
-
-            if patient.get(
-                "next_visit_date"
-            ):
-
-                followups.append(patient)
-
-        # ----------------------------------------------------
-        # URLS
-        # ----------------------------------------------------
-
-        hospital_url = (
-            f"{STATUSLY_BASE_URL}"
-            f"/hospital/{uid}"
-        )
-
-        booking_url = (
-            f"{STATUSLY_BASE_URL}"
-            f"/hospital/{uid}/book"
-        )
-
-        return jsonify({
-
-            "success": True,
-
-            "uid":
-                uid,
-
-            "hospital":
-                hospital,
-
-            "subscription":
-                subscription or {},
-
-            "subscription_active":
-                active,
-
-            "doctors":
-                doctors,
-
-            "appointments":
-                appointments,
-
-            "today_appointments":
-                today_appointments,
-
-            "followups":
-                followups,
-
-            "stats": {
-
-                "doctors":
-                    len(doctors),
-
-                "appointments":
-                    len(appointments),
-
-                "today":
-                    len(today_appointments),
-
-                "followups":
-                    len(followups)
-
-            },
-
-            "hospital_url":
-                hospital_url,
-
-            "booking_url":
-                booking_url
-
-        })
-
-    except Exception as e:
-
-        print(
-            "DASHBOARD ERROR:",
-            str(e)
-        )
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "error":
-                str(e)
-
-        }), 500
-
-
-# ============================================================
-# SAVE HOSPITAL
-# ============================================================
-
-@app.route(
-    "/save_hospital",
-    methods=["POST"]
-)
-def save_hospital():
-
-    try:
-
-        # IMPORTANT:
-        # UID comes from Firebase token
-        # NOT from form data.
-
-        decoded = get_authenticated_user()
-
-        if not decoded:
-
-            return jsonify({
-                "success": False,
-                "error": "Authentication required"
-            }), 401
-
-        uid = decoded.get("uid")
-
-        if not uid:
-
-            return jsonify({
-                "success": False,
-                "error": "UID missing"
-            }), 400
-
-        # ----------------------------------------------------
-        # SUBSCRIPTION
-        # ----------------------------------------------------
-
-        if not subscription_is_active(uid):
-
-            return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Active subscription required"
-
-            }), 403
-
-        # ----------------------------------------------------
-        # DOCTORS
-        # ----------------------------------------------------
-
-        names = request.form.getlist(
-            "doctor_name"
-        )
-
-        specs = request.form.getlist(
-            "specialization"
-        )
-
-        times = request.form.getlist(
-            "opd_time"
-        )
-
-        infos = request.form.getlist(
-            "doctor_info"
-        )
-
-        doctors = []
-
-        count = min(
-            len(names),
-            len(specs),
-            len(times),
-            len(infos)
-        )
-
-        for i in range(count):
-
-            doctors.append({
-
-                "doctor_name":
-                    names[i],
-
-                "specialization":
-                    specs[i],
-
-                "opd_time":
-                    times[i],
-
-                "doctor_info":
-                    infos[i]
-
-            })
-
-        # ----------------------------------------------------
-        # HOSPITAL DATA
-        # ----------------------------------------------------
-
-        hospital_data = {
-
-            "uid":
-                uid,
-
-            "hospitalId":
-                uid,
-
-            "hospital_name":
-                request.form.get(
-                    "hospital_name",
-                    ""
-                ),
-
-            "date":
-                request.form.get(
-                    "date",
-                    ""
-                ),
-
-            "open_time":
-                request.form.get(
-                    "open_time",
-                    ""
-                ),
-
-            "close_time":
-                request.form.get(
-                    "close_time",
-                    ""
-                ),
-
-            "info":
-                request.form.get(
-                    "info",
-                    ""
-                ),
-
-            "created_at":
-                datetime.utcnow().isoformat(),
-
-            "doctors":
-                doctors
+        body {
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        /* =========================
+           LAYOUT
+        ========================= */
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            width: 250px;
+            background: #111827;
+            color: white;
+            padding: 22px 15px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            padding: 10px 12px 30px;
+        }
+
+        .logo span {
+            color: #38bdf8;
+        }
+
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .menu button,
+        .menu a {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            color: #cbd5e1;
+            padding: 13px 14px;
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .menu button:hover,
+        .menu a:hover,
+        .menu .active {
+            background: #1e293b;
+            color: white;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        /* =========================
+           TOPBAR
+        ========================= */
+
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .hospital-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .hospital-id {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .logout {
+            border: none;
+            background: #ef4444;
+            color: white;
+            padding: 10px 17px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            padding: 30px;
+        }
+
+        .welcome {
+            background: linear-gradient(
+                135deg,
+                #0f172a,
+                #1e3a8a
+            );
+
+            color: white;
+            padding: 28px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #cbd5e1;
+        }
+
+        /* =========================
+           CARDS
+        ========================= */
+
+        .cards {
+            display: grid;
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow:
+                0 4px 15px rgba(
+                    15,
+                    23,
+                    42,
+                    0.04
+                );
+        }
+
+        .card-title {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .card-number {
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        /* =========================
+           GRID
+        ========================= */
+
+        .grid {
+            display: grid;
+            grid-template-columns:
+                1.5fr 1fr;
+
+            gap: 20px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .section-header h2 {
+            font-size: 17px;
+        }
+
+        /* =========================
+           LINKS
+        ========================= */
+
+        .link-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .link-label {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 6px;
+        }
+
+        .link-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .link-input {
+            flex: 1;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            padding: 9px;
+            font-size: 12px;
+            background: white;
+        }
+
+        .copy-btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        .open-btn {
+            display: inline-block;
+            margin-top: 8px;
+            text-decoration: none;
+            color: #2563eb;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* =========================
+           SUBSCRIPTION
+        ========================= */
+
+        .subscription {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+
+        .status-active {
+            color: #16a34a;
+            font-weight: 700;
+        }
+
+        .status-expired {
+            color: #dc2626;
+            font-weight: 700;
+        }
+
+        .payment-btn {
+            display: inline-block;
+            margin-top: 14px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th {
+            text-align: left;
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 12px;
+            padding: 12px;
+        }
+
+        td {
+            padding: 13px 12px;
+            border-top: 1px solid #eef2f7;
+            font-size: 13px;
+        }
+
+        .empty {
+            text-align: center;
+            color: #94a3b8;
+            padding: 25px;
+        }
+
+        /* =========================
+           DOCTORS
+        ========================= */
+
+        .doctor {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+
+        .doctor-name {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .doctor-specialization {
+            color: #2563eb;
+            font-size: 12px;
+        }
+
+        .doctor-time {
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        .mobile-header {
+            display: none;
+        }
+
+        @media (
+            max-width: 1000px
+        ) {
+
+            .cards {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
 
         }
 
-        db.reference(
-            "hospitals"
-        ).child(
-            uid
-        ).set(
-            hospital_data
+        @media (
+            max-width: 700px
+        ) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .topbar {
+                padding: 0 15px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .card-number {
+                font-size: 24px;
+            }
+
+            .welcome {
+                padding: 20px;
+            }
+
+            .welcome h1 {
+                font-size: 22px;
+            }
+
+            .hospital-title {
+                font-size: 16px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="layout">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            Status<span>ly</span>
+        </div>
+
+        <div class="menu">
+
+            <a
+                href="#"
+                class="active"
+            >
+                Dashboard
+            </a>
+
+            <a
+                id="hospitalMenu"
+                href="#"
+            >
+                Hospital Page
+            </a>
+
+            <a
+                id="bookingMenu"
+                href="#"
+            >
+                Book Appointment
+            </a>
+
+            <a
+                id="appointmentsMenu"
+                href="#"
+            >
+                Appointments
+            </a>
+
+            <a
+                id="followupsMenu"
+                href="#"
+            >
+                Follow-ups
+            </a>
+
+            <a href="/payment">
+                Subscription
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <div
+                    class="hospital-title"
+                    id="topHospitalName"
+                >
+                    Loading...
+                </div>
+
+                <div
+                    class="hospital-id"
+                    id="topHospitalId"
+                >
+                    Loading...
+                </div>
+
+            </div>
+
+            <button
+                class="logout"
+                onclick="logout()"
+            >
+                Logout
+            </button>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+
+            <!-- WELCOME -->
+
+            <div class="welcome">
+
+                <h1>
+                    Welcome to Statusly 👋
+                </h1>
+
+                <p>
+                    Manage your hospital,
+                    doctors, appointments and
+                    patient follow-ups.
+                </p>
+
+            </div>
+
+
+            <!-- STATISTICS -->
+
+            <div class="cards">
+
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Total Doctors
+                    </div>
+
+                    <div
+                        class="card-number"
+                        id="doctorCount"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Today's Appointments
+                    </div>
+
+                    <div
+                        class="card-number"
+                        id="todayCount"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Total Appointments
+                    </div>
+
+                    <div
+                        class="card-number"
+                        id="appointmentCount"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Follow-ups
+                    </div>
+
+                    <div
+                        class="card-number"
+                        id="followupCount"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="grid">
+
+
+                <!-- LEFT -->
+
+                <div>
+
+
+                    <!-- TODAY APPOINTMENTS -->
+
+                    <div class="section">
+
+                        <div class="section-header">
+
+                            <h2>
+                                Today's Appointments
+                            </h2>
+
+                        </div>
+
+                        <div class="table-wrapper">
+
+                            <table>
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Patient No.
+                                        </th>
+
+                                        <th>
+                                            Patient
+                                        </th>
+
+                                        <th>
+                                            Doctor
+                                        </th>
+
+                                        <th>
+                                            Time
+                                        </th>
+
+                                        <th>
+                                            Mobile
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+                                <tbody
+                                    id="appointmentTable"
+                                >
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- HOSPITAL LINKS -->
+
+                    <div class="section">
+
+                        <div class="section-header">
+
+                            <h2>
+                                Hospital Links
+                            </h2>
+
+                        </div>
+
+
+                        <div class="link-box">
+
+                            <div class="link-label">
+                                Hospital Page
+                            </div>
+
+                            <div class="link-row">
+
+                                <input
+                                    id="hospitalUrl"
+                                    class="link-input"
+                                    readonly
+                                >
+
+                                <button
+                                    class="copy-btn"
+                                    onclick="copyUrl('hospitalUrl')"
+                                >
+                                    Copy
+                                </button>
+
+                            </div>
+
+                            <a
+                                id="hospitalOpen"
+                                class="open-btn"
+                                target="_blank"
+                            >
+                                Open Hospital Page →
+                            </a>
+
+                        </div>
+
+
+                        <div class="link-box">
+
+                            <div class="link-label">
+                                Appointment Booking Page
+                            </div>
+
+                            <div class="link-row">
+
+                                <input
+                                    id="bookingUrl"
+                                    class="link-input"
+                                    readonly
+                                >
+
+                                <button
+                                    class="copy-btn"
+                                    onclick="copyUrl('bookingUrl')"
+                                >
+                                    Copy
+                                </button>
+
+                            </div>
+
+                            <a
+                                id="bookingOpen"
+                                class="open-btn"
+                                target="_blank"
+                            >
+                                Open Booking Page →
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- RIGHT -->
+
+                <div>
+
+
+                    <!-- SUBSCRIPTION -->
+
+                    <div class="section">
+
+                        <div class="section-header">
+
+                            <h2>
+                                Subscription
+                            </h2>
+
+                        </div>
+
+
+                        <div class="subscription">
+
+                            <div>
+
+                                <div
+                                    id="planName"
+                                    style="font-weight:700"
+                                >
+                                    No Plan
+                                </div>
+
+                                <div
+                                    id="expiryDate"
+                                    style="
+                                        font-size:12px;
+                                        color:#64748b;
+                                        margin-top:5px;
+                                    "
+                                >
+                                    -
+                                </div>
+
+                            </div>
+
+                            <div
+                                id="subscriptionStatus"
+                            >
+                                -
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="/payment"
+                            class="payment-btn"
+                        >
+                            Manage Subscription
+                        </a>
+
+                    </div>
+
+
+                    <!-- DOCTORS -->
+
+                    <div class="section">
+
+                        <div class="section-header">
+
+                            <h2>
+                                Doctors
+                            </h2>
+
+                        </div>
+
+                        <div
+                            id="doctorList"
+                        >
+
+                            <div class="empty">
+                                Loading doctors...
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     FIREBASE
+========================================================== -->
+
+<script type="module">
+
+    import {
+        initializeApp
+    } from
+    "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+
+    import {
+        getAuth,
+        onAuthStateChanged,
+        signOut
+    } from
+    "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+    // ======================================================
+    // YOUR FIREBASE CONFIG
+    // ======================================================
+
+    const firebaseConfig = {
+
+        apiKey:
+            "{{ firebase_api_key|default('') }}",
+
+        authDomain:
+            "{{ firebase_auth_domain|default('') }}",
+
+        databaseURL:
+            "{{ firebase_database_url|default('') }}",
+
+        projectId:
+            "{{ firebase_project_id|default('') }}",
+
+        storageBucket:
+            "{{ firebase_storage_bucket|default('') }}",
+
+        messagingSenderId:
+            "{{ firebase_messaging_sender_id|default('') }}"
+
+    };
+
+
+    /*
+        IMPORTANT:
+
+        If your Firebase config is already inside
+        another JS file, use that file instead.
+
+        Do NOT put Firebase service-account credentials here.
+    */
+
+
+    const app = initializeApp(
+        firebaseConfig
+    );
+
+    const auth =
+        getAuth(app);
+
+
+    // ======================================================
+    // AUTH
+    // ======================================================
+
+    onAuthStateChanged(
+        auth,
+        async (user) => {
+
+            if (!user) {
+
+                window.location.href =
+                    "/login-page";
+
+                return;
+            }
+
+
+            try {
+
+                const token =
+                    await user.getIdToken(
+                        true
+                    );
+
+                await loadDashboard(
+                    token
+                );
+
+            } catch (error) {
+
+                console.error(
+                    error
+                );
+
+                alert(
+                    "Unable to load dashboard."
+                );
+
+            }
+
+        }
+    );
+
+
+    // ======================================================
+    // LOAD DASHBOARD
+    // ======================================================
+
+    async function loadDashboard(
+        token
+    ) {
+
+        const response =
+            await fetch(
+                "/api/dashboard",
+                {
+
+                    method: "GET",
+
+                    headers: {
+
+                        "Authorization":
+                            `Bearer ${token}`
+
+                    }
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok ||
+            !data.success) {
+
+            console.error(
+                data
+            );
+
+            alert(
+                data.error ||
+                "Dashboard loading failed"
+            );
+
+            return;
+        }
+
+
+        renderDashboard(
+            data
+        );
+
+    }
+
+
+    // ======================================================
+    // RENDER
+    // ======================================================
+
+    function renderDashboard(
+        data
+    ) {
+
+        const hospital =
+            data.hospital || {};
+
+        const stats =
+            data.stats || {};
+
+        const subscription =
+            data.subscription || {};
+
+
+        // -----------------------------------------------
+        // HOSPITAL
+        // -----------------------------------------------
+
+        const hospitalName =
+            hospital.hospital_name ||
+            "Hospital";
+
+
+        document.getElementById(
+            "topHospitalName"
+        ).textContent =
+            hospitalName;
+
+
+        document.getElementById(
+            "topHospitalId"
+        ).textContent =
+            "Hospital ID: " +
+            data.uid;
+
+
+        // -----------------------------------------------
+        // STATS
+        // -----------------------------------------------
+
+        document.getElementById(
+            "doctorCount"
+        ).textContent =
+            stats.doctors || 0;
+
+
+        document.getElementById(
+            "todayCount"
+        ).textContent =
+            stats.today || 0;
+
+
+        document.getElementById(
+            "appointmentCount"
+        ).textContent =
+            stats.appointments || 0;
+
+
+        document.getElementById(
+            "followupCount"
+        ).textContent =
+            stats.followups || 0;
+
+
+        // -----------------------------------------------
+        // LINKS
+        // -----------------------------------------------
+
+        const hospitalUrl =
+            data.hospital_url;
+
+
+        const bookingUrl =
+            data.booking_url;
+
+
+        document.getElementById(
+            "hospitalUrl"
+        ).value =
+            hospitalUrl;
+
+
+        document.getElementById(
+            "bookingUrl"
+        ).value =
+            bookingUrl;
+
+
+        document.getElementById(
+            "hospitalOpen"
+        ).href =
+            hospitalUrl;
+
+
+        document.getElementById(
+            "bookingOpen"
+        ).href =
+            bookingUrl;
+
+
+        // -----------------------------------------------
+        // MENU LINKS
+        // -----------------------------------------------
+
+        document.getElementById(
+            "hospitalMenu"
+        ).href =
+            hospitalUrl;
+
+
+        document.getElementById(
+            "bookingMenu"
+        ).href =
+            bookingUrl;
+
+
+        document.getElementById(
+            "appointmentsMenu"
+        ).href =
+            `/appointments/${data.uid}`;
+
+
+        document.getElementById(
+            "followupsMenu"
+        ).href =
+            `/followups/${data.uid}`;
+
+
+        // -----------------------------------------------
+        // SUBSCRIPTION
+        // -----------------------------------------------
+
+        const plan =
+            subscription.plan ||
+            "No Plan";
+
+
+        document.getElementById(
+            "planName"
+        ).textContent =
+            plan.toUpperCase();
+
+
+        document.getElementById(
+            "expiryDate"
+        ).textContent =
+            subscription.expiry
+                ? "Expiry: " +
+                  formatDate(
+                      subscription.expiry
+                  )
+                : "Expiry: -";
+
+
+        const status =
+            document.getElementById(
+                "subscriptionStatus"
+            );
+
+
+        if (data.subscription_active) {
+
+            status.textContent =
+                "ACTIVE";
+
+            status.className =
+                "status-active";
+
+        } else {
+
+            status.textContent =
+                "EXPIRED";
+
+            status.className =
+                "status-expired";
+
+        }
+
+
+        // -----------------------------------------------
+        // APPOINTMENTS
+        // -----------------------------------------------
+
+        renderAppointments(
+            data.today_appointments || []
+        );
+
+
+        // -----------------------------------------------
+        // DOCTORS
+        // -----------------------------------------------
+
+        renderDoctors(
+            data.doctors || []
+        );
+
+    }
+
+
+    // ======================================================
+    // APPOINTMENTS
+    // ======================================================
+
+    function renderAppointments(
+        appointments
+    ) {
+
+        const table =
+            document.getElementById(
+                "appointmentTable"
+            );
+
+
+        table.innerHTML = "";
+
+
+        if (!appointments.length) {
+
+            table.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="5"
+                        class="empty"
+                    >
+                        No appointments for today.
+                    </td>
+
+                </tr>
+
+            `;
+
+            return;
+        }
+
+
+        appointments.forEach(
+            patient => {
+
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                row.innerHTML = `
+
+                    <td>
+                        #${escapeHtml(
+                            patient.patient_no || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            patient.patient_name || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            patient.doctor_name || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            patient.appointment_time || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            patient.mobile || "-"
+                        )}
+                    </td>
+
+                `;
+
+
+                table.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+
+
+    // ======================================================
+    // DOCTORS
+    // ======================================================
+
+    function renderDoctors(
+        doctors
+    ) {
+
+        const container =
+            document.getElementById(
+                "doctorList"
+            );
+
+
+        container.innerHTML = "";
+
+
+        if (!doctors.length) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+                    No doctors added.
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        doctors.forEach(
+            doctor => {
+
+                const div =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                div.className =
+                    "doctor";
+
+
+                div.innerHTML = `
+
+                    <div class="doctor-name">
+                        ${escapeHtml(
+                            doctor.doctor_name || "-"
+                        )}
+                    </div>
+
+                    <div class="doctor-specialization">
+                        ${escapeHtml(
+                            doctor.specialization || "-"
+                        )}
+                    </div>
+
+                    <div class="doctor-time">
+                        OPD: ${escapeHtml(
+                            doctor.opd_time || "-"
+                        )}
+                    </div>
+
+                `;
+
+
+                container.appendChild(
+                    div
+                );
+
+            }
+        );
+
+    }
+
+
+    // ======================================================
+    // COPY
+    // ======================================================
+
+    window.copyUrl =
+        async function(
+            elementId
+        ) {
+
+            const input =
+                document.getElementById(
+                    elementId
+                );
+
+
+            try {
+
+                await navigator.clipboard.writeText(
+                    input.value
+                );
+
+                alert(
+                    "Link copied!"
+                );
+
+            } catch (error) {
+
+                input.select();
+
+                document.execCommand(
+                    "copy"
+                );
+
+                alert(
+                    "Link copied!"
+                );
+
+            }
+
+        };
+
+
+    // ======================================================
+    // LOGOUT
+    // ======================================================
+
+    window.logout =
+        async function() {
+
+            try {
+
+                await signOut(
+                    auth
+                );
+
+                window.location.href =
+                    "/login-page";
+
+            } catch (error) {
+
+                console.error(
+                    error
+                );
+
+            }
+
+        };
+
+
+    // ======================================================
+    // DATE
+    // ======================================================
+
+    function formatDate(
+        value
+    ) {
+
+        try {
+
+            return new Date(
+                value
+            ).toLocaleDateString(
+                "en-IN",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+
+        } catch {
+
+            return value;
+
+        }
+
+    }
+
+
+    // ======================================================
+    // HTML ESCAPE
+    // ======================================================
+
+    function escapeHtml(
+        value
+    ) {
+
+        return String(
+            value
         )
-
-        return jsonify({
-
-            "success":
-                True,
-
-            "message":
-                "Hospital saved successfully",
-
-            "uid":
-                uid,
-
-            "hospital_url":
-                f"{STATUSLY_BASE_URL}/hospital/{uid}",
-
-            "booking_url":
-                f"{STATUSLY_BASE_URL}/hospital/{uid}/book"
-
-        })
-
-    except Exception as e:
-
-        print(
-            "SAVE HOSPITAL ERROR:",
-            str(e)
+        .replace(
+            /&/g,
+            "&amp;"
         )
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "error":
-                str(e)
-
-        }), 500
-
-
-# ============================================================
-# HOSPITAL PAGE
-# ============================================================
-
-@app.route(
-    "/hospital/<uid>",
-    methods=["GET"]
-)
-def hospital_page(uid):
-
-    print(
-        "HOSPITAL PAGE:",
-        uid
-    )
-
-    hospital = db.reference(
-        f"hospitals/{uid}"
-    ).get()
-
-    if not hospital:
-
-        return (
-            "Hospital not found",
-            404
+        .replace(
+            /</g,
+            "&lt;"
         )
-
-    return render_template(
-
-        "hospital.html",
-
-        hospital=hospital,
-
-        uid=uid
-
-    )
-
-
-# ============================================================
-# BOOK PAGE
-# ============================================================
-
-@app.route(
-    "/hospital/<uid>/book",
-    methods=["GET"]
-)
-def book_page(uid):
-
-    hospital = db.reference(
-        f"hospitals/{uid}"
-    ).get()
-
-    if not hospital:
-
-        return (
-            "Hospital not found",
-            404
+        .replace(
+            />/g,
+            "&gt;"
         )
-
-    return render_template(
-
-        "appointment.html",
-
-        hospital=hospital,
-
-        uid=uid
-
-    )
-
-
-# ============================================================
-# APPOINTMENTS PAGE
-# ============================================================
-
-@app.route(
-    "/appointments/<uid>",
-    methods=["GET"]
-)
-def appointments(uid):
-
-    data = db.reference(
-        "appointments"
-    ).get() or {}
-
-    patients = []
-
-    for key, patient in data.items():
-
-        if patient.get(
-            "hospital_id"
-        ) != uid:
-
-            continue
-
-        patient = dict(patient)
-
-        patient["id"] = key
-
-        patients.append(
-            patient
+        .replace(
+            /"/g,
+            "&quot;"
         )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
-    return render_template(
+    }
 
-        "appointments.html",
+</script>
 
-        patients=patients,
 
-        uid=uid
+</body>
 
-    )
-
-
-# ============================================================
-# FOLLOWUPS PAGE
-# ============================================================
-
-@app.route(
-    "/followups/<uid>",
-    methods=["GET"]
-)
-def followups(uid):
-
-    data = db.reference(
-        "appointments"
-    ).get() or {}
-
-    patients = []
-
-    for key, patient in data.items():
-
-        if patient.get(
-            "hospital_id"
-        ) != uid:
-
-            continue
-
-        patient = dict(patient)
-
-        patient["id"] = key
-
-        patients.append(
-            patient
-        )
-
-    return render_template(
-
-        "followups.html",
-
-        patients=patients,
-
-        uid=uid
-
-    )
-
-
-# ============================================================
-# SAVE FOLLOWUP
-# ============================================================
-
-@app.route(
-    "/save_followup",
-    methods=["POST"]
-)
-def save_followup():
-
-    try:
-
-        decoded = get_authenticated_user()
-
-        if not decoded:
-
-            return jsonify({
-                "success": False,
-                "error": "Authentication required"
-            }), 401
-
-        uid = decoded.get("uid")
-
-        patient_id = request.form.get(
-            "patient_id"
-        )
-
-        next_visit_date = request.form.get(
-            "next_visit_date"
-        )
-
-        doctor_notes = request.form.get(
-            "doctor_notes"
-        )
-
-        if not patient_id:
-
-            return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Patient ID missing"
-
-            }), 400
-
-        patient_ref = db.reference(
-            "appointments"
-        ).child(
-            patient_id
-        )
-
-        patient = patient_ref.get()
-
-        if not patient:
-
-            return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Patient not found"
-
-            }), 404
-
-        # IMPORTANT:
-        # Prevent editing another hospital's patient.
-
-        if patient.get(
-            "hospital_id"
-        ) != uid:
-
-            return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Unauthorized"
-
-            }), 403
-
-        patient_ref.update({
-
-            "next_visit_date":
-                next_visit_date,
-
-            "doctor_notes":
-                doctor_notes,
-
-            "followup_created_at":
-                datetime.utcnow().isoformat()
-
-        })
-
-        return jsonify({
-
-            "success":
-                True,
-
-            "message":
-                "Follow-up saved"
-
-        })
-
-    except Exception as e:
-
-        traceback.print_exc()
-
-        return jsonify({
-
-            "success":
-                False,
-
-            "error":
-                str(e)
-
-        }), 500
-
-
-# ============================================================
-# HEALTH
-# ============================================================
-
-@app.route(
-    "/health",
-    methods=["GET"]
-)
-def health():
-
-    return jsonify({
-
-        "success":
-            True,
-
-        "status":
-            "online",
-
-        "service":
-            "Statusly",
-
-        "time":
-            datetime.utcnow().isoformat()
-
-    })
-
-
-# ============================================================
-# RUN
-# ============================================================
-
-if __name__ == "__main__":
-
-    app.run(
-
-        debug=True,
-
-        host="0.0.0.0",
-
-        port=5000
-
-    )
+</html>
