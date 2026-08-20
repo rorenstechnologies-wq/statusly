@@ -3,453 +3,409 @@
 
 <head>
 
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Statusly Dashboard</title>
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            background: #f5f7fb;
-            color: #172033;
-        }
-
-        /* =========================
-           LAYOUT
-        ========================= */
-
-        .layout {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* =========================
-           SIDEBAR
-        ========================= */
-
-        .sidebar {
-            width: 250px;
-            background: #111827;
-            color: white;
-            padding: 22px 15px;
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            overflow-y: auto;
-        }
-
-        .logo {
-            font-size: 25px;
-            font-weight: 800;
-            padding: 10px 12px 30px;
-        }
-
-        .logo span {
-            color: #38bdf8;
-        }
-
-        .menu {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .menu button,
-        .menu a {
-            width: 100%;
-            border: 0;
-            background: transparent;
-            color: #cbd5e1;
-            padding: 13px 14px;
-            border-radius: 10px;
-            text-align: left;
-            cursor: pointer;
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        .menu button:hover,
-        .menu a:hover,
-        .menu .active {
-            background: #1e293b;
-            color: white;
-        }
-
-        /* =========================
-           MAIN
-        ========================= */
-
-        .main {
-            margin-left: 250px;
-            width: calc(100% - 250px);
-            min-height: 100vh;
-        }
-
-        /* =========================
-           TOPBAR
-        ========================= */
-
-        .topbar {
-            height: 75px;
-            background: white;
-            border-bottom: 1px solid #e5e7eb;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-        }
-
-        .hospital-title {
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .hospital-id {
-            font-size: 12px;
-            color: #64748b;
-            margin-top: 4px;
-        }
-
-        .logout {
-            border: none;
-            background: #ef4444;
-            color: white;
-            padding: 10px 17px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        /* =========================
-           CONTENT
-        ========================= */
-
-        .content {
-            padding: 30px;
-        }
-
-        .welcome {
-            background: linear-gradient(
-                135deg,
-                #0f172a,
-                #1e3a8a
-            );
-
-            color: white;
-            padding: 28px;
-            border-radius: 16px;
-            margin-bottom: 25px;
-        }
-
-        .welcome h1 {
-            font-size: 27px;
-            margin-bottom: 8px;
-        }
-
-        .welcome p {
-            color: #cbd5e1;
-        }
-
-        /* =========================
-           CARDS
-        ========================= */
-
-        .cards {
-            display: grid;
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 18px;
-
-            margin-bottom: 25px;
-        }
-
-        .card {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 14px;
-            padding: 22px;
-            box-shadow:
-                0 4px 15px rgba(
-                    15,
-                    23,
-                    42,
-                    0.04
-                );
-        }
-
-        .card-title {
-            color: #64748b;
-            font-size: 13px;
-            margin-bottom: 10px;
-        }
-
-        .card-number {
-            font-size: 30px;
-            font-weight: 800;
-        }
-
-        /* =========================
-           GRID
-        ========================= */
-
-        .grid {
-            display: grid;
-            grid-template-columns:
-                1.5fr 1fr;
-
-            gap: 20px;
-        }
-
-        .section {
-            background: white;
-            border-radius: 14px;
-            border: 1px solid #e5e7eb;
-            padding: 22px;
-            margin-bottom: 20px;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-        }
-
-        .section-header h2 {
-            font-size: 17px;
-        }
-
-        /* =========================
-           LINKS
-        ========================= */
-
-        .link-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 14px;
-            margin-bottom: 12px;
-        }
-
-        .link-label {
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 6px;
-        }
-
-        .link-row {
-            display: flex;
-            gap: 8px;
-        }
-
-        .link-input {
-            flex: 1;
-            border: 1px solid #cbd5e1;
-            border-radius: 7px;
-            padding: 9px;
-            font-size: 12px;
-            background: white;
-        }
-
-        .copy-btn {
-            border: none;
-            background: #2563eb;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 7px;
-            cursor: pointer;
-        }
-
-        .open-btn {
-            display: inline-block;
-            margin-top: 8px;
-            text-decoration: none;
-            color: #2563eb;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        /* =========================
-           SUBSCRIPTION
-        ========================= */
-
-        .subscription {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            background: #f8fafc;
-            border-radius: 10px;
-        }
-
-        .status-active {
-            color: #16a34a;
-            font-weight: 700;
-        }
-
-        .status-expired {
-            color: #dc2626;
-            font-weight: 700;
-        }
-
-        .payment-btn {
-            display: inline-block;
-            margin-top: 14px;
-            background: #2563eb;
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 13px;
-        }
-
-        /* =========================
-           TABLE
-        ========================= */
-
-        .table-wrapper {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 650px;
-        }
-
-        th {
-            text-align: left;
-            background: #f8fafc;
-            color: #64748b;
-            font-size: 12px;
-            padding: 12px;
-        }
-
-        td {
-            padding: 13px 12px;
-            border-top: 1px solid #eef2f7;
-            font-size: 13px;
-        }
-
-        .empty {
-            text-align: center;
-            color: #94a3b8;
-            padding: 25px;
-        }
-
-        /* =========================
-           DOCTORS
-        ========================= */
-
-        .doctor {
-            border: 1px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 14px;
-            margin-bottom: 10px;
-        }
-
-        .doctor-name {
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .doctor-specialization {
-            color: #2563eb;
-            font-size: 12px;
-        }
-
-        .doctor-time {
-            color: #64748b;
-            font-size: 12px;
-            margin-top: 5px;
-        }
-
-        /* =========================
-           MOBILE
-        ========================= */
-
-        .mobile-header {
-            display: none;
-        }
-
-        @media (
-            max-width: 1000px
-        ) {
-
-            .cards {
-                grid-template-columns:
-                    repeat(2, 1fr);
-            }
-
-            .grid {
-                grid-template-columns: 1fr;
-            }
-
-        }
-
-        @media (
-            max-width: 700px
-        ) {
-
-            .sidebar {
-                display: none;
-            }
-
-            .main {
-                margin-left: 0;
-                width: 100%;
-            }
-
-            .topbar {
-                padding: 0 15px;
-            }
-
-            .content {
-                padding: 15px;
-            }
-
-            .cards {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-
-            .card {
-                padding: 16px;
-            }
-
-            .card-number {
-                font-size: 24px;
-            }
-
-            .welcome {
-                padding: 20px;
-            }
-
-            .welcome h1 {
-                font-size: 22px;
-            }
-
-            .hospital-title {
-                font-size: 16px;
-            }
-
-        }
-
-    </style>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Statusly Dashboard</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f5f7fb;
+    color: #172033;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 250px;
+    background: #111827;
+    color: white;
+    padding: 22px 15px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+    padding: 10px 12px 30px;
+}
+
+.logo span {
+    color: #38bdf8;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.menu a {
+    width: 100%;
+    color: #cbd5e1;
+    padding: 13px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.menu a:hover,
+.menu a.active {
+    background: #1e293b;
+    color: white;
+}
+
+/* MAIN */
+
+.main {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    min-height: 100vh;
+}
+
+/* TOPBAR */
+
+.topbar {
+    height: 75px;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+}
+
+.hospital-title {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.hospital-id {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+.logout {
+    border: none;
+    background: #ef4444;
+    color: white;
+    padding: 10px 17px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* CONTENT */
+
+.content {
+    padding: 30px;
+}
+
+/* WELCOME */
+
+.welcome {
+    background: linear-gradient(
+        135deg,
+        #0f172a,
+        #1e3a8a
+    );
+
+    color: white;
+    padding: 28px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+}
+
+.welcome h1 {
+    font-size: 27px;
+    margin-bottom: 8px;
+}
+
+.welcome p {
+    color: #cbd5e1;
+}
+
+/* CARDS */
+
+.cards {
+    display: grid;
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow:
+        0 4px 15px rgba(
+            15,
+            23,
+            42,
+            0.04
+        );
+}
+
+.card-title {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.card-number {
+    font-size: 30px;
+    font-weight: 800;
+}
+
+/* GRID */
+
+.grid {
+    display: grid;
+    grid-template-columns:
+        1.5fr 1fr;
+
+    gap: 20px;
+}
+
+.section {
+    background: white;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    padding: 22px;
+    margin-bottom: 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.section-header h2 {
+    font-size: 17px;
+}
+
+/* LINKS */
+
+.link-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+}
+
+.link-label {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 6px;
+}
+
+.link-row {
+    display: flex;
+    gap: 8px;
+}
+
+.link-input {
+    flex: 1;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    padding: 9px;
+    font-size: 12px;
+    background: white;
+}
+
+.copy-btn {
+    border: none;
+    background: #2563eb;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.open-btn {
+    display: inline-block;
+    margin-top: 8px;
+    text-decoration: none;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* SUBSCRIPTION */
+
+.subscription {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 10px;
+}
+
+.status-active {
+    color: #16a34a;
+    font-weight: 700;
+}
+
+.status-expired {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+.payment-btn {
+    display: inline-block;
+    margin-top: 14px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+/* TABLE */
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+th {
+    text-align: left;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 12px;
+    padding: 12px;
+}
+
+td {
+    padding: 13px 12px;
+    border-top: 1px solid #eef2f7;
+    font-size: 13px;
+}
+
+.empty {
+    text-align: center;
+    color: #94a3b8;
+    padding: 25px;
+}
+
+/* DOCTORS */
+
+.doctor {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+}
+
+.doctor-name {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.doctor-specialization {
+    color: #2563eb;
+    font-size: 12px;
+}
+
+.doctor-time {
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* MOBILE */
+
+@media (max-width: 1000px) {
+
+    .cards {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .topbar {
+        padding: 0 15px;
+    }
+
+    .content {
+        padding: 15px;
+    }
+
+    .cards {
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 10px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .card-number {
+        font-size: 24px;
+    }
+
+    .welcome {
+        padding: 20px;
+    }
+
+    .welcome h1 {
+        font-size: 22px;
+    }
+
+}
+
+</style>
 
 </head>
 
@@ -458,1115 +414,1167 @@
 
 <div class="layout">
 
+<!-- ======================================================
+     SIDEBAR
+====================================================== -->
 
-    <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
+<aside class="sidebar">
 
-    <aside class="sidebar">
+    <div class="logo">
+        Status<span>ly</span>
+    </div>
 
-        <div class="logo">
-            Status<span>ly</span>
+    <div class="menu">
+
+        <a href="/dashboard"
+           class="active">
+            Dashboard
+        </a>
+
+        <a id="hospitalMenu"
+           href="#">
+            Hospital Page
+        </a>
+
+        <a id="bookingMenu"
+           href="#">
+            Book Appointment
+        </a>
+
+        <a id="appointmentsMenu"
+           href="#">
+            Appointments
+        </a>
+
+        <a id="followupsMenu"
+           href="#">
+            Follow-ups
+        </a>
+
+        <a href="/payment">
+            Subscription
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- ======================================================
+     MAIN
+====================================================== -->
+
+<main class="main">
+
+<header class="topbar">
+
+    <div>
+
+        <div
+            class="hospital-title"
+            id="topHospitalName"
+        >
+            Loading...
         </div>
 
-        <div class="menu">
-
-            <a
-                href="#"
-                class="active"
-            >
-                Dashboard
-            </a>
-
-            <a
-                id="hospitalMenu"
-                href="#"
-            >
-                Hospital Page
-            </a>
-
-            <a
-                id="bookingMenu"
-                href="#"
-            >
-                Book Appointment
-            </a>
-
-            <a
-                id="appointmentsMenu"
-                href="#"
-            >
-                Appointments
-            </a>
-
-            <a
-                id="followupsMenu"
-                href="#"
-            >
-                Follow-ups
-            </a>
-
-            <a href="/payment">
-                Subscription
-            </a>
-
+        <div
+            class="hospital-id"
+            id="topHospitalId"
+        >
+            Loading...
         </div>
 
-    </aside>
+    </div>
 
+    <button
+        class="logout"
+        onclick="logout()"
+    >
+        Logout
+    </button>
 
-    <!-- =====================================================
-         MAIN
-    ====================================================== -->
+</header>
 
-    <main class="main">
 
+<div class="content">
 
-        <!-- TOPBAR -->
 
-        <header class="topbar">
+<!-- WELCOME -->
 
-            <div>
+<div class="welcome">
 
-                <div
-                    class="hospital-title"
-                    id="topHospitalName"
-                >
-                    Loading...
-                </div>
+    <h1>
+        Welcome to Statusly 👋
+    </h1>
 
-                <div
-                    class="hospital-id"
-                    id="topHospitalId"
-                >
-                    Loading...
-                </div>
-
-            </div>
-
-            <button
-                class="logout"
-                onclick="logout()"
-            >
-                Logout
-            </button>
-
-        </header>
-
-
-        <!-- CONTENT -->
-
-        <div class="content">
-
-
-            <!-- WELCOME -->
-
-            <div class="welcome">
-
-                <h1>
-                    Welcome to Statusly 👋
-                </h1>
-
-                <p>
-                    Manage your hospital,
-                    doctors, appointments and
-                    patient follow-ups.
-                </p>
-
-            </div>
-
-
-            <!-- STATISTICS -->
-
-            <div class="cards">
-
-
-                <div class="card">
-
-                    <div class="card-title">
-                        Total Doctors
-                    </div>
-
-                    <div
-                        class="card-number"
-                        id="doctorCount"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-
-                <div class="card">
-
-                    <div class="card-title">
-                        Today's Appointments
-                    </div>
-
-                    <div
-                        class="card-number"
-                        id="todayCount"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-
-                <div class="card">
-
-                    <div class="card-title">
-                        Total Appointments
-                    </div>
-
-                    <div
-                        class="card-number"
-                        id="appointmentCount"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-
-                <div class="card">
-
-                    <div class="card-title">
-                        Follow-ups
-                    </div>
-
-                    <div
-                        class="card-number"
-                        id="followupCount"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-            <div class="grid">
-
-
-                <!-- LEFT -->
-
-                <div>
-
-
-                    <!-- TODAY APPOINTMENTS -->
-
-                    <div class="section">
-
-                        <div class="section-header">
-
-                            <h2>
-                                Today's Appointments
-                            </h2>
-
-                        </div>
-
-                        <div class="table-wrapper">
-
-                            <table>
-
-                                <thead>
-
-                                    <tr>
-
-                                        <th>
-                                            Patient No.
-                                        </th>
-
-                                        <th>
-                                            Patient
-                                        </th>
-
-                                        <th>
-                                            Doctor
-                                        </th>
-
-                                        <th>
-                                            Time
-                                        </th>
-
-                                        <th>
-                                            Mobile
-                                        </th>
-
-                                    </tr>
-
-                                </thead>
-
-                                <tbody
-                                    id="appointmentTable"
-                                >
-
-                                </tbody>
-
-                            </table>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- HOSPITAL LINKS -->
-
-                    <div class="section">
-
-                        <div class="section-header">
-
-                            <h2>
-                                Hospital Links
-                            </h2>
-
-                        </div>
-
-
-                        <div class="link-box">
-
-                            <div class="link-label">
-                                Hospital Page
-                            </div>
-
-                            <div class="link-row">
-
-                                <input
-                                    id="hospitalUrl"
-                                    class="link-input"
-                                    readonly
-                                >
-
-                                <button
-                                    class="copy-btn"
-                                    onclick="copyUrl('hospitalUrl')"
-                                >
-                                    Copy
-                                </button>
-
-                            </div>
-
-                            <a
-                                id="hospitalOpen"
-                                class="open-btn"
-                                target="_blank"
-                            >
-                                Open Hospital Page →
-                            </a>
-
-                        </div>
-
-
-                        <div class="link-box">
-
-                            <div class="link-label">
-                                Appointment Booking Page
-                            </div>
-
-                            <div class="link-row">
-
-                                <input
-                                    id="bookingUrl"
-                                    class="link-input"
-                                    readonly
-                                >
-
-                                <button
-                                    class="copy-btn"
-                                    onclick="copyUrl('bookingUrl')"
-                                >
-                                    Copy
-                                </button>
-
-                            </div>
-
-                            <a
-                                id="bookingOpen"
-                                class="open-btn"
-                                target="_blank"
-                            >
-                                Open Booking Page →
-                            </a>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-                <!-- RIGHT -->
-
-                <div>
-
-
-                    <!-- SUBSCRIPTION -->
-
-                    <div class="section">
-
-                        <div class="section-header">
-
-                            <h2>
-                                Subscription
-                            </h2>
-
-                        </div>
-
-
-                        <div class="subscription">
-
-                            <div>
-
-                                <div
-                                    id="planName"
-                                    style="font-weight:700"
-                                >
-                                    No Plan
-                                </div>
-
-                                <div
-                                    id="expiryDate"
-                                    style="
-                                        font-size:12px;
-                                        color:#64748b;
-                                        margin-top:5px;
-                                    "
-                                >
-                                    -
-                                </div>
-
-                            </div>
-
-                            <div
-                                id="subscriptionStatus"
-                            >
-                                -
-                            </div>
-
-                        </div>
-
-
-                        <a
-                            href="/payment"
-                            class="payment-btn"
-                        >
-                            Manage Subscription
-                        </a>
-
-                    </div>
-
-
-                    <!-- DOCTORS -->
-
-                    <div class="section">
-
-                        <div class="section-header">
-
-                            <h2>
-                                Doctors
-                            </h2>
-
-                        </div>
-
-                        <div
-                            id="doctorList"
-                        >
-
-                            <div class="empty">
-                                Loading doctors...
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
-
-        </div>
-
-    </main>
+    <p>
+        Manage your hospital,
+        doctors, appointments and
+        patient follow-ups.
+    </p>
 
 </div>
 
 
-<!-- =========================================================
+<!-- STATISTICS -->
+
+<div class="cards">
+
+    <div class="card">
+
+        <div class="card-title">
+            Total Doctors
+        </div>
+
+        <div
+            class="card-number"
+            id="doctorCount"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            Today's Appointments
+        </div>
+
+        <div
+            class="card-number"
+            id="todayCount"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            Total Appointments
+        </div>
+
+        <div
+            class="card-number"
+            id="appointmentCount"
+        >
+            0
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="card-title">
+            Follow-ups
+        </div>
+
+        <div
+            class="card-number"
+            id="followupCount"
+        >
+            0
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="grid">
+
+
+<!-- ======================================================
+     LEFT
+====================================================== -->
+
+<div>
+
+
+<!-- TODAY APPOINTMENTS -->
+
+<div class="section">
+
+    <div class="section-header">
+
+        <h2>
+            Today's Appointments
+        </h2>
+
+    </div>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>
+                    Patient No.
+                </th>
+
+                <th>
+                    Patient
+                </th>
+
+                <th>
+                    Doctor
+                </th>
+
+                <th>
+                    Time
+                </th>
+
+                <th>
+                    Mobile
+                </th>
+
+            </tr>
+
+            </thead>
+
+
+            <tbody id="appointmentTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- HOSPITAL LINKS -->
+
+<div class="section">
+
+    <div class="section-header">
+
+        <h2>
+            Hospital Links
+        </h2>
+
+    </div>
+
+
+    <div class="link-box">
+
+        <div class="link-label">
+            Hospital Page
+        </div>
+
+        <div class="link-row">
+
+            <input
+                id="hospitalUrl"
+                class="link-input"
+                readonly
+            >
+
+            <button
+                class="copy-btn"
+                onclick="copyUrl('hospitalUrl')"
+            >
+                Copy
+            </button>
+
+        </div>
+
+        <a
+            id="hospitalOpen"
+            class="open-btn"
+            target="_blank"
+        >
+            Open Hospital Page →
+        </a>
+
+    </div>
+
+
+    <div class="link-box">
+
+        <div class="link-label">
+            Appointment Booking Page
+        </div>
+
+        <div class="link-row">
+
+            <input
+                id="bookingUrl"
+                class="link-input"
+                readonly
+            >
+
+            <button
+                class="copy-btn"
+                onclick="copyUrl('bookingUrl')"
+            >
+                Copy
+            </button>
+
+        </div>
+
+        <a
+            id="bookingOpen"
+            class="open-btn"
+            target="_blank"
+        >
+            Open Booking Page →
+        </a>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<!-- ======================================================
+     RIGHT
+====================================================== -->
+
+<div>
+
+
+<!-- SUBSCRIPTION -->
+
+<div class="section">
+
+    <div class="section-header">
+
+        <h2>
+            Subscription
+        </h2>
+
+    </div>
+
+
+    <div class="subscription">
+
+        <div>
+
+            <div
+                id="planName"
+                style="font-weight:700"
+            >
+                No Plan
+            </div>
+
+            <div
+                id="expiryDate"
+                style="
+                    font-size:12px;
+                    color:#64748b;
+                    margin-top:5px;
+                "
+            >
+                Expiry: -
+            </div>
+
+        </div>
+
+
+        <div id="subscriptionStatus">
+            -
+        </div>
+
+    </div>
+
+
+    <a
+        href="/payment"
+        class="payment-btn"
+    >
+        Manage Subscription
+    </a>
+
+</div>
+
+
+<!-- DOCTORS -->
+
+<div class="section">
+
+    <div class="section-header">
+
+        <h2>
+            Doctors
+        </h2>
+
+    </div>
+
+
+    <div id="doctorList">
+
+        <div class="empty">
+            Loading doctors...
+        </div>
+
+    </div>
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+
+<!-- ======================================================
      FIREBASE
-========================================================== -->
+====================================================== -->
 
 <script type="module">
 
-    import {
-        initializeApp
-    } from
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+    initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
-    import {
-        getAuth,
-        onAuthStateChanged,
-        signOut
-    } from
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
-    // ======================================================
-    // YOUR FIREBASE CONFIG
-    // ======================================================
+// ======================================================
+// FIREBASE CONFIG
+// ======================================================
 
-    const firebaseConfig = {
+const firebaseConfig = {
 
-        apiKey:
-            "{{ firebase_api_key|default('') }}",
+    apiKey:
+        "{{ firebase_api_key }}",
 
-        authDomain:
-            "{{ firebase_auth_domain|default('') }}",
+    authDomain:
+        "{{ firebase_auth_domain }}",
 
-        databaseURL:
-            "{{ firebase_database_url|default('') }}",
+    databaseURL:
+        "{{ firebase_database_url }}",
 
-        projectId:
-            "{{ firebase_project_id|default('') }}",
+    projectId:
+        "{{ firebase_project_id }}",
 
-        storageBucket:
-            "{{ firebase_storage_bucket|default('') }}",
+    storageBucket:
+        "{{ firebase_storage_bucket }}",
 
-        messagingSenderId:
-            "{{ firebase_messaging_sender_id|default('') }}"
+    messagingSenderId:
+        "{{ firebase_messaging_sender_id }}"
 
-    };
-
-
-    /*
-        IMPORTANT:
-
-        If your Firebase config is already inside
-        another JS file, use that file instead.
-
-        Do NOT put Firebase service-account credentials here.
-    */
+};
 
 
-    const app = initializeApp(
+// ======================================================
+// FIREBASE APP
+// ======================================================
+
+const app =
+    initializeApp(
         firebaseConfig
     );
 
-    const auth =
-        getAuth(app);
+const auth =
+    getAuth(app);
 
 
-    // ======================================================
-    // AUTH
-    // ======================================================
+// ======================================================
+// AUTH STATE
+// ======================================================
 
-    onAuthStateChanged(
-        auth,
-        async (user) => {
+onAuthStateChanged(
+    auth,
+    async (user) => {
 
-            if (!user) {
+        if (!user) {
 
-                window.location.href =
-                    "/login-page";
+            window.location.href =
+                "/login-page";
 
-                return;
+            return;
+        }
+
+        try {
+
+            const token =
+                await user.getIdToken(
+                    true
+                );
+
+            await loadDashboard(
+                token
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                error
+            );
+
+            alert(
+                "Unable to load dashboard."
+            );
+
+        }
+
+    }
+);
+
+
+// ======================================================
+// LOAD DASHBOARD
+// ======================================================
+
+async function loadDashboard(
+    token
+) {
+
+    const response =
+        await fetch(
+            "/api/dashboard",
+            {
+
+                method: "GET",
+
+                headers: {
+
+                    "Authorization":
+                        "Bearer " + token,
+
+                    "Content-Type":
+                        "application/json"
+
+                }
+
             }
+        );
 
 
-            try {
+    const data =
+        await response.json();
 
-                const token =
-                    await user.getIdToken(
-                        true
-                    );
 
-                await loadDashboard(
-                    token
+    console.log(
+        "Dashboard API:",
+        data
+    );
+
+
+    if (!response.ok ||
+        !data.success) {
+
+        alert(
+            data.error ||
+            "Dashboard loading failed"
+        );
+
+        return;
+    }
+
+
+    renderDashboard(
+        data
+    );
+
+}
+
+
+// ======================================================
+// RENDER DASHBOARD
+// ======================================================
+
+function renderDashboard(
+    data
+) {
+
+    const hospital =
+        data.hospital || {};
+
+    const stats =
+        data.stats || {};
+
+    const subscription =
+        data.subscription || {};
+
+
+    // --------------------------------------------------
+    // HOSPITAL NAME
+    // --------------------------------------------------
+
+    const hospitalName =
+        hospital.hospital_name ||
+        "Hospital";
+
+
+    document.getElementById(
+        "topHospitalName"
+    ).textContent =
+        hospitalName;
+
+
+    // --------------------------------------------------
+    // HOSPITAL ID
+    // --------------------------------------------------
+
+    document.getElementById(
+        "topHospitalId"
+    ).textContent =
+        "Hospital ID: " +
+        data.uid;
+
+
+    // --------------------------------------------------
+    // STATS
+    // --------------------------------------------------
+
+    document.getElementById(
+        "doctorCount"
+    ).textContent =
+        stats.doctors || 0;
+
+
+    document.getElementById(
+        "todayCount"
+    ).textContent =
+        stats.today || 0;
+
+
+    document.getElementById(
+        "appointmentCount"
+    ).textContent =
+        stats.appointments || 0;
+
+
+    document.getElementById(
+        "followupCount"
+    ).textContent =
+        stats.followups || 0;
+
+
+    // --------------------------------------------------
+    // HOSPITAL URL
+    // --------------------------------------------------
+
+    const hospitalUrl =
+        data.hospital_url || "";
+
+
+    document.getElementById(
+        "hospitalUrl"
+    ).value =
+        hospitalUrl;
+
+
+    document.getElementById(
+        "hospitalOpen"
+    ).href =
+        hospitalUrl;
+
+
+    document.getElementById(
+        "hospitalMenu"
+    ).href =
+        hospitalUrl;
+
+
+    // --------------------------------------------------
+    // BOOKING URL
+    // --------------------------------------------------
+
+    const bookingUrl =
+        data.booking_url || "";
+
+
+    document.getElementById(
+        "bookingUrl"
+    ).value =
+        bookingUrl;
+
+
+    document.getElementById(
+        "bookingOpen"
+    ).href =
+        bookingUrl;
+
+
+    document.getElementById(
+        "bookingMenu"
+    ).href =
+        bookingUrl;
+
+
+    // --------------------------------------------------
+    // APPOINTMENTS PAGE
+    // --------------------------------------------------
+
+    document.getElementById(
+        "appointmentsMenu"
+    ).href =
+        "/appointments/" +
+        encodeURIComponent(
+            data.uid
+        );
+
+
+    // --------------------------------------------------
+    // FOLLOWUPS PAGE
+    // --------------------------------------------------
+
+    document.getElementById(
+        "followupsMenu"
+    ).href =
+        "/followups/" +
+        encodeURIComponent(
+            data.uid
+        );
+
+
+    // --------------------------------------------------
+    // SUBSCRIPTION
+    // --------------------------------------------------
+
+    document.getElementById(
+        "planName"
+    ).textContent =
+        String(
+            subscription.plan ||
+            "No Plan"
+        ).toUpperCase();
+
+
+    document.getElementById(
+        "expiryDate"
+    ).textContent =
+        subscription.expiry
+            ? "Expiry: " +
+              formatDate(
+                  subscription.expiry
+              )
+            : "Expiry: -";
+
+
+    const status =
+        document.getElementById(
+            "subscriptionStatus"
+        );
+
+
+    if (
+        data.subscription_active
+    ) {
+
+        status.textContent =
+            "ACTIVE";
+
+        status.className =
+            "status-active";
+
+    }
+
+    else {
+
+        status.textContent =
+            "EXPIRED";
+
+        status.className =
+            "status-expired";
+
+    }
+
+
+    // --------------------------------------------------
+    // APPOINTMENTS
+    // --------------------------------------------------
+
+    renderAppointments(
+        data.today_appointments || []
+    );
+
+
+    // --------------------------------------------------
+    // DOCTORS
+    // --------------------------------------------------
+
+    renderDoctors(
+        data.doctors || []
+    );
+
+}
+
+
+// ======================================================
+// APPOINTMENTS
+// ======================================================
+
+function renderAppointments(
+    appointments
+) {
+
+    const table =
+        document.getElementById(
+            "appointmentTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    if (!appointments.length) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="5"
+                    class="empty"
+                >
+                    No appointments for today.
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+    }
+
+
+    appointments.forEach(
+        appointment => {
+
+            const row =
+                document.createElement(
+                    "tr"
                 );
 
-            } catch (error) {
 
-                console.error(
-                    error
-                );
+            row.innerHTML = `
 
-                alert(
-                    "Unable to load dashboard."
-                );
+                <td>
+                    #${escapeHtml(
+                        appointment.patient_no ||
+                        "-"
+                    )}
+                </td>
 
-            }
+                <td>
+                    ${escapeHtml(
+                        appointment.patient_name ||
+                        "-"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        appointment.doctor_name ||
+                        "-"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        appointment.appointment_time ||
+                        "-"
+                    )}
+                </td>
+
+                <td>
+                    ${escapeHtml(
+                        appointment.mobile ||
+                        "-"
+                    )}
+                </td>
+
+            `;
+
+
+            table.appendChild(
+                row
+            );
 
         }
     );
 
-
-    // ======================================================
-    // LOAD DASHBOARD
-    // ======================================================
-
-    async function loadDashboard(
-        token
-    ) {
-
-        const response =
-            await fetch(
-                "/api/dashboard",
-                {
-
-                    method: "GET",
-
-                    headers: {
-
-                        "Authorization":
-                            `Bearer ${token}`
-
-                    }
-
-                }
-            );
+}
 
 
-        const data =
-            await response.json();
+// ======================================================
+// DOCTORS
+// ======================================================
 
+function renderDoctors(
+    doctors
+) {
 
-        if (!response.ok ||
-            !data.success) {
-
-            console.error(
-                data
-            );
-
-            alert(
-                data.error ||
-                "Dashboard loading failed"
-            );
-
-            return;
-        }
-
-
-        renderDashboard(
-            data
+    const container =
+        document.getElementById(
+            "doctorList"
         );
 
+
+    container.innerHTML = "";
+
+
+    if (!doctors.length) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+                No doctors added.
+            </div>
+
+        `;
+
+        return;
     }
 
 
-    // ======================================================
-    // RENDER
-    // ======================================================
-
-    function renderDashboard(
-        data
-    ) {
-
-        const hospital =
-            data.hospital || {};
-
-        const stats =
-            data.stats || {};
-
-        const subscription =
-            data.subscription || {};
-
-
-        // -----------------------------------------------
-        // HOSPITAL
-        // -----------------------------------------------
-
-        const hospitalName =
-            hospital.hospital_name ||
-            "Hospital";
-
-
-        document.getElementById(
-            "topHospitalName"
-        ).textContent =
-            hospitalName;
-
-
-        document.getElementById(
-            "topHospitalId"
-        ).textContent =
-            "Hospital ID: " +
-            data.uid;
-
-
-        // -----------------------------------------------
-        // STATS
-        // -----------------------------------------------
-
-        document.getElementById(
-            "doctorCount"
-        ).textContent =
-            stats.doctors || 0;
-
-
-        document.getElementById(
-            "todayCount"
-        ).textContent =
-            stats.today || 0;
-
-
-        document.getElementById(
-            "appointmentCount"
-        ).textContent =
-            stats.appointments || 0;
-
-
-        document.getElementById(
-            "followupCount"
-        ).textContent =
-            stats.followups || 0;
-
-
-        // -----------------------------------------------
-        // LINKS
-        // -----------------------------------------------
-
-        const hospitalUrl =
-            data.hospital_url;
-
-
-        const bookingUrl =
-            data.booking_url;
-
-
-        document.getElementById(
-            "hospitalUrl"
-        ).value =
-            hospitalUrl;
-
-
-        document.getElementById(
-            "bookingUrl"
-        ).value =
-            bookingUrl;
-
-
-        document.getElementById(
-            "hospitalOpen"
-        ).href =
-            hospitalUrl;
-
-
-        document.getElementById(
-            "bookingOpen"
-        ).href =
-            bookingUrl;
-
-
-        // -----------------------------------------------
-        // MENU LINKS
-        // -----------------------------------------------
-
-        document.getElementById(
-            "hospitalMenu"
-        ).href =
-            hospitalUrl;
-
-
-        document.getElementById(
-            "bookingMenu"
-        ).href =
-            bookingUrl;
-
-
-        document.getElementById(
-            "appointmentsMenu"
-        ).href =
-            `/appointments/${data.uid}`;
-
-
-        document.getElementById(
-            "followupsMenu"
-        ).href =
-            `/followups/${data.uid}`;
-
-
-        // -----------------------------------------------
-        // SUBSCRIPTION
-        // -----------------------------------------------
-
-        const plan =
-            subscription.plan ||
-            "No Plan";
-
-
-        document.getElementById(
-            "planName"
-        ).textContent =
-            plan.toUpperCase();
-
-
-        document.getElementById(
-            "expiryDate"
-        ).textContent =
-            subscription.expiry
-                ? "Expiry: " +
-                  formatDate(
-                      subscription.expiry
-                  )
-                : "Expiry: -";
-
-
-        const status =
-            document.getElementById(
-                "subscriptionStatus"
-            );
-
-
-        if (data.subscription_active) {
-
-            status.textContent =
-                "ACTIVE";
-
-            status.className =
-                "status-active";
-
-        } else {
-
-            status.textContent =
-                "EXPIRED";
-
-            status.className =
-                "status-expired";
-
-        }
-
-
-        // -----------------------------------------------
-        // APPOINTMENTS
-        // -----------------------------------------------
-
-        renderAppointments(
-            data.today_appointments || []
-        );
-
-
-        // -----------------------------------------------
-        // DOCTORS
-        // -----------------------------------------------
-
-        renderDoctors(
-            data.doctors || []
-        );
-
-    }
-
-
-    // ======================================================
-    // APPOINTMENTS
-    // ======================================================
-
-    function renderAppointments(
-        appointments
-    ) {
-
-        const table =
-            document.getElementById(
-                "appointmentTable"
-            );
-
-
-        table.innerHTML = "";
-
-
-        if (!appointments.length) {
-
-            table.innerHTML = `
-
-                <tr>
-
-                    <td
-                        colspan="5"
-                        class="empty"
-                    >
-                        No appointments for today.
-                    </td>
-
-                </tr>
-
-            `;
-
-            return;
-        }
-
-
-        appointments.forEach(
-            patient => {
-
-                const row =
-                    document.createElement(
-                        "tr"
-                    );
-
-
-                row.innerHTML = `
-
-                    <td>
-                        #${escapeHtml(
-                            patient.patient_no || "-"
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                            patient.patient_name || "-"
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                            patient.doctor_name || "-"
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                            patient.appointment_time || "-"
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeHtml(
-                            patient.mobile || "-"
-                        )}
-                    </td>
-
-                `;
-
-
-                table.appendChild(
-                    row
+    doctors.forEach(
+        doctor => {
+
+            const div =
+                document.createElement(
+                    "div"
                 );
 
-            }
-        );
 
-    }
-
-
-    // ======================================================
-    // DOCTORS
-    // ======================================================
-
-    function renderDoctors(
-        doctors
-    ) {
-
-        const container =
-            document.getElementById(
-                "doctorList"
-            );
+            div.className =
+                "doctor";
 
 
-        container.innerHTML = "";
+            div.innerHTML = `
 
+                <div class="doctor-name">
+                    ${escapeHtml(
+                        doctor.doctor_name ||
+                        doctor.name ||
+                        "-"
+                    )}
+                </div>
 
-        if (!doctors.length) {
+                <div class="doctor-specialization">
+                    ${escapeHtml(
+                        doctor.specialization ||
+                        "-"
+                    )}
+                </div>
 
-            container.innerHTML = `
-
-                <div class="empty">
-                    No doctors added.
+                <div class="doctor-time">
+                    OPD:
+                    ${escapeHtml(
+                        doctor.opd_time ||
+                        doctor.opdTime ||
+                        "-"
+                    )}
                 </div>
 
             `;
 
-            return;
-        }
 
-
-        doctors.forEach(
-            doctor => {
-
-                const div =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                div.className =
-                    "doctor";
-
-
-                div.innerHTML = `
-
-                    <div class="doctor-name">
-                        ${escapeHtml(
-                            doctor.doctor_name || "-"
-                        )}
-                    </div>
-
-                    <div class="doctor-specialization">
-                        ${escapeHtml(
-                            doctor.specialization || "-"
-                        )}
-                    </div>
-
-                    <div class="doctor-time">
-                        OPD: ${escapeHtml(
-                            doctor.opd_time || "-"
-                        )}
-                    </div>
-
-                `;
-
-
-                container.appendChild(
-                    div
-                );
-
-            }
-        );
-
-    }
-
-
-    // ======================================================
-    // COPY
-    // ======================================================
-
-    window.copyUrl =
-        async function(
-            elementId
-        ) {
-
-            const input =
-                document.getElementById(
-                    elementId
-                );
-
-
-            try {
-
-                await navigator.clipboard.writeText(
-                    input.value
-                );
-
-                alert(
-                    "Link copied!"
-                );
-
-            } catch (error) {
-
-                input.select();
-
-                document.execCommand(
-                    "copy"
-                );
-
-                alert(
-                    "Link copied!"
-                );
-
-            }
-
-        };
-
-
-    // ======================================================
-    // LOGOUT
-    // ======================================================
-
-    window.logout =
-        async function() {
-
-            try {
-
-                await signOut(
-                    auth
-                );
-
-                window.location.href =
-                    "/login-page";
-
-            } catch (error) {
-
-                console.error(
-                    error
-                );
-
-            }
-
-        };
-
-
-    // ======================================================
-    // DATE
-    // ======================================================
-
-    function formatDate(
-        value
-    ) {
-
-        try {
-
-            return new Date(
-                value
-            ).toLocaleDateString(
-                "en-IN",
-                {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric"
-                }
+            container.appendChild(
+                div
             );
 
-        } catch {
-
-            return value;
-
         }
+    );
 
+}
+
+
+// ======================================================
+// COPY URL
+// ======================================================
+
+window.copyUrl =
+async function(
+    elementId
+) {
+
+    const input =
+        document.getElementById(
+            elementId
+        );
+
+
+    if (!input.value) {
+
+        alert(
+            "Link is not available."
+        );
+
+        return;
     }
 
 
-    // ======================================================
-    // HTML ESCAPE
-    // ======================================================
+    try {
 
-    function escapeHtml(
-        value
-    ) {
+        await navigator.clipboard.writeText(
+            input.value
+        );
 
-        return String(
-            value
-        )
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
+        alert(
+            "Link copied!"
         );
 
     }
 
-</script>
+    catch {
 
+        input.select();
+
+        document.execCommand(
+            "copy"
+        );
+
+        alert(
+            "Link copied!"
+        );
+
+    }
+
+};
+
+
+// ======================================================
+// LOGOUT
+// ======================================================
+
+window.logout =
+async function() {
+
+    try {
+
+        await signOut(
+            auth
+        );
+
+        window.location.href =
+            "/login-page";
+
+    }
+
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+        alert(
+            "Logout failed."
+        );
+
+    }
+
+};
+
+
+// ======================================================
+// DATE
+// ======================================================
+
+function formatDate(
+    value
+) {
+
+    if (!value) {
+
+        return "-";
+
+    }
+
+
+    try {
+
+        return new Date(
+            value
+        ).toLocaleDateString(
+            "en-IN",
+            {
+                day:
+                    "2-digit",
+
+                month:
+                    "short",
+
+                year:
+                    "numeric"
+            }
+        );
+
+    }
+
+    catch {
+
+        return value;
+
+    }
+
+}
+
+
+// ======================================================
+// HTML ESCAPE
+// ======================================================
+
+function escapeHtml(
+    value
+) {
+
+    return String(
+        value
+    )
+
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+
+    .replace(
+        /</g,
+        "&lt;"
+    )
+
+    .replace(
+        />/g,
+        "&gt;"
+    )
+
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+</script>
 
 </body>
 
