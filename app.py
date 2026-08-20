@@ -2100,7 +2100,334 @@ def analytics_location(hospital_id):
 
         }), 500
 
+# ============================================================
+# DOCTOR WORKING HOURS ANALYTICS
+# ============================================================
 
+def parse_opd_hours(opd_time):
+
+    if not opd_time:
+        return 0
+
+    opd_time = str(opd_time).strip()
+
+    # Support:
+    # 09:00 AM - 01:00 PM
+    # 09:00-13:00
+    # 09:00 AM to 01:00 PM
+
+    if " - " in opd_time:
+        parts = opd_time.split(" - ", 1)
+
+    elif " to " in opd_time.lower():
+        parts = opd_time.lower().split(" to ", 1)
+
+    elif "-" in opd_time:
+        parts = opd_time.split("-", 1)
+
+    else:
+        return 0
+
+    if len(parts) != 2:
+        return 0
+
+    start_text = parts[0].strip()
+    end_text = parts[1].strip()
+
+    formats = [
+        "%I:%M %p",
+        "%I:%M%p",
+        "%I %p",
+        "%H:%M",
+        "%H:%M:%S"
+    ]
+
+    start_time = None
+    end_time = None
+
+    for fmt in formats:
+
+        try:
+            start_time = datetime.strptime(
+                start_text,
+                fmt
+            )
+            break
+
+        except ValueError:
+            pass
+
+    for fmt in formats:
+
+        try:
+            end_time = datetime.strptime(
+                end_text,
+                fmt
+            )
+            break
+
+        except ValueError:
+            pass
+
+    if not start_time or not end_time:
+        return 0
+
+    start_minutes = (
+        start_time.hour * 60
+        + start_time.minute
+    )
+
+    end_minutes = (
+        end_time.hour * 60
+        + end_time.minute
+    )
+
+    # Overnight OPD
+    if end_minutes < start_minutes:
+        end_minutes += 24 * 60
+
+    minutes = end_minutes - start_minutes
+
+    return round(
+        minutes / 60,
+        2
+    )
+
+
+@app.route(
+    "/api/analytics/doctor-working-hours/<hospital_id>"
+)
+def analytics_doctor_working_hours(hospital_id):
+
+    try:
+
+        # ----------------------------------------------------
+        # GET HOSPITAL
+        # ----------------------------------------------------
+
+        hospital = (
+            db.reference(
+                f"hospitals/{hospital_id}"
+            ).get()
+            or {}
+        )
+
+        if not hospital:
+
+            return jsonify({
+
+                "success": False,
+
+                "error":
+                    "Hospital not found"
+
+            }), 404
+
+        # ----------------------------------------------------
+        # GET DOCTORS
+        # ----------------------------------------------------
+
+        doctors = hospital.get(
+            "doctors",
+            []
+        )
+
+        if not isinstance(
+            doctors,
+            list
+        ):
+
+            doctors = []
+
+        # ----------------------------------------------------
+        # GET APPOINTMENTS
+        # ----------------------------------------------------
+
+        appointments = (
+            get_hospital_appointments(
+                hospital_id
+            )
+        )
+
+        # ----------------------------------------------------
+        # DATES
+        # ----------------------------------------------------
+
+        today = datetime.now().date()
+
+        week_start = (
+            today
+            - timedelta(
+                days=today.weekday()
+            )
+        )
+
+        month_start = today.replace(
+            day=1
+        )
+
+        result = []
+
+        # ----------------------------------------------------
+        # PROCESS EACH DOCTOR
+        # ----------------------------------------------------
+
+        for doctor in doctors:
+
+            if not isinstance(
+                doctor,
+                dict
+            ):
+                continue
+
+            doctor_name = str(
+                doctor.get(
+                    "doctor_name",
+                    "Unknown Doctor"
+                )
+            ).strip()
+
+            specialization = str(
+                doctor.get(
+                    "specialization",
+                    "-"
+                )
+            ).strip()
+
+            opd_time = str(
+                doctor.get(
+                    "opd_time",
+                    ""
+                )
+            ).strip()
+
+            # ------------------------------------------------
+            # DAILY WORKING HOURS
+            # ------------------------------------------------
+
+            hours_per_day = parse_opd_hours(
+                opd_time
+            )
+
+            # ------------------------------------------------
+            # WORKING DAYS
+            #
+            # Currently:
+            # Monday-Sunday = 7 days
+            #
+            # If later you add working_days to doctor data,
+            # this can be made fully schedule-aware.
+            # ------------------------------------------------
+
+            week_hours = round(
+                hours_per_day * 7,
+                2
+            )
+
+            month_days = today.day
+
+            month_hours = round(
+                hours_per_day * month_days,
+                2
+            )
+
+            # ------------------------------------------------
+            # TODAY'S HOURS
+            # ------------------------------------------------
+
+            today_hours = round(
+                hours_per_day,
+                2
+            )
+
+            # ------------------------------------------------
+            # APPOINTMENT COUNT
+            # ------------------------------------------------
+
+            doctor_appointments = 0
+
+            for appointment in appointments:
+
+                appointment_doctor = str(
+                    appointment.get(
+                        "doctor_name",
+                        ""
+                    )
+                ).strip()
+
+                if (
+                    appointment_doctor
+                    != doctor_name
+                ):
+                    continue
+
+                doctor_appointments += 1
+
+            # ------------------------------------------------
+            # RESULT
+            # ------------------------------------------------
+
+            result.append({
+
+                "doctor_name":
+                    doctor_name,
+
+                "specialization":
+                    specialization,
+
+                "opd_time":
+                    opd_time
+                    or "-",
+
+                "hours_per_day":
+                    hours_per_day,
+
+                "today_hours":
+                    today_hours,
+
+                "week_hours":
+                    week_hours,
+
+                "month_hours":
+                    month_hours,
+
+                "appointments":
+                    doctor_appointments
+
+            })
+
+        # ----------------------------------------------------
+        # RESPONSE
+        # ----------------------------------------------------
+
+        return jsonify({
+
+            "success":
+                True,
+
+            "doctors":
+                result
+
+        })
+
+    except Exception as e:
+
+        print(
+            "DOCTOR WORKING HOURS ERROR:",
+            str(e)
+        )
+
+        traceback.print_exc()
+
+        return jsonify({
+
+            "success":
+                False,
+
+            "error":
+                str(e)
+
+        }), 500
 # ============================================================
 # APPOINTMENTS LIST
 # ============================================================
