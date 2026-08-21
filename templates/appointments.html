@@ -12,6 +12,7 @@
 
     <title>Doctor Appointments</title>
 
+
     <style>
 
         * {
@@ -19,6 +20,7 @@
             margin: 0;
             padding: 0;
         }
+
 
         body {
 
@@ -59,7 +61,8 @@
             justify-content:
                 space-between;
 
-            align-items: center;
+            align-items:
+                center;
 
             gap: 20px;
 
@@ -460,10 +463,31 @@
 
 
         /* =====================================================
-           TODAY STRIP
+           APPOINTMENT SECTION
         ===================================================== */
 
-        .today-strip {
+        .appointment-section {
+
+            margin:
+                14px;
+
+            border:
+                1px solid
+                #e5edf1;
+
+            border-radius:
+                14px;
+
+            overflow:
+                hidden;
+
+            background:
+                white;
+
+        }
+
+
+        .section-header {
 
             display:
                 flex;
@@ -475,7 +499,74 @@
                 space-between;
 
             padding:
-                12px 18px;
+                13px 16px;
+
+            gap:
+                10px;
+
+        }
+
+
+        .section-header-left {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                9px;
+
+        }
+
+
+        .section-title {
+
+            font-size:
+                14px;
+
+            font-weight:
+                800;
+
+        }
+
+
+        .section-count {
+
+            min-width:
+                27px;
+
+            height:
+                27px;
+
+            padding:
+                0 8px;
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            border-radius:
+                8px;
+
+            font-size:
+                12px;
+
+            font-weight:
+                800;
+
+        }
+
+
+        /* TODAY */
+
+        .today-section .section-header {
 
             background:
                 #f0fdfa;
@@ -484,36 +575,90 @@
                 1px solid
                 #d9f5f0;
 
-            gap:
-                15px;
-
-            flex-wrap:
-                wrap;
-
         }
 
 
-        .today-title {
+        .today-section .section-title {
 
             color:
                 #0f766e;
 
-            font-weight:
-                750;
+        }
 
-            font-size:
-                13px;
+
+        .today-section .section-count {
+
+            background:
+                #ccfbf1;
+
+            color:
+                #0f766e;
 
         }
 
 
-        .today-count {
+        /* UPCOMING */
+
+        .upcoming-section .section-header {
+
+            background:
+                #eff6ff;
+
+            border-bottom:
+                1px solid
+                #dbeafe;
+
+        }
+
+
+        .upcoming-section .section-title {
+
+            color:
+                #2563eb;
+
+        }
+
+
+        .upcoming-section .section-count {
+
+            background:
+                #dbeafe;
+
+            color:
+                #2563eb;
+
+        }
+
+
+        /* PAST */
+
+        .past-section .section-header {
+
+            background:
+                #f8fafc;
+
+            border-bottom:
+                1px solid
+                #e2e8f0;
+
+        }
+
+
+        .past-section .section-title {
+
+            color:
+                #64748b;
+
+        }
+
+
+        .past-section .section-count {
+
+            background:
+                #e2e8f0;
 
             color:
                 #475569;
-
-            font-size:
-                12px;
 
         }
 
@@ -525,7 +670,7 @@
         .patients {
 
             padding:
-                10px;
+                0 10px 10px;
 
         }
 
@@ -579,7 +724,7 @@
         }
 
 
-        .column-title {
+        .column-header {
 
             color:
                 #64748b;
@@ -593,8 +738,11 @@
             letter-spacing:
                 0.5px;
 
-            margin-bottom:
-                3px;
+            font-weight:
+                700;
+
+            background:
+                #f8fafc;
 
         }
 
@@ -746,7 +894,28 @@
 
 
         /* =====================================================
-           EMPTY
+           EMPTY SECTION
+        ===================================================== */
+
+        .section-empty {
+
+            padding:
+                22px 15px;
+
+            text-align:
+                center;
+
+            color:
+                #94a3b8;
+
+            font-size:
+                12px;
+
+        }
+
+
+        /* =====================================================
+           EMPTY PAGE
         ===================================================== */
 
         .empty {
@@ -918,6 +1087,22 @@
             }
 
 
+            .appointment-section {
+
+                margin:
+                    10px;
+
+            }
+
+
+            .patients {
+
+                padding:
+                    0 6px 6px;
+
+            }
+
+
             .patient-row {
 
                 grid-template-columns:
@@ -934,6 +1119,14 @@
             .patient-row > div:nth-child(5),
             .patient-row > div:nth-child(6),
             .patient-row > div:nth-child(7) {
+
+                display:
+                    none;
+
+            }
+
+
+            .column-header {
 
                 display:
                     none;
@@ -988,6 +1181,7 @@
 </header>
 
 
+
 <!-- =====================================================
      FILTERS
 ===================================================== -->
@@ -1032,10 +1226,15 @@
             Upcoming
         </option>
 
+        <option value="past">
+            Past
+        </option>
+
     </select>
 
 
 </div>
+
 
 
 <!-- =====================================================
@@ -1112,6 +1311,7 @@
 </div>
 
 
+
 <!-- =====================================================
      DATA
 ===================================================== -->
@@ -1153,6 +1353,11 @@
 
     {% endfor %}
 
+
+
+    <!-- =================================================
+         DOCTOR LOOP
+    ================================================= -->
 
     {% for doctor, doctor_patients in grouped.items()|sort %}
 
@@ -1208,10 +1413,9 @@
                         {{ doctor_patients|length }}
                     </strong>
 
-                    Patients
+                    Total
 
                 </div>
-
 
             </div>
 
@@ -1219,183 +1423,446 @@
         </div>
 
 
-        <!-- =================================================
-             DOCTOR TODAY
-        ================================================= -->
-
-        <div class="today-strip">
-
-
-            <div class="today-title">
-
-                📅 Today's Schedule
-
-            </div>
-
-
-            <div
-                class="today-count"
-                data-doctor-today="{{ doctor|lower }}"
-            >
-
-                Loading...
-
-            </div>
-
-
-        </div>
-
 
         <!-- =================================================
-             PATIENTS
+             TODAY
         ================================================= -->
 
-        <div class="patients">
+        <div
+            class="appointment-section today-section"
+            data-section="today"
+        >
 
 
-            <!-- COLUMN HEADER -->
+            <div class="section-header">
 
-            <div
-                class="patient-row"
-                style="
-                    background:#f8fafc;
-                    font-weight:700;
-                    color:#64748b;
-                "
-            >
+                <div class="section-header-left">
 
-                <div>
-                    No
-                </div>
-
-                <div>
-                    Patient
-                </div>
-
-                <div>
-                    Gender
-                </div>
-
-                <div>
-                    Age
-                </div>
-
-                <div>
-                    Mobile
-                </div>
-
-                <div>
-                    Date
-                </div>
-
-                <div>
-                    Action
-                </div>
-
-            </div>
-
-
-            <!-- PATIENT ROWS -->
-
-            {% for p in doctor_patients|sort(attribute='appointment_date') %}
-
-
-            <div
-                class="patient-row appointment-row"
-                data-doctor="{{ doctor|lower }}"
-                data-date="{{ p.appointment_date }}"
-                data-search="
-                    {{ p.patient_name|default('')|lower }}
-                    {{ p.mobile|default('')|lower }}
-                    {{ doctor|default('')|lower }}
-                    {{ p.gender|default('')|lower }}
-                "
-            >
-
-
-                <div>
-
-                    <div class="patient-no">
-
-                        {{ p.patient_no }}
-
+                    <div class="section-title">
+                        📅 TODAY
                     </div>
 
-                </div>
-
-
-                <div>
-
-                    <div class="patient-name">
-
-                        {{ p.patient_name }}
-
-                    </div>
-
-
-                    <div class="patient-extra">
-
-                        {{ p.address }}
-
-                    </div>
-
-                </div>
-
-
-                <div>
-
-                    {{ p.gender }}
-
-                </div>
-
-
-                <div>
-
-                    {{ p.age }}
-
-                </div>
-
-
-                <div>
-
-                    <div class="mobile">
-
-                        📱
-                        {{ p.mobile }}
-
-                    </div>
-
-                </div>
-
-
-                <div>
-
-                    <span class="appointment-date">
-
-                        {{ p.appointment_date }}
-
-                    </span>
-
-                </div>
-
-
-                <div>
-
-                    <a
-                        href="/followups/{{ uid }}"
-                        class="follow-btn"
+                    <div
+                        class="section-count"
+                        data-count="today"
                     >
-                        Follow-up
-                    </a>
+                        0
+                    </div>
 
+                </div>
+
+            </div>
+
+
+            <div class="patients">
+
+
+                <div class="patient-row column-header">
+
+                    <div>No</div>
+
+                    <div>Patient</div>
+
+                    <div>Gender</div>
+
+                    <div>Age</div>
+
+                    <div>Mobile</div>
+
+                    <div>Date</div>
+
+                    <div>Action</div>
+
+                </div>
+
+
+                {% set today_patients = [] %}
+
+                {% for p in doctor_patients %}
+
+                    <div
+                        class="patient-row appointment-row"
+                        data-doctor="{{ doctor|lower }}"
+                        data-date="{{ p.appointment_date }}"
+                        data-status="today"
+                        data-search="
+                            {{ p.patient_name|default('')|lower }}
+                            {{ p.mobile|default('')|lower }}
+                            {{ doctor|default('')|lower }}
+                            {{ p.gender|default('')|lower }}
+                        "
+                    >
+
+                        <div>
+                            <div class="patient-no">
+                                0
+                            </div>
+                        </div>
+
+
+                        <div>
+
+                            <div class="patient-name">
+                                {{ p.patient_name }}
+                            </div>
+
+                            <div class="patient-extra">
+                                {{ p.address }}
+                            </div>
+
+                        </div>
+
+
+                        <div>
+                            {{ p.gender }}
+                        </div>
+
+
+                        <div>
+                            {{ p.age }}
+                        </div>
+
+
+                        <div>
+
+                            <div class="mobile">
+                                📱 {{ p.mobile }}
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="appointment-date">
+                                {{ p.appointment_date }}
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <a
+                                href="/followups/{{ uid }}"
+                                class="follow-btn"
+                            >
+                                Follow-up
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+
+                <div
+                    class="section-empty"
+                    data-empty="today"
+                    style="display:none;"
+                >
+                    No appointments today.
                 </div>
 
 
             </div>
 
+        </div>
 
-            {% endfor %}
 
+
+        <!-- =================================================
+             UPCOMING
+        ================================================= -->
+
+        <div
+            class="appointment-section upcoming-section"
+            data-section="upcoming"
+        >
+
+
+            <div class="section-header">
+
+                <div class="section-header-left">
+
+                    <div class="section-title">
+                        📆 UPCOMING
+                    </div>
+
+                    <div
+                        class="section-count"
+                        data-count="upcoming"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="patients">
+
+
+                <div class="patient-row column-header">
+
+                    <div>No</div>
+
+                    <div>Patient</div>
+
+                    <div>Gender</div>
+
+                    <div>Age</div>
+
+                    <div>Mobile</div>
+
+                    <div>Date</div>
+
+                    <div>Action</div>
+
+                </div>
+
+
+                {% for p in doctor_patients %}
+
+                    <div
+                        class="patient-row appointment-row"
+                        data-doctor="{{ doctor|lower }}"
+                        data-date="{{ p.appointment_date }}"
+                        data-status="upcoming"
+                        data-search="
+                            {{ p.patient_name|default('')|lower }}
+                            {{ p.mobile|default('')|lower }}
+                            {{ doctor|default('')|lower }}
+                            {{ p.gender|default('')|lower }}
+                        "
+                    >
+
+                        <div>
+
+                            <div class="patient-no">
+                                0
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="patient-name">
+                                {{ p.patient_name }}
+                            </div>
+
+                            <div class="patient-extra">
+                                {{ p.address }}
+                            </div>
+
+                        </div>
+
+
+                        <div>
+                            {{ p.gender }}
+                        </div>
+
+
+                        <div>
+                            {{ p.age }}
+                        </div>
+
+
+                        <div>
+
+                            <div class="mobile">
+                                📱 {{ p.mobile }}
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="appointment-date">
+                                {{ p.appointment_date }}
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <a
+                                href="/followups/{{ uid }}"
+                                class="follow-btn"
+                            >
+                                Follow-up
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+
+                <div
+                    class="section-empty"
+                    data-empty="upcoming"
+                    style="display:none;"
+                >
+                    No upcoming appointments.
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             PAST
+        ================================================= -->
+
+        <div
+            class="appointment-section past-section"
+            data-section="past"
+        >
+
+
+            <div class="section-header">
+
+                <div class="section-header-left">
+
+                    <div class="section-title">
+                        🕘 PAST
+                    </div>
+
+                    <div
+                        class="section-count"
+                        data-count="past"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="patients">
+
+
+                <div class="patient-row column-header">
+
+                    <div>No</div>
+
+                    <div>Patient</div>
+
+                    <div>Gender</div>
+
+                    <div>Age</div>
+
+                    <div>Mobile</div>
+
+                    <div>Date</div>
+
+                    <div>Action</div>
+
+                </div>
+
+
+                {% for p in doctor_patients %}
+
+                    <div
+                        class="patient-row appointment-row"
+                        data-doctor="{{ doctor|lower }}"
+                        data-date="{{ p.appointment_date }}"
+                        data-status="past"
+                        data-search="
+                            {{ p.patient_name|default('')|lower }}
+                            {{ p.mobile|default('')|lower }}
+                            {{ doctor|default('')|lower }}
+                            {{ p.gender|default('')|lower }}
+                        "
+                    >
+
+                        <div>
+
+                            <div class="patient-no">
+                                0
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="patient-name">
+                                {{ p.patient_name }}
+                            </div>
+
+                            <div class="patient-extra">
+                                {{ p.address }}
+                            </div>
+
+                        </div>
+
+
+                        <div>
+                            {{ p.gender }}
+                        </div>
+
+
+                        <div>
+                            {{ p.age }}
+                        </div>
+
+
+                        <div>
+
+                            <div class="mobile">
+                                📱 {{ p.mobile }}
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="appointment-date">
+                                {{ p.appointment_date }}
+                            </span>
+
+                        </div>
+
+
+                        <div>
+
+                            <a
+                                href="/followups/{{ uid }}"
+                                class="follow-btn"
+                            >
+                                Follow-up
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+
+                <div
+                    class="section-empty"
+                    data-empty="past"
+                    style="display:none;"
+                >
+                    No past appointments.
+                </div>
+
+
+            </div>
 
         </div>
 
@@ -1436,6 +1903,7 @@
 </div>
 
 
+
 <script>
 
 
@@ -1461,12 +1929,6 @@ const dateFilter =
     );
 
 
-const rows =
-    document.querySelectorAll(
-        ".appointment-row"
-    );
-
-
 const doctorCards =
     document.querySelectorAll(
         ".doctor-card[data-doctor]"
@@ -1474,7 +1936,7 @@ const doctorCards =
 
 
 // =====================================================
-// TODAY
+// TODAY DATE
 // =====================================================
 
 function todayISO() {
@@ -1482,8 +1944,10 @@ function todayISO() {
     const now =
         new Date();
 
+
     const year =
         now.getFullYear();
+
 
     const month =
         String(
@@ -1493,6 +1957,7 @@ function todayISO() {
             "0"
         );
 
+
     const day =
         String(
             now.getDate()
@@ -1500,6 +1965,7 @@ function todayISO() {
             2,
             "0"
         );
+
 
     return (
         year +
@@ -1517,6 +1983,72 @@ const today =
 
 
 // =====================================================
+// NORMALIZE DATE
+// =====================================================
+
+function normalizeDate(value) {
+
+    if (!value) {
+        return "";
+    }
+
+
+    value =
+        String(value)
+            .trim();
+
+
+    /*
+       Expected database format:
+
+       YYYY-MM-DD
+
+       Example:
+
+       2026-08-21
+    */
+
+    if (
+        /^\d{4}-\d{2}-\d{2}$/.test(value)
+    ) {
+
+        return value;
+
+    }
+
+
+    /*
+       Also support:
+
+       DD-MM-YYYY
+       DD/MM/YYYY
+    */
+
+    let match =
+        value.match(
+            /^(\d{2})[-\/](\d{2})[-\/](\d{4})$/
+        );
+
+
+    if (match) {
+
+        return (
+            match[3] +
+            "-" +
+            match[2] +
+            "-" +
+            match[1]
+        );
+
+    }
+
+
+    return value;
+
+}
+
+
+// =====================================================
 // DOCTORS
 // =====================================================
 
@@ -1529,6 +2061,7 @@ doctorCards.forEach(
 
         const doctor =
             card.dataset.doctor;
+
 
         if (doctor) {
 
@@ -1552,17 +2085,19 @@ doctorCards.forEach(
                     "option"
                 );
 
+
             option.value =
                 doctor;
 
+
             option.textContent =
                 "Dr. " +
-                doctor
-                    .replace(
-                        /\b\w/g,
-                        c =>
-                            c.toUpperCase()
-                    );
+                doctor.replace(
+                    /\b\w/g,
+                    c =>
+                        c.toUpperCase()
+                );
+
 
             doctorFilter.appendChild(
                 option
@@ -1573,66 +2108,236 @@ doctorCards.forEach(
 
 
 // =====================================================
-// TODAY COUNTS FOR EACH DOCTOR
+// SET APPOINTMENT STATUS
 // =====================================================
 
 doctorCards.forEach(
     card => {
 
-        const doctor =
-            card.dataset.doctor;
-
-
-        const doctorRows =
+        const rows =
             card.querySelectorAll(
                 ".appointment-row"
             );
 
 
-        let count =
-            0;
-
-
-        doctorRows.forEach(
+        rows.forEach(
             row => {
 
+                const date =
+                    normalizeDate(
+                        row.dataset.date
+                    );
+
+
+                let status;
+
+
                 if (
-                    row.dataset.date ===
-                    today
+                    date === today
                 ) {
 
-                    count++;
+                    status =
+                        "today";
+
+                }
+                else if (
+                    date > today
+                ) {
+
+                    status =
+                        "upcoming";
+
+                }
+                else {
+
+                    status =
+                        "past";
 
                 }
 
+
+                row.dataset.status =
+                    status;
+
             }
         );
-
-
-        const element =
-            card.querySelector(
-                "[data-doctor-today]"
-            );
-
-
-        if (element) {
-
-            element.textContent =
-                count +
-                (
-                    count === 1
-                    ? " patient today"
-                    : " patients today"
-                );
-
-        }
 
     }
 );
 
 
 // =====================================================
-// APPLY FILTERS
+// SORT + NUMBER EACH SECTION
+// =====================================================
+
+doctorCards.forEach(
+    card => {
+
+        const sections =
+            card.querySelectorAll(
+                ".appointment-section"
+            );
+
+
+        sections.forEach(
+            section => {
+
+                const status =
+                    section.dataset.section;
+
+
+                const patientsContainer =
+                    section.querySelector(
+                        ".patients"
+                    );
+
+
+                const rows = [
+                    ...patientsContainer.querySelectorAll(
+                        ".appointment-row"
+                    )
+                ];
+
+
+                /*
+                   Only rows belonging to this section
+                   are used.
+                */
+
+                const matchingRows =
+                    rows.filter(
+                        row =>
+                            row.dataset.status ===
+                            status
+                    );
+
+
+                /*
+                   Sort by appointment date.
+
+                   TODAY:
+                   earliest date first
+
+                   UPCOMING:
+                   nearest date first
+
+                   PAST:
+                   newest past date first
+                */
+
+                matchingRows.sort(
+                    (a, b) => {
+
+                        const dateA =
+                            normalizeDate(
+                                a.dataset.date
+                            );
+
+
+                        const dateB =
+                            normalizeDate(
+                                b.dataset.date
+                            );
+
+
+                        if (
+                            status === "past"
+                        ) {
+
+                            return dateB.localeCompare(
+                                dateA
+                            );
+
+                        }
+
+
+                        return dateA.localeCompare(
+                            dateB
+                        );
+
+                    }
+                );
+
+
+                /*
+                   Number from 1 for every section.
+                */
+
+                matchingRows.forEach(
+                    (row, index) => {
+
+                        const number =
+                            row.querySelector(
+                                ".patient-no"
+                            );
+
+
+                        if (number) {
+
+                            number.textContent =
+                                index + 1;
+
+                        }
+
+
+                        /*
+                           Move row into correct section.
+                        */
+
+                        patientsContainer.appendChild(
+                            row
+                        );
+
+                    }
+                );
+
+
+                /*
+                   Count
+                */
+
+                const count =
+                    section.querySelector(
+                        "[data-count]"
+                    );
+
+
+                if (count) {
+
+                    count.textContent =
+                        matchingRows.length;
+
+                }
+
+
+                /*
+                   Empty message
+                */
+
+                const empty =
+                    section.querySelector(
+                        "[data-empty]"
+                    );
+
+
+                if (empty) {
+
+                    empty.style.display =
+                        matchingRows.length === 0
+                        ? "block"
+                        : "none";
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+// =====================================================
+// FILTER
 // =====================================================
 
 function applyFilters() {
@@ -1651,7 +2356,7 @@ function applyFilters() {
         dateFilter.value;
 
 
-    let visible =
+    let visibleTotal =
         0;
 
 
@@ -1667,79 +2372,184 @@ function applyFilters() {
                 doctor === selectedDoctor;
 
 
-            let cardVisible =
+            let doctorHasVisible =
                 false;
 
 
             card
                 .querySelectorAll(
-                    ".appointment-row"
+                    ".appointment-section"
                 )
                 .forEach(
-                    row => {
+                    section => {
 
-                        const rowSearch =
-                            row.dataset.search
-                                .replace(
-                                    /\s+/g,
-                                    " "
-                                )
-                                .trim();
+                        const status =
+                            section.dataset.section;
 
 
-                        const textMatch =
-                            !search ||
-                            rowSearch.includes(
-                                search
+                        let sectionVisible =
+                            0;
+
+
+                        section
+                            .querySelectorAll(
+                                ".appointment-row"
+                            )
+                            .forEach(
+                                row => {
+
+                                    const rowStatus =
+                                        row.dataset.status;
+
+
+                                    const rowSearch =
+                                        (
+                                            row.dataset.search ||
+                                            ""
+                                        )
+                                        .replace(
+                                            /\s+/g,
+                                            " "
+                                        )
+                                        .trim();
+
+
+                                    const searchMatch =
+                                        !search ||
+                                        rowSearch.includes(
+                                            search
+                                        );
+
+
+                                    let dateMatch =
+                                        true;
+
+
+                                    if (
+                                        selectedDate !==
+                                        "all"
+                                    ) {
+
+                                        dateMatch =
+                                            rowStatus ===
+                                            selectedDate;
+
+                                    }
+
+
+                                    const show =
+                                        doctorMatch &&
+                                        searchMatch &&
+                                        dateMatch &&
+                                        rowStatus ===
+                                            status;
+
+
+                                    row.style.display =
+                                        show
+                                        ? "grid"
+                                        : "none";
+
+
+                                    if (show) {
+
+                                        sectionVisible++;
+
+                                        visibleTotal++;
+
+                                        doctorHasVisible =
+                                            true;
+
+                                    }
+
+                                }
                             );
 
 
-                        let dateMatch =
-                            true;
+                        /*
+                           Update visible section count.
+                        */
+
+                        const count =
+                            section.querySelector(
+                                "[data-count]"
+                            );
 
 
-                        if (
-                            selectedDate ===
-                            "today"
-                        ) {
+                        if (count) {
 
-                            dateMatch =
-                                row.dataset.date ===
-                                today;
-
-                        }
-
-
-                        if (
-                            selectedDate ===
-                            "upcoming"
-                        ) {
-
-                            dateMatch =
-                                row.dataset.date >
-                                today;
+                            count.textContent =
+                                sectionVisible;
 
                         }
 
 
-                        const show =
-                            doctorMatch &&
-                            textMatch &&
-                            dateMatch;
+                        /*
+                           Show/hide section.
+
+                           If filtering by a particular
+                           date type, only that section
+                           is shown.
+                        */
+
+                        let showSection =
+                            sectionVisible > 0;
 
 
-                        row.style.display =
-                            show
-                            ? "grid"
+                        if (
+                            selectedDate ===
+                            "all"
+                        ) {
+
+                            /*
+                               Always show all sections
+                               when All Dates selected.
+                            */
+
+                            showSection =
+                                true;
+
+                        }
+
+
+                        section.style.display =
+                            showSection
+                            ? "block"
                             : "none";
 
 
-                        if (show) {
+                        /*
+                           Empty message for filtered
+                           section.
+                        */
 
-                            cardVisible =
-                                true;
+                        const empty =
+                            section.querySelector(
+                                "[data-empty]"
+                            );
 
-                            visible++;
+
+                        if (empty) {
+
+                            if (
+                                selectedDate ===
+                                "all"
+                            ) {
+
+                                empty.style.display =
+                                    sectionVisible === 0
+                                    ? "block"
+                                    : "none";
+
+                            }
+                            else {
+
+                                empty.style.display =
+                                    sectionVisible === 0
+                                    ? "block"
+                                    : "none";
+
+                            }
 
                         }
 
@@ -1747,8 +2557,12 @@ function applyFilters() {
                 );
 
 
+            /*
+               Doctor card visibility
+            */
+
             card.style.display =
-                cardVisible
+                doctorHasVisible
                 ? "block"
                 : "none";
 
@@ -1756,17 +2570,24 @@ function applyFilters() {
     );
 
 
+    /*
+       Total filtered count
+    */
+
     document.getElementById(
         "totalCount"
     ).textContent =
-        visible;
+        visibleTotal;
 
 }
 
 
 // =====================================================
-// SUMMARY
+// SUMMARY COUNTS
 // =====================================================
+
+let total =
+    0;
 
 let todayTotal =
     0;
@@ -1775,27 +2596,40 @@ let upcomingTotal =
     0;
 
 
-rows.forEach(
-    row => {
+doctorCards.forEach(
+    card => {
 
-        if (
-            row.dataset.date ===
-            today
-        ) {
+        card
+            .querySelectorAll(
+                ".appointment-row"
+            )
+            .forEach(
+                row => {
 
-            todayTotal++;
-
-        }
+                    total++;
 
 
-        if (
-            row.dataset.date >
-            today
-        ) {
+                    if (
+                        row.dataset.status ===
+                        "today"
+                    ) {
 
-            upcomingTotal++;
+                        todayTotal++;
 
-        }
+                    }
+
+
+                    if (
+                        row.dataset.status ===
+                        "upcoming"
+                    ) {
+
+                        upcomingTotal++;
+
+                    }
+
+                }
+            );
 
     }
 );
@@ -1804,7 +2638,7 @@ rows.forEach(
 document.getElementById(
     "totalCount"
 ).textContent =
-    rows.length;
+    total;
 
 
 document.getElementById(
@@ -1853,10 +2687,10 @@ dateFilter.addEventListener(
 
 applyFilters();
 
+
 </script>
 
 
 </body>
 
 </html>
-
