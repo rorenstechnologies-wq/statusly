@@ -752,6 +752,18 @@
             font-size:
                 10px;
 
+            max-width:
+                220px;
+
+            overflow:
+                hidden;
+
+            text-overflow:
+                ellipsis;
+
+            white-space:
+                nowrap;
+
         }
 
 
@@ -1047,6 +1059,20 @@
             font-size:
                 16px;
 
+            transition:
+                .2s;
+
+        }
+
+
+        .call-btn:hover {
+
+            background:
+                #ccfbf1;
+
+            transform:
+                translateY(-1px);
+
         }
 
 
@@ -1086,6 +1112,21 @@
             cursor:
                 pointer;
 
+            transition:
+                .2s;
+
+        }
+
+
+        .save-btn:hover {
+
+            transform:
+                translateY(-1px);
+
+            box-shadow:
+                0 5px 12px
+                rgba(22,163,74,.18);
+
         }
 
 
@@ -1096,6 +1137,12 @@
 
             cursor:
                 wait;
+
+            transform:
+                none;
+
+            box-shadow:
+                none;
 
         }
 
@@ -1125,6 +1172,86 @@
 
             margin-bottom:
                 8px;
+
+        }
+
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        .toast {
+
+            position:
+                fixed;
+
+            right:
+                22px;
+
+            bottom:
+                22px;
+
+            min-width:
+                280px;
+
+            max-width:
+                420px;
+
+            padding:
+                14px 17px;
+
+            border-radius:
+                12px;
+
+            color:
+                white;
+
+            background:
+                #0f766e;
+
+            box-shadow:
+                0 10px 30px
+                rgba(15,23,42,.20);
+
+            font-size:
+                13px;
+
+            font-weight:
+                600;
+
+            opacity:
+                0;
+
+            transform:
+                translateY(20px);
+
+            pointer-events:
+                none;
+
+            transition:
+                .25s;
+
+            z-index:
+                9999;
+
+        }
+
+
+        .toast.show {
+
+            opacity:
+                1;
+
+            transform:
+                translateY(0);
+
+        }
+
+
+        .toast.error {
+
+            background:
+                #dc2626;
 
         }
 
@@ -1317,14 +1444,6 @@
             }
 
 
-            /*
-               We keep the table because the user wants
-               table-wise hospital workflow.
-
-               Horizontal scrolling is intentional
-               on mobile.
-            */
-
             .table-wrap {
 
                 overflow-x:
@@ -1340,8 +1459,24 @@
 
             }
 
-        }
 
+            .toast {
+
+                left:
+                    14px;
+
+                right:
+                    14px;
+
+                bottom:
+                    14px;
+
+                min-width:
+                    auto;
+
+            }
+
+        }
 
     </style>
 
@@ -1357,17 +1492,13 @@
 
 <header class="header">
 
-
     <div class="header-content">
 
-
         <div class="header-left">
-
 
             <div class="header-icon">
                 🔄
             </div>
-
 
             <div>
 
@@ -1381,7 +1512,6 @@
 
             </div>
 
-
         </div>
 
 
@@ -1393,11 +1523,10 @@
 
         </div>
 
-
     </div>
 
-
 </header>
+
 
 
 <div class="page">
@@ -1409,9 +1538,7 @@
 
     <div class="filter-card">
 
-
         <div class="filter-grid">
-
 
             <select
                 id="doctorFilter"
@@ -1430,6 +1557,7 @@
                 class="control search"
                 type="text"
                 placeholder="Search patient, mobile or doctor..."
+                autocomplete="off"
             >
 
 
@@ -1452,10 +1580,10 @@
 
             </select>
 
-
         </div>
 
     </div>
+
 
 
     <!-- =================================================
@@ -1528,8 +1656,8 @@
 
         </div>
 
-
     </div>
+
 
 
     <!-- =================================================
@@ -1546,7 +1674,6 @@
 
 
         {% for p in patients %}
-
 
             {% set doctor =
                 p.doctor_name or "Unknown Doctor"
@@ -1568,8 +1695,8 @@
                 grouped[doctor].append(p)
             %}
 
-
         {% endfor %}
+
 
 
         {% for doctor, doctor_patients in grouped.items()|sort %}
@@ -1577,7 +1704,7 @@
 
         <section
             class="doctor-card"
-            data-doctor="{{ doctor|lower }}"
+            data-doctor="{{ doctor|lower|trim }}"
         >
 
 
@@ -1593,15 +1720,35 @@
 
                     <div class="doctor-avatar">
 
-                       {% if doctor_gender == "Female" %}
-                            👩‍⚕️
-                        {% elif doctor_gender == "Male" %}
-                            👨‍⚕️
-                           {% else %}
-                             🧑‍⚕️
-                          {% endif %}
+                        {% set gender = "" %}
 
-                       </div>
+                        {% if doctor_patients|length > 0 %}
+
+                            {% set gender =
+                                doctor_patients[0].doctor_gender
+                                if doctor_patients[0].doctor_gender is defined
+                                else ""
+                            %}
+
+                        {% endif %}
+
+
+                        {% if gender|lower == "female" %}
+
+                            👩‍⚕️
+
+                        {% elif gender|lower == "male" %}
+
+                            👨‍⚕️
+
+                        {% else %}
+
+                            🧑‍⚕️
+
+                        {% endif %}
+
+                    </div>
+
 
                     <div>
 
@@ -1624,6 +1771,7 @@
                 </div>
 
 
+
                 <div class="doctor-stats">
 
 
@@ -1637,10 +1785,12 @@
 
                     </div>
 
+
                 </div>
 
 
             </div>
+
 
 
             <!-- =================================================
@@ -1659,7 +1809,7 @@
 
                 <div
                     class="today-count"
-                    data-doctor-today="{{ doctor|lower }}"
+                    data-doctor-today="{{ doctor|lower|trim }}"
                 >
 
                     0 patients today
@@ -1668,6 +1818,7 @@
 
 
             </div>
+
 
 
             <!-- =================================================
@@ -1725,6 +1876,7 @@
                     </thead>
 
 
+
                     <tbody>
 
 
@@ -1733,9 +1885,15 @@
 
                         <tr
                             class="patient-row"
-                            data-doctor="{{ doctor|lower }}"
-                            data-date="{{ p.appointment_date }}"
+
+                            data-id="{{ p.id }}"
+
+                            data-doctor="{{ doctor|lower|trim }}"
+
+                            data-date="{{ p.appointment_date|default('') }}"
+
                             data-status="{% if p.next_visit_date %}scheduled{% else %}pending{% endif %}"
+
                             data-search="
                                 {{ p.patient_name|default('')|lower }}
                                 {{ p.mobile|default('')|lower }}
@@ -1757,6 +1915,7 @@
                             </td>
 
 
+
                             <!-- PATIENT -->
 
                             <td>
@@ -1767,11 +1926,17 @@
                                     <div class="patient-icon">
 
                                         {% if p.gender == "Female" %}
+
                                             👩
+
                                         {% elif p.gender == "Male" %}
+
                                             👨
+
                                         {% else %}
+
                                             🧑
+
                                         {% endif %}
 
                                     </div>
@@ -1788,7 +1953,7 @@
 
                                         <div class="patient-sub">
 
-                                            {{ p.address }}
+                                            {{ p.address|default('') }}
 
                                         </div>
 
@@ -1800,11 +1965,12 @@
                             </td>
 
 
+
                             <!-- AGE / GENDER -->
 
                             <td>
 
-                                {{ p.age }}
+                                {{ p.age|default('-') }}
                                 years
 
                                 <br>
@@ -1816,11 +1982,12 @@
                                     "
                                 >
 
-                                    {{ p.gender }}
+                                    {{ p.gender|default('-') }}
 
                                 </span>
 
                             </td>
+
 
 
                             <!-- MOBILE -->
@@ -1829,11 +1996,12 @@
 
                                 <div class="mobile">
 
-                                    {{ p.mobile }}
+                                    {{ p.mobile|default('-') }}
 
                                 </div>
 
                             </td>
+
 
 
                             <!-- PREVIOUS -->
@@ -1842,11 +2010,12 @@
 
                                 <span class="date-badge">
 
-                                    {{ p.appointment_date }}
+                                    {{ p.appointment_date|default('-') }}
 
                                 </span>
 
                             </td>
+
 
 
                             <!-- NEXT -->
@@ -1863,6 +2032,7 @@
                             </td>
 
 
+
                             <!-- NOTES -->
 
                             <td>
@@ -1876,9 +2046,10 @@
                             </td>
 
 
+
                             <!-- STATUS -->
 
-                            <td>
+                            <td class="status-cell">
 
                                 {% if p.next_visit_date %}
 
@@ -1895,6 +2066,7 @@
                                 {% endif %}
 
                             </td>
+
 
 
                             <!-- ACTION -->
@@ -1917,9 +2089,11 @@
                                     {% endif %}
 
 
+
                                     <button
                                         id="btn_{{ p.id }}"
                                         class="save-btn"
+                                        type="button"
                                         onclick="saveFollowup('{{ p.id }}')"
                                     >
                                         Save & Notify
@@ -1985,6 +2159,18 @@
 </div>
 
 
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
+
+
 <script>
 
 
@@ -2022,6 +2208,63 @@ const patientRows =
     );
 
 
+
+// =====================================================
+// TOAST
+// =====================================================
+
+let toastTimer = null;
+
+
+function showToast(
+    message,
+    type = "success"
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.className =
+        "toast show";
+
+
+    if (type === "error") {
+
+        toast.classList.add(
+            "error"
+        );
+
+    }
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            3000
+        );
+
+}
+
+
+
 // =====================================================
 // DOCTORS
 // =====================================================
@@ -2051,8 +2294,10 @@ doctorCards.forEach(
                     "option"
                 );
 
+
             option.value =
                 doctor;
+
 
             option.textContent =
                 "Dr. " +
@@ -2062,12 +2307,14 @@ doctorCards.forEach(
                         c.toUpperCase()
                 );
 
+
             doctorFilter.appendChild(
                 option
             );
 
         }
     );
+
 
 
 // =====================================================
@@ -2079,8 +2326,10 @@ function getToday() {
     const date =
         new Date();
 
+
     const y =
         date.getFullYear();
+
 
     const m =
         String(
@@ -2090,6 +2339,7 @@ function getToday() {
             "0"
         );
 
+
     const d =
         String(
             date.getDate()
@@ -2097,6 +2347,7 @@ function getToday() {
             2,
             "0"
         );
+
 
     return (
         y +
@@ -2113,39 +2364,68 @@ const today =
     getToday();
 
 
+
 // =====================================================
 // DOCTOR TODAY COUNTS
 // =====================================================
 
-doctorCards.forEach(
-    card => {
+function updateTodayCounts() {
 
-        const count =
-            card.querySelectorAll(
-                `.patient-row[data-date="${today}"]`
-            ).length;
+    doctorCards.forEach(
+        card => {
+
+            const rows =
+                card.querySelectorAll(
+                    ".patient-row"
+                );
 
 
-        const output =
-            card.querySelector(
-                "[data-doctor-today]"
+            let count =
+                0;
+
+
+            rows.forEach(
+                row => {
+
+                    if (
+                        row.dataset.date ===
+                        today
+                    ) {
+
+                        count++;
+
+                    }
+
+                }
             );
 
 
-        if (output) {
-
-            output.textContent =
-                count +
-                (
-                    count === 1
-                    ? " patient today"
-                    : " patients today"
+            const output =
+                card.querySelector(
+                    "[data-doctor-today]"
                 );
 
-        }
 
-    }
-);
+            if (output) {
+
+                output.textContent =
+                    count +
+                    (
+                        count === 1
+                        ? " patient today"
+                        : " patients today"
+                    );
+
+            }
+
+        }
+    );
+
+}
+
+
+updateTodayCounts();
+
 
 
 // =====================================================
@@ -2156,6 +2436,7 @@ function updateSummary() {
 
     let scheduled =
         0;
+
 
     let pending =
         0;
@@ -2209,6 +2490,7 @@ function updateSummary() {
 
 
 updateSummary();
+
 
 
 // =====================================================
@@ -2307,6 +2589,7 @@ function applyFilters() {
 }
 
 
+
 // =====================================================
 // SAVE FOLLOW-UP
 // =====================================================
@@ -2336,12 +2619,37 @@ async function saveFollowup(
         );
 
 
+    if (!button) {
+
+        console.error(
+            "Save button not found:",
+            patientId
+        );
+
+        return;
+
+    }
+
+
+    if (!nextVisit) {
+
+        showToast(
+            "Next visit field not found.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
     if (
         !nextVisit.value
     ) {
 
-        alert(
-            "Please select the next visit date."
+        showToast(
+            "Please select the next visit date.",
+            "error"
         );
 
         nextVisit.focus();
@@ -2354,11 +2662,13 @@ async function saveFollowup(
     button.disabled =
         true;
 
+
     button.textContent =
         "Saving...";
 
 
     try {
+
 
         const body =
             new URLSearchParams();
@@ -2378,8 +2688,11 @@ async function saveFollowup(
 
         body.append(
             "doctor_notes",
-            notes.value
+            notes
+                ? notes.value
+                : ""
         );
+
 
 
         const response =
@@ -2393,7 +2706,7 @@ async function saveFollowup(
                     headers: {
 
                         "Content-Type":
-                            "application/x-www-form-urlencoded"
+                            "application/x-www-form-urlencoded; charset=UTF-8"
 
                     },
 
@@ -2404,27 +2717,68 @@ async function saveFollowup(
             );
 
 
-        const data =
-            await response.json();
+
+        /*
+         * Do not blindly call response.json().
+         * Flask may return HTML when a route
+         * fails or redirects.
+         */
+
+        const contentType =
+            response.headers.get(
+                "content-type"
+            ) || "";
+
+
+        let data;
+
+
+        if (
+            contentType.includes(
+                "application/json"
+            )
+        ) {
+
+            data =
+                await response.json();
+
+        }
+        else {
+
+            const text =
+                await response.text();
+
+
+            console.error(
+                "Non-JSON response:",
+                text
+            );
+
+
+            throw new Error(
+                "Server returned an invalid response."
+            );
+
+        }
+
 
 
         if (
             !response.ok
         ) {
 
-            alert(
+            throw new Error(
                 data.error ||
+                data.message ||
                 "Unable to save follow-up."
             );
-
-            return;
 
         }
 
 
+
         /*
-         * Update status immediately
-         * without page refresh.
+         * Update row immediately
          */
 
         const row =
@@ -2440,44 +2794,63 @@ async function saveFollowup(
 
 
             const statusCell =
-                row.children[7];
+                row.querySelector(
+                    ".status-cell"
+                );
 
 
-            statusCell.innerHTML = `
-                <span class="status scheduled">
-                    ● Scheduled
-                </span>
-            `;
+            if (statusCell) {
+
+                statusCell.innerHTML = `
+
+                    <span class="status scheduled">
+                        ● Scheduled
+                    </span>
+
+                `;
+
+            }
 
         }
 
 
-        alert(
+
+        showToast(
+            data.message ||
             "Follow-up saved successfully."
         );
 
 
         updateSummary();
 
+        updateTodayCounts();
+
         applyFilters();
+
 
     }
     catch(error) {
+
 
         console.error(
             "FOLLOW-UP ERROR:",
             error
         );
 
-        alert(
-            "Network error. Please try again."
+
+        showToast(
+            error.message ||
+            "Network error. Please try again.",
+            "error"
         );
 
     }
     finally {
 
+
         button.disabled =
             false;
+
 
         button.textContent =
             "Save & Notify";
@@ -2485,6 +2858,7 @@ async function saveFollowup(
     }
 
 }
+
 
 
 // =====================================================
@@ -2509,7 +2883,38 @@ statusFilter.addEventListener(
 );
 
 
+
+// =====================================================
+// INITIAL FILTER
+// =====================================================
+
 applyFilters();
+
+
+
+// =====================================================
+// ENTER KEY IN SEARCH
+// =====================================================
+
+searchInput.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            searchInput.value =
+                "";
+
+            applyFilters();
+
+        }
+
+    }
+);
+
 
 </script>
 
