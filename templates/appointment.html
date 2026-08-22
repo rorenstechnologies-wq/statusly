@@ -612,28 +612,30 @@ body {
 
 
 /* =====================================================
-   AI QUESTION
+   CURRENT QUESTION
 ===================================================== */
 
 .ai-question {
 
-    display: none;
+    margin-top: 12px;
 
-    margin-top: 10px;
-
-    padding: 11px 13px;
+    padding: 13px 14px;
 
     border-radius: 12px;
 
-    background: #f8fafc;
+    background: #ffffff;
 
-    border: 1px solid #dbe4ea;
+    border: 1px solid #cbd5e1;
 
-    color: #334155;
+    color: #134e4a;
 
-    font-size: 12px;
+    font-size: 13px;
 
-    line-height: 1.5;
+    line-height: 1.55;
+
+    font-weight: 650;
+
+    display: none;
 }
 
 
@@ -643,9 +645,25 @@ body {
 }
 
 
-.ai-question strong {
+.ai-question .question-number {
 
-    color: #0f766e;
+    display: inline-flex;
+
+    width: 22px;
+    height: 22px;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 6px;
+
+    border-radius: 50%;
+
+    background: #0f766e;
+
+    color: white;
+
+    font-size: 10px;
 }
 
 
@@ -990,42 +1008,6 @@ textarea:focus {
 
 }
 
-
-@media (max-width: 380px) {
-
-    .page {
-
-        padding: 7px;
-    }
-
-
-    .card-header {
-
-        padding:
-            18px 14px;
-    }
-
-
-    .form-container {
-
-        padding:
-            18px 12px;
-    }
-
-
-    .header-title h1 {
-
-        font-size: 18px;
-    }
-
-
-    .hospital-name {
-
-        font-size: 13px;
-    }
-
-}
-
 </style>
 
 </head>
@@ -1174,21 +1156,26 @@ AI Voice Assistant
 
 
 <div
-    class="voice-transcript"
-    id="voiceTranscript"
-></div>
-
-
-<div
     class="ai-question"
     id="aiQuestion"
 >
 
-<strong>AI:</strong>
+<span class="question-number"
+      id="questionNumber">
+1
+</span>
 
-<span id="aiQuestionText"></span>
+<span id="questionText">
+तुम्हाला कोणत्या डॉक्टरांकडे अपॉइंटमेंट बुक करायची आहे?
+</span>
 
 </div>
+
+
+<div
+    class="voice-transcript"
+    id="voiceTranscript"
+></div>
 
 
 </div>
@@ -1227,7 +1214,6 @@ AI Voice Assistant
 
 <div class="field">
 
-
 <label>
 
 डॉक्टर निवडा
@@ -1257,8 +1243,6 @@ AI Voice Assistant
 
 <option
     value="{{ doctor.doctor_name }}"
-    data-doctor-name="{{ doctor.doctor_name }}"
-    data-doctor-specialization="{{ doctor.specialization }}"
 >
 
 Dr. {{ doctor.doctor_name }}
@@ -1272,17 +1256,15 @@ Dr. {{ doctor.doctor_name }}
 
 </select>
 
-
 </div>
 
 
 
 <!-- =================================================
      PATIENT NAME
-===================================================== -->
+================================================= -->
 
 <div class="field">
-
 
 <label>
 
@@ -1304,20 +1286,18 @@ Dr. {{ doctor.doctor_name }}
     required
 >
 
-
 </div>
 
 
 
 <!-- =================================================
      GENDER + AGE
-===================================================== -->
+================================================= -->
 
 <div class="two-columns">
 
 
 <div class="field">
-
 
 <label>
 
@@ -1359,13 +1339,11 @@ Dr. {{ doctor.doctor_name }}
 
 </select>
 
-
 </div>
 
 
 
 <div class="field">
-
 
 <label>
 
@@ -1389,7 +1367,6 @@ Dr. {{ doctor.doctor_name }}
     required
 >
 
-
 </div>
 
 
@@ -1399,10 +1376,9 @@ Dr. {{ doctor.doctor_name }}
 
 <!-- =================================================
      MOBILE
-===================================================== -->
+================================================= -->
 
 <div class="field">
-
 
 <label>
 
@@ -1427,17 +1403,15 @@ Dr. {{ doctor.doctor_name }}
     required
 >
 
-
 </div>
 
 
 
 <!-- =================================================
      ADDRESS
-===================================================== -->
+================================================= -->
 
 <div class="field">
-
 
 <label>
 
@@ -1457,17 +1431,15 @@ Dr. {{ doctor.doctor_name }}
     required
 ></textarea>
 
-
 </div>
 
 
 
 <!-- =================================================
      DATE
-===================================================== -->
+================================================= -->
 
 <div class="field">
-
 
 <label>
 
@@ -1487,17 +1459,15 @@ Dr. {{ doctor.doctor_name }}
     required
 >
 
-
 </div>
 
 
 
 <!-- =================================================
      TIME
-===================================================== -->
+================================================= -->
 
 <div class="field">
-
 
 <label>
 
@@ -1539,14 +1509,13 @@ Dr. {{ doctor.doctor_name }}
 
 </select>
 
-
 </div>
 
 
 
 <!-- =================================================
      BOOK BUTTON
-===================================================== -->
+================================================= -->
 
 <button
     type="submit"
@@ -1709,7 +1678,7 @@ async function initFCM() {
                 {
 
                     vapidKey:
-                        "BBIL-L4suxk0pq4CIojiB6lurKy8GjoDhRaFWnZkXEfHV-I8vn1AIRhTYPF_nFvL40YNzLrjWLUgoQc00m4D68HLw",
+                        "BBIL-L4suxk0pq4CIojiB6lurKy8GjoDhRaFWnZkXEfHV-I8vn1AIRhTYPFnlrjWLUgoQc00m4D68HLw",
 
                     serviceWorkerRegistration:
                         registration
@@ -1786,7 +1755,7 @@ onMessage(
 
 
 /* =====================================================
-   DATE
+   DATE MINIMUM
 ===================================================== */
 
 const dateInput =
@@ -1838,10 +1807,216 @@ const aiQuestion =
     );
 
 
-const aiQuestionText =
+const questionNumber =
     document.getElementById(
-        "aiQuestionText"
+        "questionNumber"
     );
+
+
+const questionText =
+    document.getElementById(
+        "questionText"
+    );
+
+
+
+/* =====================================================
+   DOCTOR LIST
+   IMPORTANT:
+   UI Marathi आहे.
+   VALUE English आहे.
+===================================================== */
+
+const doctors = [];
+
+
+document
+    .querySelectorAll(
+        "#doctor_name option"
+    )
+    .forEach(
+        function(option) {
+
+            if (!option.value) {
+                return;
+            }
+
+
+            doctors.push({
+
+                value:
+                    option.value,
+
+                display:
+                    option.textContent
+                        .trim()
+
+            });
+
+        }
+    );
+
+
+console.log(
+    "DOCTORS:",
+    doctors
+);
+
+
+
+/* =====================================================
+   QUESTIONS
+===================================================== */
+
+const questions = {
+
+    doctor: {
+        number: 1,
+
+        text:
+            "तुम्हाला कोणत्या डॉक्टरांकडे अपॉइंटमेंट बुक करायची आहे?",
+
+        retry:
+            "कृपया उपलब्ध डॉक्टरांपैकी डॉक्टरांचे नाव सांगा."
+    },
+
+
+    patient_name: {
+        number: 2,
+
+        text:
+            "कृपया रुग्णाचे पूर्ण नाव सांगा.",
+
+        retry:
+            "कृपया रुग्णाचे नाव पुन्हा सांगा."
+    },
+
+
+    gender: {
+        number: 3,
+
+        text:
+            "रुग्णाचे लिंग काय आहे? पुरुष, महिला किंवा इतर?",
+
+        retry:
+            "कृपया पुरुष, महिला किंवा इतर असे सांगा."
+    },
+
+
+    age: {
+        number: 4,
+
+        text:
+            "रुग्णाचे वय किती आहे?",
+
+        retry:
+            "कृपया रुग्णाचे वय सांगा."
+    },
+
+
+    mobile: {
+        number: 5,
+
+        text:
+            "कृपया तुमचा दहा अंकी मोबाईल नंबर सांगा.",
+
+        retry:
+            "कृपया दहा अंकी मोबाईल नंबर पुन्हा सांगा."
+    },
+
+
+    address: {
+        number: 6,
+
+        text:
+            "कृपया रुग्णाचा पूर्ण पत्ता सांगा.",
+
+        retry:
+            "कृपया रुग्णाचा पत्ता पुन्हा सांगा."
+    },
+
+
+    appointment_date: {
+        number: 7,
+
+        text:
+            "अपॉइंटमेंट कोणत्या दिवशी हवी आहे? आज, उद्या किंवा परवा सांगा.",
+
+        retry:
+            "कृपया आज, उद्या किंवा परवा यापैकी एक दिवस सांगा."
+    },
+
+
+    appointment_time: {
+        number: 8,
+
+        text:
+            "अपॉइंटमेंट सकाळी, दुपारी की संध्याकाळी हवी आहे?",
+
+        retry:
+            "कृपया सकाळी, दुपारी किंवा संध्याकाळी असे सांगा."
+    }
+
+};
+
+
+
+/* =====================================================
+   CURRENT QUESTION
+===================================================== */
+
+const questionOrder = [
+
+    "doctor",
+    "patient_name",
+    "gender",
+    "age",
+    "mobile",
+    "address",
+    "appointment_date",
+    "appointment_time"
+
+];
+
+
+let currentQuestionIndex = 0;
+
+let isListening = false;
+
+let recognition = null;
+
+
+
+/* =====================================================
+   SHOW QUESTION
+===================================================== */
+
+function showQuestion(
+    field
+) {
+
+    const question =
+        questions[field];
+
+
+    if (!question) {
+        return;
+    }
+
+
+    questionNumber.innerText =
+        question.number;
+
+
+    questionText.innerText =
+        question.text;
+
+
+    aiQuestion.classList.add(
+        "show"
+    );
+
+}
 
 
 
@@ -1854,450 +2029,538 @@ const SpeechRecognition =
     window.webkitSpeechRecognition;
 
 
-let recognition = null;
+if (!SpeechRecognition) {
 
-let isListening = false;
+    voiceButton.disabled =
+        true;
 
+    voiceButton.style.opacity =
+        "0.5";
 
-/*
-   Current AI step.
-
-   This makes the voice assistant behave like
-   a simple appointment conversation.
-*/
-
-let currentVoiceStep =
-    "doctor";
-
-
-/*
-   Steps:
-
-   doctor
-   patient_name
-   age
-   gender
-   mobile
-   address
-   date
-   time
-   complete
-*/
-
-
-
-/* =====================================================
-   DOCTOR DATA FROM JINJA
-===================================================== */
-
-const doctorOptions =
-    Array.from(
-        document.querySelectorAll(
-            "#doctor_name option"
-        )
-    )
-    .filter(
-        option =>
-            option.value.trim() !== ""
-    )
-    .map(
-        option => ({
-
-            value:
-                option.value.trim(),
-
-            display:
-                option.textContent
-                    .replace(/\s+/g, " ")
-                    .trim(),
-
-            specialization:
-                option.dataset
-                    .doctorSpecialization
-                    || ""
-
-        })
-    );
-
-
-console.log(
-    "AVAILABLE DOCTORS:",
-    doctorOptions
-);
-
-
-
-/* =====================================================
-   DOCTOR MARATHI ALIASES
-===================================================== */
-
-function normalizeText(text) {
-
-    return text
-        .toLowerCase()
-        .replace(
-            /डॉ\.?/gi,
-            " "
-        )
-        .replace(
-            /डॉक्टर/gi,
-            " "
-        )
-        .replace(
-            /doctor/gi,
-            " "
-        )
-        .replace(
-            /dr\.?/gi,
-            " "
-        )
-        .replace(
-            /कडे|कडून|यांच्याकडे|यांच्या/gi,
-            " "
-        )
-        .replace(
-            /\s+/g,
-            " "
-        )
-        .trim();
+    voiceStatus.innerHTML =
+        "❌ तुमच्या browser मध्ये Voice Recognition उपलब्ध नाही. Chrome वापरा.";
 
 }
 
+else {
+
+    recognition =
+        new SpeechRecognition();
 
 
-/* =====================================================
-   NUMBER WORDS
-===================================================== */
+    recognition.lang =
+        "mr-IN";
 
-const marathiNumbers = {
 
-    "एक": 1,
-    "दोन": 2,
-    "तीन": 3,
-    "चार": 4,
-    "पाच": 5,
-    "सहा": 6,
-    "सात": 7,
-    "आठ": 8,
-    "नऊ": 9,
-    "दहा": 10,
-    "अकरा": 11,
-    "बारा": 12,
-    "तेरा": 13,
-    "चौदा": 14,
-    "पंधरा": 15,
-    "सोळा": 16,
-    "सतरा": 17,
-    "अठरा": 18,
-    "एकोणीस": 19,
-    "वीस": 20,
-    "एकवीस": 21,
-    "बावीस": 22,
-    "तेवीस": 23,
-    "चोवीस": 24,
-    "पंचवीस": 25,
-    "सव्वीस": 26,
-    "सत्तावीस": 27,
-    "अठ्ठावीस": 28,
-    "एकोणतीस": 29,
-    "तीस": 30,
-    "चाळीस": 40,
-    "पन्नास": 50,
-    "साठ": 60,
-    "सत्तर": 70,
-    "ऐंशी": 80,
-    "नव्वद": 90,
-    "शंभर": 100
+    recognition.continuous =
+        false;
 
-};
+
+    recognition.interimResults =
+        true;
+
+
+    recognition.maxAlternatives =
+        5;
 
 
 
-/* =====================================================
-   FIND DOCTOR
-===================================================== */
+    /* =================================================
+       VOICE BUTTON
+    ================================================= */
 
-function findDoctorFromSpeech(text) {
+    voiceButton.addEventListener(
+        "click",
+        function() {
 
-    const original =
-        text.toLowerCase();
+            if (isListening) {
 
-    const normalized =
-        normalizeText(text);
+                recognition.stop();
 
-
-    /*
-       First check exact English doctor name.
-    */
-
-    for (
-        const doctor of doctorOptions
-    ) {
-
-        const englishName =
-            doctor.value
-                .toLowerCase()
-                .trim();
-
-
-        if (
-            original.includes(
-                englishName
-            )
-        ) {
-
-            return doctor;
-
-        }
-
-    }
-
-
-    /*
-       Check each word of doctor name.
-       Example:
-
-       doctor value:
-       "Sakshi Patil"
-
-       Speech:
-       "मला साक्षी कडे जायचे आहे"
-    */
-
-    for (
-        const doctor of doctorOptions
-    ) {
-
-        const nameParts =
-            doctor.value
-                .toLowerCase()
-                .split(
-                    /\s+/
-                )
-                .filter(
-                    word =>
-                        word.length > 2
-                );
-
-
-        for (
-            const part of nameParts
-        ) {
-
-            if (
-                normalized.includes(
-                    part
-                )
-            ) {
-
-                return doctor;
+                return;
 
             }
 
+
+            startListening();
+
+        }
+    );
+
+
+
+    /* =================================================
+       START LISTENING
+    ================================================= */
+
+    function startListening() {
+
+        try {
+
+            recognition.start();
+
         }
 
-    }
+        catch(error) {
 
-
-    /*
-       Common Marathi pronunciation
-       mapping.
-
-       If your doctor names are dynamic,
-       we also compare the visible option.
-    */
-
-    for (
-        const doctor of doctorOptions
-    ) {
-
-        const visible =
-            doctor.display
-                .toLowerCase();
-
-
-        const cleanVisible =
-            visible
-                .replace(
-                    /dr\.?/gi,
-                    ""
-                )
-                .replace(
-                    /doctor/gi,
-                    ""
-                )
-                .replace(
-                    /[^a-zA-Z\u0900-\u097F\s]/g,
-                    " "
-                )
-                .replace(
-                    /\s+/g,
-                    " "
-                )
-                .trim();
-
-
-        if (
-            cleanVisible &&
-            normalized.includes(
-                cleanVisible
-            )
-        ) {
-
-            return doctor;
+            console.log(
+                "Recognition already running"
+            );
 
         }
 
     }
 
 
-    /*
-       Specific common examples.
-    */
 
-    const commonMappings = {
+    /* =================================================
+       ON START
+    ================================================= */
 
-        "साक्षी": [
-            "sakshi",
-            "saksi"
-        ],
+    recognition.onstart =
+        function() {
 
-        "राजेश": [
-            "rajesh",
-            "raj"
-        ],
-
-        "अमित": [
-            "amit"
-        ],
-
-        "प्रिया": [
-            "priya"
-        ],
-
-        "पूजा": [
-            "pooja",
-            "puja"
-        ],
-
-        "स्वाती": [
-            "swati"
-        ]
-
-    };
+            isListening =
+                true;
 
 
-    for (
-        const marathiName in commonMappings
-    ) {
+            voiceButton.classList.add(
+                "listening"
+            );
 
-        if (
-            normalized.includes(
-                marathiName
-            )
-        ) {
 
-            const englishNames =
-                commonMappings[
-                    marathiName
-                ];
+            voiceButton.innerHTML =
+                "⏹️";
+
+
+            voiceStatus.classList.add(
+                "active"
+            );
+
+
+            voiceStatus.innerHTML =
+                "🔴 ऐकत आहे... कृपया उत्तर द्या";
+
+
+            voiceTranscript.classList.add(
+                "show"
+            );
+
+
+            voiceTranscript.innerHTML =
+                "🎙️ तुमचे उत्तर ऐकत आहे...";
+
+        };
+
+
+
+    /* =================================================
+       RESULT
+    ================================================= */
+
+    recognition.onresult =
+        function(event) {
+
+            let finalText =
+                "";
+
+            let interimText =
+                "";
 
 
             for (
-                const doctor of doctorOptions
+                let i = event.resultIndex;
+                i < event.results.length;
+                i++
             ) {
 
-                const doctorLower =
-                    doctor.value
-                        .toLowerCase();
+                const text =
+                    event.results[i][0].transcript;
 
 
                 if (
-                    englishNames.some(
-                        name =>
-                            doctorLower.includes(
-                                name
-                            )
-                    )
+                    event.results[i].isFinal
                 ) {
 
-                    return doctor;
+                    finalText +=
+                        text + " ";
+
+                }
+
+                else {
+
+                    interimText +=
+                        text;
 
                 }
 
             }
 
-        }
 
-    }
-
-
-    return null;
-
-}
+            const displayText =
+                finalText ||
+                interimText;
 
 
+            voiceTranscript.innerHTML =
+                "🗣️ " +
+                displayText;
 
-/* =====================================================
-   AI QUESTION
-===================================================== */
 
-function askAIQuestion(
-    question
-) {
+            if (
+                finalText.trim()
+            ) {
 
-    aiQuestionText.innerText =
-        question;
+                processCurrentAnswer(
+                    finalText.trim()
+                );
 
-    aiQuestion.classList.add(
-        "show"
-    );
+            }
 
-    speak(
-        question
-    );
-
-}
+        };
 
 
 
-/* =====================================================
-   START FIRST QUESTION
-===================================================== */
+    /* =================================================
+       END
+    ================================================= */
 
-function startAppointmentConversation() {
+    recognition.onend =
+        function() {
 
-    currentVoiceStep =
-        "doctor";
+            isListening =
+                false;
 
 
-    const doctorList =
-        doctorOptions
-            .map(
-                doctor =>
-                    "Dr. " +
-                    doctor.value
-            )
-            .join(
-                ", "
+            voiceButton.classList.remove(
+                "listening"
             );
 
 
-    let question =
-        "तुम्हाला कोणत्या डॉक्टरांकडे अपॉइंटमेंट बुक करायची आहे?";
+            voiceButton.innerHTML =
+                "🎤";
 
 
-    if (doctorList) {
+            voiceStatus.classList.remove(
+                "active"
+            );
 
-        question +=
-            " उपलब्ध डॉक्टर आहेत: " +
-            doctorList;
+        };
+
+
+
+    /* =================================================
+       ERROR
+    ================================================= */
+
+    recognition.onerror =
+        function(event) {
+
+            console.error(
+                "VOICE ERROR:",
+                event.error
+            );
+
+
+            isListening =
+                false;
+
+
+            voiceButton.classList.remove(
+                "listening"
+            );
+
+
+            voiceButton.innerHTML =
+                "🎤";
+
+
+            if (
+                event.error ===
+                "not-allowed"
+            ) {
+
+                voiceStatus.innerHTML =
+                    "❌ Microphone permission द्या.";
+
+            }
+
+            else if (
+                event.error ===
+                "no-speech"
+            ) {
+
+                voiceStatus.innerHTML =
+                    "🔇 आवाज ऐकू आला नाही. पुन्हा माईक दाबा.";
+
+            }
+
+            else {
+
+                voiceStatus.innerHTML =
+                    "❌ Voice error. पुन्हा प्रयत्न करा.";
+
+            }
+
+        };
+
+}
+
+
+
+/* =====================================================
+   PROCESS CURRENT ANSWER
+===================================================== */
+
+function processCurrentAnswer(
+    text
+) {
+
+    const field =
+        questionOrder[
+            currentQuestionIndex
+        ];
+
+
+    console.log(
+        "CURRENT QUESTION:",
+        field
+    );
+
+
+    console.log(
+        "USER ANSWER:",
+        text
+    );
+
+
+    let success =
+        false;
+
+
+    /* =================================================
+       DOCTOR
+    ================================================= */
+
+    if (
+        field ===
+        "doctor"
+    ) {
+
+        success =
+            processDoctor(
+                text
+            );
 
     }
 
 
-    askAIQuestion(
-        question
+    /* =================================================
+       PATIENT NAME
+    ================================================= */
+
+    else if (
+        field ===
+        "patient_name"
+    ) {
+
+        success =
+            processPatientName(
+                text
+            );
+
+    }
+
+
+    /* =================================================
+       GENDER
+    ================================================= */
+
+    else if (
+        field ===
+        "gender"
+    ) {
+
+        success =
+            processGender(
+                text
+            );
+
+    }
+
+
+    /* =================================================
+       AGE
+    ================================================= */
+
+    else if (
+        field ===
+        "age"
+    ) {
+
+        success =
+            processAge(
+                text
+            );
+
+    }
+
+
+    /* =================================================
+       MOBILE
+    ================================================= */
+
+    else if (
+        field ===
+        "mobile"
+    ) {
+
+        success =
+            processMobile(
+                text
+            );
+
+    }
+
+
+    /* =================================================
+       ADDRESS
+    ================================================= */
+
+    else if (
+        field ===
+        "address"
+    ) {
+
+        success =
+            processAddress(
+                text
+            );
+
+    }
+
+
+    /* =================================================
+       DATE
+    ================================================= */
+
+    else if (
+        field ===
+        "appointment_date"
+    ) {
+
+        success =
+            processDate(
+                text
+            );
+
+    }
+
+
+    /* =================================================
+       TIME
+    ================================================= */
+
+    else if (
+        field ===
+        "appointment_time"
+    ) {
+
+        success =
+            processTime(
+                text
+            );
+
+    }
+
+
+
+    /* =================================================
+       WRONG ANSWER
+       IMPORTANT:
+       DO NOT MOVE NEXT QUESTION
+    ================================================= */
+
+    if (!success) {
+
+        const retry =
+            questions[field].retry;
+
+
+        voiceStatus.innerHTML =
+            "⚠️ " +
+            retry;
+
+
+        speak(
+            retry
+        );
+
+
+        setTimeout(
+            function() {
+
+                showQuestion(
+                    field
+                );
+
+            },
+            700
+        );
+
+
+        return;
+
+    }
+
+
+
+    /* =================================================
+       CORRECT ANSWER
+    ================================================= */
+
+    voiceStatus.innerHTML =
+        "✅ माहिती योग्य आहे";
+
+
+    /* Move to next question */
+
+    currentQuestionIndex++;
+
+
+    if (
+        currentQuestionIndex >=
+        questionOrder.length
+    ) {
+
+        finishVoiceAssistant();
+
+        return;
+
+    }
+
+
+    const nextField =
+        questionOrder[
+            currentQuestionIndex
+        ];
+
+
+    setTimeout(
+        function() {
+
+            showQuestion(
+                nextField
+            );
+
+
+            speak(
+                questions[nextField].text
+            );
+
+
+        },
+        900
     );
 
 }
@@ -2305,21 +2568,19 @@ function startAppointmentConversation() {
 
 
 /* =====================================================
-   PROCESS DOCTOR
+   DOCTOR PROCESSOR
 ===================================================== */
 
-function processDoctor(text) {
+function processDoctor(
+    text
+) {
 
-    const doctor =
-        findDoctorFromSpeech(
-            text
-        );
+    if (
+        !doctors.length
+    ) {
 
-
-    if (!doctor) {
-
-        askAIQuestion(
-            "कृपया डॉक्टरांचे नाव सांगा. उदाहरणार्थ, डॉ. साक्षी किंवा डॉ. राजेश."
+        console.error(
+            "No doctors available"
         );
 
         return false;
@@ -2327,52 +2588,171 @@ function processDoctor(text) {
     }
 
 
-    const doctorSelect =
-        document.getElementById(
-            "doctor_name"
+    const normalizedText =
+        normalizeDoctorText(
+            text
         );
 
 
-    doctorSelect.value =
-        doctor.value;
-
-
-    markFilled(
-        doctorSelect
+    console.log(
+        "NORMALIZED DOCTOR:",
+        normalizedText
     );
+
+
+    let matchedDoctor =
+        null;
 
 
     /*
-       Database value remains:
-
-       Sakshi
-
-       NOT:
-
-       डॉ. साक्षी
+       Exact / partial matching
     */
 
+    for (
+        const doctor of doctors
+    ) {
 
-    currentVoiceStep =
-        "patient_name";
+        const doctorName =
+            normalizeDoctorText(
+                doctor.value
+            );
 
 
-    speak(
-        "डॉ. " +
-        doctor.value +
-        " यांची निवड झाली आहे."
+        const doctorDisplay =
+            normalizeDoctorText(
+                doctor.display
+            );
+
+
+        if (
+            normalizedText.includes(
+                doctorName
+            )
+            ||
+            doctorName.includes(
+                normalizedText
+            )
+            ||
+            normalizedText.includes(
+                doctorDisplay
+            )
+        ) {
+
+            matchedDoctor =
+                doctor;
+
+            break;
+
+        }
+
+    }
+
+
+
+    /*
+       Marathi pronunciation matching
+       Example:
+       "डॉक्टर साक्षी"
+       "डॉ साक्षी"
+       "साक्षी डॉक्टर"
+    */
+
+    if (!matchedDoctor) {
+
+        for (
+            const doctor of doctors
+        ) {
+
+            const englishName =
+                doctor.value
+                    .toLowerCase()
+                    .trim();
+
+
+            const parts =
+                englishName.split(
+                    /\s+/
+                );
+
+
+            for (
+                const part of parts
+            ) {
+
+                if (
+                    part.length < 3
+                ) {
+                    continue;
+                }
+
+
+                /*
+                   Basic English name
+                   spoken / recognized
+                */
+
+                if (
+                    normalizedText
+                        .includes(
+                            part
+                        )
+                ) {
+
+                    matchedDoctor =
+                        doctor;
+
+                    break;
+
+                }
+
+            }
+
+
+            if (matchedDoctor) {
+                break;
+            }
+
+        }
+
+    }
+
+
+
+    if (!matchedDoctor) {
+
+        return false;
+
+    }
+
+
+
+    /*
+       SAVE ENGLISH DATABASE VALUE
+    */
+
+    setField(
+        "doctor_name",
+        matchedDoctor.value
     );
 
 
-    setTimeout(
-        function() {
+    markFilled(
+        document.getElementById(
+            "doctor_name"
+        )
+    );
 
-            askAIQuestion(
-                "रुग्णाचे नाव काय आहे?"
-            );
 
-        },
-        1200
+    console.log(
+        "DOCTOR SAVED:",
+        matchedDoctor.value
+    );
+
+
+    speak(
+        "ठीक आहे. " +
+        matchedDoctor.value +
+        " डॉक्टर निवडले आहेत."
     );
 
 
@@ -2383,18 +2763,85 @@ function processDoctor(text) {
 
 
 /* =====================================================
-   PROCESS PATIENT NAME
+   DOCTOR NORMALIZATION
+===================================================== */
+
+function normalizeDoctorText(
+    text
+) {
+
+    let value =
+        text
+            .toLowerCase()
+            .trim();
+
+
+    value =
+        value
+            .replace(
+                /डॉक्टर/g,
+                ""
+            );
+
+
+    value =
+        value
+            .replace(
+                /डॉ/g,
+                ""
+            );
+
+
+    value =
+        value
+            .replace(
+                /dr\./g,
+                ""
+            );
+
+
+    value =
+        value
+            .replace(
+                /dr/g,
+                ""
+            );
+
+
+    value =
+        value
+            .replace(
+                /साहेब/g,
+                ""
+            );
+
+
+    value =
+        value
+            .replace(
+                /मॅडम/g,
+                ""
+            );
+
+
+    return cleanText(
+        value
+    );
+
+}
+
+
+
+/* =====================================================
+   PATIENT NAME
 ===================================================== */
 
 function processPatientName(
     text
 ) {
 
-    let name = text.trim();
-
-
-    name =
-        name
+    let name =
+        text
             .replace(
                 /माझं नाव/gi,
                 ""
@@ -2404,23 +2851,15 @@ function processPatientName(
                 ""
             )
             .replace(
-                /नाव आहे/gi,
-                ""
-            )
-            .replace(
-                /नाव/gi,
+                /माझं नाव आहे/gi,
                 ""
             )
             .trim();
 
 
     if (
-        !name
+        name.length < 2
     ) {
-
-        askAIQuestion(
-            "कृपया रुग्णाचे पूर्ण नाव सांगा."
-        );
 
         return false;
 
@@ -2433,15 +2872,6 @@ function processPatientName(
     );
 
 
-    currentVoiceStep =
-        "age";
-
-
-    askAIQuestion(
-        "रुग्णाचे वय किती आहे?"
-    );
-
-
     return true;
 
 }
@@ -2449,52 +2879,98 @@ function processPatientName(
 
 
 /* =====================================================
-   PROCESS AGE
+   GENDER
+===================================================== */
+
+function processGender(
+    text
+) {
+
+    const lower =
+        text.toLowerCase();
+
+
+    /*
+       DATABASE VALUES:
+       Male
+       Female
+       Other
+    */
+
+
+    if (
+        text.includes("पुरुष")
+        ||
+        lower.includes("male")
+    ) {
+
+        setField(
+            "gender",
+            "Male"
+        );
+
+        return true;
+
+    }
+
+
+    if (
+        text.includes("महिला")
+        ||
+        text.includes("स्त्री")
+        ||
+        text.includes("बाई")
+        ||
+        lower.includes("female")
+    ) {
+
+        setField(
+            "gender",
+            "Female"
+        );
+
+        return true;
+
+    }
+
+
+    if (
+        text.includes("इतर")
+        ||
+        lower.includes("other")
+    ) {
+
+        setField(
+            "gender",
+            "Other"
+        );
+
+        return true;
+
+    }
+
+
+    return false;
+
+}
+
+
+
+/* =====================================================
+   AGE
 ===================================================== */
 
 function processAge(
     text
 ) {
 
-    let ageMatch =
+    const match =
         text.match(
-            /\b(\d{1,3})\b/
+            /\d{1,3}/
         );
 
 
-    if (!ageMatch) {
-
-        for (
-            const word in marathiNumbers
-        ) {
-
-            if (
-                text.includes(
-                    word
-                )
-            ) {
-
-                ageMatch = [
-                    null,
-                    marathiNumbers[
-                        word
-                    ]
-                ];
-
-                break;
-
-            }
-
-        }
-
-    }
-
-
-    if (!ageMatch) {
-
-        askAIQuestion(
-            "कृपया वय सांगा. उदाहरणार्थ 35 वर्षे."
-        );
+    if (!match) {
 
         return false;
 
@@ -2503,7 +2979,7 @@ function processAge(
 
     const age =
         parseInt(
-            ageMatch[1]
+            match[0]
         );
 
 
@@ -2511,10 +2987,6 @@ function processAge(
         age < 1 ||
         age > 120
     ) {
-
-        askAIQuestion(
-            "कृपया योग्य वय सांगा."
-        );
 
         return false;
 
@@ -2527,15 +2999,6 @@ function processAge(
     );
 
 
-    currentVoiceStep =
-        "gender";
-
-
-    askAIQuestion(
-        "रुग्ण पुरुष, महिला की इतर?"
-    );
-
-
     return true;
 
 }
@@ -2543,92 +3006,18 @@ function processAge(
 
 
 /* =====================================================
-   PROCESS GENDER
-===================================================== */
-
-function processGender(
-    text
-) {
-
-    const lower =
-        text.toLowerCase();
-
-
-    if (
-        text.includes("पुरुष") ||
-        text.includes("मुलगा") ||
-        text.includes("पु") ||
-        lower.includes("male")
-    ) {
-
-        setField(
-            "gender",
-            "Male"
-        );
-
-    }
-
-    else if (
-        text.includes("महिला") ||
-        text.includes("स्त्री") ||
-        text.includes("मुलगी") ||
-        lower.includes("female")
-    ) {
-
-        setField(
-            "gender",
-            "Female"
-        );
-
-    }
-
-    else if (
-        text.includes("इतर") ||
-        lower.includes("other")
-    ) {
-
-        setField(
-            "gender",
-            "Other"
-        );
-
-    }
-
-    else {
-
-        askAIQuestion(
-            "कृपया पुरुष, महिला किंवा इतर असे सांगा."
-        );
-
-        return false;
-
-    }
-
-
-    currentVoiceStep =
-        "mobile";
-
-
-    askAIQuestion(
-        "तुमचा मोबाईल नंबर सांगा."
-    );
-
-
-    return true;
-
-}
-
-
-
-/* =====================================================
-   PROCESS MOBILE
+   MOBILE
 ===================================================== */
 
 function processMobile(
     text
 ) {
 
-    let digits =
+    /*
+       Remove spaces and symbols
+    */
+
+    const numbers =
         text.replace(
             /\D/g,
             ""
@@ -2636,71 +3025,16 @@ function processMobile(
 
 
     /*
-       If Marathi speech separates numbers,
-       try Marathi number words.
+       Find 10 digit Indian number
     */
 
-    const numberWordMap = {
-
-        "शून्य": "0",
-        "एक": "1",
-        "दोन": "2",
-        "तीन": "3",
-        "चार": "4",
-        "पाच": "5",
-        "सहा": "6",
-        "सात": "7",
-        "आठ": "8",
-        "नऊ": "9"
-
-    };
-
-
-    if (
-        digits.length !== 10
-    ) {
-
-        let converted =
-            text;
-
-
-        for (
-            const word in numberWordMap
-        ) {
-
-            converted =
-                converted.replace(
-                    new RegExp(
-                        word,
-                        "g"
-                    ),
-                    numberWordMap[
-                        word
-                    ]
-                );
-
-        }
-
-
-        digits =
-            converted.replace(
-                /\D/g,
-                ""
-            );
-
-    }
-
-
-    if (
-        digits.length !== 10 ||
-        !/^[6-9]/.test(
-            digits
-        )
-    ) {
-
-        askAIQuestion(
-            "कृपया 10 अंकी मोबाईल नंबर सांगा."
+    let mobile =
+        numbers.match(
+            /[6-9]\d{9}/
         );
+
+
+    if (!mobile) {
 
         return false;
 
@@ -2709,16 +3043,7 @@ function processMobile(
 
     setField(
         "mobile",
-        digits
-    );
-
-
-    currentVoiceStep =
-        "address";
-
-
-    askAIQuestion(
-        "रुग्णाचा पत्ता सांगा."
+        mobile[0]
     );
 
 
@@ -2729,7 +3054,7 @@ function processMobile(
 
 
 /* =====================================================
-   PROCESS ADDRESS
+   ADDRESS
 ===================================================== */
 
 function processAddress(
@@ -2737,29 +3062,21 @@ function processAddress(
 ) {
 
     let address =
-        text.trim();
-
-
-    address =
-        address
+        text
             .replace(
-                /^पत्ता\s*/i,
+                /माझा पत्ता/gi,
                 ""
             )
             .replace(
-                /पत्ता आहे$/i,
+                /पत्ता आहे/gi,
                 ""
             )
             .trim();
 
 
     if (
-        address.length < 2
+        address.length < 3
     ) {
-
-        askAIQuestion(
-            "कृपया रुग्णाचा पूर्ण पत्ता सांगा."
-        );
 
         return false;
 
@@ -2772,15 +3089,6 @@ function processAddress(
     );
 
 
-    currentVoiceStep =
-        "date";
-
-
-    askAIQuestion(
-        "अपॉइंटमेंट कोणत्या दिवशी हवी आहे? आज, उद्या किंवा परवा सांगा."
-    );
-
-
     return true;
 
 }
@@ -2788,7 +3096,7 @@ function processAddress(
 
 
 /* =====================================================
-   PROCESS DATE
+   DATE
 ===================================================== */
 
 function processDate(
@@ -2799,8 +3107,13 @@ function processDate(
         new Date();
 
 
-    let date = null;
+    let date =
+        null;
 
+
+    /*
+       आज
+    */
 
     if (
         text.includes("आज")
@@ -2811,20 +3124,28 @@ function processDate(
 
     }
 
+
+    /*
+       उद्या
+    */
+
     else if (
         text.includes("उद्या")
     ) {
 
         date =
             new Date(
-                today.getTime() +
-                24 *
-                60 *
-                60 *
-                1000
+                today.getTime()
+                +
+                24 * 60 * 60 * 1000
             );
 
     }
+
+
+    /*
+       परवा
+    */
 
     else if (
         text.includes("परवा")
@@ -2832,39 +3153,10 @@ function processDate(
 
         date =
             new Date(
-                today.getTime() +
-                2 *
-                24 *
-                60 *
-                60 *
-                1000
+                today.getTime()
+                +
+                2 * 24 * 60 * 60 * 1000
             );
-
-    }
-
-
-    /*
-       Direct YYYY-MM-DD
-    */
-
-    if (!date) {
-
-        const iso =
-            text.match(
-                /(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/
-            );
-
-
-        if (iso) {
-
-            date =
-                new Date(
-                    Number(iso[1]),
-                    Number(iso[2]) - 1,
-                    Number(iso[3])
-                );
-
-        }
 
     }
 
@@ -2873,21 +3165,27 @@ function processDate(
        DD/MM/YYYY
     */
 
-    if (!date) {
+    else {
 
-        const indian =
+        const dateMatch =
             text.match(
                 /(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/
             );
 
 
-        if (indian) {
+        if (dateMatch) {
 
             date =
                 new Date(
-                    Number(indian[3]),
-                    Number(indian[2]) - 1,
-                    Number(indian[1])
+                    parseInt(
+                        dateMatch[3]
+                    ),
+                    parseInt(
+                        dateMatch[2]
+                    ) - 1,
+                    parseInt(
+                        dateMatch[1]
+                    )
                 );
 
         }
@@ -2896,10 +3194,6 @@ function processDate(
 
 
     if (!date) {
-
-        askAIQuestion(
-            "कृपया तारीख सांगा. उदाहरणार्थ उद्या किंवा 25 ऑगस्ट."
-        );
 
         return false;
 
@@ -2928,22 +3222,37 @@ function processDate(
         );
 
 
-    const finalDate =
+    const formattedDate =
         `${yyyy}-${mm}-${dd}`;
+
+
+    /*
+       Prevent past date
+    */
+
+    const todayOnly =
+        new Date();
+
+    todayOnly.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
+
+    if (
+        date < todayOnly
+    ) {
+
+        return false;
+
+    }
 
 
     setField(
         "appointment_date",
-        finalDate
-    );
-
-
-    currentVoiceStep =
-        "time";
-
-
-    askAIQuestion(
-        "अपॉइंटमेंटची वेळ सांगा. सकाळी, दुपारी किंवा संध्याकाळी."
+        formattedDate
     );
 
 
@@ -2954,7 +3263,7 @@ function processDate(
 
 
 /* =====================================================
-   PROCESS TIME
+   TIME
 ===================================================== */
 
 function processTime(
@@ -2965,9 +3274,19 @@ function processTime(
         text.toLowerCase();
 
 
+    /*
+       DATABASE:
+       Morning
+       Afternoon
+       Evening
+    */
+
+
     if (
-        text.includes("सकाळी") ||
-        text.includes("सकाळ") ||
+        text.includes("सकाळी")
+        ||
+        text.includes("सकाळ")
+        ||
         lower.includes("morning")
     ) {
 
@@ -2976,11 +3295,16 @@ function processTime(
             "Morning"
         );
 
+        return true;
+
     }
 
-    else if (
-        text.includes("दुपारी") ||
-        text.includes("दुपार") ||
+
+    if (
+        text.includes("दुपारी")
+        ||
+        text.includes("दुपार")
+        ||
         lower.includes("afternoon")
     ) {
 
@@ -2989,12 +3313,18 @@ function processTime(
             "Afternoon"
         );
 
+        return true;
+
     }
 
-    else if (
-        text.includes("संध्याकाळी") ||
-        text.includes("संध्याकाळ") ||
-        text.includes("सायंकाळी") ||
+
+    if (
+        text.includes("संध्याकाळी")
+        ||
+        text.includes("संध्याकाळ")
+        ||
+        text.includes("सायंकाळी")
+        ||
         lower.includes("evening")
     ) {
 
@@ -3003,167 +3333,12 @@ function processTime(
             "Evening"
         );
 
-    }
-
-    else {
-
-        askAIQuestion(
-            "कृपया सकाळी, दुपारी किंवा संध्याकाळी असे सांगा."
-        );
-
-        return false;
+        return true;
 
     }
 
 
-    currentVoiceStep =
-        "complete";
-
-
-    speak(
-        "सर्व माहिती भरली आहे. कृपया फॉर्म तपासा आणि अपॉइंटमेंट बुक करा."
-    );
-
-
-    aiQuestionText.innerText =
-        "सर्व माहिती भरली आहे. कृपया फॉर्म तपासा.";
-
-
-    return true;
-
-}
-
-
-
-/* =====================================================
-   VOICE COMMAND PROCESSOR
-===================================================== */
-
-function processVoiceCommand(
-    text
-) {
-
-    console.log(
-        "VOICE TEXT:",
-        text
-    );
-
-
-    /*
-       If conversation is on,
-       process according to current question.
-    */
-
-    if (
-        currentVoiceStep ===
-        "doctor"
-    ) {
-
-        processDoctor(
-            text
-        );
-
-        return;
-
-    }
-
-
-    if (
-        currentVoiceStep ===
-        "patient_name"
-    ) {
-
-        processPatientName(
-            text
-        );
-
-        return;
-
-    }
-
-
-    if (
-        currentVoiceStep ===
-        "age"
-    ) {
-
-        processAge(
-            text
-        );
-
-        return;
-
-    }
-
-
-    if (
-        currentVoiceStep ===
-        "gender"
-    ) {
-
-        processGender(
-            text
-        );
-
-        return;
-
-    }
-
-
-    if (
-        currentVoiceStep ===
-        "mobile"
-    ) {
-
-        processMobile(
-            text
-        );
-
-        return;
-
-    }
-
-
-    if (
-        currentVoiceStep ===
-        "address"
-    ) {
-
-        processAddress(
-            text
-        );
-
-        return;
-
-    }
-
-
-    if (
-        currentVoiceStep ===
-        "date"
-    ) {
-
-        processDate(
-            text
-        );
-
-        return;
-
-    }
-
-
-    if (
-        currentVoiceStep ===
-        "time"
-    ) {
-
-        processTime(
-            text
-        );
-
-        return;
-
-    }
+    return false;
 
 }
 
@@ -3185,7 +3360,9 @@ function setField(
 
 
     if (!field) {
+
         return;
+
     }
 
 
@@ -3238,6 +3415,25 @@ function markFilled(
 
 
 /* =====================================================
+   CLEAN TEXT
+===================================================== */
+
+function cleanText(
+    text
+) {
+
+    return text
+        .replace(
+            /\s+/g,
+            " "
+        )
+        .trim();
+
+}
+
+
+
+/* =====================================================
    TEXT TO SPEECH
 ===================================================== */
 
@@ -3246,7 +3442,11 @@ function speak(
 ) {
 
     if (
-        !("speechSynthesis" in window)
+        !(
+            "speechSynthesis"
+            in
+            window
+        )
     ) {
 
         return;
@@ -3288,358 +3488,68 @@ function speak(
 
 
 /* =====================================================
-   SPEECH RECOGNITION
+   START AI ASSISTANT
 ===================================================== */
 
-if (!SpeechRecognition) {
+function startAIAssistant() {
 
-    voiceButton.disabled =
-        true;
+    if (
+        !doctors.length
+    ) {
 
-    voiceButton.style.opacity =
-        "0.5";
+        voiceStatus.innerHTML =
+            "⚠️ या हॉस्पिटलसाठी डॉक्टर उपलब्ध नाहीत.";
 
+        return;
 
-    voiceStatus.innerHTML =
-        "❌ तुमच्या browser मध्ये Voice Recognition उपलब्ध नाही. Chrome वापरा.";
-
-}
-
-else {
-
-    recognition =
-        new SpeechRecognition();
+    }
 
 
-    /*
-       Marathi voice recognition
-    */
-
-    recognition.lang =
-        "mr-IN";
+    currentQuestionIndex =
+        0;
 
 
-    recognition.continuous =
-        false;
+    const firstField =
+        questionOrder[0];
 
 
-    recognition.interimResults =
-        true;
-
-
-    recognition.maxAlternatives =
-        5;
-
-
-
-    /* =================================================
-       VOICE BUTTON
-    ================================================= */
-
-    voiceButton.addEventListener(
-        "click",
-        function() {
-
-            if (
-                isListening
-            ) {
-
-                recognition.stop();
-
-                return;
-
-            }
-
-
-            try {
-
-                recognition.start();
-
-            }
-
-            catch(error) {
-
-                console.log(
-                    "START ERROR:",
-                    error
-                );
-
-            }
-
-        }
+    showQuestion(
+        firstField
     );
 
 
-
-    /* =================================================
-       START
-    ================================================= */
-
-    recognition.onstart =
-        function() {
-
-            isListening =
-                true;
-
-
-            voiceButton.classList.add(
-                "listening"
-            );
-
-
-            voiceButton.innerHTML =
-                "⏹️";
-
-
-            voiceStatus.classList.add(
-                "active"
-            );
-
-
-            voiceStatus.innerHTML =
-                "🔴 ऐकत आहे... कृपया बोला";
-
-
-            voiceTranscript.classList.add(
-                "show"
-            );
-
-
-            voiceTranscript.innerHTML =
-                "🎙️ तुमचे बोलणे येथे दिसेल...";
-
-        };
-
-
-
-    /* =================================================
-       RESULT
-    ================================================= */
-
-    recognition.onresult =
-        function(event) {
-
-            let finalText =
-                "";
-
-
-            let interimText =
-                "";
-
-
-            for (
-                let i =
-                    event.resultIndex;
-
-                i <
-                    event.results.length;
-
-                i++
-            ) {
-
-                const text =
-                    event.results[i][0]
-                        .transcript;
-
-
-                if (
-                    event.results[i]
-                        .isFinal
-                ) {
-
-                    finalText +=
-                        text + " ";
-
-                }
-
-                else {
-
-                    interimText +=
-                        text;
-
-                }
-
-            }
-
-
-            const displayText =
-                finalText ||
-                interimText;
-
-
-            voiceTranscript.innerHTML =
-                "🗣️ " +
-                displayText;
-
-
-            if (
-                finalText.trim()
-            ) {
-
-                processVoiceCommand(
-                    finalText.trim()
-                );
-
-            }
-
-        };
-
-
-
-    /* =================================================
-       END
-    ================================================= */
-
-    recognition.onend =
-        function() {
-
-            isListening =
-                false;
-
-
-            voiceButton.classList.remove(
-                "listening"
-            );
-
-
-            voiceButton.innerHTML =
-                "🎤";
-
-
-            voiceStatus.classList.remove(
-                "active"
-            );
-
-
-            if (
-                voiceStatus.innerText.includes(
-                    "ऐकत आहे"
-                )
-            ) {
-
-                voiceStatus.innerHTML =
-                    "✅ आवाज प्राप्त झाला";
-
-            }
-
-        };
-
-
-
-    /* =================================================
-       ERROR
-    ================================================= */
-
-    recognition.onerror =
-        function(event) {
-
-            console.error(
-                "VOICE ERROR:",
-                event.error
-            );
-
-
-            isListening =
-                false;
-
-
-            voiceButton.classList.remove(
-                "listening"
-            );
-
-
-            voiceButton.innerHTML =
-                "🎤";
-
-
-            if (
-                event.error ===
-                "not-allowed"
-            ) {
-
-                voiceStatus.innerHTML =
-                    "❌ Microphone permission द्या.";
-
-            }
-
-            else if (
-                event.error ===
-                "no-speech"
-            ) {
-
-                voiceStatus.innerHTML =
-                    "🔇 आवाज ऐकू आला नाही. पुन्हा प्रयत्न करा.";
-
-            }
-
-            else if (
-                event.error ===
-                "network"
-            ) {
-
-                voiceStatus.innerHTML =
-                    "❌ Voice recognition साठी internet connection आवश्यक आहे.";
-
-            }
-
-            else {
-
-                voiceStatus.innerHTML =
-                    "❌ Voice error. पुन्हा प्रयत्न करा.";
-
-            }
-
-        };
+    speak(
+        questions[firstField].text
+    );
 
 }
 
 
 
 /* =====================================================
-   START AI CONVERSATION
+   FINISH
 ===================================================== */
 
-voiceButton.addEventListener(
-    "dblclick",
-    function() {
+function finishVoiceAssistant() {
 
-        startAppointmentConversation();
-
-    }
-);
+    aiQuestion.classList.remove(
+        "show"
+    );
 
 
-
-/*
-   Single click behavior:
-
-   First click:
-   Start listening.
-
-   The first thing user says should be doctor name.
-
-   Example:
-   "मला डॉ. साक्षींकडे अपॉइंटमेंट बुक करायची आहे."
-*/
+    voiceStatus.innerHTML =
+        "🎉 सर्व माहिती भरली आहे. कृपया माहिती तपासा आणि अपॉइंटमेंट बुक करा.";
 
 
-/* =====================================================
-   OPTIONAL: SHOW DOCTOR QUESTION ON PAGE LOAD
-===================================================== */
+    voiceTranscript.innerHTML =
+        "✅ सर्व माहिती पूर्ण झाली.";
 
-setTimeout(
-    function() {
 
-        aiQuestionText.innerText =
-            "माईकवर क्लिक करून सांगा: तुम्हाला कोणत्या डॉक्टरांकडे अपॉइंटमेंट बुक करायची आहे?";
+    speak(
+        "सर्व माहिती भरली आहे. कृपया फॉर्म तपासा आणि अपॉइंटमेंट बुक करा."
+    );
 
-        aiQuestion.classList.add(
-            "show"
-        );
-
-    },
-    700
-);
+}
 
 
 
@@ -3664,7 +3574,7 @@ form.addEventListener(
     function(event) {
 
         /*
-           Make sure doctor has been selected.
+           Ensure doctor selected
         */
 
         const doctor =
@@ -3679,7 +3589,7 @@ form.addEventListener(
 
 
             alert(
-                "कृपया डॉक्टर निवडा / Please select a doctor."
+                "कृपया डॉक्टर निवडा."
             );
 
 
@@ -3687,6 +3597,10 @@ form.addEventListener(
 
         }
 
+
+        /*
+           Disable button
+        */
 
         submitBtn.disabled =
             true;
@@ -3699,8 +3613,38 @@ form.addEventListener(
 );
 
 
-</script>
 
+/* =====================================================
+   INITIAL AI QUESTION
+===================================================== */
+
+if (
+    recognition
+) {
+
+    showQuestion(
+        "doctor"
+    );
+
+}
+
+
+/* =====================================================
+   OPTIONAL:
+   DOUBLE CLICK VOICE ICON
+   START ASSISTANT
+===================================================== */
+
+voiceButton.addEventListener(
+    "dblclick",
+    function() {
+
+        startAIAssistant();
+
+    }
+);
+
+</script>
 
 </body>
 
