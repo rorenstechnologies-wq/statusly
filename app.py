@@ -456,6 +456,151 @@ def get_authenticated_user():
 
 
 # ============================================================
+# HOSPITAL SECURITY + HOSPITAL-WISE PATIENT NUMBER
+# ============================================================
+
+def get_hospital_by_identifier(identifier):
+    """
+    Hospital UID किंवा HSP-xxxx ID दोन्ही स्वीकारतो आणि
+    canonical hospitalId परत करतो.
+    """
+
+    identifier = str(identifier or "").strip()
+
+    if not identifier:
+        return None, None
+
+    # First try Firebase UID path.
+    hospital = (
+        db.reference("hospitals")
+        .child(identifier)
+        .get()
+        or {}
+    )
+
+    if hospital:
+        hospital_id = str(
+            hospital.get("hospitalId", "")
+        ).strip()
+
+        # Legacy hospital: create a stable ID once.
+        if not hospital_id:
+            hospital_id = (
+                "HSP-"
+                + uuid.uuid4().hex[:8].upper()
+            )
+            hospital["hospitalId"] = hospital_id
+            db.reference("hospitals").child(identifier).update({
+                "hospitalId": hospital_id
+            })
+
+        return hospital, hospital_id
+
+    # Otherwise search by public HSP ID.
+    hospitals = (
+        db.reference("hospitals")
+        .get()
+        or {}
+    )
+
+    for uid, item in hospitals.items():
+        if not isinstance(item, dict):
+            continue
+
+        if str(item.get("hospitalId", "")).strip() == identifier:
+            return item, identifier
+
+    return None, None
+
+
+def get_logged_in_hospital_id():
+
+    decoded = get_authenticated_user()
+
+    if not decoded:
+        return None, None
+
+    uid = decoded.get(
+        "uid"
+    )
+
+    if not uid:
+        return None, None
+
+    hospital = (
+        db.reference("hospitals")
+        .child(uid)
+        .get()
+        or {}
+    )
+
+    hospital_id = str(
+        hospital.get(
+            "hospitalId",
+            ""
+        )
+    ).strip()
+
+    if not hospital_id:
+        return None, None
+
+    return hospital_id, decoded
+
+
+def verify_hospital_access(requested_hospital_id):
+
+    hospital_id, decoded = (
+        get_logged_in_hospital_id()
+    )
+
+    if not hospital_id or not decoded:
+
+        return None, None, (
+            jsonify({
+                "success": False,
+                "error": "Authentication required"
+            }),
+            401
+        )
+
+    if (
+        str(requested_hospital_id).strip()
+        !=
+        hospital_id
+    ):
+
+        return None, None, (
+            jsonify({
+                "success": False,
+                "error": "Unauthorized hospital access"
+            }),
+            403
+        )
+
+    return hospital_id, decoded, None
+
+
+def get_next_patient_number(hospital_id):
+
+    if not hospital_id:
+        raise ValueError(
+            "Hospital ID missing"
+        )
+
+    counter_ref = (
+        db.reference("counters")
+        .child("patient_no")
+        .child(hospital_id)
+    )
+
+    result = counter_ref.transaction(
+        lambda current: int(current or 0) + 1
+    )
+
+    return int(result)
+
+
+# ============================================================
 # SUBSCRIPTION HELPERS
 # ============================================================
 
@@ -1581,10 +1726,37 @@ def save_hospital():
                     infos[i]
             })
 
+        hospital_ref = (
+            db.reference("hospitals")
+            .child(uid)
+        )
+
+        existing_hospital = (
+            hospital_ref.get()
+            or {}
+        )
+
+        hospital_id = str(
+            existing_hospital.get(
+                "hospitalId",
+                ""
+            )
+        ).strip()
+
+        if not hospital_id:
+
+            hospital_id = (
+                "HSP-"
+                + uuid.uuid4().hex[:8].upper()
+            )
+
         hospital_data = {
 
             "uid":
                 uid,
+
+            "hospitalId":
+                hospital_id,
 
             "hospital_name":
                 request.form.get(
@@ -1618,11 +1790,7 @@ def save_hospital():
                 doctors
         }
 
-        db.reference(
-            "hospitals"
-        ).child(
-            uid
-        ).set(
+        hospital_ref.set(
             hospital_data
         )
 
@@ -1635,7 +1803,10 @@ def save_hospital():
                 "Hospital saved",
 
             "uid":
-                uid
+                uid,
+
+            "hospitalId":
+                hospital_id
         })
 
     except Exception as e:
@@ -1667,11 +1838,7 @@ def save_hospital():
 )
 def hospital_page(uid):
 
-    data = (
-        db.reference(
-            f"hospitals/{uid}"
-        ).get()
-    )
+    data, hospital_id = get_hospital_by_identifier(uid)
 
     if not data:
 
@@ -1686,7 +1853,9 @@ def hospital_page(uid):
 
         hospital=data,
 
-        uid=uid
+        uid=data.get("uid", uid),
+
+        hospital_id=hospital_id
     )
 
 
@@ -1699,11 +1868,7 @@ def hospital_page(uid):
 )
 def book_page(uid):
 
-    hospital = (
-        db.reference(
-            f"hospitals/{uid}"
-        ).get()
-    )
+    hospital, hospital_id = get_hospital_by_identifier(uid)
 
     if not hospital:
 
@@ -1718,7 +1883,9 @@ def book_page(uid):
 
         hospital=hospital,
 
-        uid=uid
+        uid=hospital.get("uid", uid),
+
+        hospital_id=hospital_id
     )
 
 
@@ -1953,6 +2120,19 @@ def voice_book_appointment():
 
             }), 400
 
+        hospital, canonical_hospital_id = (
+            get_hospital_by_identifier(hospital_id)
+        )
+
+        if not hospital or not canonical_hospital_id:
+
+            return jsonify({
+                "success": False,
+                "error": "Hospital not found"
+            }), 404
+
+        hospital_id = canonical_hospital_id
+
         if not patient_name:
 
             return jsonify({
@@ -2037,13 +2217,7 @@ def voice_book_appointment():
         # VERIFY HOSPITAL
         # ----------------------------------------------------
 
-        hospital = (
-            db.reference(
-                f"hospitals/{hospital_id}"
-            ).get()
-            or {}
-        )
-
+        # Hospital was already resolved above.
         if not hospital:
 
             return jsonify({
@@ -2130,22 +2304,8 @@ def voice_book_appointment():
         # PATIENT NUMBER
         # ----------------------------------------------------
 
-        counter_ref = db.reference(
-            "counters/patient_no"
-        )
-
-        current_number = (
-            counter_ref.get()
-            or 0
-        )
-
-        patient_no = (
-            int(current_number)
-            + 1
-        )
-
-        counter_ref.set(
-            patient_no
+        patient_no = get_next_patient_number(
+            hospital_id
         )
 
         # ----------------------------------------------------
@@ -2347,6 +2507,19 @@ def book_appointment():
 
             }), 400
 
+        hospital, canonical_hospital_id = (
+            get_hospital_by_identifier(hospital_id)
+        )
+
+        if not hospital or not canonical_hospital_id:
+
+            return jsonify({
+                "success": False,
+                "error": "Hospital not found"
+            }), 404
+
+        hospital_id = canonical_hospital_id
+
         patient_name = request.form.get(
             "patient_name",
             ""
@@ -2387,22 +2560,8 @@ def book_appointment():
         # PATIENT NUMBER
         # ----------------------------------------------------
 
-        counter_ref = db.reference(
-            "counters/patient_no"
-        )
-
-        current_number = (
-            counter_ref.get()
-            or 0
-        )
-
-        patient_no = (
-            int(current_number)
-            + 1
-        )
-
-        counter_ref.set(
-            patient_no
+        patient_no = get_next_patient_number(
+            hospital_id
         )
 
         # ----------------------------------------------------
@@ -2912,11 +3071,11 @@ def make_patient_old():
 
             }), 401
 
-        hospital_id = decoded.get(
-            "uid"
+        hospital_id, decoded = (
+            get_logged_in_hospital_id()
         )
 
-        if not hospital_id:
+        if not hospital_id or not decoded:
 
             return jsonify({
 
@@ -2926,7 +3085,7 @@ def make_patient_old():
                 "error":
                     "Hospital ID missing"
 
-            }), 400
+            }), 401
 
         # ----------------------------------------------------
         # REQUEST
@@ -3188,11 +3347,11 @@ def update_appointment_amount(
 
             }), 401
 
-        hospital_id = decoded.get(
-            "uid"
+        hospital_id, decoded = (
+            get_logged_in_hospital_id()
         )
 
-        if not hospital_id:
+        if not hospital_id or not decoded:
 
             return jsonify({
 
@@ -3202,7 +3361,7 @@ def update_appointment_amount(
                 "error":
                     "Hospital ID missing"
 
-            }), 400
+            }), 401
 
         # ----------------------------------------------------
         # GET APPOINTMENT
@@ -3383,6 +3542,15 @@ def analytics_overview(
 
     try:
 
+        logged_hospital_id, decoded, error = (
+            verify_hospital_access(hospital_id)
+        )
+
+        if error:
+            return error
+
+        hospital_id = logged_hospital_id
+
         appointments = (
             get_hospital_appointments(
                 hospital_id
@@ -3481,6 +3649,15 @@ def analytics_gender(
 
     try:
 
+        logged_hospital_id, decoded, error = (
+            verify_hospital_access(hospital_id)
+        )
+
+        if error:
+            return error
+
+        hospital_id = logged_hospital_id
+
         appointments = (
             get_hospital_appointments(
                 hospital_id
@@ -3540,6 +3717,15 @@ def analytics_age(
 ):
 
     try:
+
+        logged_hospital_id, decoded, error = (
+            verify_hospital_access(hospital_id)
+        )
+
+        if error:
+            return error
+
+        hospital_id = logged_hospital_id
 
         appointments = (
             get_hospital_appointments(
@@ -3627,6 +3813,15 @@ def analytics_doctors(
 
     try:
 
+        logged_hospital_id, decoded, error = (
+            verify_hospital_access(hospital_id)
+        )
+
+        if error:
+            return error
+
+        hospital_id = logged_hospital_id
+
         appointments = (
             get_hospital_appointments(
                 hospital_id
@@ -3689,6 +3884,15 @@ def analytics_daily(
 
     try:
 
+        logged_hospital_id, decoded, error = (
+            verify_hospital_access(hospital_id)
+        )
+
+        if error:
+            return error
+
+        hospital_id = logged_hospital_id
+
         appointments = (
             get_hospital_appointments(
                 hospital_id
@@ -3747,6 +3951,15 @@ def analytics_time(
 ):
 
     try:
+
+        logged_hospital_id, decoded, error = (
+            verify_hospital_access(hospital_id)
+        )
+
+        if error:
+            return error
+
+        hospital_id = logged_hospital_id
 
         appointments = (
             get_hospital_appointments(
@@ -3807,6 +4020,15 @@ def analytics_location(
 ):
 
     try:
+
+        logged_hospital_id, decoded, error = (
+            verify_hospital_access(hospital_id)
+        )
+
+        if error:
+            return error
+
+        hospital_id = logged_hospital_id
 
         appointments = (
             get_hospital_appointments(
@@ -4011,6 +4233,15 @@ def analytics_doctor_working_hours(
 
     try:
 
+        logged_hospital_id, decoded, error = (
+            verify_hospital_access(hospital_id)
+        )
+
+        if error:
+            return error
+
+        hospital_id = logged_hospital_id
+
         hospital = (
             db.reference(
                 f"hospitals/{hospital_id}"
@@ -4189,13 +4420,20 @@ def analytics_doctor_working_hours(
 # ============================================================
 
 @app.route(
-    "/appointments/<uid>"
+    "/appointments/<hospital_id>"
 )
-def appointments(uid):
+def appointments(hospital_id):
+
+    logged_hospital_id, decoded, error = (
+        verify_hospital_access(hospital_id)
+    )
+
+    if error:
+        return error
 
     patients = (
         get_hospital_appointments(
-            uid
+            logged_hospital_id
         )
     )
 
@@ -4205,7 +4443,9 @@ def appointments(uid):
 
         patients=patients,
 
-        uid=uid
+        uid=decoded.get("uid"),
+
+        hospital_id=logged_hospital_id
     )
 
 
@@ -4214,13 +4454,20 @@ def appointments(uid):
 # ============================================================
 
 @app.route(
-    "/followups/<uid>"
+    "/followups/<hospital_id>"
 )
-def followups(uid):
+def followups(hospital_id):
+
+    logged_hospital_id, decoded, error = (
+        verify_hospital_access(hospital_id)
+    )
+
+    if error:
+        return error
 
     patients = (
         get_hospital_appointments(
-            uid
+            logged_hospital_id
         )
     )
 
@@ -4230,7 +4477,9 @@ def followups(uid):
 
         patients=patients,
 
-        uid=uid
+        uid=decoded.get("uid"),
+
+        hospital_id=logged_hospital_id
     )
 
 
@@ -4245,6 +4494,17 @@ def followups(uid):
 def save_followup():
 
     try:
+
+        hospital_id, decoded = (
+            get_logged_in_hospital_id()
+        )
+
+        if not hospital_id or not decoded:
+
+            return jsonify({
+                "success": False,
+                "error": "Authentication required"
+            }), 401
 
         patient_id = request.form.get(
             "patient_id"
@@ -4292,6 +4552,18 @@ def save_followup():
                     "Patient not found"
 
             }), 404
+
+        if patient.get("hospital_id") != hospital_id:
+
+            return jsonify({
+
+                "success":
+                    False,
+
+                "error":
+                    "Unauthorized patient access"
+
+            }), 403
 
         patient_ref.update({
 
@@ -4977,13 +5249,20 @@ def whatsapp_webhook():
 # ============================================================
 
 @app.route(
-    "/analytics/<uid>"
+    "/analytics/<hospital_id>"
 )
-def analytics_page(uid):
+def analytics_page(hospital_id):
+
+    logged_hospital_id, decoded, error = (
+        verify_hospital_access(hospital_id)
+    )
+
+    if error:
+        return error
 
     hospital = (
         db.reference(
-            f"hospitals/{uid}"
+            f"hospitals/{logged_hospital_id}"
         ).get()
         or {}
     )
@@ -4999,7 +5278,9 @@ def analytics_page(uid):
 
         "analytics.html",
 
-        uid=uid,
+        uid=decoded.get("uid"),
+
+        hospital_id=logged_hospital_id,
 
         hospital=hospital
     )
