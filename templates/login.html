@@ -2,3148 +2,2740 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="theme-color"
-        content="#0f766e"
-    >
-
-    <meta
-        name="description"
-        content="Statusly.in Hospital Management SaaS"
-    >
-
-    <title>Statusly.in | Hospital Login</title>
-
-
-    <!-- =====================================================
-         FONT
-    ====================================================== -->
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
+    <title>Doctor Appointments | Statusly</title>
 
     <style>
-
-        /* =====================================================
-           RESET
-        ====================================================== */
-
         * {
             box-sizing: border-box;
+        }
+
+        body {
             margin: 0;
-            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f8fb;
+            color: #172033;
         }
 
+        .header {
+            background: linear-gradient(135deg, #0f766e, #087ea4);
+            color: white;
+            padding: 25px 30px;
+        }
 
-        html,
-        body {
+        .header h1 {
+            margin: 0;
+            font-size: 27px;
+        }
+
+        .header p {
+            margin: 7px 0 0;
+            opacity: .9;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1450px;
+            margin: auto;
+            padding: 25px;
+        }
+
+        .filters {
+            background: white;
+            border-radius: 14px;
+            padding: 18px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, .06);
+            margin-bottom: 22px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 7px;
+            color: #475569;
+        }
+
+        .filter-group input,
+        .filter-group select {
             width: 100%;
-            min-height: 100%;
+            height: 43px;
+            border: 1px solid #d9e2e8;
+            border-radius: 9px;
+            padding: 0 12px;
+            font-size: 13px;
+            outline: none;
+            background: white;
         }
 
-
-        body {
-
-            font-family:
-                "Inter",
-                Arial,
-                sans-serif;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #eefcf8 0%,
-                    #f2f9ff 55%,
-                    #ffffff 100%
-                );
-
-            color:
-                #172033;
-
-            overflow-x:
-                hidden;
-
+        .filter-group input:focus,
+        .filter-group select:focus {
+            border-color: #0f766e;
         }
 
-
-        /* =====================================================
-           DECORATION
-        ====================================================== */
-
-        .bg-circle {
-
-            position:
-                fixed;
-
-            border-radius:
-                50%;
-
-            pointer-events:
-                none;
-
-            z-index:
-                0;
-
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
         }
 
-
-        .circle-one {
-
-            width:
-                320px;
-
-            height:
-                320px;
-
-            background:
-                rgba(15,118,110,.07);
-
-            top:
-                -150px;
-
-            right:
-                -120px;
-
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, .05);
         }
 
-
-        .circle-two {
-
-            width:
-                300px;
-
-            height:
-                300px;
-
-            background:
-                rgba(14,116,144,.06);
-
-            bottom:
-                -160px;
-
-            left:
-                -150px;
-
+        .summary-card .number {
+            font-size: 27px;
+            font-weight: bold;
+            color: #0f766e;
         }
 
-
-        /* =====================================================
-           PAGE
-        ====================================================== */
-
-        .page {
-
-            min-height:
-                100vh;
-
-            display:
-                flex;
-
-            justify-content:
-                center;
-
-            align-items:
-                center;
-
-            padding:
-                24px;
-
-            position:
-                relative;
-
-            z-index:
-                1;
-
+        .summary-card .label {
+            margin-top: 5px;
+            color: #64748b;
+            font-size: 12px;
         }
 
-
-        /* =====================================================
-           MAIN CARD
-        ====================================================== */
-
-        .login-shell {
-
-            width:
-                100%;
-
-            max-width:
-                930px;
-
-            display:
-                grid;
-
-            grid-template-columns:
-                0.70fr 1.30fr;
-
-            background:
-                #ffffff;
-
-            border:
-                1px solid #e2eaee;
-
-            border-radius:
-                22px;
-
-            overflow:
-                hidden;
-
-            box-shadow:
-                0 25px 70px
-                rgba(15,23,42,.12);
-
+        .doctor-card {
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, .06);
         }
 
-
-        /* =====================================================
-           BRAND PANEL
-        ====================================================== */
-
-        .brand-panel {
-
-            position:
-                relative;
-
-            overflow:
-                hidden;
-
-            color:
-                white;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #0f766e,
-                    #0e7490
-                );
-
-            padding:
-                34px 30px;
-
+        .doctor-header {
+            background: linear-gradient(135deg, #ecfeff, #f0fdfa);
+            padding: 18px 20px;
+            border-bottom: 1px solid #dceff1;
         }
 
-
-        .brand-panel::before {
-
-            content:
-                "";
-
-            position:
-                absolute;
-
-            width:
-                260px;
-
-            height:
-                260px;
-
-            border-radius:
-                50%;
-
-            background:
-                rgba(255,255,255,.08);
-
-            top:
-                -140px;
-
-            right:
-                -120px;
-
+        .doctor-header h2 {
+            margin: 0;
+            color: #0f766e;
+            font-size: 20px;
         }
 
-
-        .brand-panel::after {
-
-            content:
-                "";
-
-            position:
-                absolute;
-
-            width:
-                190px;
-
-            height:
-                190px;
-
-            border-radius:
-                50%;
-
-            background:
-                rgba(255,255,255,.06);
-
-            bottom:
-                -110px;
-
-            left:
-                -90px;
-
+        .doctor-header small {
+            display: block;
+            color: #64748b;
+            margin-top: 5px;
         }
 
-
-        .brand-content {
-
-            position:
-                relative;
-
-            z-index:
-                2;
-
+        .section-title {
+            padding: 14px 20px;
+            background: #f8fafc;
+            border-bottom: 1px solid #edf2f5;
+            font-weight: bold;
+            font-size: 13px;
         }
 
-
-        /* =====================================================
-           LOGO
-        ====================================================== */
-
-        .logo-box {
-
-            width:
-                58px;
-
-            height:
-                58px;
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            border-radius:
-                15px;
-
-            background:
-                rgba(255,255,255,.13);
-
-            border:
-                1px solid
-                rgba(255,255,255,.18);
-
-            margin-bottom:
-                17px;
-
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
         }
 
-
-        .logo-box img {
-
-            width:
-                47px;
-
-            height:
-                47px;
-
-            object-fit:
-                contain;
-
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1050px;
         }
 
-
-        /* =====================================================
-           BRAND TEXT
-        ====================================================== */
-
-        .brand-name {
-
-            font-size:
-                27px;
-
-            font-weight:
-                800;
-
-            margin-bottom:
-                7px;
-
+        th {
+            background: #fafcfd;
+            color: #64748b;
+            font-size: 11px;
+            text-transform: uppercase;
+            padding: 13px 10px;
+            border-bottom: 1px solid #e5edf1;
+            text-align: left;
+            white-space: nowrap;
         }
 
-
-        .brand-name span {
-
-            opacity:
-                .72;
-
+        td {
+            padding: 13px 10px;
+            border-bottom: 1px solid #edf2f5;
+            font-size: 12px;
+            vertical-align: middle;
         }
 
-
-        .brand-title {
-
-            font-size:
-                23px;
-
-            font-weight:
-                800;
-
-            line-height:
-                1.18;
-
-            margin-bottom:
-                11px;
-
+        tr:last-child td {
+            border-bottom: none;
         }
 
-
-        .brand-text {
-
-            font-size:
-                12px;
-
-            line-height:
-                1.6;
-
-            color:
-                rgba(255,255,255,.84);
-
+        .patient-name {
+            font-weight: bold;
+            color: #1e293b;
         }
 
-
-        /* =====================================================
-           FEATURES
-        ====================================================== */
-
-        .feature-list {
-
-            margin-top:
-                22px;
-
-            display:
-                grid;
-
-            gap:
-                8px;
-
+        .mobile {
+            color: #475569;
         }
 
-
-        .feature {
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            gap:
-                9px;
-
-            font-size:
-                11px;
-
+        .gender,
+        .age {
+            color: #475569;
         }
 
-
-        .feature-icon {
-
-            width:
-                29px;
-
-            height:
-                29px;
-
-            display:
-                flex;
-
-            justify-content:
-                center;
-
-            align-items:
-                center;
-
-            flex-shrink:
-                0;
-
-            border-radius:
-                8px;
-
-            background:
-                rgba(255,255,255,.12);
-
-            font-size:
-                14px;
-
+        .date {
+            font-weight: 600;
         }
 
-
-        /* =====================================================
-           FORM PANEL
-        ====================================================== */
-
-        .form-panel {
-
-            background:
-                #ffffff;
-
-            padding:
-                40px 48px;
-
-            min-width:
-                0;
-
+        .time {
+            display: block;
+            color: #64748b;
+            margin-top: 3px;
+            font-size: 11px;
         }
 
-
-        /* =====================================================
-           TOP LINE
-        ====================================================== */
-
-        .top-line {
-
-            display:
-                flex;
-
-            justify-content:
-                space-between;
-
-            align-items:
-                center;
-
-            gap:
-                12px;
-
-            margin-bottom:
-                20px;
-
+        .visit {
+            display: inline-block;
+            padding: 5px 9px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-radius: 7px;
+            font-weight: bold;
+            font-size: 11px;
         }
 
-
-        .security {
-
-            display:
-                inline-flex;
-
-            align-items:
-                center;
-
-            gap:
-                5px;
-
-            padding:
-                8px 12px;
-
-            border-radius:
-                999px;
-
-            background:
-                #ecfdf5;
-
-            color:
-                #15803d;
-
-            font-size:
-                10px;
-
-            font-weight:
-                800;
-
+        .type {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 7px;
+            font-size: 10px;
+            font-weight: bold;
         }
 
-
-        .home-link {
-
-            text-decoration:
-                none;
-
-            color:
-                #64748b;
-
-            font-size:
-                12px;
-
-            font-weight:
-                700;
-
+        .type-new {
+            background: #dcfce7;
+            color: #166534;
         }
 
-
-        .home-link:hover {
-            color:
-                #0f766e;
+        .type-old {
+            background: #fef3c7;
+            color: #92400e;
         }
 
-
-        /* =====================================================
-           HEADING
-        ====================================================== */
-
-        .heading {
-
-            margin-bottom:
-                22px;
-
+        .amount-box {
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-
-        .heading h1 {
-
-            font-size:
-                30px;
-
-            line-height:
-                1.1;
-
-            font-weight:
-                800;
-
-            margin-bottom:
-                8px;
-
+        .amount-input {
+            width: 85px;
+            height: 34px;
+            border: 1px solid #d7e0e5;
+            border-radius: 7px;
+            padding: 0 8px;
+            font-size: 12px;
         }
 
-
-        .heading p {
-
-            color:
-                #64748b;
-
-            font-size:
-                13px;
-
-            line-height:
-                1.6;
-
+        .save-amount {
+            border: none;
+            background: #0f766e;
+            color: white;
+            border-radius: 6px;
+            padding: 8px 9px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: bold;
         }
 
-
-        /* =====================================================
-           PLAN
-        ====================================================== */
-
-        .plan-box {
-
-            display:
-                none;
-
-            margin-bottom:
-                16px;
-
-            padding:
-                10px 12px;
-
-            border:
-                1px solid #cdeee7;
-
-            border-radius:
-                10px;
-
-            background:
-                #effcf9;
-
-            color:
-                #115e59;
-
-            font-size:
-                11px;
-
+        .save-amount:hover {
+            background: #0b5f59;
         }
 
-
-        .plan-box.show {
-            display:
-                block;
+        .action-buttons {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
-
-        /* =====================================================
-           TABS
-        ====================================================== */
-
-        .tabs {
-
-            display:
-                grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap:
-                4px;
-
-            padding:
-                5px;
-
-            background:
-                #f1f5f9;
-
-            border-radius:
-                12px;
-
-            margin-bottom:
-                22px;
-
+        .btn {
+            border: none;
+            cursor: pointer;
+            border-radius: 7px;
+            padding: 8px 10px;
+            font-size: 10px;
+            font-weight: bold;
+            white-space: nowrap;
         }
 
-
-        .tab {
-
-            border:
-                none;
-
-            border-radius:
-                9px;
-
-            padding:
-                10px 5px;
-
-            background:
-                transparent;
-
-            color:
-                #64748b;
-
-            font-size:
-                11px;
-
-            font-weight:
-                750;
-
-            cursor:
-                pointer;
-
+        .details-btn {
+            background: #e0f2fe;
+            color: #0369a1;
         }
 
-
-        .tab.active {
-
-            color:
-                #0f766e;
-
-            background:
-                #ffffff;
-
-            box-shadow:
-                0 2px 8px
-                rgba(15,23,42,.07);
-
+        .old-btn {
+            background: #fef3c7;
+            color: #92400e;
         }
 
-
-        /* =====================================================
-           SECTIONS
-        ====================================================== */
-
-        .section {
-            display:
-                none;
+        .follow-btn {
+            background: #dcfce7;
+            color: #166534;
+            text-decoration: none;
+            display: inline-block;
         }
 
-
-        .section.active {
-            display:
-                block;
+        .empty {
+            padding: 30px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 13px;
         }
 
-
-        /* =====================================================
-           FORM FIELDS
-        ====================================================== */
-
-        .field {
-
-            margin-bottom:
-                14px;
-
+        .hidden {
+            display: none !important;
         }
 
+        /* MODAL */
 
-        .field label {
-
-            display:
-                block;
-
-            margin-bottom:
-                6px;
-
-            font-size:
-                11px;
-
-            color:
-                #334155;
-
-            font-weight:
-                750;
-
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .62);
+            z-index: 9999;
+            padding: 20px;
+            overflow-y: auto;
         }
 
-
-        input {
-
-            width:
-                100%;
-
-            height:
-                47px;
-
-            border:
-                1px solid #d9e4e8;
-
-            border-radius:
-                10px;
-
-            padding:
-                0 14px;
-
-            outline:
-                none;
-
-            background:
-                #fbfdfe;
-
-            font-family:
-                inherit;
-
-            font-size:
-                13px;
-
-            color:
-                #172033;
-
+        .modal.show {
+            display: block;
         }
 
-
-        input:focus {
-
-            border-color:
-                #0f766e;
-
-            background:
-                #ffffff;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(15,118,110,.08);
-
+        .modal-card {
+            max-width: 850px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 17px;
+            overflow: hidden;
+            box-shadow: 0 20px 70px rgba(0, 0, 0, .25);
         }
 
-
-        /* =====================================================
-           PASSWORD
-        ====================================================== */
-
-        .password-wrap {
-
-            position:
-                relative;
-
+        .modal-header {
+            padding: 18px 22px;
+            background: linear-gradient(135deg, #0f766e, #087ea4);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-
-        .password-wrap input {
-
-            padding-right:
-                48px;
-
+        .modal-header h2 {
+            margin: 0;
+            font-size: 20px;
         }
 
-
-        .eye-btn {
-
-            position:
-                absolute;
-
-            top:
-                50%;
-
-            right:
-                6px;
-
-            transform:
-                translateY(-50%);
-
-            width:
-                36px;
-
-            height:
-                36px;
-
-            border:
-                none;
-
-            border-radius:
-                8px;
-
-            background:
-                transparent;
-
-            cursor:
-                pointer;
-
-            font-size:
-                16px;
-
+        .close-btn {
+            border: none;
+            background: rgba(255,255,255,.15);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
         }
 
-
-        /* =====================================================
-           MAIN BUTTON
-        ====================================================== */
-
-        .main-btn {
-
-            width:
-                100%;
-
-            height:
-                47px;
-
-            border:
-                none;
-
-            border-radius:
-                10px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #0f766e,
-                    #0e7490
-                );
-
-            color:
-                white;
-
-            font-family:
-                inherit;
-
-            font-size:
-                13px;
-
-            font-weight:
-                800;
-
-            cursor:
-                pointer;
-
-            box-shadow:
-                0 9px 22px
-                rgba(15,118,110,.18);
-
+        .modal-body {
+            padding: 22px;
         }
 
-
-        .main-btn:hover {
-
-            transform:
-                translateY(-1px);
-
+        .patient-top {
+            background: #f8fafc;
+            border: 1px solid #e7eef2;
+            border-radius: 12px;
+            padding: 17px;
+            margin-bottom: 20px;
         }
 
-
-        .main-btn:disabled {
-
-            opacity:
-                .65;
-
-            cursor:
-                not-allowed;
-
+        .patient-top h3 {
+            margin: 0 0 12px;
+            color: #0f766e;
         }
 
-
-        /* =====================================================
-           LOADER
-        ====================================================== */
-
-        .loader {
-
-            display:
-                inline-block;
-
-            width:
-                15px;
-
-            height:
-                15px;
-
-            border:
-                2px solid
-                rgba(255,255,255,.35);
-
-            border-top-color:
-                #ffffff;
-
-            border-radius:
-                50%;
-
-            animation:
-                spin .7s linear infinite;
-
-            margin-right:
-                7px;
-
-            vertical-align:
-                middle;
-
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
         }
 
-
-        @keyframes spin {
-
-            to {
-                transform:
-                    rotate(360deg);
-            }
-
+        .detail-item {
+            background: white;
+            border: 1px solid #e7eef2;
+            padding: 11px;
+            border-radius: 8px;
         }
 
-
-        /* =====================================================
-           INFO
-        ====================================================== */
-
-        .info-box {
-
-            margin-bottom:
-                15px;
-
-            padding:
-                12px;
-
-            border-radius:
-                10px;
-
-            background:
-                #f8fafc;
-
-            color:
-                #64748b;
-
-            font-size:
-                11px;
-
-            line-height:
-                1.6;
-
+        .detail-item .label {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-bottom: 4px;
         }
 
-
-        /* =====================================================
-           MESSAGE
-        ====================================================== */
-
-        #message {
-
-            min-height:
-                20px;
-
-            margin-top:
-                12px;
-
-            text-align:
-                center;
-
-            font-size:
-                12px;
-
-            font-weight:
-                700;
-
+        .detail-item .value {
+            font-size: 12px;
+            font-weight: bold;
+            color: #334155;
+            word-break: break-word;
         }
 
-
-        #message.success {
-
-            color:
-                #15803d;
-
+        .history-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #334155;
         }
 
-
-        #message.error {
-
-            color:
-                #dc2626;
-
+        .history-table {
+            width: 100%;
+            min-width: 650px;
         }
 
-
-        /* =====================================================
-           FOOTER
-        ====================================================== */
-
-        .form-footer {
-
-            margin-top:
-                22px;
-
-            padding-top:
-                15px;
-
-            border-top:
-                1px solid #edf2f5;
-
-            text-align:
-                center;
-
-            color:
-                #94a3b8;
-
-            font-size:
-                10px;
-
-            line-height:
-                1.7;
-
+        .history-wrapper {
+            overflow-x: auto;
+            border: 1px solid #e5edf1;
+            border-radius: 10px;
         }
 
-
-        .form-footer strong {
-
-            color:
-                #475569;
-
+        .history-table th,
+        .history-table td {
+            padding: 10px;
         }
 
-
-        .footer-tagline {
-
-            color:
-                #0f766e;
-
-            font-weight:
-                700;
-
+        .total-paid {
+            margin-top: 15px;
+            padding: 13px;
+            background: #ecfdf5;
+            color: #166534;
+            border-radius: 9px;
+            font-weight: bold;
+            text-align: right;
         }
 
+        .toast {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: #172033;
+            color: white;
+            padding: 13px 17px;
+            border-radius: 9px;
+            font-size: 12px;
+            z-index: 10000;
+            display: none;
+        }
 
-        /* =====================================================
-           TABLET AND MOBILE
-           IMPORTANT:
-           Force ONE COLUMN.
-        ====================================================== */
+        .toast.show {
+            display: block;
+        }
 
         @media (max-width: 900px) {
 
-            .page {
-
-                display:
-                    block;
-
-                padding:
-                    12px;
-
+            .filters {
+                grid-template-columns: 1fr;
             }
 
-
-            .login-shell {
-
-                width:
-                    100%;
-
-                max-width:
-                    520px;
-
-                margin:
-                    12px auto;
-
-                display:
-                    flex;
-
-                flex-direction:
-                    column;
-
-                border-radius:
-                    18px;
-
+            .summary {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-
-            /* ---------------------------------------------
-               GREEN PANEL
-            --------------------------------------------- */
-
-            .brand-panel {
-
-                width:
-                    100%;
-
-                padding:
-                    20px 20px 18px;
-
-            }
-
-
-            .logo-box {
-
-                width:
-                    48px;
-
-                height:
-                    48px;
-
-                margin-bottom:
-                    11px;
-
-            }
-
-
-            .logo-box img {
-
-                width:
-                    39px;
-
-                height:
-                    39px;
-
-            }
-
-
-            .brand-name {
-
-                font-size:
-                    22px;
-
-                margin-bottom:
-                    4px;
-
-            }
-
-
-            .brand-title {
-
-                font-size:
-                    18px;
-
-                margin-bottom:
-                    6px;
-
-            }
-
-
-            .brand-text {
-
-                font-size:
-                    11px;
-
-                line-height:
-                    1.5;
-
-                max-width:
-                    100%;
-
-            }
-
-
-            /*
-               Keep the green section compact.
-               Features are hidden on mobile.
-            */
-
-            .feature-list {
-
-                display:
-                    none;
-
-            }
-
-
-            /* ---------------------------------------------
-               LOGIN PANEL
-            --------------------------------------------- */
-
-            .form-panel {
-
-                width:
-                    100%;
-
-                min-width:
-                    0;
-
-                padding:
-                    26px 20px 22px;
-
-            }
-
-
-            .heading h1 {
-
-                font-size:
-                    27px;
-
-            }
-
-
-            .heading p {
-
-                font-size:
-                    12px;
-
+            .details-grid {
+                grid-template-columns: 1fr 1fr;
             }
 
         }
 
+        @media (max-width: 600px) {
 
-        /* =====================================================
-           SMALL PHONES
-        ====================================================== */
-
-        @media (max-width: 480px) {
-
-            .page {
-
-                padding:
-                    7px;
-
+            .header {
+                padding: 20px 15px;
             }
 
-
-            .login-shell {
-
-                max-width:
-                    100%;
-
-                margin:
-                    5px auto;
-
-                border-radius:
-                    16px;
-
+            .header h1 {
+                font-size: 22px;
             }
 
-
-            .brand-panel {
-
-                padding:
-                    18px 16px 16px;
-
+            .container {
+                padding: 15px;
             }
 
-
-            .brand-panel::before {
-
-                width:
-                    170px;
-
-                height:
-                    170px;
-
-                top:
-                    -105px;
-
-                right:
-                    -75px;
-
+            .summary {
+                grid-template-columns: 1fr 1fr;
+                gap: 9px;
             }
 
-
-            .brand-panel::after {
-
-                width:
-                    130px;
-
-                height:
-                    130px;
-
-                bottom:
-                    -80px;
-
-                left:
-                    -65px;
-
+            .summary-card {
+                padding: 14px;
             }
 
-
-            .logo-box {
-
-                width:
-                    44px;
-
-                height:
-                    44px;
-
-                border-radius:
-                    11px;
-
+            .summary-card .number {
+                font-size: 22px;
             }
 
-
-            .logo-box img {
-
-                width:
-                    35px;
-
-                height:
-                    35px;
-
+            .details-grid {
+                grid-template-columns: 1fr;
             }
 
-
-            .brand-name {
-
-                font-size:
-                    21px;
-
+            .modal {
+                padding: 8px;
             }
 
-
-            .brand-title {
-
-                font-size:
-                    17px;
-
-            }
-
-
-            .brand-text {
-
-                font-size:
-                    10.5px;
-
-                line-height:
-                    1.45;
-
-            }
-
-
-            .form-panel {
-
-                padding:
-                    22px 15px 18px;
-
-            }
-
-
-            .top-line {
-
-                margin-bottom:
-                    17px;
-
-            }
-
-
-            .security {
-
-                font-size:
-                    9px;
-
-                padding:
-                    7px 9px;
-
-            }
-
-
-            .home-link {
-
-                font-size:
-                    11px;
-
-            }
-
-
-            .heading {
-
-                margin-bottom:
-                    18px;
-
-            }
-
-
-            .heading h1 {
-
-                font-size:
-                    24px;
-
-            }
-
-
-            .heading p {
-
-                font-size:
-                    11px;
-
-            }
-
-
-            .tabs {
-
-                margin-bottom:
-                    20px;
-
-            }
-
-
-            .tab {
-
-                font-size:
-                    10px;
-
-                padding:
-                    9px 4px;
-
-            }
-
-
-            input {
-
-                height:
-                    46px;
-
-                font-size:
-                    12px;
-
-            }
-
-
-            .main-btn {
-
-                height:
-                    46px;
-
-                font-size:
-                    12px;
-
-            }
-
-
-            .form-footer {
-
-                margin-top:
-                    18px;
-
-                padding-top:
-                    13px;
-
-                font-size:
-                    9px;
-
-            }
-
-
-            .footer-tagline {
-
-                font-size:
-                    9px;
-
+            .modal-card {
+                margin: 10px auto;
             }
 
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
-<div class="bg-circle circle-one"></div>
-
-<div class="bg-circle circle-two"></div>
-
-
-<div class="page">
+<div class="header">
+    <h1>👨‍⚕️ Doctor Appointments</h1>
+    <p>Manage patients by doctor and appointment date</p>
+</div>
 
 
-    <!-- =====================================================
-         STATUSLY BRAND
-    ====================================================== -->
+<div class="container">
 
-    <section class="brand-panel">
+    <!-- FILTERS -->
 
-        <div class="brand-content">
+    <div class="filters">
 
+        <div class="filter-group">
+            <label>Doctor</label>
 
-            <div class="logo-box">
-
-                <img
-                    src="/static/statusly-logo.png"
-                    alt="Statusly Logo"
-                >
-
-            </div>
-
-
-            <div class="brand-name">
-
-                Statusly<span>.in</span>
-
-            </div>
-
-
-            <div class="brand-title">
-
-                Hospital management,
-                made simple.
-
-            </div>
-
-
-            <p class="brand-text">
-
-                A simple platform for hospitals and clinics
-                to manage appointments, doctors, patients,
-                follow-ups and patient communication.
-
-            </p>
-
-
-            <div class="feature-list">
-
-
-                <div class="feature">
-
-                    <span class="feature-icon">
-                        📅
-                    </span>
-
-                    Appointment Management
-
-                </div>
-
-
-                <div class="feature">
-
-                    <span class="feature-icon">
-                        👨‍⚕️
-                    </span>
-
-                    Doctor Management
-
-                </div>
-
-
-                <div class="feature">
-
-                    <span class="feature-icon">
-                        👥
-                    </span>
-
-                    Patient Management
-
-                </div>
-
-
-                <div class="feature">
-
-                    <span class="feature-icon">
-                        🔄
-                    </span>
-
-                    Follow-up Management
-
-                </div>
-
-
-                <div class="feature">
-
-                    <span class="feature-icon">
-                        📱
-                    </span>
-
-                    Patient Notifications
-
-                </div>
-
-
-                <div class="feature">
-
-                    <span class="feature-icon">
-                        🔐
-                    </span>
-
-                    Secure Access
-
-                </div>
-
-
-            </div>
-
+            <select id="doctorFilter">
+                <option value="all">All Doctors</option>
+            </select>
         </div>
 
-    </section>
 
+        <div class="filter-group">
+            <label>Search Patient</label>
 
-    <!-- =====================================================
-         LOGIN / REGISTER / FORGOT
-    ====================================================== -->
-
-    <section class="form-panel">
-
-
-        <div class="top-line">
-
-            <span class="security">
-                🔒 Secure Login
-            </span>
-
-
-            <a
-                href="/"
-                class="home-link"
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search name or mobile..."
             >
-                ← Home
-            </a>
-
         </div>
 
 
-        <div class="heading">
+        <div class="filter-group">
+            <label>Appointment Date</label>
 
-            <h1>
-                Welcome back
-            </h1>
-
-            <p>
-                Sign in to continue to your hospital dashboard.
-            </p>
-
-        </div>
-
-
-        <!-- =================================================
-             PLAN
-        ================================================== -->
-
-        <div
-            id="planBox"
-            class="plan-box"
-        >
-
-            Selected plan:
-            <strong id="planName"></strong>
-
-        </div>
-
-
-        <!-- =================================================
-             TABS
-        ================================================== -->
-
-        <div class="tabs">
-
-
-            <button
-                id="loginTab"
-                class="tab active"
-                onclick="showSection('login')"
+            <input
+                type="date"
+                id="dateFilter"
             >
-                Login
-            </button>
+        </div>
+
+    </div>
 
 
-            <button
-                id="registerTab"
-                class="tab"
-                onclick="showSection('register')"
+    <!-- SUMMARY -->
+
+    <div class="summary">
+
+        <div class="summary-card">
+            <div
+                class="number"
+                id="totalPatients"
             >
-                Register
-            </button>
+                0
+            </div>
 
-
-            <button
-                id="forgotTab"
-                class="tab"
-                onclick="showSection('forgot')"
-            >
-                Forgot
-            </button>
-
-
+            <div class="label">
+                Total Patients
+            </div>
         </div>
 
 
-        <!-- =================================================
-             LOGIN
-        ================================================== -->
-
-        <div
-            id="login"
-            class="section active"
-        >
-
-
-            <div class="field">
-
-                <label>
-                    Admin Email
-                </label>
-
-                <input
-                    id="loginEmail"
-                    type="email"
-                    autocomplete="email"
-                    placeholder="admin@hospital.com"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    Password
-                </label>
-
-
-                <div class="password-wrap">
-
-                    <input
-                        id="loginPassword"
-                        type="password"
-                        autocomplete="current-password"
-                        placeholder="Enter password"
-                    >
-
-
-                    <button
-                        type="button"
-                        class="eye-btn"
-                        onclick="
-                            togglePassword(
-                                'loginPassword',
-                                this
-                            )
-                        "
-                    >
-                        👁
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <button
-                id="loginButton"
-                class="main-btn"
-                onclick="login()"
+        <div class="summary-card">
+            <div
+                class="number"
+                id="totalDoctors"
             >
-                Login to Dashboard
-            </button>
+                0
+            </div>
 
-
+            <div class="label">
+                Doctors
+            </div>
         </div>
 
 
-        <!-- =================================================
-             REGISTER
-        ================================================== -->
-
-        <div
-            id="register"
-            class="section"
-        >
-
-
-            <div class="field">
-
-                <label>
-                    Hospital ID
-                </label>
-
-                <input
-                    id="hospitalId"
-                    type="text"
-                    placeholder="HOSP001"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    Hospital Name
-                </label>
-
-                <input
-                    id="hospitalName"
-                    type="text"
-                    placeholder="City Care Hospital"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    Administrator Name
-                </label>
-
-                <input
-                    id="adminName"
-                    type="text"
-                    placeholder="Admin Name"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    Admin Email
-                </label>
-
-                <input
-                    id="regEmail"
-                    type="email"
-                    autocomplete="email"
-                    placeholder="admin@hospital.com"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    Password
-                </label>
-
-
-                <div class="password-wrap">
-
-                    <input
-                        id="regPassword"
-                        type="password"
-                        autocomplete="new-password"
-                        placeholder="Minimum 6 characters"
-                    >
-
-
-                    <button
-                        type="button"
-                        class="eye-btn"
-                        onclick="
-                            togglePassword(
-                                'regPassword',
-                                this
-                            )
-                        "
-                    >
-                        👁
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <button
-                id="registerButton"
-                class="main-btn"
-                onclick="register()"
+        <div class="summary-card">
+            <div
+                class="number"
+                id="todayCount"
             >
-                Create Hospital Account
-            </button>
+                0
+            </div>
 
-
+            <div class="label">
+                Today
+            </div>
         </div>
 
 
-        <!-- =================================================
-             FORGOT PASSWORD
-        ================================================== -->
-
-        <div
-            id="forgot"
-            class="section"
-        >
-
-
-            <div class="info-box">
-
-                Enter your registered hospital admin email.
-                We will send you a secure password reset link.
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    Admin Email
-                </label>
-
-                <input
-                    id="forgotEmail"
-                    type="email"
-                    autocomplete="email"
-                    placeholder="admin@hospital.com"
-                >
-
-            </div>
-
-
-            <button
-                id="forgotButton"
-                class="main-btn"
-                onclick="resetPassword()"
+        <div class="summary-card">
+            <div
+                class="number"
+                id="upcomingCount"
             >
-                Send Reset Link
-            </button>
+                0
+            </div>
 
-
+            <div class="label">
+                Upcoming
+            </div>
         </div>
 
-
-        <div id="message"></div>
-
-
-        <!-- =================================================
-             COMPANY FOOTER
-        ================================================== -->
-
-        <div class="form-footer">
-
-            <div>
-                🔐 Protected by Firebase Authentication.
-            </div>
-
-            <div>
-                Developed by ⚡
-                <strong>
-                    RORENS Technologies Pvt. Ltd.
-                </strong>
-            </div>
-
-            <div class="footer-tagline">
-                Innovation • Technology • Growth
-            </div>
-
-        </div>
+    </div>
 
 
-    </section>
+    <!-- APPOINTMENTS -->
+
+    <div id="appointmentsContainer"></div>
 
 </div>
 
 
-<script type="module">
+<!-- DETAILS MODAL -->
+
+<div
+    id="detailsModal"
+    class="modal"
+    onclick="closeModalOutside(event)"
+>
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <h2>👤 Patient Details</h2>
+
+            <button
+                class="close-btn"
+                onclick="closeDetails()"
+            >
+                ×
+            </button>
+
+        </div>
 
 
-/* =========================================================
-   FIREBASE IMPORTS
-========================================================= */
+        <div
+            id="modalBody"
+            class="modal-body"
+        ></div>
 
-import {
-    initializeApp
-}
-from
-"https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+    </div>
 
-
-import {
-
-    getAuth,
-
-    createUserWithEmailAndPassword,
-
-    signInWithEmailAndPassword,
-
-    sendPasswordResetEmail,
-
-    onAuthStateChanged
-
-}
-from
-"https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+</div>
 
 
-import {
-
-    getDatabase,
-
-    ref,
-
-    set,
-
-    get
-
-}
-from
-"https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js";
+<div
+    id="toast"
+    class="toast"
+></div>
 
 
-/* =========================================================
-   FIREBASE CONFIG
-========================================================= */
+<script>
+"use strict";
 
-const firebaseConfig = {
+/*
+=========================================================
+SERVER DATA
+=========================================================
+IMPORTANT:
+Flask sends `patients`, not `appointments`.
+This prevents the previous Undefined error.
+*/
 
-    apiKey:
-        "AIzaSyDbHoUVO_oXHCnY040sBLOiXVS6s6xJEb8",
+const APPOINTMENTS = {{ patients | default([]) | tojson | safe }};
 
-    authDomain:
-        "hospital-57fc8.firebaseapp.com",
-
-    databaseURL:
-        "https://hospital-57fc8-default-rtdb.firebaseio.com",
-
-    projectId:
-        "hospital-57fc8",
-
-    storageBucket:
-        "hospital-57fc8.firebasestorage.app",
-
-    messagingSenderId:
-        "711314420912",
-
-    appId:
-        "1:711314420912:web:14ec889664980679a13775"
-
-};
+const UID = {{ uid | default("") | tojson | safe }};
 
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
+/*
+=========================================================
+LOCAL DATA
+=========================================================
+*/
 
-const app =
-    initializeApp(
-        firebaseConfig
-    );
-
-
-const auth =
-    getAuth(
-        app
-    );
+let allAppointments = [];
+let filteredAppointments = [];
 
 
-const db =
-    getDatabase(
-        app
-    );
+/*
+=========================================================
+UTILITY
+=========================================================
+*/
 
+function escapeHtml(value) {
 
-/* =========================================================
-   PLAN
-========================================================= */
+    if (
+        value === null ||
+        value === undefined
+    ) {
+        return "";
+    }
 
-const params =
-    new URLSearchParams(
-        window.location.search
-    );
-
-
-const urlPlan =
-    params.get(
-        "plan"
-    );
-
-
-const allowedPlans = [
-    "basic",
-    "standard",
-    "premium"
-];
-
-
-const planNames = {
-
-    basic:
-        "Basic",
-
-    standard:
-        "Standard",
-
-    premium:
-        "Premium"
-
-};
-
-
-if (
-    allowedPlans.includes(
-        urlPlan
-    )
-) {
-
-    localStorage.setItem(
-        "selectedPlan",
-        urlPlan
-    );
-
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
 
-const selectedPlan =
-    localStorage.getItem(
-        "selectedPlan"
+function normalizeMobile(value) {
+
+    let digits =
+        String(value || "")
+            .replace(/\D/g, "");
+
+    if (
+        digits.length === 12 &&
+        digits.startsWith("91")
+    ) {
+        digits = digits.substring(2);
+    }
+
+    return digits;
+}
+
+
+function todayISO() {
+
+    const d = new Date();
+
+    const year =
+        d.getFullYear();
+
+    const month =
+        String(d.getMonth() + 1)
+            .padStart(2, "0");
+
+    const day =
+        String(d.getDate())
+            .padStart(2, "0");
+
+    return (
+        year +
+        "-" +
+        month +
+        "-" +
+        day
     );
+}
 
 
-if (
-    selectedPlan &&
-    planNames[selectedPlan]
-) {
+function normalizeDate(value) {
 
-    document
-        .getElementById(
-            "planBox"
-        )
-        .classList.add(
-            "show"
+    if (!value) {
+        return "";
+    }
+
+    const text =
+        String(value).trim();
+
+    /*
+    YYYY-MM-DD
+    */
+
+    if (
+        /^\d{4}-\d{2}-\d{2}$/.test(text)
+    ) {
+        return text;
+    }
+
+
+    /*
+    DD-MM-YYYY
+    */
+
+    let match =
+        text.match(
+            /^(\d{2})-(\d{2})-(\d{4})$/
         );
 
+    if (match) {
+
+        return (
+            match[3] +
+            "-" +
+            match[2] +
+            "-" +
+            match[1]
+        );
+    }
+
+
+    /*
+    DD/MM/YYYY
+    */
+
+    match =
+        text.match(
+            /^(\d{2})\/(\d{2})\/(\d{4})$/
+        );
+
+    if (match) {
+
+        return (
+            match[3] +
+            "-" +
+            match[2] +
+            "-" +
+            match[1]
+        );
+    }
+
+
+    /*
+    YYYY/MM/DD
+    */
+
+    match =
+        text.match(
+            /^(\d{4})\/(\d{2})\/(\d{2})$/
+        );
+
+    if (match) {
+
+        return (
+            match[1] +
+            "-" +
+            match[2] +
+            "-" +
+            match[3]
+        );
+    }
+
+
+    return text.substring(0, 10);
+}
+
+
+function dateTimeValue(item) {
+
+    const date =
+        normalizeDate(
+            item.appointment_date
+        );
+
+    const time =
+        String(
+            item.appointment_time || ""
+        );
+
+    return (
+        date +
+        " " +
+        time
+    );
+}
+
+
+function formatDate(value) {
+
+    const date =
+        normalizeDate(value);
+
+    if (!date) {
+        return "-";
+    }
+
+    const parts =
+        date.split("-");
+
+    if (parts.length !== 3) {
+        return date;
+    }
+
+    return (
+        parts[2] +
+        "-" +
+        parts[1] +
+        "-" +
+        parts[0]
+    );
+}
+
+
+function formatAmount(value) {
+
+    const number =
+        Number(value || 0);
+
+    if (isNaN(number)) {
+        return "₹0";
+    }
+
+    return "₹" + number.toFixed(2);
+}
+
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent =
+        message;
+
+    toast.classList.add("show");
+
+    setTimeout(
+        () => {
+            toast.classList.remove("show");
+        },
+        2500
+    );
+}
+
+
+/*
+=========================================================
+PREPARE APPOINTMENTS
+=========================================================
+*/
+
+function prepareAppointments() {
+
+    allAppointments =
+        Array.isArray(APPOINTMENTS)
+            ? APPOINTMENTS.map(
+                item => {
+
+                    const p =
+                        Object.assign({}, item);
+
+                    p.mobile =
+                        normalizeMobile(
+                            p.mobile
+                        );
+
+                    p.appointment_date =
+                        normalizeDate(
+                            p.appointment_date
+                        );
+
+                    p.doctor_name =
+                        p.doctor_name ||
+                        "Unknown Doctor";
+
+                    p.patient_name =
+                        p.patient_name ||
+                        "Unknown Patient";
+
+                    p.gender =
+                        p.gender ||
+                        "-";
+
+                    p.age =
+                        p.age ||
+                        "-";
+
+                    p.amount =
+                        p.amount === undefined ||
+                        p.amount === null ||
+                        p.amount === ""
+                            ? 0
+                            : Number(p.amount);
+
+                    p.visit_number =
+                        Number(
+                            p.visit_number || 1
+                        );
+
+                    p.patient_status =
+                        String(
+                            p.patient_status ||
+                            (
+                                p.visit_number === 1
+                                    ? "NEW"
+                                    : "OLD"
+                            )
+                        )
+                        .toUpperCase();
+
+                    /*
+                    Historical Visit 1 must always
+                    remain NEW.
+                    */
+
+                    if (
+                        p.visit_number === 1
+                    ) {
+                        p.patient_status = "NEW";
+                    }
+
+                    return p;
+                }
+            )
+            : [];
+
+
+    /*
+    Latest date/time first.
+    */
+
+    allAppointments.sort(
+        (a, b) => {
+
+            const aa =
+                dateTimeValue(a);
+
+            const bb =
+                dateTimeValue(b);
+
+            return bb.localeCompare(aa);
+        }
+    );
+}
+
+
+/*
+=========================================================
+DOCTOR FILTER
+=========================================================
+*/
+
+function buildDoctorFilter() {
+
+    const select =
+        document.getElementById(
+            "doctorFilter"
+        );
+
+    const doctors =
+        [
+            ...new Set(
+                allAppointments
+                    .map(
+                        item =>
+                            item.doctor_name
+                    )
+                    .filter(Boolean)
+            )
+        ]
+        .sort(
+            (a, b) =>
+                a.localeCompare(b)
+        );
+
+
+    select.innerHTML =
+        '<option value="all">All Doctors</option>';
+
+
+    doctors.forEach(
+        doctor => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value =
+                doctor;
+
+            option.textContent =
+                doctor;
+
+            select.appendChild(
+                option
+            );
+        }
+    );
+}
+
+
+/*
+=========================================================
+FILTER
+=========================================================
+*/
+
+function applyFilters() {
+
+    const doctor =
+        document
+            .getElementById("doctorFilter")
+            .value;
+
+    const search =
+        document
+            .getElementById("searchInput")
+            .value
+            .trim()
+            .toLowerCase();
+
+    const selectedDate =
+        document
+            .getElementById("dateFilter")
+            .value;
+
+
+    filteredAppointments =
+        allAppointments.filter(
+            item => {
+
+                if (
+                    doctor !== "all" &&
+                    item.doctor_name !== doctor
+                ) {
+                    return false;
+                }
+
+
+                if (search) {
+
+                    const name =
+                        String(
+                            item.patient_name || ""
+                        ).toLowerCase();
+
+                    const mobile =
+                        String(
+                            item.mobile || ""
+                        ).toLowerCase();
+
+                    if (
+                        !name.includes(search) &&
+                        !mobile.includes(search)
+                    ) {
+                        return false;
+                    }
+                }
+
+
+                if (
+                    selectedDate &&
+                    item.appointment_date !== selectedDate
+                ) {
+                    return false;
+                }
+
+
+                return true;
+            }
+        );
+
+
+    updateSummary();
+
+    renderAppointments();
+}
+
+
+/*
+=========================================================
+SUMMARY
+=========================================================
+*/
+
+function updateSummary() {
+
+    const today =
+        todayISO();
+
+
+    const doctors =
+        new Set(
+            filteredAppointments.map(
+                p => p.doctor_name
+            )
+        );
+
+
+    const todayCount =
+        filteredAppointments.filter(
+            p =>
+                p.appointment_date === today
+        ).length;
+
+
+    const upcomingCount =
+        filteredAppointments.filter(
+            p =>
+                p.appointment_date > today
+        ).length;
+
+
     document
-        .getElementById(
-            "planName"
-        )
+        .getElementById("totalPatients")
         .textContent =
-        planNames[selectedPlan];
+        filteredAppointments.length;
 
+
+    document
+        .getElementById("totalDoctors")
+        .textContent =
+        doctors.size;
+
+
+    document
+        .getElementById("todayCount")
+        .textContent =
+        todayCount;
+
+
+    document
+        .getElementById("upcomingCount")
+        .textContent =
+        upcomingCount;
 }
 
 
-/* =========================================================
-   SHOW SECTION
-========================================================= */
+/*
+=========================================================
+GROUP BY DOCTOR
+=========================================================
+*/
 
-window.showSection =
-function(id) {
+function groupByDoctor(items) {
 
+    const grouped = {};
 
-    document
-        .querySelectorAll(
-            ".section"
-        )
-        .forEach(
-            section => {
+    items.forEach(
+        item => {
 
-                section.classList.remove(
-                    "active"
-                );
+            const doctor =
+                item.doctor_name ||
+                "Unknown Doctor";
 
+            if (!grouped[doctor]) {
+                grouped[doctor] = [];
             }
-        );
+
+            grouped[doctor].push(item);
+        }
+    );
+
+    return grouped;
+}
 
 
-    document
-        .querySelectorAll(
-            ".tab"
-        )
-        .forEach(
-            tab => {
+/*
+=========================================================
+RENDER
+=========================================================
+*/
 
-                tab.classList.remove(
-                    "active"
-                );
+function renderAppointments() {
 
-            }
-        );
-
-
-    const section =
-        document.getElementById(id);
-
-
-    const tab =
+    const container =
         document.getElementById(
-            id + "Tab"
-        );
-
-
-    if (section) {
-
-        section.classList.add(
-            "active"
-        );
-
-    }
-
-
-    if (tab) {
-
-        tab.classList.add(
-            "active"
-        );
-
-    }
-
-
-    clearMessage();
-
-};
-
-
-/* =========================================================
-   PASSWORD
-========================================================= */
-
-window.togglePassword =
-function(inputId, button) {
-
-
-    const input =
-        document.getElementById(
-            inputId
+            "appointmentsContainer"
         );
 
 
     if (
-        input.type === "password"
+        filteredAppointments.length === 0
     ) {
 
-        input.type = "text";
+        container.innerHTML = `
+            <div class="doctor-card">
+                <div class="empty">
+                    No appointments found.
+                </div>
+            </div>
+        `;
 
-        button.textContent = "🙈";
-
-    }
-    else {
-
-        input.type = "password";
-
-        button.textContent = "👁";
-
+        return;
     }
 
-};
 
-
-/* =========================================================
-   MESSAGE
-========================================================= */
-
-function showMessage(
-    text,
-    type
-) {
-
-    const element =
-        document.getElementById(
-            "message"
+    const grouped =
+        groupByDoctor(
+            filteredAppointments
         );
 
 
-    element.textContent =
-        text;
+    const today =
+        todayISO();
 
 
-    element.className =
-        type || "error";
+    let html = "";
 
-}
 
+    Object.keys(grouped)
+        .sort()
+        .forEach(
+            doctor => {
 
-function clearMessage() {
+                const doctorAppointments =
+                    grouped[doctor];
 
-    const element =
-        document.getElementById(
-            "message"
-        );
 
+                const todayAppointments =
+                    doctorAppointments.filter(
+                        p =>
+                            p.appointment_date === today
+                    );
 
-    element.textContent = "";
 
-    element.className = "";
+                const upcomingAppointments =
+                    doctorAppointments.filter(
+                        p =>
+                            p.appointment_date > today
+                    );
 
-}
 
+                const pastAppointments =
+                    doctorAppointments.filter(
+                        p =>
+                            p.appointment_date < today
+                    );
 
-/* =========================================================
-   BUTTON LOADING
-========================================================= */
 
-function setButtonLoading(
-    button,
-    loading,
-    normalText,
-    loadingText
-) {
+                html += `
+                    <div class="doctor-card">
 
-    if (loading) {
+                        <div class="doctor-header">
 
-        button.disabled = true;
+                            <h2>
+                                👨‍⚕️
+                                ${escapeHtml(doctor)}
+                            </h2>
 
-        button.innerHTML =
-            '<span class="loader"></span>' +
-            loadingText;
+                            <small>
+                                ${doctorAppointments.length}
+                                appointment(s)
+                            </small>
 
-    }
-    else {
+                        </div>
+                `;
 
-        button.disabled = false;
 
-        button.textContent =
-            normalText;
+                if (
+                    todayAppointments.length
+                ) {
 
-    }
+                    html += `
+                        <div class="section-title">
+                            📅 TODAY
+                        </div>
 
-}
+                        ${renderTable(
+                            todayAppointments
+                        )}
+                    `;
+                }
 
 
-/* =========================================================
-   REGISTER
-========================================================= */
+                if (
+                    upcomingAppointments.length
+                ) {
 
-window.register =
-async function() {
+                    html += `
+                        <div class="section-title">
+                            🔜 UPCOMING
+                        </div>
 
+                        ${renderTable(
+                            upcomingAppointments
+                        )}
+                    `;
+                }
 
-    clearMessage();
 
+                if (
+                    pastAppointments.length
+                ) {
 
-    const button =
-        document.getElementById(
-            "registerButton"
-        );
+                    html += `
+                        <div class="section-title">
+                            📁 PAST
+                        </div>
 
+                        ${renderTable(
+                            pastAppointments
+                        )}
+                    `;
+                }
 
-    try {
 
-        const hospitalId =
-            document
-                .getElementById(
-                    "hospitalId"
-                )
-                .value
-                .trim();
-
-
-        const hospitalName =
-            document
-                .getElementById(
-                    "hospitalName"
-                )
-                .value
-                .trim();
-
-
-        const adminName =
-            document
-                .getElementById(
-                    "adminName"
-                )
-                .value
-                .trim();
-
-
-        const email =
-            document
-                .getElementById(
-                    "regEmail"
-                )
-                .value
-                .trim();
-
-
-        const password =
-            document
-                .getElementById(
-                    "regPassword"
-                )
-                .value;
-
-
-        if (
-            !hospitalId ||
-            !hospitalName ||
-            !adminName ||
-            !email ||
-            !password
-        ) {
-
-            showMessage(
-                "Please complete all registration fields.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        if (
-            password.length < 6
-        ) {
-
-            showMessage(
-                "Password must contain at least 6 characters.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        setButtonLoading(
-            button,
-            true,
-            "Create Hospital Account",
-            "Creating account..."
-        );
-
-
-        const hospitalReference =
-            ref(
-                db,
-                "hospitals/" +
-                hospitalId
-            );
-
-
-        const existingHospital =
-            await get(
-                hospitalReference
-            );
-
-
-        if (
-            existingHospital.exists()
-        ) {
-
-            setButtonLoading(
-                button,
-                false,
-                "Create Hospital Account",
-                ""
-            );
-
-
-            showMessage(
-                "This Hospital ID already exists.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        const userCredential =
-            await createUserWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
-
-
-        const user =
-            userCredential.user;
-
-
-        const uid =
-            user.uid;
-
-
-        await set(
-            hospitalReference,
-            {
-
-                hospitalId:
-                    hospitalId,
-
-                hospital_name:
-                    hospitalName,
-
-                adminName:
-                    adminName,
-
-                email:
-                    email,
-
-                uid:
-                    uid,
-
-                created_at:
-                    new Date().toISOString(),
-
-                updated_at:
-                    new Date().toISOString(),
-
-                doctors:
-                    []
-
+                html += `
+                    </div>
+                `;
             }
         );
 
 
-        setButtonLoading(
-            button,
-            false,
-            "Create Hospital Account",
-            ""
+    container.innerHTML =
+        html;
+}
+
+
+/*
+=========================================================
+TABLE
+=========================================================
+*/
+
+function renderTable(items) {
+
+    /*
+    Always latest date/time first.
+    */
+
+    items =
+        [...items].sort(
+            (a, b) =>
+                dateTimeValue(b)
+                    .localeCompare(
+                        dateTimeValue(a)
+                    )
         );
 
 
-        document
-            .getElementById(
-                "loginEmail"
-            )
-            .value =
-            email;
+    let rows = "";
 
 
-        document
-            .getElementById(
-                "loginPassword"
-            )
-            .value = "";
+    items.forEach(
+        (p, index) => {
+
+            const status =
+                p.patient_status === "OLD"
+                    ? "OLD"
+                    : "NEW";
 
 
-        showSection(
-            "login"
+            const typeClass =
+                status === "OLD"
+                    ? "type-old"
+                    : "type-new";
+
+
+            const appointmentId =
+                p.id ||
+                p.appointment_id ||
+                "";
+
+
+            rows += `
+                <tr>
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+
+                    <td>
+                        <div class="patient-name">
+                            ${escapeHtml(
+                                p.patient_name
+                            )}
+                        </div>
+                    </td>
+
+
+                    <td class="gender">
+                        ${escapeHtml(
+                            p.gender
+                        )}
+                    </td>
+
+
+                    <td class="age">
+                        ${escapeHtml(
+                            p.age
+                        )}
+                    </td>
+
+
+                    <td class="mobile">
+                        ${escapeHtml(
+                            p.mobile
+                        )}
+                    </td>
+
+
+                    <td>
+                        <span class="date">
+                            ${formatDate(
+                                p.appointment_date
+                            )}
+                        </span>
+
+                        <span class="time">
+                            ${escapeHtml(
+                                p.appointment_time ||
+                                "-"
+                            )}
+                        </span>
+                    </td>
+
+
+                    <td>
+                        <span class="visit">
+                            Visit ${p.visit_number}
+                        </span>
+                    </td>
+
+
+                    <td>
+                        <span
+                            class="type ${typeClass}"
+                        >
+                            ${status}
+                        </span>
+                    </td>
+
+
+                    <td>
+
+                        <div class="amount-box">
+
+                            <input
+                                class="amount-input"
+                                id="amount-${escapeHtml(
+                                    appointmentId
+                                )}"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                value="${Number(
+                                    p.amount || 0
+                                )}"
+                            >
+
+                            <button
+                                class="save-amount"
+                                onclick="
+                                    saveAmount(
+                                        '${escapeHtml(
+                                            appointmentId
+                                        )}',
+                                        document.getElementById(
+                                            'amount-${escapeHtml(
+                                                appointmentId
+                                            )}'
+                                        )
+                                    )
+                                "
+                            >
+                                Save
+                            </button>
+
+                        </div>
+
+                    </td>
+
+
+                    <td>
+
+                        <div class="action-buttons">
+
+                            <button
+                                class="btn details-btn"
+                                onclick="
+                                    showDetails(
+                                        '${escapeHtml(
+                                            appointmentId
+                                        )}'
+                                    )
+                                "
+                            >
+                                Details
+                            </button>
+
+
+                            ${
+                                status === "NEW"
+                                ? `
+                                    <button
+                                        class="btn old-btn"
+                                        onclick="
+                                            makePatientOld(
+                                                '${escapeHtml(
+                                                    p.mobile
+                                                )}'
+                                            )
+                                        "
+                                    >
+                                        Make OLD
+                                    `
+                                : ""
+                            }
+
+
+                            <a
+                                class="btn follow-btn"
+                                href="/followups/${encodeURIComponent(
+                                    UID
+                                )}"
+                            >
+                                Follow-up
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+            `;
+        }
+    );
+
+
+    return `
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>No</th>
+                        <th>Patient</th>
+                        <th>Gender</th>
+                        <th>Age</th>
+                        <th>Mobile</th>
+                        <th>Date</th>
+                        <th>Visit</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    ${rows}
+                </tbody>
+
+            </table>
+
+        </div>
+    `;
+}
+
+
+/*
+=========================================================
+FIND APPOINTMENT
+=========================================================
+*/
+
+function findAppointment(id) {
+
+    return allAppointments.find(
+        item =>
+            String(
+                item.id ||
+                item.appointment_id ||
+                ""
+            ) === String(id)
+    );
+}
+
+
+/*
+=========================================================
+PATIENT HISTORY
+=========================================================
+*/
+
+function getPatientHistory(patient) {
+
+    const mobile =
+        normalizeMobile(
+            patient.mobile
         );
 
 
-        showMessage(
-            "Registration successful. Please login.",
-            "success"
+    const history =
+        allAppointments.filter(
+            item => {
+
+                const itemMobile =
+                    normalizeMobile(
+                        item.mobile
+                    );
+
+                return (
+                    itemMobile &&
+                    mobile &&
+                    itemMobile === mobile
+                );
+            }
         );
 
+
+    history.sort(
+        (a, b) =>
+            dateTimeValue(b)
+                .localeCompare(
+                    dateTimeValue(a)
+                )
+        );
+
+
+    return history;
+}
+
+
+/*
+=========================================================
+DETAILS
+=========================================================
+*/
+
+function showDetails(id) {
+
+    const patient =
+        findAppointment(id);
+
+
+    if (!patient) {
+
+        alert(
+            "Appointment details not found."
+        );
+
+        return;
+    }
+
+
+    const history =
+        getPatientHistory(
+            patient
+        );
+
+
+    const totalPaid =
+        history.reduce(
+            (sum, item) =>
+                sum +
+                (
+                    Number(
+                        item.amount || 0
+                    ) || 0
+                ),
+            0
+        );
+
+
+    let historyRows = "";
+
+
+    history.forEach(
+        item => {
+
+            const status =
+                item.patient_status === "OLD"
+                    ? "OLD"
+                    : "NEW";
+
+
+            historyRows += `
+                <tr>
+
+                    <td>
+                        ${formatDate(
+                            item.appointment_date
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            item.appointment_time ||
+                            "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHtml(
+                            item.doctor_name ||
+                            "-"
+                        )}
+                    </td>
+
+                    <td>
+                        Visit ${Number(
+                            item.visit_number || 1
+                        )}
+                    </td>
+
+                    <td>
+                        <span
+                            class="type ${
+                                status === "OLD"
+                                    ? "type-old"
+                                    : "type-new"
+                            }"
+                        >
+                            ${status}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${formatAmount(
+                            item.amount
+                        )}
+                    </td>
+
+                </tr>
+            `;
+        }
+    );
+
+
+    const currentStatus =
+        patient.patient_status === "OLD"
+            ? "OLD"
+            : "NEW";
+
+
+    document.getElementById(
+        "modalBody"
+    ).innerHTML = `
+
+        <div class="patient-top">
+
+            <h3>
+                ${escapeHtml(
+                    patient.patient_name
+                )}
+            </h3>
+
+
+            <div class="details-grid">
+
+                <div class="detail-item">
+                    <div class="label">
+                        Mobile
+                    </div>
+
+                    <div class="value">
+                        ${escapeHtml(
+                            patient.mobile ||
+                            "-"
+                        )}
+                    </div>
+                </div>
+
+
+                <div class="detail-item">
+                    <div class="label">
+                        Gender
+                    </div>
+
+                    <div class="value">
+                        ${escapeHtml(
+                            patient.gender ||
+                            "-"
+                        )}
+                    </div>
+                </div>
+
+
+                <div class="detail-item">
+                    <div class="label">
+                        Age
+                    </div>
+
+                    <div class="value">
+                        ${escapeHtml(
+                            patient.age ||
+                            "-"
+                        )}
+                    </div>
+                </div>
+
+
+                <div class="detail-item">
+                    <div class="label">
+                        Address
+                    </div>
+
+                    <div class="value">
+                        ${escapeHtml(
+                            patient.address ||
+                            "-"
+                        )}
+                    </div>
+                </div>
+
+
+                <div class="detail-item">
+                    <div class="label">
+                        Doctor
+                    </div>
+
+                    <div class="value">
+                        ${escapeHtml(
+                            patient.doctor_name ||
+                            "-"
+                        )}
+                    </div>
+                </div>
+
+
+                <div class="detail-item">
+                    <div class="label">
+                        Specialization
+                    </div>
+
+                    <div class="value">
+                        ${escapeHtml(
+                            patient.specialization ||
+                            "-"
+                        )}
+                    </div>
+                </div>
+
+
+                <div class="detail-item">
+                    <div class="label">
+                        Appointment Date
+                    </div>
+
+                    <div class="value">
+                        ${formatDate(
+                            patient.appointment_date
+                        )}
+                    </div>
+                </div>
+
+
+                <div class="detail-item">
+                    <div class="label">
+                        Appointment Time
+                    </div>
+
+                    <div class="value">
+                        ${escapeHtml(
+                            patient.appointment_time ||
+                            "-"
+                        )}
+                    </div>
+                </div>
+
+
+                <div class="detail-item">
+                    <div class="label">
+                        Current Visit
+                    </div>
+
+                    <div class="value">
+                        Visit ${Number(
+                            patient.visit_number || 1
+                        )}
+                    </div>
+                </div>
+
+
+                <div class="detail-item">
+                    <div class="label">
+                        Patient Type
+                    </div>
+
+                    <div class="value">
+                        ${currentStatus}
+                    </div>
+                </div>
+
+
+                <div class="detail-item">
+                    <div class="label">
+                        Current Amount
+                    </div>
+
+                    <div class="value">
+                        ${formatAmount(
+                            patient.amount
+                        )}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="history-title">
+            📋 Previous Appointments / Visits
+        </div>
+
+
+        <div class="history-wrapper">
+
+            <table class="history-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Doctor</th>
+                        <th>Visit</th>
+                        <th>Type</th>
+                        <th>Amount Paid</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    ${
+                        historyRows ||
+                        `
+                            <tr>
+                                <td colspan="6">
+                                    No previous visits found.
+                                </td>
+                            </tr>
+                        `
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="total-paid">
+            Total Paid:
+            ${formatAmount(totalPaid)}
+        </div>
+
+    `;
+
+
+    document
+        .getElementById("detailsModal")
+        .classList.add("show");
+}
+
+
+/*
+=========================================================
+CLOSE MODAL
+=========================================================
+*/
+
+function closeDetails() {
+
+    document
+        .getElementById("detailsModal")
+        .classList.remove("show");
+}
+
+
+function closeModalOutside(event) {
+
+    if (
+        event.target.id ===
+        "detailsModal"
+    ) {
+        closeDetails();
+    }
+}
+
+
+/*
+=========================================================
+FIREBASE AUTH
+=========================================================
+*/
+
+let firebaseAuth = null;
+let firebaseReady = false;
+
+
+/*
+Load Firebase only once.
+*/
+
+async function initializeFirebaseAuth() {
+
+    if (firebaseReady) {
+        return firebaseAuth;
+    }
+
+
+    try {
+
+        const firebaseAppModule =
+            await import(
+                "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js"
+            );
+
+
+        const firebaseAuthModule =
+            await import(
+                "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js"
+            );
+
+
+        const firebaseConfig = {
+
+            apiKey:
+                "AIzaSyDbHoUVO_oXHCnY040sBLOiXVS6s6xJEb8",
+
+            authDomain:
+                "hospital-57fc8.firebaseapp.com",
+
+            databaseURL:
+                "https://hospital-57fc8-default-rtdb.firebaseio.com",
+
+            projectId:
+                "hospital-57fc8",
+
+            storageBucket:
+                "hospital-57fc8.firebasestorage.app",
+
+            messagingSenderId:
+                "711314420912",
+
+            appId:
+                "1:711314420912:web:14ec889664980679a13775"
+        };
+
+
+        const app =
+            firebaseAppModule.initializeApp(
+                firebaseConfig,
+                "statuslyAppointments"
+            );
+
+
+        firebaseAuth =
+            firebaseAuthModule.getAuth(
+                app
+            );
+
+
+        /*
+        IMPORTANT:
+        Firebase can take a moment to restore
+        the login session.
+
+        We wait for auth state.
+        */
+
+        window.statuslyAuthPromise =
+            new Promise(
+                resolve => {
+
+                    const unsubscribe =
+                        firebaseAuthModule.onAuthStateChanged(
+                            firebaseAuth,
+                            user => {
+
+                                unsubscribe();
+
+                                resolve(user);
+                            }
+                        );
+                }
+            );
+
+
+        firebaseReady = true;
+
+        return firebaseAuth;
 
     }
     catch(error) {
 
         console.error(
-            "REGISTER ERROR:",
+            "FIREBASE INITIALIZATION ERROR:",
             error
         );
 
+        return null;
+    }
+}
 
-        setButtonLoading(
-            button,
-            false,
-            "Create Hospital Account",
-            ""
+
+/*
+=========================================================
+GET FRESH FIREBASE TOKEN
+=========================================================
+*/
+
+async function getStatuslyToken() {
+
+    const auth =
+        await initializeFirebaseAuth();
+
+
+    if (!auth) {
+
+        throw new Error(
+            "Firebase authentication could not initialize."
         );
+    }
+
+
+    /*
+    Wait until Firebase restores session.
+    */
+
+    let user =
+        auth.currentUser;
+
+
+    if (
+        !user &&
+        window.statuslyAuthPromise
+    ) {
+
+        user =
+            await window.statuslyAuthPromise;
+    }
+
+
+    if (!user) {
+
+        /*
+        Last backup check.
+        */
+
+        const savedUid =
+            localStorage.getItem(
+                "firebaseUid"
+            );
+
+        const savedToken =
+            localStorage.getItem(
+                "firebaseIdToken"
+            );
 
 
         if (
-            error.code ===
-            "auth/email-already-in-use"
+            savedUid &&
+            savedToken
         ) {
 
-            showSection(
-                "login"
+            /*
+            We do NOT blindly trust an old token
+            for API authentication.
+
+            Firebase session must exist.
+            */
+
+            throw new Error(
+                "Login session not found. Please login again."
             );
-
-
-            document
-                .getElementById(
-                    "loginEmail"
-                )
-                .value =
-                document
-                    .getElementById(
-                        "regEmail"
-                    )
-                    .value
-                    .trim();
-
-
-            showMessage(
-                "This email is already registered. Please login.",
-                "error"
-            );
-
-            return;
-
         }
 
 
-        showMessage(
-            error.message ||
-            "Registration failed.",
-            "error"
+        throw new Error(
+            "Login session not found. Please login again."
         );
-
     }
 
-};
+
+    /*
+    Always request a valid Firebase token.
+    */
+
+    const token =
+        await user.getIdToken(true);
 
 
-/* =========================================================
-   LOGIN
-========================================================= */
+    if (!token) {
 
-window.login =
-async function() {
-
-
-    clearMessage();
-
-
-    const button =
-        document.getElementById(
-            "loginButton"
+        throw new Error(
+            "Authentication token missing."
         );
+    }
+
+
+    localStorage.setItem(
+        "firebaseUid",
+        user.uid
+    );
+
+
+    localStorage.setItem(
+        "firebaseEmail",
+        user.email || ""
+    );
+
+
+    localStorage.setItem(
+        "firebaseIdToken",
+        token
+    );
+
+
+    localStorage.setItem(
+        "statuslyLoggedIn",
+        "true"
+    );
+
+
+    return token;
+}
+
+
+/*
+=========================================================
+AUTHENTICATED FETCH
+=========================================================
+*/
+
+async function statuslyFetch(
+    url,
+    options = {}
+) {
+
+    const token =
+        await getStatuslyToken();
+
+
+    const headers =
+        Object.assign(
+            {},
+            options.headers || {}
+        );
+
+
+    headers["Authorization"] =
+        "Bearer " + token;
+
+
+    headers["Content-Type"] =
+        "application/json";
+
+
+    return fetch(
+        url,
+        Object.assign(
+            {},
+            options,
+            {
+                headers: headers
+            }
+        )
+    );
+}
+
+
+/*
+=========================================================
+MAKE PATIENT OLD
+=========================================================
+*/
+
+async function makePatientOld(
+    mobile
+) {
+
+    if (!mobile) {
+
+        alert(
+            "Patient mobile number is missing."
+        );
+
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            "Make this patient OLD?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
 
 
     try {
 
-
-        const email =
-            document
-                .getElementById(
-                    "loginEmail"
-                )
-                .value
-                .trim();
-
-
-        const password =
-            document
-                .getElementById(
-                    "loginPassword"
-                )
-                .value;
-
-
-        if (
-            !email ||
-            !password
-        ) {
-
-            showMessage(
-                "Enter your email and password.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        setButtonLoading(
-            button,
-            true,
-            "Login to Dashboard",
-            "Signing in..."
-        );
-
-
-        /* =================================================
-           1. FIREBASE
-        ================================================== */
-
-        const userCredential =
-            await signInWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
-
-
-        const user =
-            userCredential.user;
-
-
-        const token =
-            await user.getIdToken(
-                true
-            );
-
-
-        if (!token) {
-
-            throw new Error(
-                "Firebase authentication token missing."
-            );
-
-        }
-
-
-        /* =================================================
-           2. BACKEND AUTHENTICATION
-        ================================================== */
-
-        const backendResponse =
-            await fetch(
-                "/login",
+        const response =
+            await statuslyFetch(
+                "/api/doctor/make-patient-old",
                 {
+                    method: "POST",
 
-                    method:
-                        "POST",
-
-                    headers: {
-
-                        "Authorization":
-                            "Bearer " +
-                            token,
-
-                        "Content-Type":
-                            "application/json"
-
-                    }
-
+                    body: JSON.stringify({
+                        mobile: mobile
+                    })
                 }
             );
 
 
-        const backendData =
-            await backendResponse.json();
+        let result = {};
 
-
-        if (
-            !backendResponse.ok
-        ) {
-
-            throw new Error(
-                backendData.error ||
-                "Backend authentication failed."
-            );
-
+        try {
+            result =
+                await response.json();
+        }
+        catch(error) {
+            result = {};
         }
 
 
-        /* =================================================
-           SAVE USER DATA
-        ================================================== */
-
-        localStorage.setItem(
-            "uid",
-            backendData.uid ||
-            user.uid
-        );
-
-
-        localStorage.setItem(
-            "hospitalId",
-            backendData.hospitalId ||
-            ""
-        );
-
-
-        localStorage.setItem(
-            "hospitalName",
-            backendData.hospitalName ||
-            ""
-        );
-
-
-        localStorage.setItem(
-            "statuslyLoggedIn",
-            "true"
-        );
-
-
-        localStorage.setItem(
-            "firebaseUid",
-            user.uid
-        );
-
-
-        /* =================================================
-           3. CHECK SUBSCRIPTION
-        ================================================== */
-
-        const subscriptionResponse =
-            await fetch(
-                "/check-subscription",
-                {
-
-                    method:
-                        "POST",
-
-                    headers: {
-
-                        "Authorization":
-                            "Bearer " +
-                            token,
-
-                        "Content-Type":
-                            "application/json"
-
-                    }
-
-                }
-            );
-
-
-        const subscriptionData =
-            await subscriptionResponse.json();
-
-
         if (
-            !subscriptionResponse.ok
+            response.status === 401
         ) {
 
-            throw new Error(
-                subscriptionData.error ||
-                "Unable to check subscription."
+            alert(
+                "Login session expired. Please login again."
             );
-
-        }
-
-
-        /* =================================================
-           ACTIVE
-        ================================================== */
-
-        if (
-            subscriptionData.active === true
-        ) {
-
-            setButtonLoading(
-                button,
-                false,
-                "Login to Dashboard",
-                ""
-            );
-
-
-            showMessage(
-                "Login successful. Opening dashboard...",
-                "success"
-            );
-
-
-            setTimeout(
-                () => {
-
-                    window.location.href =
-                        "/dashboard";
-
-                },
-                400
-            );
-
 
             return;
-
         }
 
 
-        /* =================================================
-           EXPIRED / NO SUBSCRIPTION
-        ================================================== */
+        if (
+            !response.ok ||
+            result.success !== true
+        ) {
 
-        setButtonLoading(
-            button,
-            false,
-            "Login to Dashboard",
-            ""
-        );
-
-
-        showMessage(
-            "Your subscription is not active. Opening plans...",
-            "error"
-        );
-
-
-        const plan =
-            localStorage.getItem(
-                "selectedPlan"
+            alert(
+                result.error ||
+                result.message ||
+                "Unable to make patient OLD."
             );
 
+            return;
+        }
 
-        setTimeout(
-            () => {
+
+        showToast(
+            "Patient marked as OLD."
+        );
+
+
+        /*
+        Update all local appointments for
+        this patient.
+
+        Visit 1 stays NEW.
+        Visit 2+ become OLD.
+        */
+
+        const mobile10 =
+            normalizeMobile(mobile);
+
+
+        allAppointments.forEach(
+            item => {
 
                 if (
-                    allowedPlans.includes(
-                        plan
-                    )
+                    normalizeMobile(
+                        item.mobile
+                    ) === mobile10
                 ) {
 
-                    window.location.href =
-                        "/payment?plan=" +
-                        encodeURIComponent(
-                            plan
-                        );
+                    if (
+                        Number(
+                            item.visit_number || 1
+                        ) > 1
+                    ) {
 
+                        item.patient_status =
+                            "OLD";
+                    }
+                    else {
+
+                        item.patient_status =
+                            "NEW";
+                    }
                 }
-                else {
-
-                    window.location.href =
-                        "/payment";
-
-                }
-
-            },
-            600
+            }
         );
 
+
+        applyFilters();
 
     }
     catch(error) {
 
         console.error(
-            "LOGIN ERROR:",
+            "MAKE OLD ERROR:",
             error
         );
 
 
-        setButtonLoading(
-            button,
-            false,
-            "Login to Dashboard",
-            ""
-        );
-
-
-        if (
-            error.code ===
-            "auth/invalid-credential"
-        ) {
-
-            showMessage(
-                "Email or password is incorrect.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        if (
-            error.code ===
-            "auth/user-not-found"
-        ) {
-
-            showMessage(
-                "This email is not registered.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        showMessage(
+        alert(
             error.message ||
-            "Login failed.",
-            "error"
+            "Something went wrong while updating patient."
+        );
+    }
+}
+
+
+/*
+=========================================================
+SAVE AMOUNT
+=========================================================
+*/
+
+async function saveAmount(
+    appointmentId,
+    inputElement
+) {
+
+    if (!appointmentId) {
+
+        alert(
+            "Appointment ID is missing."
         );
 
+        return;
     }
 
-};
+
+    const raw =
+        inputElement.value;
 
 
-/* =========================================================
-   FORGOT PASSWORD
-========================================================= */
+    if (
+        raw === "" ||
+        raw === null ||
+        raw === undefined
+    ) {
 
-window.resetPassword =
-async function() {
-
-
-    clearMessage();
-
-
-    const button =
-        document.getElementById(
-            "forgotButton"
+        alert(
+            "Please enter amount."
         );
+
+        return;
+    }
+
+
+    const amount =
+        Number(raw);
+
+
+    if (
+        isNaN(amount) ||
+        amount < 0
+    ) {
+
+        alert(
+            "Please enter a valid amount."
+        );
+
+        return;
+    }
 
 
     try {
 
+        const response =
+            await statuslyFetch(
+                "/api/appointment/" +
+                encodeURIComponent(
+                    appointmentId
+                ) +
+                "/amount",
+                {
+                    method: "POST",
 
-        const email =
-            document
-                .getElementById(
-                    "forgotEmail"
-                )
-                .value
-                .trim();
-
-
-        if (!email) {
-
-            showMessage(
-                "Enter your registered email.",
-                "error"
+                    body: JSON.stringify({
+                        amount: amount
+                    })
+                }
             );
 
-            return;
 
+        let result = {};
+
+        try {
+            result =
+                await response.json();
+        }
+        catch(error) {
+            result = {};
         }
 
 
-        setButtonLoading(
-            button,
-            true,
-            "Send Reset Link",
-            "Sending..."
+        if (
+            response.status === 401
+        ) {
+
+            alert(
+                "Login session expired. Please login again."
+            );
+
+            return;
+        }
+
+
+        if (
+            !response.ok ||
+            result.success !== true
+        ) {
+
+            alert(
+                result.error ||
+                result.message ||
+                "Amount update failed."
+            );
+
+            return;
+        }
+
+
+        /*
+        Update local data.
+        */
+
+        const appointment =
+            findAppointment(
+                appointmentId
+            );
+
+
+        if (appointment) {
+
+            appointment.amount =
+                amount;
+        }
+
+
+        showToast(
+            "Amount updated successfully."
         );
-
-
-        await sendPasswordResetEmail(
-            auth,
-            email
-        );
-
-
-        setButtonLoading(
-            button,
-            false,
-            "Send Reset Link",
-            ""
-        );
-
-
-        showMessage(
-            "Password reset link sent successfully.",
-            "success"
-        );
-
 
     }
     catch(error) {
 
         console.error(
-            "RESET PASSWORD ERROR:",
+            "SAVE AMOUNT ERROR:",
             error
         );
 
 
-        setButtonLoading(
-            button,
-            false,
-            "Send Reset Link",
-            ""
-        );
-
-
-        showMessage(
+        alert(
             error.message ||
-            "Unable to send reset email.",
-            "error"
+            "Unable to update amount."
         );
-
     }
+}
 
-};
+
+/*
+=========================================================
+EVENTS
+=========================================================
+*/
+
+document
+    .getElementById("doctorFilter")
+    .addEventListener(
+        "change",
+        applyFilters
+    );
 
 
-/* =========================================================
-   FIREBASE SESSION
-========================================================= */
+document
+    .getElementById("searchInput")
+    .addEventListener(
+        "input",
+        applyFilters
+    );
 
-onAuthStateChanged(
-    auth,
-    user => {
 
-        if (user) {
+document
+    .getElementById("dateFilter")
+    .addEventListener(
+        "change",
+        applyFilters
+    );
 
-            console.log(
-                "FIREBASE SESSION ACTIVE:",
-                user.uid
-            );
 
+/*
+ESC closes modal.
+*/
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Escape"
+        ) {
+            closeDetails();
         }
-
     }
 );
 
 
+/*
+=========================================================
+START
+=========================================================
+*/
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function() {
+
+        try {
+
+            prepareAppointments();
+
+            buildDoctorFilter();
+
+            applyFilters();
+
+            /*
+            Initialize Firebase in background.
+            It will be ready when Make OLD / Amount
+            is clicked.
+            */
+
+            initializeFirebaseAuth();
+
+        }
+        catch(error) {
+
+            console.error(
+                "APPOINTMENTS PAGE ERROR:",
+                error
+            );
+
+            document
+                .getElementById(
+                    "appointmentsContainer"
+                )
+                .innerHTML = `
+                    <div class="doctor-card">
+                        <div class="empty">
+                            Unable to load appointments.
+                            Please refresh the page.
+                        </div>
+                    </div>
+                `;
+        }
+    }
+);
+
 </script>
 
-
 </body>
-
 </html>
-
