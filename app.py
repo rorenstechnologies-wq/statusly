@@ -162,13 +162,231 @@ def format_whatsapp_number(mobile):
     return mobile
 
 
-def cashfree_headers():
+# ============================================================
+# MOBILE NORMALIZATION
+# ============================================================
+
+def normalize_mobile(mobile):
+    """
+    Converts mobile number into a consistent 10 digit number.
+
+    Examples:
+
+    9876543210
+    +919876543210
+    919876543210
+
+    ->
+
+    9876543210
+    """
+
+    digits = "".join(
+        filter(
+            str.isdigit,
+            str(mobile or "")
+        )
+    )
+
+    if len(digits) == 12 and digits.startswith("91"):
+        digits = digits[-10:]
+
+    return digits
+
+
+def get_patient_key(mobile):
+    return normalize_mobile(mobile)
+
+
+# ============================================================
+# PATIENT MASTER
+# ============================================================
+
+def get_patient_record(
+    hospital_id,
+    mobile
+):
+    """
+    Gets hospital-wise patient master record.
+    """
+
+    mobile_key = get_patient_key(
+        mobile
+    )
+
+    if not hospital_id or not mobile_key:
+        return None
+
+    return (
+        db.reference("patients")
+        .child(hospital_id)
+        .child(mobile_key)
+        .get()
+    )
+
+
+def register_patient_visit(
+    hospital_id,
+    patient_name,
+    mobile
+):
+    """
+    Patient visit management.
+
+    First appointment:
+        Visit 1
+        NEW
+
+    After Doctor/Admin makes patient OLD:
+        Visit 2 onward
+        OLD
+    """
+
+    mobile_key = get_patient_key(
+        mobile
+    )
+
+    if not hospital_id:
+        raise ValueError(
+            "Hospital ID missing"
+        )
+
+    if not mobile_key:
+        raise ValueError(
+            "Mobile number required"
+        )
+
+    if len(mobile_key) != 10:
+        raise ValueError(
+            "Valid 10 digit mobile number required"
+        )
+
+    patient_ref = (
+        db.reference("patients")
+        .child(hospital_id)
+        .child(mobile_key)
+    )
+
+    existing = patient_ref.get()
+
+    # ========================================================
+    # FIRST VISIT
+    # ========================================================
+
+    if not existing:
+
+        visit_number = 1
+
+        patient_status = "NEW"
+
+        patient_data = {
+
+            "hospital_id":
+                hospital_id,
+
+            "mobile":
+                mobile_key,
+
+            "patient_name":
+                patient_name,
+
+            "patient_status":
+                "NEW",
+
+            "visit_count":
+                1,
+
+            "created_at":
+                utc_now().isoformat(),
+
+            "updated_at":
+                utc_now().isoformat()
+        }
+
+        patient_ref.set(
+            patient_data
+        )
+
+    # ========================================================
+    # EXISTING PATIENT
+    # ========================================================
+
+    else:
+
+        try:
+            previous_visit_count = int(
+                existing.get(
+                    "visit_count",
+                    0
+                )
+            )
+        except Exception:
+            previous_visit_count = 0
+
+        visit_number = (
+            previous_visit_count + 1
+        )
+
+        patient_status = str(
+            existing.get(
+                "patient_status",
+                "NEW"
+            )
+        ).upper().strip()
+
+        if patient_status not in [
+            "NEW",
+            "OLD"
+        ]:
+            patient_status = "NEW"
+
+        patient_ref.update({
+
+            "patient_name":
+                patient_name,
+
+            "visit_count":
+                visit_number,
+
+            "updated_at":
+                utc_now().isoformat()
+        })
+
     return {
-        "x-client-id": CASHFREE_CLIENT_ID,
-        "x-client-secret": CASHFREE_CLIENT_SECRET,
-        "x-api-version": CASHFREE_API_VERSION,
-        "Content-Type": "application/json",
-        "Accept": "application/json"
+
+        "patient_key":
+            mobile_key,
+
+        "visit_number":
+            visit_number,
+
+        "patient_status":
+            patient_status
+    }
+
+
+# ============================================================
+# CASHFREE HEADERS
+# ============================================================
+
+def cashfree_headers():
+
+    return {
+
+        "x-client-id":
+            CASHFREE_CLIENT_ID,
+
+        "x-client-secret":
+            CASHFREE_CLIENT_SECRET,
+
+        "x-api-version":
+            CASHFREE_API_VERSION,
+
+        "Content-Type":
+            "application/json",
+
+        "Accept":
+            "application/json"
     }
 
 
@@ -184,21 +402,38 @@ def get_authenticated_user():
     )
 
     if not authorization:
-        print("AUTH ERROR: Authorization header missing")
+
+        print(
+            "AUTH ERROR: Authorization header missing"
+        )
+
         return None
 
-    if not authorization.startswith("Bearer "):
-        print("AUTH ERROR: Invalid Authorization format")
+    if not authorization.startswith(
+        "Bearer "
+    ):
+
+        print(
+            "AUTH ERROR: Invalid Authorization format"
+        )
+
         return None
 
     token = authorization[7:].strip()
 
     if not token:
-        print("AUTH ERROR: Firebase token missing")
+
+        print(
+            "AUTH ERROR: Firebase token missing"
+        )
+
         return None
 
     try:
-        decoded = auth.verify_id_token(token)
+
+        decoded = auth.verify_id_token(
+            token
+        )
 
         print(
             "FIREBASE USER:",
@@ -209,8 +444,14 @@ def get_authenticated_user():
         return decoded
 
     except Exception as e:
-        print("FIREBASE AUTH ERROR:", str(e))
+
+        print(
+            "FIREBASE AUTH ERROR:",
+            str(e)
+        )
+
         traceback.print_exc()
+
         return None
 
 
@@ -232,20 +473,28 @@ def get_subscription(uid):
 
 def subscription_is_active(uid):
 
-    subscription = get_subscription(uid)
+    subscription = get_subscription(
+        uid
+    )
 
     if not subscription:
         return False
 
-    if subscription.get("payment_status") != "PAID":
+    if subscription.get(
+        "payment_status"
+    ) != "PAID":
+
         return False
 
-    expiry_string = subscription.get("expiry")
+    expiry_string = subscription.get(
+        "expiry"
+    )
 
     if not expiry_string:
         return False
 
     try:
+
         expiry = datetime.fromisoformat(
             expiry_string
         )
@@ -253,10 +502,12 @@ def subscription_is_active(uid):
         return utc_now() < expiry
 
     except Exception as e:
+
         print(
             "SUBSCRIPTION EXPIRY ERROR:",
             str(e)
         )
+
         return False
 
 
@@ -264,7 +515,9 @@ def subscription_is_active(uid):
 # FIREBASE SERVICE WORKER
 # ============================================================
 
-@app.route("/firebase-messaging-sw.js")
+@app.route(
+    "/firebase-messaging-sw.js"
+)
 def firebase_sw():
 
     return send_from_directory(
@@ -279,22 +532,34 @@ def firebase_sw():
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+
+    return render_template(
+        "index.html"
+    )
 
 
 @app.route("/login-page")
 def login_page():
-    return render_template("login.html")
+
+    return render_template(
+        "login.html"
+    )
 
 
 @app.route("/payment")
 def payment():
-    return render_template("payment.html")
+
+    return render_template(
+        "payment.html"
+    )
 
 
 @app.route("/dashboard")
 def dashboard():
-    return render_template("dashboard.html")
+
+    return render_template(
+        "dashboard.html"
+    )
 
 
 @app.route("/temp-dash")
@@ -315,7 +580,10 @@ def temp_dash():
 # LOGIN
 # ============================================================
 
-@app.route("/login", methods=["POST"])
+@app.route(
+    "/login",
+    methods=["POST"]
+)
 def login():
 
     try:
@@ -323,11 +591,17 @@ def login():
         decoded = get_authenticated_user()
 
         if not decoded:
+
             return jsonify({
-                "error": "Authentication required"
+
+                "error":
+                    "Authentication required"
+
             }), 401
 
-        uid = decoded.get("uid")
+        uid = decoded.get(
+            "uid"
+        )
 
         hospital = (
             db.reference(
@@ -338,7 +612,8 @@ def login():
 
         return jsonify({
 
-            "uid": uid,
+            "uid":
+                uid,
 
             "hospitalId":
                 hospital.get(
@@ -351,16 +626,22 @@ def login():
                     "hospital_name",
                     ""
                 )
-
         })
 
     except Exception as e:
 
-        print("LOGIN ERROR:", str(e))
+        print(
+            "LOGIN ERROR:",
+            str(e)
+        )
+
         traceback.print_exc()
 
         return jsonify({
-            "error": str(e)
+
+            "error":
+                str(e)
+
         }), 401
 
 
@@ -379,17 +660,31 @@ def create_payment_order():
         decoded = get_authenticated_user()
 
         if not decoded:
+
             return jsonify({
-                "success": False,
-                "error": "Authentication required"
+
+                "success":
+                    False,
+
+                "error":
+                    "Authentication required"
+
             }), 401
 
-        uid = decoded.get("uid")
+        uid = decoded.get(
+            "uid"
+        )
 
         if not uid:
+
             return jsonify({
-                "success": False,
-                "error": "UID missing"
+
+                "success":
+                    False,
+
+                "error":
+                    "UID missing"
+
             }), 400
 
         data = request.get_json(
@@ -404,26 +699,49 @@ def create_payment_order():
         ).lower()
 
         if plan not in PLANS:
+
             return jsonify({
-                "success": False,
-                "error": "Invalid plan"
+
+                "success":
+                    False,
+
+                "error":
+                    "Invalid plan"
+
             }), 400
 
         plan_data = PLANS[plan]
 
-        amount = plan_data["amount"]
-        duration_days = plan_data["duration_days"]
+        amount = plan_data[
+            "amount"
+        ]
+
+        duration_days = plan_data[
+            "duration_days"
+        ]
 
         if not CASHFREE_CLIENT_ID:
+
             return jsonify({
-                "success": False,
-                "error": "CASHFREE_CLIENT_ID is missing"
+
+                "success":
+                    False,
+
+                "error":
+                    "CASHFREE_CLIENT_ID is missing"
+
             }), 500
 
         if not CASHFREE_CLIENT_SECRET:
+
             return jsonify({
-                "success": False,
-                "error": "CASHFREE_CLIENT_SECRET is missing"
+
+                "success":
+                    False,
+
+                "error":
+                    "CASHFREE_CLIENT_SECRET is missing"
+
             }), 500
 
         customer_name = data.get(
@@ -433,7 +751,10 @@ def create_payment_order():
 
         customer_email = data.get(
             "customer_email",
-            decoded.get("email", "")
+            decoded.get(
+                "email",
+                ""
+            )
         )
 
         customer_phone = data.get(
@@ -449,15 +770,27 @@ def create_payment_order():
         )
 
         if not customer_phone:
-            customer_phone = "9999999999"
+
+            customer_phone = (
+                "9999999999"
+            )
 
         if len(customer_phone) == 12:
-            customer_phone = customer_phone[-10:]
+
+            customer_phone = (
+                customer_phone[-10:]
+            )
 
         if len(customer_phone) != 10:
+
             return jsonify({
-                "success": False,
-                "error": "Valid 10 digit customer phone is required"
+
+                "success":
+                    False,
+
+                "error":
+                    "Valid 10 digit customer phone is required"
+
             }), 400
 
         order_id = (
@@ -509,7 +842,10 @@ def create_payment_order():
                 f"Statusly {plan} subscription"
         }
 
-        print("Creating Cashfree order:", order_id)
+        print(
+            "Creating Cashfree order:",
+            order_id
+        )
 
         response = requests.post(
 
@@ -532,7 +868,8 @@ def create_payment_order():
 
             return jsonify({
 
-                "success": False,
+                "success":
+                    False,
 
                 "error":
                     "Cashfree order creation failed",
@@ -555,7 +892,8 @@ def create_payment_order():
 
             return jsonify({
 
-                "success": False,
+                "success":
+                    False,
 
                 "error":
                     "payment_session_id missing",
@@ -606,7 +944,6 @@ def create_payment_order():
 
             "created_at":
                 utc_now().isoformat()
-
         })
 
         return jsonify({
@@ -625,7 +962,6 @@ def create_payment_order():
 
             "amount":
                 amount
-
         })
 
     except Exception as e:
@@ -639,9 +975,11 @@ def create_payment_order():
 
         return jsonify({
 
-            "success": False,
+            "success":
+                False,
 
-            "error": str(e)
+            "error":
+                str(e)
 
         }), 500
 
@@ -650,12 +988,16 @@ def create_payment_order():
 # ACTIVATE SUBSCRIPTION
 # ============================================================
 
-def activate_subscription(order_id):
+def activate_subscription(
+    order_id
+):
 
     try:
 
         payment_ref = (
-            db.reference("payment_orders")
+            db.reference(
+                "payment_orders"
+            )
             .child(order_id)
         )
 
@@ -664,8 +1006,12 @@ def activate_subscription(order_id):
         if not payment_order:
 
             return {
-                "success": False,
-                "error": "Local payment order not found"
+
+                "success":
+                    False,
+
+                "error":
+                    "Local payment order not found"
             }
 
         if payment_order.get(
@@ -673,27 +1019,47 @@ def activate_subscription(order_id):
         ):
 
             return {
-                "success": True,
-                "already_activated": True
+
+                "success":
+                    True,
+
+                "already_activated":
+                    True
             }
 
-        uid = payment_order.get("uid")
-        plan = payment_order.get("plan")
-        amount = payment_order.get("amount")
+        uid = payment_order.get(
+            "uid"
+        )
+
+        plan = payment_order.get(
+            "plan"
+        )
+
+        amount = payment_order.get(
+            "amount"
+        )
+
         duration_days = payment_order.get(
             "duration_days"
         )
 
         if not uid or not plan:
+
             return {
-                "success": False,
-                "error": "Payment order data incomplete"
+
+                "success":
+                    False,
+
+                "error":
+                    "Payment order data incomplete"
             }
 
         expiry = (
             utc_now()
             + timedelta(
-                days=int(duration_days)
+                days=int(
+                    duration_days
+                )
             )
         )
 
@@ -715,7 +1081,10 @@ def activate_subscription(order_id):
 
                 payments = response.json()
 
-                if isinstance(payments, list):
+                if isinstance(
+                    payments,
+                    list
+                ):
 
                     for payment in payments:
 
@@ -835,12 +1204,16 @@ def activate_subscription(order_id):
     "/cashfree/order-status/<order_id>",
     methods=["GET"]
 )
-def cashfree_order_status(order_id):
+def cashfree_order_status(
+    order_id
+):
 
     try:
 
         local_order = (
-            db.reference("payment_orders")
+            db.reference(
+                "payment_orders"
+            )
             .child(order_id)
             .get()
         )
@@ -899,8 +1272,10 @@ def cashfree_order_status(order_id):
 
         if status == "PAID":
 
-            activation = activate_subscription(
-                order_id
+            activation = (
+                activate_subscription(
+                    order_id
+                )
             )
 
             return jsonify({
@@ -919,14 +1294,11 @@ def cashfree_order_status(order_id):
 
                 "activation":
                     activation
-
             })
 
         db.reference(
             "payment_orders"
-        ).child(
-            order_id
-        ).update({
+        ).child(order_id).update({
 
             "payment_status":
                 status or "UNKNOWN",
@@ -948,7 +1320,6 @@ def cashfree_order_status(order_id):
 
             "order_status":
                 status
-
         })
 
     except Exception as e:
@@ -1000,6 +1371,7 @@ def cashfree_webhook():
         )
 
         if not order_id:
+
             return "EVENT_RECEIVED", 200
 
         response = requests.get(
@@ -1064,7 +1436,9 @@ def check_subscription():
 
             }), 401
 
-        uid = decoded.get("uid")
+        uid = decoded.get(
+            "uid"
+        )
 
         subscription = get_subscription(
             uid
@@ -1087,7 +1461,6 @@ def check_subscription():
 
             "subscription":
                 subscription or {}
-
         })
 
     except Exception as e:
@@ -1122,10 +1495,6 @@ def save_hospital():
 
     try:
 
-        # ----------------------------------------------------
-        # AUTHENTICATE USER
-        # ----------------------------------------------------
-
         decoded = get_authenticated_user()
 
         if not decoded:
@@ -1140,7 +1509,9 @@ def save_hospital():
 
             }), 401
 
-        uid = decoded.get("uid")
+        uid = decoded.get(
+            "uid"
+        )
 
         if not uid:
 
@@ -1154,11 +1525,9 @@ def save_hospital():
 
             }), 400
 
-        # ----------------------------------------------------
-        # CHECK SUBSCRIPTION
-        # ----------------------------------------------------
-
-        if not subscription_is_active(uid):
+        if not subscription_is_active(
+            uid
+        ):
 
             return jsonify({
 
@@ -1169,10 +1538,6 @@ def save_hospital():
                     "Active subscription required"
 
             }), 403
-
-        # ----------------------------------------------------
-        # DOCTORS
-        # ----------------------------------------------------
 
         names = request.form.getlist(
             "doctor_name"
@@ -1215,10 +1580,6 @@ def save_hospital():
                 "doctor_info":
                     infos[i]
             })
-
-        # ----------------------------------------------------
-        # HOSPITAL DATA
-        # ----------------------------------------------------
 
         hospital_data = {
 
@@ -1275,7 +1636,6 @@ def save_hospital():
 
             "uid":
                 uid
-
         })
 
     except Exception as e:
@@ -1361,11 +1721,14 @@ def book_page(uid):
         uid=uid
     )
 
+
 # ============================================================
 # AI VOICE APPOINTMENT PAGE
 # ============================================================
 
-@app.route("/hospital/<uid>/voice-book")
+@app.route(
+    "/hospital/<uid>/voice-book"
+)
 def voice_book_page(uid):
 
     hospital = (
@@ -1375,11 +1738,18 @@ def voice_book_page(uid):
     )
 
     if not hospital:
-        return "Hospital not found", 404
+
+        return (
+            "Hospital not found",
+            404
+        )
 
     return render_template(
+
         "voice-appointment.html",
+
         hospital=hospital,
+
         uid=uid
     )
 
@@ -1388,7 +1758,9 @@ def voice_book_page(uid):
 # VOICE APPOINTMENT - GET HOSPITAL DATA
 # ============================================================
 
-@app.route("/api/voice/hospital/<uid>")
+@app.route(
+    "/api/voice/hospital/<uid>"
+)
 def voice_hospital_data(uid):
 
     try:
@@ -1403,8 +1775,13 @@ def voice_hospital_data(uid):
         if not hospital:
 
             return jsonify({
-                "success": False,
-                "error": "Hospital not found"
+
+                "success":
+                    False,
+
+                "error":
+                    "Hospital not found"
+
             }), 404
 
         doctors = hospital.get(
@@ -1415,6 +1792,12 @@ def voice_hospital_data(uid):
         clean_doctors = []
 
         for doctor in doctors:
+
+            if not isinstance(
+                doctor,
+                dict
+            ):
+                continue
 
             clean_doctors.append({
 
@@ -1439,9 +1822,11 @@ def voice_hospital_data(uid):
 
         return jsonify({
 
-            "success": True,
+            "success":
+                True,
 
             "hospital": {
+
                 "hospital_name":
                     hospital.get(
                         "hospital_name",
@@ -1451,7 +1836,6 @@ def voice_hospital_data(uid):
 
             "doctors":
                 clean_doctors
-
         })
 
     except Exception as e:
@@ -1460,9 +1844,11 @@ def voice_hospital_data(uid):
 
         return jsonify({
 
-            "success": False,
+            "success":
+                False,
 
-            "error": str(e)
+            "error":
+                str(e)
 
         }), 500
 
@@ -1487,10 +1873,6 @@ def voice_book_appointment():
             "VOICE BOOKING DATA:",
             data
         )
-
-        # ----------------------------------------------------
-        # REQUIRED
-        # ----------------------------------------------------
 
         hospital_id = str(
             data.get(
@@ -1562,59 +1944,82 @@ def voice_book_appointment():
         if not hospital_id:
 
             return jsonify({
-                "success": False,
-                "error": "Hospital ID missing"
+
+                "success":
+                    False,
+
+                "error":
+                    "Hospital ID missing"
+
             }), 400
 
         if not patient_name:
 
             return jsonify({
-                "success": False,
-                "error": "Patient name required"
+
+                "success":
+                    False,
+
+                "error":
+                    "Patient name required"
+
             }), 400
 
         if not doctor_name:
 
             return jsonify({
-                "success": False,
-                "error": "Doctor name required"
+
+                "success":
+                    False,
+
+                "error":
+                    "Doctor name required"
+
             }), 400
 
         if not appointment_date:
 
             return jsonify({
-                "success": False,
-                "error": "Appointment date required"
+
+                "success":
+                    False,
+
+                "error":
+                    "Appointment date required"
+
             }), 400
 
         if not appointment_time:
 
             return jsonify({
-                "success": False,
-                "error": "Appointment time required"
+
+                "success":
+                    False,
+
+                "error":
+                    "Appointment time required"
+
             }), 400
 
         if not mobile:
 
             return jsonify({
-                "success": False,
-                "error": "Mobile number required"
+
+                "success":
+                    False,
+
+                "error":
+                    "Mobile number required"
+
             }), 400
 
         # ----------------------------------------------------
         # VALID MOBILE
         # ----------------------------------------------------
 
-        mobile_digits = "".join(
-            filter(
-                str.isdigit,
-                mobile
-            )
+        mobile_digits = normalize_mobile(
+            mobile
         )
-
-        if len(mobile_digits) == 12:
-
-            mobile_digits = mobile_digits[-10:]
 
         if len(mobile_digits) != 10:
 
@@ -1675,9 +2080,14 @@ def voice_book_appointment():
                 )
             ).strip()
 
-            if existing_name.lower() == doctor_name.lower():
+            if (
+                existing_name.lower()
+                ==
+                doctor_name.lower()
+            ):
 
                 selected_doctor = doctor
+
                 break
 
         if not selected_doctor:
@@ -1693,6 +2103,30 @@ def voice_book_appointment():
             }), 404
 
         # ----------------------------------------------------
+        # PATIENT MASTER / VISIT
+        # ----------------------------------------------------
+
+        patient_info = register_patient_visit(
+
+            hospital_id=
+                hospital_id,
+
+            patient_name=
+                patient_name,
+
+            mobile=
+                mobile_digits
+        )
+
+        visit_number = patient_info[
+            "visit_number"
+        ]
+
+        patient_status = patient_info[
+            "patient_status"
+        ]
+
+        # ----------------------------------------------------
         # PATIENT NUMBER
         # ----------------------------------------------------
 
@@ -1706,7 +2140,8 @@ def voice_book_appointment():
         )
 
         patient_no = (
-            int(current_number) + 1
+            int(current_number)
+            + 1
         )
 
         counter_ref.set(
@@ -1715,6 +2150,11 @@ def voice_book_appointment():
 
         # ----------------------------------------------------
         # CREATE APPOINTMENT
+        # ----------------------------------------------------
+        #
+        # Amount = 0 initially.
+        # Doctor/Admin will decide amount later.
+        #
         # ----------------------------------------------------
 
         appointment = {
@@ -1758,6 +2198,15 @@ def voice_book_appointment():
             "appointment_time":
                 appointment_time,
 
+            "visit_number":
+                visit_number,
+
+            "patient_status":
+                patient_status,
+
+            "amount":
+                0,
+
             "booking_source":
                 "AI_VOICE",
 
@@ -1773,7 +2222,9 @@ def voice_book_appointment():
             )
         )
 
-        patient_id = appointment_ref.key
+        patient_id = (
+            appointment_ref.key
+        )
 
         # ----------------------------------------------------
         # WHATSAPP CONFIRMATION
@@ -1808,6 +2259,15 @@ def voice_book_appointment():
             "patient_no":
                 patient_no,
 
+            "visit_number":
+                visit_number,
+
+            "patient_status":
+                patient_status,
+
+            "amount":
+                0,
+
             "hospital_name":
                 hospital.get(
                     "hospital_name",
@@ -1837,7 +2297,6 @@ def voice_book_appointment():
 
             "whatsapp":
                 whatsapp_result
-
         })
 
     except Exception as e:
@@ -1858,6 +2317,8 @@ def voice_book_appointment():
                 str(e)
 
         }), 500
+
+
 # ============================================================
 # BOOK APPOINTMENT
 # ============================================================
@@ -1886,6 +2347,42 @@ def book_appointment():
 
             }), 400
 
+        patient_name = request.form.get(
+            "patient_name",
+            ""
+        ).strip()
+
+        mobile = normalize_mobile(
+            request.form.get(
+                "mobile",
+                ""
+            )
+        )
+
+        # ----------------------------------------------------
+        # PATIENT MASTER / VISIT
+        # ----------------------------------------------------
+
+        patient_info = register_patient_visit(
+
+            hospital_id=
+                hospital_id,
+
+            patient_name=
+                patient_name,
+
+            mobile=
+                mobile
+        )
+
+        visit_number = patient_info[
+            "visit_number"
+        ]
+
+        patient_status = patient_info[
+            "patient_status"
+        ]
+
         # ----------------------------------------------------
         # PATIENT NUMBER
         # ----------------------------------------------------
@@ -1894,9 +2391,15 @@ def book_appointment():
             "counters/patient_no"
         )
 
+        current_number = (
+            counter_ref.get()
+            or 0
+        )
+
         patient_no = (
-            counter_ref.get() or 0
-        ) + 1
+            int(current_number)
+            + 1
+        )
 
         counter_ref.set(
             patient_no
@@ -1904,6 +2407,11 @@ def book_appointment():
 
         # ----------------------------------------------------
         # APPOINTMENT
+        # ----------------------------------------------------
+        #
+        # Amount is decided by Doctor/Admin.
+        # Initial value = 0.
+        #
         # ----------------------------------------------------
 
         appointment = {
@@ -1920,9 +2428,7 @@ def book_appointment():
                 ),
 
             "patient_name":
-                request.form.get(
-                    "patient_name"
-                ),
+                patient_name,
 
             "gender":
                 request.form.get(
@@ -1935,9 +2441,7 @@ def book_appointment():
                 ),
 
             "mobile":
-                request.form.get(
-                    "mobile"
-                ),
+                mobile,
 
             "address":
                 request.form.get(
@@ -1954,13 +2458,25 @@ def book_appointment():
                     "appointment_time"
                 ),
 
+            "visit_number":
+                visit_number,
+
+            "patient_status":
+                patient_status,
+
+            "amount":
+                0,
+
             "created_at":
                 utc_now().isoformat()
         }
 
         ref = (
-            db.reference("appointments")
-            .push(appointment)
+            db.reference(
+                "appointments"
+            ).push(
+                appointment
+            )
         )
 
         patient_id = ref.key
@@ -2028,9 +2544,19 @@ def book_appointment():
             []
         ):
 
-            if doctor.get(
-                "doctor_name"
-            ) == doctor_name:
+            if not isinstance(
+                doctor,
+                dict
+            ):
+                continue
+
+            if (
+                doctor.get(
+                    "doctor_name"
+                )
+                ==
+                doctor_name
+            ):
 
                 specialization = doctor.get(
                     "specialization",
@@ -2047,13 +2573,17 @@ def book_appointment():
 
             "success.html",
 
-            patient_id=patient_id,
+            patient_id=
+                patient_id,
 
-            hospital_name=hospital_name,
+            hospital_name=
+                hospital_name,
 
-            doctor_name=doctor_name,
+            doctor_name=
+                doctor_name,
 
-            specialization=specialization,
+            specialization=
+                specialization,
 
             appointment_date=
                 appointment.get(
@@ -2092,7 +2622,9 @@ def book_appointment():
 # GET HOSPITAL APPOINTMENTS
 # ============================================================
 
-def get_hospital_appointments(hospital_id):
+def get_hospital_appointments(
+    hospital_id
+):
 
     if not hospital_id:
         return []
@@ -2119,17 +2651,723 @@ def get_hospital_appointments(hospital_id):
         ) != hospital_id:
             continue
 
-        appointment = dict(
+        item = dict(
             appointment
         )
 
-        appointment["id"] = appointment_id
+        item["id"] = (
+            appointment_id
+        )
+
+        # ----------------------------------------------------
+        # NORMALIZE MOBILE
+        # ----------------------------------------------------
+
+        mobile = normalize_mobile(
+            item.get(
+                "mobile",
+                ""
+            )
+        )
+
+        item["mobile"] = mobile
+
+        # ----------------------------------------------------
+        # VISIT NUMBER
+        # ----------------------------------------------------
+
+        try:
+
+            visit_number = int(
+                item.get(
+                    "visit_number",
+                    1
+                )
+            )
+
+        except Exception:
+
+            visit_number = 1
+
+        item["visit_number"] = (
+            visit_number
+        )
+
+        # ----------------------------------------------------
+        # PATIENT MASTER
+        # ----------------------------------------------------
+
+        patient = get_patient_record(
+
+            hospital_id,
+
+            mobile
+        )
+
+        if patient:
+
+            current_status = str(
+                patient.get(
+                    "patient_status",
+                    "NEW"
+                )
+            ).upper().strip()
+
+        else:
+
+            current_status = str(
+                item.get(
+                    "patient_status",
+                    "NEW"
+                )
+            ).upper().strip()
+
+        if current_status not in [
+            "NEW",
+            "OLD"
+        ]:
+
+            current_status = "NEW"
+
+        # ----------------------------------------------------
+        # IMPORTANT TYPE RULE
+        #
+        # Visit 1 always remains NEW.
+        #
+        # If patient is OLD:
+        # Visit 2 onward = OLD
+        #
+        # ----------------------------------------------------
+
+        if visit_number <= 1:
+
+            display_status = "NEW"
+
+        else:
+
+            display_status = current_status
+
+            if display_status == "NEW":
+
+                display_status = "NEW"
+
+        item["display_patient_status"] = (
+            display_status
+        )
+
+        # ----------------------------------------------------
+        # AMOUNT
+        #
+        # Amount is appointment-specific.
+        # Never calculate automatically.
+        # ----------------------------------------------------
+
+        if item.get(
+            "amount"
+        ) is None:
+
+            item["amount"] = 0
+
+        # ----------------------------------------------------
+        # CREATED AT FALLBACK
+        # ----------------------------------------------------
+
+        item["_created_at"] = str(
+            item.get(
+                "created_at",
+                ""
+            )
+        )
 
         appointments.append(
-            appointment
+            item
         )
 
+    # ========================================================
+    # SORT
+    #
+    # Latest appointment date/time first.
+    # ========================================================
+
+    def appointment_sort_key(
+        item
+    ):
+
+        date_value = str(
+            item.get(
+                "appointment_date",
+                ""
+            )
+        ).strip()
+
+        time_value = str(
+            item.get(
+                "appointment_time",
+                ""
+            )
+        ).strip()
+
+        # ----------------------------------------------------
+        # Try 24-hour format
+        # ----------------------------------------------------
+
+        formats = [
+
+            "%Y-%m-%d %H:%M",
+
+            "%Y-%m-%d %H:%M:%S",
+
+            "%Y-%m-%d %I:%M %p",
+
+            "%Y-%m-%d %I %p"
+        ]
+
+        for fmt in formats:
+
+            try:
+
+                return datetime.strptime(
+
+                    f"{date_value} {time_value}",
+
+                    fmt
+                )
+
+            except ValueError:
+
+                pass
+
+        # ----------------------------------------------------
+        # Date only fallback
+        # ----------------------------------------------------
+
+        try:
+
+            return datetime.strptime(
+                date_value,
+                "%Y-%m-%d"
+            )
+
+        except ValueError:
+
+            pass
+
+        # ----------------------------------------------------
+        # Created-at fallback
+        # ----------------------------------------------------
+
+        created_at = item.get(
+            "_created_at",
+            ""
+        )
+
+        try:
+
+            return datetime.fromisoformat(
+                created_at.replace(
+                    "Z",
+                    ""
+                )
+            )
+
+        except Exception:
+
+            return datetime.min
+
+    appointments.sort(
+        key=appointment_sort_key,
+        reverse=True
+    )
+
     return appointments
+
+
+# ============================================================
+# MAKE PATIENT OLD
+# ============================================================
+
+@app.route(
+    "/api/doctor/make-patient-old",
+    methods=["POST"]
+)
+def make_patient_old():
+
+    try:
+
+        # ----------------------------------------------------
+        # AUTHENTICATION
+        # ----------------------------------------------------
+
+        decoded = get_authenticated_user()
+
+        if not decoded:
+
+            return jsonify({
+
+                "success":
+                    False,
+
+                "error":
+                    "Authentication required"
+
+            }), 401
+
+        hospital_id = decoded.get(
+            "uid"
+        )
+
+        if not hospital_id:
+
+            return jsonify({
+
+                "success":
+                    False,
+
+                "error":
+                    "Hospital ID missing"
+
+            }), 400
+
+        # ----------------------------------------------------
+        # REQUEST
+        # ----------------------------------------------------
+
+        data = request.get_json(
+            silent=True
+        ) or {}
+
+        mobile = normalize_mobile(
+            data.get(
+                "mobile",
+                ""
+            )
+        )
+
+        if not mobile:
+
+            return jsonify({
+
+                "success":
+                    False,
+
+                "error":
+                    "Mobile number required"
+
+            }), 400
+
+        if len(mobile) != 10:
+
+            return jsonify({
+
+                "success":
+                    False,
+
+                "error":
+                    "Valid 10 digit mobile number required"
+
+            }), 400
+
+        # ----------------------------------------------------
+        # PATIENT
+        # ----------------------------------------------------
+
+        patient_ref = (
+            db.reference("patients")
+            .child(hospital_id)
+            .child(mobile)
+        )
+
+        patient = patient_ref.get()
+
+        if not patient:
+
+            return jsonify({
+
+                "success":
+                    False,
+
+                "error":
+                    "Patient not found"
+
+            }), 404
+
+        # ----------------------------------------------------
+        # SET PATIENT MASTER OLD
+        # ----------------------------------------------------
+
+        changed_by = decoded.get(
+            "email"
+        ) or decoded.get(
+            "uid",
+            "doctor"
+        )
+
+        changed_at = (
+            utc_now().isoformat()
+        )
+
+        patient_ref.update({
+
+            "patient_status":
+                "OLD",
+
+            "updated_at":
+                changed_at,
+
+            "status_changed_by":
+                changed_by,
+
+            "status_changed_at":
+                changed_at
+        })
+
+        # ----------------------------------------------------
+        # UPDATE EXISTING APPOINTMENTS
+        #
+        # Visit 1 remains NEW.
+        #
+        # Visit 2 onward becomes OLD.
+        #
+        # Amount is NOT changed.
+        #
+        # ----------------------------------------------------
+
+        appointments_ref = db.reference(
+            "appointments"
+        )
+
+        all_appointments = (
+            appointments_ref.get()
+            or {}
+        )
+
+        updated_count = 0
+
+        for appointment_id, appointment in all_appointments.items():
+
+            if not isinstance(
+                appointment,
+                dict
+            ):
+                continue
+
+            if appointment.get(
+                "hospital_id"
+            ) != hospital_id:
+                continue
+
+            appointment_mobile = normalize_mobile(
+                appointment.get(
+                    "mobile",
+                    ""
+                )
+            )
+
+            if appointment_mobile != mobile:
+                continue
+
+            try:
+
+                visit_number = int(
+                    appointment.get(
+                        "visit_number",
+                        1
+                    )
+                )
+
+            except Exception:
+
+                visit_number = 1
+
+            # ------------------------------------------------
+            # Visit 1 ALWAYS remains NEW
+            # ------------------------------------------------
+
+            if visit_number <= 1:
+
+                appointments_ref.child(
+                    appointment_id
+                ).update({
+
+                    "patient_status":
+                        "NEW"
+                })
+
+                continue
+
+            # ------------------------------------------------
+            # Visit 2 onward = OLD
+            # ------------------------------------------------
+
+            appointments_ref.child(
+                appointment_id
+            ).update({
+
+                "patient_status":
+                    "OLD",
+
+                "status_changed_by":
+                    changed_by,
+
+                "status_changed_at":
+                    changed_at
+
+                # IMPORTANT:
+                # amount is intentionally NOT included.
+            })
+
+            updated_count += 1
+
+        return jsonify({
+
+            "success":
+                True,
+
+            "message":
+                "Patient changed to OLD",
+
+            "mobile":
+                mobile,
+
+            "patient_status":
+                "OLD",
+
+            "updated_appointments":
+                updated_count
+        })
+
+    except Exception as e:
+
+        print(
+            "MAKE PATIENT OLD ERROR:",
+            str(e)
+        )
+
+        traceback.print_exc()
+
+        return jsonify({
+
+            "success":
+                False,
+
+            "error":
+                str(e)
+
+        }), 500
+
+
+# ============================================================
+# UPDATE APPOINTMENT AMOUNT
+# ============================================================
+
+@app.route(
+    "/api/appointment/<appointment_id>/amount",
+    methods=["POST"]
+)
+def update_appointment_amount(
+    appointment_id
+):
+
+    try:
+
+        # ----------------------------------------------------
+        # AUTHENTICATION
+        # ----------------------------------------------------
+
+        decoded = get_authenticated_user()
+
+        if not decoded:
+
+            return jsonify({
+
+                "success":
+                    False,
+
+                "error":
+                    "Authentication required"
+
+            }), 401
+
+        hospital_id = decoded.get(
+            "uid"
+        )
+
+        if not hospital_id:
+
+            return jsonify({
+
+                "success":
+                    False,
+
+                "error":
+                    "Hospital ID missing"
+
+            }), 400
+
+        # ----------------------------------------------------
+        # GET APPOINTMENT
+        # ----------------------------------------------------
+
+        appointment_ref = (
+            db.reference(
+                "appointments"
+            )
+            .child(
+                appointment_id
+            )
+        )
+
+        appointment = appointment_ref.get()
+
+        if not appointment:
+
+            return jsonify({
+
+                "success":
+                    False,
+
+                "error":
+                    "Appointment not found"
+
+            }), 404
+
+        # ----------------------------------------------------
+        # SECURITY
+        # ----------------------------------------------------
+
+        if appointment.get(
+            "hospital_id"
+        ) != hospital_id:
+
+            return jsonify({
+
+                "success":
+                    False,
+
+                "error":
+                    "Unauthorized appointment"
+
+            }), 403
+
+        # ----------------------------------------------------
+        # REQUEST DATA
+        # ----------------------------------------------------
+
+        data = request.get_json(
+            silent=True
+        ) or {}
+
+        amount = data.get(
+            "amount"
+        )
+
+        if amount is None:
+
+            return jsonify({
+
+                "success":
+                    False,
+
+                "error":
+                    "Amount required"
+
+            }), 400
+
+        try:
+
+            amount = float(
+                amount
+            )
+
+        except (
+            TypeError,
+            ValueError
+        ):
+
+            return jsonify({
+
+                "success":
+                    False,
+
+                "error":
+                    "Invalid amount"
+
+            }), 400
+
+        if amount < 0:
+
+            return jsonify({
+
+                "success":
+                    False,
+
+                "error":
+                    "Amount cannot be negative"
+
+            }), 400
+
+        # ----------------------------------------------------
+        # SAVE AMOUNT
+        # ----------------------------------------------------
+        #
+        # This amount belongs ONLY to this appointment.
+        #
+        # Future appointment amounts can be different.
+        #
+        # ----------------------------------------------------
+
+        updated_by = decoded.get(
+            "email"
+        ) or decoded.get(
+            "uid",
+            "doctor"
+        )
+
+        appointment_ref.update({
+
+            "amount":
+                amount,
+
+            "amount_updated_by":
+                updated_by,
+
+            "amount_updated_at":
+                utc_now().isoformat()
+        })
+
+        return jsonify({
+
+            "success":
+                True,
+
+            "message":
+                "Appointment amount updated",
+
+            "appointment_id":
+                appointment_id,
+
+            "amount":
+                amount
+        })
+
+    except Exception as e:
+
+        print(
+            "UPDATE AMOUNT ERROR:",
+            str(e)
+        )
+
+        traceback.print_exc()
+
+        return jsonify({
+
+            "success":
+                False,
+
+            "error":
+                str(e)
+
+        }), 500
 
 
 # ============================================================
@@ -2139,7 +3377,9 @@ def get_hospital_appointments(hospital_id):
 @app.route(
     "/api/analytics/overview/<hospital_id>"
 )
-def analytics_overview(hospital_id):
+def analytics_overview(
+    hospital_id
+):
 
     try:
 
@@ -2176,8 +3416,11 @@ def analytics_overview(hospital_id):
 
             "today_appointments":
                 sum(
+
                     1
+
                     for a in appointments
+
                     if a.get(
                         "appointment_date"
                     ) == today
@@ -2197,9 +3440,12 @@ def analytics_overview(hospital_id):
 
             "other":
                 sum(
+
                     count
+
                     for gender, count
                     in gender_counts.items()
+
                     if gender not in [
                         "male",
                         "female"
@@ -2229,7 +3475,9 @@ def analytics_overview(hospital_id):
 @app.route(
     "/api/analytics/gender/<hospital_id>"
 )
-def analytics_gender(hospital_id):
+def analytics_gender(
+    hospital_id
+):
 
     try:
 
@@ -2251,6 +3499,7 @@ def analytics_gender(hospital_id):
             ).strip().title()
 
             if not value:
+
                 value = "Unknown"
 
             gender[value] += 1
@@ -2286,7 +3535,9 @@ def analytics_gender(hospital_id):
 @app.route(
     "/api/analytics/age/<hospital_id>"
 )
-def analytics_age(hospital_id):
+def analytics_age(
+    hospital_id
+):
 
     try:
 
@@ -2314,21 +3565,27 @@ def analytics_age(hospital_id):
                 age = 0
 
             if age <= 0:
+
                 group = "Unknown"
 
             elif age <= 18:
+
                 group = "0-18"
 
             elif age <= 30:
+
                 group = "19-30"
 
             elif age <= 45:
+
                 group = "31-45"
 
             elif age <= 60:
+
                 group = "46-60"
 
             else:
+
                 group = "60+"
 
             age_groups[group] += 1
@@ -2364,7 +3621,9 @@ def analytics_age(hospital_id):
 @app.route(
     "/api/analytics/doctors/<hospital_id>"
 )
-def analytics_doctors(hospital_id):
+def analytics_doctors(
+    hospital_id
+):
 
     try:
 
@@ -2386,6 +3645,7 @@ def analytics_doctors(hospital_id):
             ).strip()
 
             if not doctor:
+
                 doctor = "Unknown"
 
             doctors[doctor] += 1
@@ -2423,7 +3683,9 @@ def analytics_doctors(hospital_id):
 @app.route(
     "/api/analytics/daily/<hospital_id>"
 )
-def analytics_daily(hospital_id):
+def analytics_daily(
+    hospital_id
+):
 
     try:
 
@@ -2442,6 +3704,7 @@ def analytics_daily(hospital_id):
             )
 
             if date:
+
                 daily[str(date)] += 1
 
         return jsonify({
@@ -2479,7 +3742,9 @@ def analytics_daily(hospital_id):
 @app.route(
     "/api/analytics/time/<hospital_id>"
 )
-def analytics_time(hospital_id):
+def analytics_time(
+    hospital_id
+):
 
     try:
 
@@ -2501,6 +3766,7 @@ def analytics_time(hospital_id):
             ).strip()
 
             if not time:
+
                 time = "Unknown"
 
             times[time] += 1
@@ -2536,7 +3802,9 @@ def analytics_time(hospital_id):
 @app.route(
     "/api/analytics/location/<hospital_id>"
 )
-def analytics_location(hospital_id):
+def analytics_location(
+    hospital_id
+):
 
     try:
 
@@ -2567,6 +3835,7 @@ def analytics_location(hospital_id):
             ).strip()
 
             if not location:
+
                 location = "Unknown"
 
             locations[location] += 1
@@ -2596,93 +3865,136 @@ def analytics_location(hospital_id):
 
         }), 500
 
+
 # ============================================================
 # DOCTOR WORKING HOURS ANALYTICS
 # ============================================================
 
-def parse_opd_hours(opd_time):
+def parse_opd_hours(
+    opd_time
+):
 
     if not opd_time:
+
         return 0
 
-    opd_time = str(opd_time).strip()
-
-    # Support:
-    # 09:00 AM - 01:00 PM
-    # 09:00-13:00
-    # 09:00 AM to 01:00 PM
+    opd_time = str(
+        opd_time
+    ).strip()
 
     if " - " in opd_time:
-        parts = opd_time.split(" - ", 1)
+
+        parts = opd_time.split(
+            " - ",
+            1
+        )
 
     elif " to " in opd_time.lower():
-        parts = opd_time.lower().split(" to ", 1)
+
+        parts = opd_time.lower().split(
+            " to ",
+            1
+        )
 
     elif "-" in opd_time:
-        parts = opd_time.split("-", 1)
+
+        parts = opd_time.split(
+            "-",
+            1
+        )
 
     else:
+
         return 0
 
     if len(parts) != 2:
+
         return 0
 
     start_text = parts[0].strip()
+
     end_text = parts[1].strip()
 
     formats = [
+
         "%I:%M %p",
+
         "%I:%M%p",
+
         "%I %p",
+
         "%H:%M",
+
         "%H:%M:%S"
     ]
 
     start_time = None
+
     end_time = None
 
     for fmt in formats:
 
         try:
+
             start_time = datetime.strptime(
                 start_text,
                 fmt
             )
+
             break
 
         except ValueError:
+
             pass
 
     for fmt in formats:
 
         try:
+
             end_time = datetime.strptime(
                 end_text,
                 fmt
             )
+
             break
 
         except ValueError:
+
             pass
 
     if not start_time or not end_time:
+
         return 0
 
     start_minutes = (
+
         start_time.hour * 60
-        + start_time.minute
+
+        +
+
+        start_time.minute
     )
 
     end_minutes = (
+
         end_time.hour * 60
-        + end_time.minute
+
+        +
+
+        end_time.minute
     )
 
-    # Overnight OPD
     if end_minutes < start_minutes:
-        end_minutes += 24 * 60
 
-    minutes = end_minutes - start_minutes
+        end_minutes += (
+            24 * 60
+        )
+
+    minutes = (
+        end_minutes
+        -
+        start_minutes
+    )
 
     return round(
         minutes / 60,
@@ -2693,13 +4005,11 @@ def parse_opd_hours(opd_time):
 @app.route(
     "/api/analytics/doctor-working-hours/<hospital_id>"
 )
-def analytics_doctor_working_hours(hospital_id):
+def analytics_doctor_working_hours(
+    hospital_id
+):
 
     try:
-
-        # ----------------------------------------------------
-        # GET HOSPITAL
-        # ----------------------------------------------------
 
         hospital = (
             db.reference(
@@ -2712,16 +4022,13 @@ def analytics_doctor_working_hours(hospital_id):
 
             return jsonify({
 
-                "success": False,
+                "success":
+                    False,
 
                 "error":
                     "Hospital not found"
 
             }), 404
-
-        # ----------------------------------------------------
-        # GET DOCTORS
-        # ----------------------------------------------------
 
         doctors = hospital.get(
             "doctors",
@@ -2735,38 +4042,19 @@ def analytics_doctor_working_hours(hospital_id):
 
             doctors = []
 
-        # ----------------------------------------------------
-        # GET APPOINTMENTS
-        # ----------------------------------------------------
-
         appointments = (
             get_hospital_appointments(
                 hospital_id
             )
         )
 
-        # ----------------------------------------------------
-        # DATES
-        # ----------------------------------------------------
-
         today = datetime.now().date()
-
-        week_start = (
-            today
-            - timedelta(
-                days=today.weekday()
-            )
-        )
 
         month_start = today.replace(
             day=1
         )
 
         result = []
-
-        # ----------------------------------------------------
-        # PROCESS EACH DOCTOR
-        # ----------------------------------------------------
 
         for doctor in doctors:
 
@@ -2797,23 +4085,9 @@ def analytics_doctor_working_hours(hospital_id):
                 )
             ).strip()
 
-            # ------------------------------------------------
-            # DAILY WORKING HOURS
-            # ------------------------------------------------
-
             hours_per_day = parse_opd_hours(
                 opd_time
             )
-
-            # ------------------------------------------------
-            # WORKING DAYS
-            #
-            # Currently:
-            # Monday-Sunday = 7 days
-            #
-            # If later you add working_days to doctor data,
-            # this can be made fully schedule-aware.
-            # ------------------------------------------------
 
             week_hours = round(
                 hours_per_day * 7,
@@ -2827,18 +4101,10 @@ def analytics_doctor_working_hours(hospital_id):
                 2
             )
 
-            # ------------------------------------------------
-            # TODAY'S HOURS
-            # ------------------------------------------------
-
             today_hours = round(
                 hours_per_day,
                 2
             )
-
-            # ------------------------------------------------
-            # APPOINTMENT COUNT
-            # ------------------------------------------------
 
             doctor_appointments = 0
 
@@ -2853,15 +4119,13 @@ def analytics_doctor_working_hours(hospital_id):
 
                 if (
                     appointment_doctor
-                    != doctor_name
+                    !=
+                    doctor_name
                 ):
+
                     continue
 
                 doctor_appointments += 1
-
-            # ------------------------------------------------
-            # RESULT
-            # ------------------------------------------------
 
             result.append({
 
@@ -2872,8 +4136,7 @@ def analytics_doctor_working_hours(hospital_id):
                     specialization,
 
                 "opd_time":
-                    opd_time
-                    or "-",
+                    opd_time or "-",
 
                 "hours_per_day":
                     hours_per_day,
@@ -2889,12 +4152,7 @@ def analytics_doctor_working_hours(hospital_id):
 
                 "appointments":
                     doctor_appointments
-
             })
-
-        # ----------------------------------------------------
-        # RESPONSE
-        # ----------------------------------------------------
 
         return jsonify({
 
@@ -2924,6 +4182,8 @@ def analytics_doctor_working_hours(hospital_id):
                 str(e)
 
         }), 500
+
+
 # ============================================================
 # APPOINTMENTS LIST
 # ============================================================
@@ -3011,8 +4271,12 @@ def save_followup():
             }), 400
 
         patient_ref = (
-            db.reference("appointments")
-            .child(patient_id)
+            db.reference(
+                "appointments"
+            )
+            .child(
+                patient_id
+            )
         )
 
         patient = patient_ref.get()
@@ -3161,7 +4425,9 @@ def save_token():
 # FCM NOTIFICATION
 # ============================================================
 
-def send_notification(patient_id):
+def send_notification(
+    patient_id
+):
 
     try:
 
@@ -3169,7 +4435,9 @@ def send_notification(patient_id):
             db.reference(
                 "appointments"
             )
-            .child(patient_id)
+            .child(
+                patient_id
+            )
             .get()
         )
 
@@ -3177,14 +4445,18 @@ def send_notification(patient_id):
             db.reference(
                 "notification_tokens"
             )
-            .child(patient_id)
+            .child(
+                patient_id
+            )
             .get()
         )
 
         if not patient:
+
             return "Patient not found"
 
         if not token_data:
+
             return "No token found"
 
         token = token_data.get(
@@ -3192,6 +4464,7 @@ def send_notification(patient_id):
         )
 
         if not token:
+
             return "Token missing"
 
         patient_name = patient.get(
@@ -3205,8 +4478,11 @@ def send_notification(patient_id):
         )
 
         body = (
+
             f"{patient_name}, "
+
             f"your next visit is on "
+
             f"{visit_date}"
         )
 
@@ -3298,15 +4574,21 @@ def send_aisensy_appointment_confirmation(
         db.reference(
             "appointments"
         )
-        .child(patient_id)
+        .child(
+            patient_id
+        )
         .get()
     )
 
     if not patient:
 
         return {
-            "success": False,
-            "error": "Patient not found"
+
+            "success":
+                False,
+
+            "error":
+                "Patient not found"
         }
 
     mobile = patient.get(
@@ -3316,8 +4598,12 @@ def send_aisensy_appointment_confirmation(
     if not mobile:
 
         return {
-            "success": False,
-            "error": "Patient mobile number missing"
+
+            "success":
+                False,
+
+            "error":
+                "Patient mobile number missing"
         }
 
     recipient = format_whatsapp_number(
@@ -3327,15 +4613,23 @@ def send_aisensy_appointment_confirmation(
     if not recipient:
 
         return {
-            "success": False,
-            "error": "Invalid mobile number"
+
+            "success":
+                False,
+
+            "error":
+                "Invalid mobile number"
         }
 
     if not AISENSY_API_KEY:
 
         return {
-            "success": False,
-            "error": "AISENSY_API_KEY is missing"
+
+            "success":
+                False,
+
+            "error":
+                "AISENSY_API_KEY is missing"
         }
 
     hospital_id = patient.get(
@@ -3454,21 +4748,29 @@ def send_aisensy_appointment_confirmation(
 # AISENSY FOLLOW-UP
 # ============================================================
 
-def send_whatsapp_followup(patient_id):
+def send_whatsapp_followup(
+    patient_id
+):
 
     patient = (
         db.reference(
             "appointments"
         )
-        .child(patient_id)
+        .child(
+            patient_id
+        )
         .get()
     )
 
     if not patient:
 
         return {
-            "success": False,
-            "error": "Patient not found"
+
+            "success":
+                False,
+
+            "error":
+                "Patient not found"
         }
 
     mobile = patient.get(
@@ -3478,8 +4780,12 @@ def send_whatsapp_followup(patient_id):
     if not mobile:
 
         return {
-            "success": False,
-            "error": "Patient mobile number missing"
+
+            "success":
+                False,
+
+            "error":
+                "Patient mobile number missing"
         }
 
     recipient = format_whatsapp_number(
@@ -3489,15 +4795,23 @@ def send_whatsapp_followup(patient_id):
     if not recipient:
 
         return {
-            "success": False,
-            "error": "Invalid mobile number"
+
+            "success":
+                False,
+
+            "error":
+                "Invalid mobile number"
         }
 
     if not AISENSY_API_KEY:
 
         return {
-            "success": False,
-            "error": "AISENSY_API_KEY is missing"
+
+            "success":
+                False,
+
+            "error":
+                "AISENSY_API_KEY is missing"
         }
 
     hospital_id = patient.get(
@@ -3614,6 +4928,7 @@ def send_whatsapp_followup(patient_id):
 def whatsapp_webhook():
 
     if request.method == "HEAD":
+
         return "", 200
 
     if request.method == "GET":
@@ -3656,11 +4971,14 @@ def whatsapp_webhook():
 
     return "EVENT_RECEIVED", 200
 
+
 # ============================================================
 # ANALYTICS PAGE
 # ============================================================
 
-@app.route("/analytics/<uid>")
+@app.route(
+    "/analytics/<uid>"
+)
 def analytics_page(uid):
 
     hospital = (
@@ -3671,13 +4989,22 @@ def analytics_page(uid):
     )
 
     if not hospital:
-        return "Hospital not found", 404
+
+        return (
+            "Hospital not found",
+            404
+        )
 
     return render_template(
+
         "analytics.html",
+
         uid=uid,
+
         hospital=hospital
     )
+
+
 # ============================================================
 # RUN
 # ============================================================
@@ -3685,7 +5012,10 @@ def analytics_page(uid):
 if __name__ == "__main__":
 
     app.run(
+
         debug=True,
+
         host="0.0.0.0",
+
         port=5000
     )
