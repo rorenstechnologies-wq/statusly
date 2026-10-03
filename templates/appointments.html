@@ -446,7 +446,7 @@
         }
 
         /* =====================================================
-           PATIENT PROFILE
+           PROFILE
         ===================================================== */
 
         .profile-header {
@@ -576,7 +576,7 @@
         }
 
         /* =====================================================
-           FOLLOWUP MODAL
+           FOLLOWUP
         ===================================================== */
 
         .followup-card {
@@ -661,6 +661,7 @@
         ===================================================== */
 
         @media (max-width: 1100px) {
+
             .summary-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -719,6 +720,7 @@
         }
 
         @media (max-width: 450px) {
+
             .summary-grid {
                 grid-template-columns: 1fr 1fr;
             }
@@ -736,10 +738,6 @@
 
 <body>
 
-<!-- =========================================================
-     HEADER
-========================================================= -->
-
 <header class="header">
 
     <div class="header-left">
@@ -756,10 +754,6 @@
 </header>
 
 
-<!-- =========================================================
-     MAIN
-========================================================= -->
-
 <main class="container">
 
     <!-- SUMMARY -->
@@ -770,50 +764,35 @@
             <div class="summary-title">
                 Total Appointments
             </div>
-
-            <div class="summary-number" id="totalCount">
-                0
-            </div>
+            <div class="summary-number" id="totalCount">0</div>
         </div>
 
         <div class="summary-card">
             <div class="summary-title">
                 Today's Appointments
             </div>
-
-            <div class="summary-number" id="todayCount">
-                0
-            </div>
+            <div class="summary-number" id="todayCount">0</div>
         </div>
 
         <div class="summary-card">
             <div class="summary-title">
                 Upcoming
             </div>
-
-            <div class="summary-number" id="upcomingCount">
-                0
-            </div>
+            <div class="summary-number" id="upcomingCount">0</div>
         </div>
 
         <div class="summary-card">
             <div class="summary-title">
                 NEW Patients
             </div>
-
-            <div class="summary-number" id="newCount">
-                0
-            </div>
+            <div class="summary-number" id="newCount">0</div>
         </div>
 
         <div class="summary-card">
             <div class="summary-title">
                 OLD Patients
             </div>
-
-            <div class="summary-number" id="oldCount">
-                0
-            </div>
+            <div class="summary-number" id="oldCount">0</div>
         </div>
 
     </section>
@@ -843,17 +822,17 @@
 
             <div class="field">
 
-                <label>
-                    Doctor
-                </label>
+                <label>Doctor</label>
 
                 <select
                     id="doctorFilter"
                     onchange="applyFilters()"
                 >
+
                     <option value="">
                         All Doctors
                     </option>
+
                 </select>
 
             </div>
@@ -861,9 +840,7 @@
 
             <div class="field">
 
-                <label>
-                    Date
-                </label>
+                <label>Date</label>
 
                 <input
                     type="date"
@@ -876,14 +853,13 @@
 
             <div class="field">
 
-                <label>
-                    Patient Type
-                </label>
+                <label>Patient Type</label>
 
                 <select
                     id="typeFilter"
                     onchange="applyFilters()"
                 >
+
                     <option value="">
                         All Types
                     </option>
@@ -895,6 +871,7 @@
                     <option value="OLD">
                         OLD
                     </option>
+
                 </select>
 
             </div>
@@ -912,7 +889,7 @@
     </section>
 
 
-    <!-- DATE TABS -->
+    <!-- TABS -->
 
     <div class="tabs">
 
@@ -978,27 +955,16 @@
                 <thead>
 
                     <tr>
-
                         <th>No</th>
-
                         <th>Patient</th>
-
                         <th>Gender</th>
-
                         <th>Age</th>
-
                         <th>Mobile</th>
-
                         <th>Date</th>
-
                         <th>Visit</th>
-
                         <th>Type</th>
-
                         <th>Amount</th>
-
                         <th>Action / Follow-up</th>
-
                     </tr>
 
                 </thead>
@@ -1006,6 +972,7 @@
                 <tbody id="appointmentTableBody">
 
                     <tr>
+
                         <td colspan="10">
 
                             <div class="loading">
@@ -1013,6 +980,7 @@
                             </div>
 
                         </td>
+
                     </tr>
 
                 </tbody>
@@ -1040,9 +1008,7 @@
 
         <div class="modal-header">
 
-            <h2>
-                👤 Patient Details
-            </h2>
+            <h2>👤 Patient Details</h2>
 
             <button
                 class="close-btn"
@@ -1053,12 +1019,10 @@
 
         </div>
 
-
         <div
             class="modal-body"
             id="detailsBody"
-        >
-        </div>
+        ></div>
 
     </div>
 
@@ -1079,9 +1043,7 @@
 
         <div class="modal-header">
 
-            <h2>
-                📅 Add Follow-up
-            </h2>
+            <h2>📅 Add Follow-up</h2>
 
             <button
                 class="close-btn"
@@ -1151,9 +1113,7 @@
 </div>
 
 
-<!-- =========================================================
-     TOAST
-========================================================= -->
+<!-- TOAST -->
 
 <div
     class="toast"
@@ -1164,16 +1124,13 @@
 <script>
 
 /* ============================================================
-   IMPORTANT:
-   Flask route sends:
-
-   render_template(
-       "appointments.html",
-       patients=patients,
-       uid=uid
-   )
-
-   Therefore we MUST use "patients" here.
+   SERVER DATA
+   Flask:
+       render_template(
+           "appointments.html",
+           patients=patients,
+           uid=uid
+       )
 ============================================================ */
 
 window.allAppointments =
@@ -1193,14 +1150,19 @@ let filteredAppointments = [];
 
 let currentDetailsAppointment = null;
 
+let firebaseAuthReady = null;
+
 
 /* ============================================================
-   SAFE TEXT
+   SAFE HTML
 ============================================================ */
 
 function escapeHtml(value) {
 
-    if (value === null || value === undefined) {
+    if (
+        value === null ||
+        value === undefined
+    ) {
         return "";
     }
 
@@ -1214,7 +1176,22 @@ function escapeHtml(value) {
 
 
 /* ============================================================
-   MOBILE NORMALIZATION
+   SAFE JS
+============================================================ */
+
+function escapeJs(value) {
+
+    return String(value || "")
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '\\"')
+        .replace(/\n/g, "\\n")
+        .replace(/\r/g, "\\r");
+}
+
+
+/* ============================================================
+   MOBILE
 ============================================================ */
 
 function normalizeMobile(mobile) {
@@ -1223,19 +1200,24 @@ function normalizeMobile(mobile) {
         String(mobile || "")
         .replace(/\D/g, "");
 
+
     if (
         digits.length === 12 &&
         digits.startsWith("91")
     ) {
-        digits = digits.slice(-10);
+
+        digits =
+            digits.slice(-10);
+
     }
+
 
     return digits;
 }
 
 
 /* ============================================================
-   DATE PARSER
+   DATE TIME
 ============================================================ */
 
 function getAppointmentDateTime(item) {
@@ -1245,41 +1227,52 @@ function getAppointmentDateTime(item) {
             item.appointment_date || ""
         ).trim();
 
+
     const time =
         String(
             item.appointment_time || ""
         ).trim();
+
 
     if (!date) {
         return null;
     }
 
 
-    /* YYYY-MM-DD */
-
     let dateTimeString = date;
 
+
     if (time) {
-        dateTimeString += " " + time;
+
+        dateTimeString +=
+            " " + time;
+
     }
 
-
-    /* 24 hour / normal browser parsing */
 
     let parsed =
         new Date(
-            dateTimeString.replace(" ", "T")
+            dateTimeString.replace(
+                " ",
+                "T"
+            )
         );
 
+
     if (!isNaN(parsed.getTime())) {
+
         return parsed;
+
     }
 
 
-    /* DD/MM/YYYY */
+    /*
+       DD/MM/YYYY
+    */
 
     const parts =
         date.split("/");
+
 
     if (parts.length === 3) {
 
@@ -1291,6 +1284,7 @@ function getAppointmentDateTime(item) {
 
         const year =
             parseInt(parts[2], 10);
+
 
         if (
             !isNaN(day) &&
@@ -1305,29 +1299,70 @@ function getAppointmentDateTime(item) {
                     day
                 );
 
-            if (
-                time &&
-                time.includes(":")
-            ) {
 
-                const timeParts =
-                    time.split(":");
+            if (time) {
 
-                parsed.setHours(
-                    parseInt(
-                        timeParts[0]
-                    ) || 0
-                );
+                const timeMatch =
+                    time.match(
+                        /^(\d{1,2}):(\d{2})(?:\s*(AM|PM))?$/i
+                    );
 
-                parsed.setMinutes(
-                    parseInt(
-                        timeParts[1]
-                    ) || 0
-                );
+
+                if (timeMatch) {
+
+                    let hours =
+                        parseInt(
+                            timeMatch[1],
+                            10
+                        );
+
+                    const minutes =
+                        parseInt(
+                            timeMatch[2],
+                            10
+                        );
+
+
+                    const ampm =
+                        timeMatch[3];
+
+
+                    if (
+                        ampm &&
+                        ampm.toUpperCase() ===
+                        "PM" &&
+                        hours < 12
+                    ) {
+                        hours += 12;
+                    }
+
+
+                    if (
+                        ampm &&
+                        ampm.toUpperCase() ===
+                        "AM" &&
+                        hours === 12
+                    ) {
+                        hours = 0;
+                    }
+
+
+                    parsed.setHours(
+                        hours,
+                        minutes,
+                        0,
+                        0
+                    );
+
+                }
+
             }
 
+
             return parsed;
+
         }
+
     }
 
 
@@ -1346,20 +1381,52 @@ function getDateOnly(item) {
             item.appointment_date || ""
         ).trim();
 
+
     if (!date) {
         return null;
     }
 
-    let parsed =
-        new Date(date);
 
-    if (!isNaN(parsed.getTime())) {
-        parsed.setHours(0, 0, 0, 0);
+    /*
+       YYYY-MM-DD
+    */
+
+    const isoMatch =
+        date.match(
+            /^(\d{4})-(\d{1,2})-(\d{1,2})$/
+        );
+
+
+    if (isoMatch) {
+
+        const parsed =
+            new Date(
+                parseInt(isoMatch[1], 10),
+                parseInt(isoMatch[2], 10) - 1,
+                parseInt(isoMatch[3], 10)
+            );
+
+
+        parsed.setHours(
+            0,
+            0,
+            0,
+            0
+        );
+
+
         return parsed;
+
     }
+
+
+    /*
+       DD/MM/YYYY
+    */
 
     const parts =
         date.split("/");
+
 
     if (parts.length === 3) {
 
@@ -1372,21 +1439,33 @@ function getDateOnly(item) {
         const y =
             parseInt(parts[2], 10);
 
-        parsed =
+
+        const parsed =
             new Date(y, m, d);
 
+
         if (!isNaN(parsed.getTime())) {
-            parsed.setHours(0, 0, 0, 0);
+
+            parsed.setHours(
+                0,
+                0,
+                0,
+                0
+            );
+
             return parsed;
+
         }
+
     }
+
 
     return null;
 }
 
 
 /* ============================================================
-   TODAY CHECK
+   TODAY
 ============================================================ */
 
 function isToday(item) {
@@ -1394,14 +1473,23 @@ function isToday(item) {
     const appointmentDate =
         getDateOnly(item);
 
+
     if (!appointmentDate) {
         return false;
     }
 
+
     const today =
         new Date();
 
-    today.setHours(0, 0, 0, 0);
+
+    today.setHours(
+        0,
+        0,
+        0,
+        0
+    );
+
 
     return (
         appointmentDate.getTime() ===
@@ -1419,14 +1507,13 @@ function isUpcoming(item) {
     const dateTime =
         getAppointmentDateTime(item);
 
+
     if (!dateTime) {
         return false;
     }
 
-    const now =
-        new Date();
 
-    return dateTime > now;
+    return dateTime > new Date();
 }
 
 
@@ -1439,14 +1526,13 @@ function isPast(item) {
     const dateTime =
         getAppointmentDateTime(item);
 
+
     if (!dateTime) {
         return false;
     }
 
-    const now =
-        new Date();
 
-    return dateTime < now;
+    return dateTime < new Date();
 }
 
 
@@ -1460,14 +1546,44 @@ function formatDate(dateString) {
         return "-";
     }
 
+
+    const isoMatch =
+        String(dateString).match(
+            /^(\d{4})-(\d{1,2})-(\d{1,2})$/
+        );
+
+
+    if (isoMatch) {
+
+        const parsed =
+            new Date(
+                parseInt(isoMatch[1], 10),
+                parseInt(isoMatch[2], 10) - 1,
+                parseInt(isoMatch[3], 10)
+            );
+
+
+        if (!isNaN(parsed.getTime())) {
+
+            return parsed.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                }
+            );
+
+        }
+
+    }
+
+
     const parsed =
         new Date(dateString);
 
-    if (
-        !isNaN(
-            parsed.getTime()
-        )
-    ) {
+
+    if (!isNaN(parsed.getTime())) {
 
         return parsed.toLocaleDateString(
             "en-IN",
@@ -1477,9 +1593,13 @@ function formatDate(dateString) {
                 year: "numeric"
             }
         );
+
     }
 
-    return escapeHtml(dateString);
+
+    return escapeHtml(
+        dateString
+    );
 }
 
 
@@ -1493,6 +1613,7 @@ function formatTime(timeString) {
         return "";
     }
 
+
     return escapeHtml(
         timeString
     );
@@ -1500,7 +1621,7 @@ function formatTime(timeString) {
 
 
 /* ============================================================
-   DISPLAY STATUS
+   PATIENT STATUS
 ============================================================ */
 
 function getPatientStatus(item) {
@@ -1511,16 +1632,19 @@ function getPatientStatus(item) {
             10
         );
 
+
     if (
         isNaN(visit) ||
         visit < 1
     ) {
+
         visit = 1;
+
     }
 
 
     /*
-       Visit 1 ALWAYS NEW
+       Visit 1 always NEW
     */
 
     if (visit <= 1) {
@@ -1537,12 +1661,16 @@ function getPatientStatus(item) {
         .toUpperCase()
         .trim();
 
+
     if (
         status !== "OLD" &&
         status !== "NEW"
     ) {
+
         status = "NEW";
+
     }
+
 
     return status;
 }
@@ -1559,12 +1687,16 @@ function getAmount(item) {
             item.amount
         );
 
+
     if (
         isNaN(amount) ||
         amount < 0
     ) {
+
         amount = 0;
+
     }
+
 
     return amount;
 }
@@ -1585,26 +1717,31 @@ function sortAppointments(list) {
             const db =
                 getAppointmentDateTime(b);
 
+
             if (da && db) {
                 return db - da;
             }
+
 
             if (da) {
                 return -1;
             }
 
+
             if (db) {
                 return 1;
             }
 
+
             return 0;
+
         }
     );
 }
 
 
 /* ============================================================
-   INIT
+   PAGE INIT
 ============================================================ */
 
 document.addEventListener(
@@ -1613,12 +1750,14 @@ document.addEventListener(
 
         initializePage();
 
+        initializeFirebaseAuth();
+
     }
 );
 
 
 /* ============================================================
-   INITIALIZE
+   INITIALIZE PAGE
 ============================================================ */
 
 function initializePage() {
@@ -1650,6 +1789,113 @@ function initializePage() {
 
 
 /* ============================================================
+   FIREBASE AUTH INITIALIZATION
+============================================================ */
+
+function initializeFirebaseAuth() {
+
+    if (
+        typeof firebase === "undefined" ||
+        !firebase.auth
+    ) {
+
+        console.warn(
+            "Firebase Auth is not loaded on this page."
+        );
+
+        firebaseAuthReady =
+            Promise.resolve(null);
+
+        return;
+
+    }
+
+
+    firebaseAuthReady =
+        new Promise(function(resolve) {
+
+            const existingUser =
+                firebase.auth().currentUser;
+
+
+            if (existingUser) {
+
+                console.log(
+                    "Firebase user already available:",
+                    existingUser.uid
+                );
+
+                resolve(existingUser);
+
+                return;
+
+            }
+
+
+            let unsubscribe = null;
+
+
+            const timeout =
+                setTimeout(
+                    function() {
+
+                        if (unsubscribe) {
+                            unsubscribe();
+                        }
+
+                        console.warn(
+                            "Firebase Auth restore timeout"
+                        );
+
+                        resolve(null);
+
+                    },
+                    5000
+                );
+
+
+            unsubscribe =
+                firebase.auth().onAuthStateChanged(
+                    function(user) {
+
+                        clearTimeout(timeout);
+
+
+                        if (unsubscribe) {
+                            unsubscribe();
+                        }
+
+
+                        if (user) {
+
+                            console.log(
+                                "Firebase user restored:",
+                                user.uid
+                            );
+
+                        }
+                        else {
+
+                            console.warn(
+                                "No Firebase user logged in"
+                            );
+
+                        }
+
+
+                        resolve(
+                            user || null
+                        );
+
+                    }
+                );
+
+        });
+
+}
+
+
+/* ============================================================
    DOCTOR FILTER
 ============================================================ */
 
@@ -1660,12 +1906,25 @@ function populateDoctorFilter() {
             "doctorFilter"
         );
 
+
     if (!select) {
         return;
     }
 
+
+    /*
+       Existing options remove करा
+       पण All Doctors ठेवला पाहिजे.
+    */
+
+    select.innerHTML = `
+        <option value="">All Doctors</option>
+    `;
+
+
     const doctors =
         new Set();
+
 
     window.allAppointments.forEach(
         function(item) {
@@ -1674,6 +1933,7 @@ function populateDoctorFilter() {
                 String(
                     item.doctor_name || ""
                 ).trim();
+
 
             if (doctor) {
                 doctors.add(doctor);
@@ -1697,11 +1957,14 @@ function populateDoctorFilter() {
                         "option"
                     );
 
+
                 option.value =
                     doctor;
 
+
                 option.textContent =
                     doctor;
+
 
                 select.appendChild(
                     option
@@ -1709,6 +1972,7 @@ function populateDoctorFilter() {
 
             }
         );
+
 }
 
 
@@ -1719,7 +1983,7 @@ function populateDoctorFilter() {
 function updateSummary() {
 
     const appointments =
-        window.allAppointments;
+        window.allAppointments || [];
 
 
     const total =
@@ -1745,8 +2009,12 @@ function updateSummary() {
     const newPatients =
         appointments.filter(
             function(item) {
-                return getPatientStatus(item)
-                    === "NEW";
+
+                return (
+                    getPatientStatus(item) ===
+                    "NEW"
+                );
+
             }
         ).length;
 
@@ -1754,98 +2022,97 @@ function updateSummary() {
     const oldPatients =
         appointments.filter(
             function(item) {
-                return getPatientStatus(item)
-                    === "OLD";
+
+                return (
+                    getPatientStatus(item) ===
+                    "OLD"
+                );
+
             }
         ).length;
 
 
     document.getElementById(
         "totalCount"
-    ).textContent = total;
+    ).textContent =
+        total;
 
 
     document.getElementById(
         "todayCount"
-    ).textContent = today;
+    ).textContent =
+        today;
 
 
     document.getElementById(
         "upcomingCount"
-    ).textContent = upcoming;
+    ).textContent =
+        upcoming;
 
 
     document.getElementById(
         "newCount"
-    ).textContent = newPatients;
+    ).textContent =
+        newPatients;
 
 
     document.getElementById(
         "oldCount"
-    ).textContent = oldPatients;
+    ).textContent =
+        oldPatients;
 
 }
 
 
 /* ============================================================
-   SET VIEW
+   VIEW
 ============================================================ */
 
 function setView(view) {
 
-    currentView = view;
+    currentView =
+        view;
 
 
     document.querySelectorAll(
         ".tab-btn"
     ).forEach(
         function(button) {
+
             button.classList.remove(
                 "active"
             );
+
         }
     );
 
 
-    if (view === "all") {
+    const tabMap = {
+        all: "tabAll",
+        today: "tabToday",
+        upcoming: "tabUpcoming",
+        past: "tabPast"
+    };
+
+
+    if (tabMap[view]) {
 
         document.getElementById(
-            "tabAll"
-        ).classList.add("active");
-
-    }
-
-    if (view === "today") {
-
-        document.getElementById(
-            "tabToday"
-        ).classList.add("active");
-
-    }
-
-    if (view === "upcoming") {
-
-        document.getElementById(
-            "tabUpcoming"
-        ).classList.add("active");
-
-    }
-
-    if (view === "past") {
-
-        document.getElementById(
-            "tabPast"
-        ).classList.add("active");
+            tabMap[view]
+        ).classList.add(
+            "active"
+        );
 
     }
 
 
     applyFilters();
+
 }
 
 
 /* ============================================================
-   APPLY FILTERS
+   FILTERS
 ============================================================ */
 
 function applyFilters() {
@@ -1865,8 +2132,7 @@ function applyFilters() {
             document.getElementById(
                 "doctorFilter"
             ).value || ""
-        )
-        .trim();
+        ).trim();
 
 
     const selectedDate =
@@ -1905,11 +2171,15 @@ function applyFilters() {
                         .join(" ")
                         .toLowerCase();
 
+
                     if (
                         !text.includes(search)
                     ) {
+
                         return false;
+
                     }
+
                 }
 
 
@@ -1921,7 +2191,9 @@ function applyFilters() {
                         item.doctor_name || ""
                     ).trim() !== doctor
                 ) {
+
                     return false;
+
                 }
 
 
@@ -1929,40 +2201,28 @@ function applyFilters() {
 
                 if (selectedDate) {
 
-                    const itemDate =
-                        String(
-                            item.appointment_date ||
-                            ""
-                        ).trim();
+                    const actual =
+                        getDateOnly(item);
+
+
+                    const selected =
+                        getDateOnly({
+                            appointment_date:
+                                selectedDate
+                        });
+
 
                     if (
-                        itemDate !== selectedDate
+                        !actual ||
+                        !selected ||
+                        actual.getTime() !==
+                        selected.getTime()
                     ) {
 
-                        /*
-                           Try Date object
-                        */
+                        return false;
 
-                        const selected =
-                            new Date(
-                                selectedDate
-                            );
-
-                        const actual =
-                            getDateOnly(item);
-
-                        if (
-                            !actual ||
-                            actual.getFullYear() !==
-                                selected.getFullYear() ||
-                            actual.getMonth() !==
-                                selected.getMonth() ||
-                            actual.getDate() !==
-                                selected.getDate()
-                        ) {
-                            return false;
-                        }
                     }
+
                 }
 
 
@@ -1971,11 +2231,14 @@ function applyFilters() {
                 if (type) {
 
                     if (
-                        getPatientStatus(item)
-                        !== type
+                        getPatientStatus(item) !==
+                        type
                     ) {
+
                         return false;
+
                     }
+
                 }
 
 
@@ -1985,7 +2248,9 @@ function applyFilters() {
                     currentView === "today" &&
                     !isToday(item)
                 ) {
+
                     return false;
+
                 }
 
 
@@ -1993,7 +2258,9 @@ function applyFilters() {
                     currentView === "upcoming" &&
                     !isUpcoming(item)
                 ) {
+
                     return false;
+
                 }
 
 
@@ -2001,11 +2268,14 @@ function applyFilters() {
                     currentView === "past" &&
                     !isPast(item)
                 ) {
+
                     return false;
+
                 }
 
 
                 return true;
+
             }
         );
 
@@ -2022,7 +2292,7 @@ function applyFilters() {
 
 
 /* ============================================================
-   RENDER TABLE
+   RENDER
 ============================================================ */
 
 function renderAppointments(list) {
@@ -2071,6 +2341,7 @@ function renderAppointments(list) {
         `;
 
         return;
+
     }
 
 
@@ -2145,11 +2416,21 @@ function createAppointmentRow(
         );
 
 
-    const visit =
+    let visit =
         parseInt(
             item.visit_number || 1,
             10
         );
+
+
+    if (
+        isNaN(visit) ||
+        visit < 1
+    ) {
+
+        visit = 1;
+
+    }
 
 
     const status =
@@ -2162,8 +2443,10 @@ function createAppointmentRow(
 
     const statusBadge =
         status === "OLD"
-            ? `<span class="badge badge-old">OLD</span>`
-            : `<span class="badge badge-new">NEW</span>`;
+            ?
+            `<span class="badge badge-old">OLD</span>`
+            :
+            `<span class="badge badge-new">NEW</span>`;
 
 
     let dateBadge = "";
@@ -2208,7 +2491,8 @@ function createAppointmentRow(
 
     const oldButton =
         status === "OLD"
-            ? ""
+            ?
+            ""
             :
             `
                 <button
@@ -2277,9 +2561,11 @@ function createAppointmentRow(
 
 
             <td>
+
                 <strong>
                     Visit ${visit}
                 </strong>
+
             </td>
 
 
@@ -2298,6 +2584,7 @@ function createAppointmentRow(
                     id="${amountInputId}"
                     value="${amount}"
                 >
+
 
                 <button
                     class="amount-save"
@@ -2339,21 +2626,7 @@ function createAppointmentRow(
         </tr>
 
     `;
-}
 
-
-/* ============================================================
-   ESCAPE JS
-============================================================ */
-
-function escapeJs(value) {
-
-    return String(value || "")
-        .replace(/\\/g, "\\\\")
-        .replace(/'/g, "\\'")
-        .replace(/"/g, '\\"')
-        .replace(/\n/g, "\\n")
-        .replace(/\r/g, "\\r");
 }
 
 
@@ -2382,6 +2655,7 @@ function showDetails(appointmentId) {
         );
 
         return;
+
     }
 
 
@@ -2396,9 +2670,10 @@ function showDetails(appointmentId) {
 
 
     /*
-       IMPORTANT:
-       Same hospital + same mobile
-       = same patient history.
+       Same hospital page already contains only
+       this hospital's appointments.
+
+       Same normalized mobile = same patient.
     */
 
     let history =
@@ -2410,6 +2685,7 @@ function showDetails(appointmentId) {
                         item.mobile
                     ) === mobile
                 );
+
             }
         );
 
@@ -2444,11 +2720,21 @@ function showDetails(appointmentId) {
         );
 
 
-    const visitNumber =
+    let visitNumber =
         parseInt(
             appointment.visit_number || 1,
             10
         );
+
+
+    if (
+        isNaN(visitNumber) ||
+        visitNumber < 1
+    ) {
+
+        visitNumber = 1;
+
+    }
 
 
     const modalBody =
@@ -2503,22 +2789,35 @@ function showDetails(appointmentId) {
                             history.map(
                                 function(item) {
 
-                                    const visit =
+                                    let visit =
                                         parseInt(
                                             item.visit_number ||
                                             1,
                                             10
                                         );
 
+
+                                    if (
+                                        isNaN(visit) ||
+                                        visit < 1
+                                    ) {
+
+                                        visit = 1;
+
+                                    }
+
+
                                     const itemStatus =
                                         getPatientStatus(
                                             item
                                         );
 
+
                                     const amount =
                                         getAmount(
                                             item
                                         );
+
 
                                     return `
 
@@ -2528,7 +2827,9 @@ function showDetails(appointmentId) {
                                                 Visit ${visit}
                                             </td>
 
+
                                             <td>
+
                                                 ${
                                                     formatDate(
                                                         item.appointment_date
@@ -2547,6 +2848,7 @@ function showDetails(appointmentId) {
 
                                             </td>
 
+
                                             <td>
                                                 ${
                                                     escapeHtml(
@@ -2555,6 +2857,7 @@ function showDetails(appointmentId) {
                                                     )
                                                 }
                                             </td>
+
 
                                             <td>
 
@@ -2568,6 +2871,7 @@ function showDetails(appointmentId) {
 
                                             </td>
 
+
                                             <td>
                                                 ₹${amount.toFixed(2)}
                                             </td>
@@ -2575,6 +2879,7 @@ function showDetails(appointmentId) {
                                         </tr>
 
                                     `;
+
                                 }
                             ).join("")
                         }
@@ -2620,24 +2925,30 @@ function showDetails(appointmentId) {
 
             </div>
 
+
             <div>
 
                 <div class="profile-name">
+
                     ${
                         escapeHtml(
                             appointment.patient_name ||
                             "Patient"
                         )
                     }
+
                 </div>
 
+
                 <div class="profile-mobile">
+
                     📱 ${
                         escapeHtml(
                             appointment.mobile ||
                             "-"
                         )
                     }
+
                 </div>
 
             </div>
@@ -2655,12 +2966,14 @@ function showDetails(appointmentId) {
                 </div>
 
                 <div class="detail-value">
+
                     ${
                         escapeHtml(
                             appointment.gender ||
                             "-"
                         )
                     }
+
                 </div>
 
             </div>
@@ -2673,12 +2986,14 @@ function showDetails(appointmentId) {
                 </div>
 
                 <div class="detail-value">
+
                     ${
                         escapeHtml(
                             appointment.age ||
                             "-"
                         )
                     }
+
                 </div>
 
             </div>
@@ -2691,12 +3006,14 @@ function showDetails(appointmentId) {
                 </div>
 
                 <div class="detail-value">
+
                     ${
                         escapeHtml(
                             appointment.mobile ||
                             "-"
                         )
                     }
+
                 </div>
 
             </div>
@@ -2709,12 +3026,14 @@ function showDetails(appointmentId) {
                 </div>
 
                 <div class="detail-value">
+
                     ${
                         escapeHtml(
                             appointment.doctor_name ||
                             "-"
                         )
                     }
+
                 </div>
 
             </div>
@@ -2727,12 +3046,14 @@ function showDetails(appointmentId) {
                 </div>
 
                 <div class="detail-value">
+
                     ${
                         escapeHtml(
                             appointment.specialization ||
                             "-"
                         )
                     }
+
                 </div>
 
             </div>
@@ -2745,11 +3066,13 @@ function showDetails(appointmentId) {
                 </div>
 
                 <div class="detail-value">
+
                     ${
                         formatDate(
                             appointment.appointment_date
                         )
                     }
+
                 </div>
 
             </div>
@@ -2762,11 +3085,13 @@ function showDetails(appointmentId) {
                 </div>
 
                 <div class="detail-value">
+
                     ${
                         formatTime(
                             appointment.appointment_time
                         ) || "-"
                     }
+
                 </div>
 
             </div>
@@ -2792,6 +3117,7 @@ function showDetails(appointmentId) {
                 </div>
 
                 <div class="detail-value">
+
                     ${
                         status === "OLD"
                             ?
@@ -2799,24 +3125,30 @@ function showDetails(appointmentId) {
                             :
                             `<span class="badge badge-new">NEW</span>`
                     }
+
                 </div>
 
             </div>
 
 
-            <div class="detail-item" style="grid-column: 1 / -1;">
+            <div
+                class="detail-item"
+                style="grid-column: 1 / -1;"
+            >
 
                 <div class="detail-label">
                     Address
                 </div>
 
                 <div class="detail-value">
+
                     ${
                         escapeHtml(
                             appointment.address ||
                             "-"
                         )
                     }
+
                 </div>
 
             </div>
@@ -2888,69 +3220,163 @@ function closeModalOutside(event) {
 
 /* ============================================================
    FIREBASE TOKEN
+   IMPORTANT FIX
 ============================================================ */
 
 async function getFirebaseToken() {
 
-    /*
-       This function tries to use the Firebase Auth object
-       already loaded by the existing Statusly login system.
-    */
-
     try {
 
+        /*
+           Firebase available आहे का?
+        */
+
         if (
-            typeof firebase !== "undefined" &&
-            firebase.auth
+            typeof firebase === "undefined" ||
+            !firebase.auth
         ) {
 
-            const user =
-                firebase.auth().currentUser;
+            console.error(
+                "Firebase Auth is not loaded"
+            );
 
-            if (user) {
+            return null;
 
-                return await user.getIdToken();
-
-            }
         }
 
-    } catch (error) {
+
+        /*
+           Existing user
+        */
+
+        let user =
+            firebase.auth().currentUser;
+
+
+        /*
+           User अजून restore होत असेल तर wait करा
+        */
+
+        if (!user) {
+
+            user =
+                await new Promise(
+                    function(resolve) {
+
+                        let unsubscribe =
+                            null;
+
+
+                        const timeout =
+                            setTimeout(
+                                function() {
+
+                                    if (
+                                        unsubscribe
+                                    ) {
+
+                                        unsubscribe();
+
+                                    }
+
+                                    resolve(null);
+
+                                },
+                                5000
+                            );
+
+
+                        unsubscribe =
+                            firebase.auth().onAuthStateChanged(
+                                function(authUser) {
+
+                                    clearTimeout(
+                                        timeout
+                                    );
+
+
+                                    if (
+                                        unsubscribe
+                                    ) {
+
+                                        unsubscribe();
+
+                                    }
+
+
+                                    resolve(
+                                        authUser ||
+                                        null
+                                    );
+
+                                }
+                            );
+
+                    }
+                );
+
+        }
+
+
+        if (!user) {
+
+            console.error(
+                "No Firebase authenticated user"
+            );
+
+            return null;
+
+        }
+
 
         console.log(
+            "Getting Firebase token for:",
+            user.uid
+        );
+
+
+        /*
+           Fresh ID token
+        */
+
+        const token =
+            await user.getIdToken(
+                true
+            );
+
+
+        if (!token) {
+
+            console.error(
+                "Firebase token is empty"
+            );
+
+            return null;
+
+        }
+
+
+        console.log(
+            "Firebase token received"
+        );
+
+
+        return token;
+
+
+    }
+    catch (error) {
+
+        console.error(
             "Firebase token error:",
             error
         );
 
+
+        return null;
+
     }
 
-
-    /*
-       If Firebase is not available,
-       try common localStorage token names.
-    */
-
-    const possibleKeys = [
-        "idToken",
-        "firebaseToken",
-        "authToken",
-        "token"
-    ];
-
-
-    for (
-        const key of possibleKeys
-    ) {
-
-        const token =
-            localStorage.getItem(key);
-
-        if (token) {
-            return token;
-        }
-    }
-
-
-    return null;
 }
 
 
@@ -2971,6 +3397,7 @@ async function saveAmount(
         );
 
         return;
+
     }
 
 
@@ -2988,6 +3415,7 @@ async function saveAmount(
         );
 
         return;
+
     }
 
 
@@ -3008,8 +3436,13 @@ async function saveAmount(
         );
 
         return;
+
     }
 
+
+    /*
+       Get fresh Firebase token
+    */
 
     const token =
         await getFirebaseToken();
@@ -3018,15 +3451,29 @@ async function saveAmount(
     if (!token) {
 
         showToast(
-            "Please login again to save amount",
+            "Login session not found. Please login again.",
             "error"
         );
 
         return;
+
     }
 
 
     try {
+
+        console.log(
+            "Saving amount:",
+            amount,
+            "Appointment:",
+            appointmentId
+        );
+
+
+        /*
+           IMPORTANT:
+           Backend जर POST वापरत असेल तर POST ठेवा.
+        */
 
         const response =
             await fetch(
@@ -3049,16 +3496,60 @@ async function saveAmount(
                         JSON.stringify({
                             amount: amount
                         })
+
                 }
             );
 
 
-        const result =
-            await response.json();
+        let result = {};
 
 
-        if (!response.ok ||
-            !result.success
+        try {
+
+            result =
+                await response.json();
+
+        }
+        catch (jsonError) {
+
+            result = {};
+
+        }
+
+
+        console.log(
+            "Amount API response:",
+            result
+        );
+
+
+        if (
+            response.status === 401 ||
+            response.status === 403
+        ) {
+
+            showToast(
+                "Login session expired. Please login again.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.error ||
+                `Server error (${response.status})`
+            );
+
+        }
+
+
+        if (
+            result.success === false
         ) {
 
             throw new Error(
@@ -3070,15 +3561,17 @@ async function saveAmount(
 
 
         /*
-           Update local appointment data
+           Local appointment update
         */
 
         const appointment =
             window.allAppointments.find(
                 function(item) {
 
-                    return String(item.id) ===
-                        String(appointmentId);
+                    return (
+                        String(item.id) ===
+                        String(appointmentId)
+                    );
 
                 }
             );
@@ -3092,17 +3585,43 @@ async function saveAmount(
         }
 
 
+        /*
+           Current details update
+        */
+
+        if (
+            currentDetailsAppointment &&
+            String(
+                currentDetailsAppointment.id
+            ) ===
+            String(appointmentId)
+        ) {
+
+            currentDetailsAppointment.amount =
+                amount;
+
+        }
+
+
+        updateSummary();
+
+        applyFilters();
+
+
         showToast(
             "Amount saved successfully",
             "success"
         );
 
 
-    } catch (error) {
+    }
+    catch (error) {
 
         console.error(
+            "SAVE AMOUNT ERROR:",
             error
         );
+
 
         showToast(
             error.message ||
@@ -3140,6 +3659,7 @@ async function makePatientOld(
         );
 
         return;
+
     }
 
 
@@ -3161,11 +3681,12 @@ async function makePatientOld(
     if (!token) {
 
         showToast(
-            "Please login again to change patient status",
+            "Login session not found. Please login again.",
             "error"
         );
 
         return;
+
     }
 
 
@@ -3193,12 +3714,28 @@ async function makePatientOld(
                             mobile:
                                 normalized
                         })
+
                 }
             );
 
 
         const result =
             await response.json();
+
+
+        if (
+            response.status === 401 ||
+            response.status === 403
+        ) {
+
+            showToast(
+                "Login session expired. Please login again.",
+                "error"
+            );
+
+            return;
+
+        }
 
 
         if (
@@ -3227,12 +3764,23 @@ async function makePatientOld(
                     ) === normalized
                 ) {
 
-                    const visit =
+                    let visit =
                         parseInt(
                             item.visit_number ||
                             1,
                             10
                         );
+
+
+                    if (
+                        isNaN(visit) ||
+                        visit < 1
+                    ) {
+
+                        visit = 1;
+
+                    }
+
 
                     if (visit <= 1) {
 
@@ -3270,11 +3818,14 @@ async function makePatientOld(
         );
 
 
-    } catch (error) {
+    }
+    catch (error) {
 
         console.error(
+            "MAKE OLD ERROR:",
             error
         );
+
 
         showToast(
             error.message ||
@@ -3288,7 +3839,7 @@ async function makePatientOld(
 
 
 /* ============================================================
-   OPEN FOLLOWUP
+   FOLLOWUP OPEN
 ============================================================ */
 
 function openFollowup(
@@ -3299,8 +3850,10 @@ function openFollowup(
         window.allAppointments.find(
             function(item) {
 
-                return String(item.id) ===
-                    String(appointmentId);
+                return (
+                    String(item.id) ===
+                    String(appointmentId)
+                );
 
             }
         );
@@ -3314,6 +3867,7 @@ function openFollowup(
         );
 
         return;
+
     }
 
 
@@ -3381,164 +3935,207 @@ function closeFollowupOutside(
    SAVE FOLLOWUP
 ============================================================ */
 
-document.getElementById(
-    "followupForm"
-).addEventListener(
-    "submit",
-    async function(event) {
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
 
-        event.preventDefault();
-
-
-        const patientId =
+        const followupForm =
             document.getElementById(
-                "followupPatientId"
-            ).value;
-
-
-        const nextVisitDate =
-            document.getElementById(
-                "nextVisitDate"
-            ).value;
-
-
-        const doctorNotes =
-            document.getElementById(
-                "doctorNotes"
-            ).value;
-
-
-        if (!patientId) {
-
-            showToast(
-                "Patient ID missing",
-                "error"
+                "followupForm"
             );
 
+
+        if (!followupForm) {
             return;
         }
 
 
-        if (!nextVisitDate) {
+        followupForm.addEventListener(
+            "submit",
+            async function(event) {
 
-            showToast(
-                "Please select next visit date",
-                "error"
-            );
-
-            return;
-        }
+                event.preventDefault();
 
 
-        try {
-
-            const formData =
-                new FormData();
-
-            formData.append(
-                "patient_id",
-                patientId
-            );
-
-            formData.append(
-                "next_visit_date",
-                nextVisitDate
-            );
-
-            formData.append(
-                "doctor_notes",
-                doctorNotes
-            );
+                const patientId =
+                    document.getElementById(
+                        "followupPatientId"
+                    ).value;
 
 
-            const response =
-                await fetch(
-                    "/save_followup",
-                    {
+                const nextVisitDate =
+                    document.getElementById(
+                        "nextVisitDate"
+                    ).value;
 
-                        method: "POST",
 
-                        body: formData
+                const doctorNotes =
+                    document.getElementById(
+                        "doctorNotes"
+                    ).value;
+
+
+                if (!patientId) {
+
+                    showToast(
+                        "Patient ID missing",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (!nextVisitDate) {
+
+                    showToast(
+                        "Please select next visit date",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                try {
+
+                    const formData =
+                        new FormData();
+
+
+                    formData.append(
+                        "patient_id",
+                        patientId
+                    );
+
+
+                    formData.append(
+                        "next_visit_date",
+                        nextVisitDate
+                    );
+
+
+                    formData.append(
+                        "doctor_notes",
+                        doctorNotes
+                    );
+
+
+                    const response =
+                        await fetch(
+                            "/save_followup",
+                            {
+
+                                method: "POST",
+
+                                body:
+                                    formData
+
+                            }
+                        );
+
+
+                    const result =
+                        await response.json();
+
+
+                    if (
+                        response.status === 401 ||
+                        response.status === 403
+                    ) {
+
+                        showToast(
+                            "Login session expired. Please login again.",
+                            "error"
+                        );
+
+                        return;
 
                     }
-                );
 
 
-            const result =
-                await response.json();
+                    if (
+                        !response.ok ||
+                        !result.success
+                    ) {
 
-
-            if (
-                !response.ok ||
-                !result.success
-            ) {
-
-                throw new Error(
-                    result.error ||
-                    "Follow-up save failed"
-                );
-
-            }
-
-
-            /*
-               Update local data
-            */
-
-            const appointment =
-                window.allAppointments.find(
-                    function(item) {
-
-                        return String(
-                            item.id
-                        ) === String(
-                            patientId
+                        throw new Error(
+                            result.error ||
+                            "Follow-up save failed"
                         );
 
                     }
-                );
 
 
-            if (appointment) {
+                    /*
+                       Local update
+                    */
 
-                appointment.next_visit_date =
-                    nextVisitDate;
+                    const appointment =
+                        window.allAppointments.find(
+                            function(item) {
 
-                appointment.doctor_notes =
-                    doctorNotes;
+                                return (
+                                    String(
+                                        item.id
+                                    ) ===
+                                    String(
+                                        patientId
+                                    )
+                                );
+
+                            }
+                        );
+
+
+                    if (appointment) {
+
+                        appointment.next_visit_date =
+                            nextVisitDate;
+
+                        appointment.doctor_notes =
+                            doctorNotes;
+
+                    }
+
+
+                    closeFollowup();
+
+
+                    showToast(
+                        "Follow-up saved successfully",
+                        "success"
+                    );
+
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "FOLLOWUP ERROR:",
+                        error
+                    );
+
+
+                    showToast(
+                        error.message ||
+                        "Unable to save follow-up",
+                        "error"
+                    );
+
+                }
 
             }
-
-
-            closeFollowup();
-
-
-            showToast(
-                "Follow-up saved successfully",
-                "success"
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                error
-            );
-
-            showToast(
-                error.message ||
-                "Unable to save follow-up",
-                "error"
-            );
-
-        }
+        );
 
     }
 );
 
 
 /* ============================================================
-   RESET FILTERS
+   RESET
 ============================================================ */
 
 function resetFilters() {
@@ -3631,7 +4228,7 @@ function showToast(
 
 
 /* ============================================================
-   ESC KEY
+   ESC
 ============================================================ */
 
 document.addEventListener(
