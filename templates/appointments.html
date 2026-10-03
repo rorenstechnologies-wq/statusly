@@ -3,1153 +3,790 @@
 
 <head>
 
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Doctor Appointments</title>
-
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-
-        body {
-
-            font-family:
-                Inter,
-                Arial,
-                sans-serif;
-
-            background:
-                #f4f8fb;
-
-            color:
-                #172033;
-
-        }
-
-
-        /* =====================================================
-           HEADER
-        ===================================================== */
-
-        .header {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #0f766e,
-                    #0e7490
-                );
-
-            color: white;
-
-            padding:
-                24px 5%;
-
-            display: flex;
-
-            justify-content:
-                space-between;
-
-            align-items:
-                center;
-
-            gap: 20px;
-
-            flex-wrap: wrap;
-
-            box-shadow:
-                0 6px 25px
-                rgba(0,0,0,0.12);
-
-        }
-
-
-        .header-left h1 {
-
-            font-size:
-                27px;
-
-            margin-bottom:
-                6px;
-
-        }
-
-
-        .header-left p {
-
-            font-size:
-                13px;
-
-            opacity:
-                0.82;
-
-        }
-
-
-        .header-badge {
-
-            background:
-                rgba(255,255,255,0.14);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.2);
-
-            padding:
-                10px 15px;
-
-            border-radius:
-                12px;
-
-            font-size:
-                13px;
-
-        }
-
-
-        /* =====================================================
-           CONTROLS
-        ===================================================== */
-
-        .controls {
-
-            width:
-                90%;
-
-            max-width:
-                1450px;
-
-            margin:
-                22px auto;
-
-            display:
-                grid;
-
-            grid-template-columns:
-                230px 1fr 150px;
-
-            gap:
-                12px;
-
-        }
-
-
-        .control {
-
-            height:
-                46px;
-
-            border:
-                1px solid
-                #dbe5eb;
-
-            border-radius:
-                11px;
-
-            padding:
-                0 14px;
-
-            background:
-                white;
-
-            font-size:
-                14px;
-
-            outline:
-                none;
-
-        }
-
-
-        .control:focus {
-
-            border-color:
-                #0f766e;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(15,118,110,0.08);
-
-        }
-
-
-        /* =====================================================
-           SUMMARY
-        ===================================================== */
-
-        .summary {
-
-            width:
-                90%;
-
-            max-width:
-                1450px;
-
-            margin:
-                0 auto 22px;
-
-            display:
-                grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap:
-                14px;
-
-        }
-
-
-        .summary-card {
-
-            background:
-                white;
-
-            padding:
-                17px;
-
-            border-radius:
-                14px;
-
-            box-shadow:
-                0 6px 20px
-                rgba(15,23,42,0.06);
-
-            border:
-                1px solid
-                #edf2f5;
-
-        }
-
-
-        .summary-label {
-
-            font-size:
-                12px;
-
-            color:
-                #64748b;
-
-            margin-bottom:
-                7px;
-
-        }
-
-
-        .summary-value {
-
-            font-size:
-                26px;
-
-            font-weight:
-                750;
-
-            color:
-                #0f766e;
-
-        }
-
-
-        /* =====================================================
-           MAIN
-        ===================================================== */
-
-        .container {
-
-            width:
-                90%;
-
-            max-width:
-                1450px;
-
-            margin:
-                auto;
-
-            padding-bottom:
-                35px;
-
-        }
-
-
-        /* =====================================================
-           DOCTOR CARD
-        ===================================================== */
-
-        .doctor-card {
-
-            background:
-                white;
-
-            border-radius:
-                18px;
-
-            margin-bottom:
-                24px;
-
-            overflow:
-                hidden;
-
-            border:
-                1px solid
-                #edf2f5;
-
-            box-shadow:
-                0 10px 30px
-                rgba(15,23,42,0.07);
-
-        }
-
-
-        /* =====================================================
-           DOCTOR HEADER
-        ===================================================== */
-
-        .doctor-header {
-
-            padding:
-                19px 20px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #0f766e,
-                    #0e7490
-                );
-
-            color:
-                white;
-
-            display:
-                flex;
-
-            justify-content:
-                space-between;
-
-            align-items:
-                center;
-
-            gap:
-                15px;
-
-            flex-wrap:
-                wrap;
-
-        }
-
-
-        .doctor-info {
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            gap:
-                13px;
-
-        }
-
-
-        .doctor-avatar {
-
-            width:
-                50px;
-
-            height:
-                50px;
-
-            border-radius:
-                15px;
-
-            display:
-                flex;
-
-            justify-content:
-                center;
-
-            align-items:
-                center;
-
-            background:
-                rgba(255,255,255,0.15);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.2);
-
-            font-size:
-                23px;
-
-        }
-
-
-        .doctor-name {
-
-            font-size:
-                19px;
-
-            font-weight:
-                750;
-
-        }
-
-
-        .doctor-subtitle {
-
-            margin-top:
-                3px;
-
-            font-size:
-                12px;
-
-            opacity:
-                0.78;
-
-        }
-
-
-        .doctor-stats {
-
-            display:
-                flex;
-
-            gap:
-                8px;
-
-            flex-wrap:
-                wrap;
-
-        }
-
-
-        .doctor-stat {
-
-            background:
-                rgba(255,255,255,0.13);
-
-            padding:
-                8px 11px;
-
-            border-radius:
-                9px;
-
-            font-size:
-                11px;
-
-        }
-
-
-        .doctor-stat strong {
-
-            font-size:
-                15px;
-
-            margin-right:
-                3px;
-
-        }
-
-
-        /* =====================================================
-           APPOINTMENT SECTION
-        ===================================================== */
-
-        .appointment-section {
-
-            margin:
-                14px;
-
-            border:
-                1px solid
-                #e5edf1;
-
-            border-radius:
-                14px;
-
-            overflow:
-                hidden;
-
-            background:
-                white;
-
-        }
-
-
-        .section-header {
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                space-between;
-
-            padding:
-                13px 16px;
-
-            gap:
-                10px;
-
-        }
-
-
-        .section-header-left {
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            gap:
-                9px;
-
-        }
-
-
-        .section-title {
-
-            font-size:
-                14px;
-
-            font-weight:
-                800;
-
-        }
-
-
-        .section-count {
-
-            min-width:
-                27px;
-
-            height:
-                27px;
-
-            padding:
-                0 8px;
-
-            display:
-                inline-flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            border-radius:
-                8px;
-
-            font-size:
-                12px;
-
-            font-weight:
-                800;
-
-        }
-
-
-        /* TODAY */
-
-        .today-section .section-header {
-
-            background:
-                #f0fdfa;
-
-            border-bottom:
-                1px solid
-                #d9f5f0;
-
-        }
-
-
-        .today-section .section-title {
-
-            color:
-                #0f766e;
-
-        }
-
-
-        .today-section .section-count {
-
-            background:
-                #ccfbf1;
-
-            color:
-                #0f766e;
-
-        }
-
-
-        /* UPCOMING */
-
-        .upcoming-section .section-header {
-
-            background:
-                #eff6ff;
-
-            border-bottom:
-                1px solid
-                #dbeafe;
-
-        }
-
-
-        .upcoming-section .section-title {
-
-            color:
-                #2563eb;
-
-        }
-
-
-        .upcoming-section .section-count {
-
-            background:
-                #dbeafe;
-
-            color:
-                #2563eb;
-
-        }
-
-
-        /* PAST */
-
-        .past-section .section-header {
-
-            background:
-                #f8fafc;
-
-            border-bottom:
-                1px solid
-                #e2e8f0;
-
-        }
-
-
-        .past-section .section-title {
-
-            color:
-                #64748b;
-
-        }
-
-
-        .past-section .section-count {
-
-            background:
-                #e2e8f0;
-
-            color:
-                #475569;
-
-        }
-
-
-        /* =====================================================
-           PATIENT LIST
-        ===================================================== */
-
-        .patients {
-
-            padding:
-                0 10px 10px;
-
-        }
-
-
-        .patient-row {
-
-            display:
-                grid;
-
-            grid-template-columns:
-                58px
-                minmax(190px, 1.4fr)
-                120px
-                95px
-                150px
-                120px
-                110px;
-
-            gap:
-                12px;
-
-            align-items:
-                center;
-
-            padding:
-                14px 10px;
-
-            border-bottom:
-                1px solid
-                #eef2f5;
-
-            transition:
-                background 0.15s ease;
-
-        }
-
-
-        .patient-row:hover {
-
-            background:
-                #f8fcfd;
-
-        }
-
-
-        .patient-row:last-child {
-
-            border-bottom:
-                none;
-
-        }
-
-
-        .column-header {
-
-            color:
-                #64748b;
-
-            font-size:
-                10px;
-
-            text-transform:
-                uppercase;
-
-            letter-spacing:
-                0.5px;
-
-            font-weight:
-                700;
-
-            background:
-                #f8fafc;
-
-        }
-
-
-        .patient-name {
-
-            font-weight:
-                700;
-
-            color:
-                #172033;
-
-        }
-
-
-        .patient-extra {
-
-            color:
-                #64748b;
-
-            font-size:
-                11px;
-
-            margin-top:
-                3px;
-
-        }
-
-
-        .appointment-date {
-
-            display:
-                inline-block;
-
-            padding:
-                7px 9px;
-
-            border-radius:
-                9px;
-
-            background:
-                #eff6ff;
-
-            color:
-                #2563eb;
-
-            font-weight:
-                700;
-
-            font-size:
-                12px;
-
-        }
-
-
-        .mobile {
-
-            color:
-                #475569;
-
-            font-size:
-                13px;
-
-        }
-
-
-        .patient-no {
-
-            width:
-                38px;
-
-            height:
-                38px;
-
-            border-radius:
-                11px;
-
-            display:
-                flex;
-
-            justify-content:
-                center;
-
-            align-items:
-                center;
-
-            background:
-                #ecfeff;
-
-            color:
-                #0e7490;
-
-            font-weight:
-                750;
-
-            font-size:
-                12px;
-
-        }
-
-
-        .follow-btn {
-
-            display:
-                inline-flex;
-
-            justify-content:
-                center;
-
-            align-items:
-                center;
-
-            min-height:
-                36px;
-
-            padding:
-                0 11px;
-
-            border:
-                none;
-
-            border-radius:
-                9px;
-
-            background:
-                #16a34a;
-
-            color:
-                white;
-
-            text-decoration:
-                none;
-
-            font-size:
-                12px;
-
-            font-weight:
-                700;
-
-        }
-
-
-        .follow-btn:hover {
-
-            background:
-                #15803d;
-
-        }
-
-
-        /* =====================================================
-           EMPTY SECTION
-        ===================================================== */
-
-        .section-empty {
-
-            padding:
-                22px 15px;
-
-            text-align:
-                center;
-
-            color:
-                #94a3b8;
-
-            font-size:
-                12px;
-
-        }
-
-
-        /* =====================================================
-           EMPTY PAGE
-        ===================================================== */
-
-        .empty {
-
-            padding:
-                32px 20px;
-
-            text-align:
-                center;
-
-            color:
-                #64748b;
-
-        }
-
-
-        .empty-icon {
-
-            font-size:
-                34px;
-
-            margin-bottom:
-                8px;
-
-        }
-
-
-        /* =====================================================
-           MOBILE
-        ===================================================== */
-
-        @media (max-width: 900px) {
-
-            .controls {
-
-                grid-template-columns:
-                    1fr 1fr;
-
-            }
-
-
-            .controls .search {
-
-                grid-column:
-                    1 / -1;
-
-            }
-
-
-            .summary {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-
-            }
-
-
-            .patient-row {
-
-                grid-template-columns:
-                    48px
-                    minmax(180px, 1fr)
-                    105px
-                    105px;
-
-            }
-
-
-            .patient-row > div:nth-child(4),
-            .patient-row > div:nth-child(5),
-            .patient-row > div:nth-child(6) {
-
-                display:
-                    none;
-
-            }
-
-        }
-
-
-        @media (max-width: 600px) {
-
-            .header {
-
-                padding:
-                    20px 16px;
-
-            }
-
-
-            .header-left h1 {
-
-                font-size:
-                    22px;
-
-            }
-
-
-            .controls {
-
-                width:
-                    92%;
-
-                grid-template-columns:
-                    1fr;
-
-            }
-
-
-            .controls .search {
-
-                grid-column:
-                    auto;
-
-            }
-
-
-            .summary {
-
-                width:
-                    92%;
-
-                grid-template-columns:
-                    1fr 1fr;
-
-            }
-
-
-            .container {
-
-                width:
-                    92%;
-
-            }
-
-
-            .doctor-header {
-
-                padding:
-                    16px;
-
-            }
-
-
-            .doctor-name {
-
-                font-size:
-                    17px;
-
-            }
-
-
-            .doctor-stats {
-
-                width:
-                    100%;
-
-            }
-
-
-            .doctor-stat {
-
-                flex:
-                    1;
-
-                text-align:
-                    center;
-
-            }
-
-
-            .appointment-section {
-
-                margin:
-                    10px;
-
-            }
-
-
-            .patients {
-
-                padding:
-                    0 6px 6px;
-
-            }
-
-
-            .patient-row {
-
-                grid-template-columns:
-                    42px 1fr;
-
-                padding:
-                    13px 7px;
-
-            }
-
-
-            .patient-row > div:nth-child(3),
-            .patient-row > div:nth-child(4),
-            .patient-row > div:nth-child(5),
-            .patient-row > div:nth-child(6),
-            .patient-row > div:nth-child(7) {
-
-                display:
-                    none;
-
-            }
-
-
-            .column-header {
-
-                display:
-                    none;
-
-            }
-
-
-            .follow-btn {
-
-                margin-top:
-                    7px;
-
-            }
-
-        }
-
-    </style>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Doctor Appointments</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Inter, Arial, sans-serif;
+    background: #f4f8fb;
+    color: #172033;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header {
+    background: linear-gradient(135deg, #0f766e, #0e7490);
+    color: white;
+    padding: 24px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.12);
+}
+
+.header-left h1 {
+    font-size: 27px;
+    margin-bottom: 6px;
+}
+
+.header-left p {
+    font-size: 13px;
+    opacity: 0.82;
+}
+
+.header-badge {
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 10px 15px;
+    border-radius: 12px;
+    font-size: 13px;
+}
+
+/* =====================================================
+   CONTROLS
+===================================================== */
+
+.controls {
+    width: 90%;
+    max-width: 1450px;
+    margin: 22px auto;
+    display: grid;
+    grid-template-columns: 230px 1fr 150px;
+    gap: 12px;
+}
+
+.control {
+    height: 46px;
+    border: 1px solid #dbe5eb;
+    border-radius: 11px;
+    padding: 0 14px;
+    background: white;
+    font-size: 14px;
+    outline: none;
+}
+
+.control:focus {
+    border-color: #0f766e;
+    box-shadow: 0 0 0 3px rgba(15,118,110,0.08);
+}
+
+/* =====================================================
+   SUMMARY
+===================================================== */
+
+.summary {
+    width: 90%;
+    max-width: 1450px;
+    margin: 0 auto 22px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.summary-card {
+    background: white;
+    padding: 17px;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(15,23,42,0.06);
+    border: 1px solid #edf2f5;
+}
+
+.summary-label {
+    font-size: 12px;
+    color: #64748b;
+    margin-bottom: 7px;
+}
+
+.summary-value {
+    font-size: 26px;
+    font-weight: 750;
+    color: #0f766e;
+}
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.container {
+    width: 90%;
+    max-width: 1450px;
+    margin: auto;
+    padding-bottom: 35px;
+}
+
+/* =====================================================
+   DOCTOR CARD
+===================================================== */
+
+.doctor-card {
+    background: white;
+    border-radius: 18px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    border: 1px solid #edf2f5;
+    box-shadow: 0 10px 30px rgba(15,23,42,0.07);
+}
+
+/* =====================================================
+   DOCTOR HEADER
+===================================================== */
+
+.doctor-header {
+    padding: 19px 20px;
+    background: linear-gradient(135deg, #0f766e, #0e7490);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.doctor-info {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.doctor-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    font-size: 23px;
+}
+
+.doctor-name {
+    font-size: 19px;
+    font-weight: 750;
+}
+
+.doctor-subtitle {
+    margin-top: 3px;
+    font-size: 12px;
+    opacity: 0.78;
+}
+
+.doctor-stats {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.doctor-stat {
+    background: rgba(255,255,255,0.13);
+    padding: 8px 11px;
+    border-radius: 9px;
+    font-size: 11px;
+}
+
+.doctor-stat strong {
+    font-size: 15px;
+    margin-right: 3px;
+}
+
+/* =====================================================
+   APPOINTMENT SECTION
+===================================================== */
+
+.appointment-section {
+    margin: 14px;
+    border: 1px solid #e5edf1;
+    border-radius: 14px;
+    overflow: hidden;
+    background: white;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 16px;
+    gap: 10px;
+}
+
+.section-header-left {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.section-title {
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.section-count {
+    min-width: 27px;
+    height: 27px;
+    padding: 0 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+/* TODAY */
+
+.today-section .section-header {
+    background: #f0fdfa;
+    border-bottom: 1px solid #d9f5f0;
+}
+
+.today-section .section-title {
+    color: #0f766e;
+}
+
+.today-section .section-count {
+    background: #ccfbf1;
+    color: #0f766e;
+}
+
+/* UPCOMING */
+
+.upcoming-section .section-header {
+    background: #eff6ff;
+    border-bottom: 1px solid #dbeafe;
+}
+
+.upcoming-section .section-title {
+    color: #2563eb;
+}
+
+.upcoming-section .section-count {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+/* PAST */
+
+.past-section .section-header {
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.past-section .section-title {
+    color: #64748b;
+}
+
+.past-section .section-count {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+/* =====================================================
+   PATIENT LIST
+===================================================== */
+
+.patients {
+    padding: 0 10px 10px;
+}
+
+.patient-row {
+    display: grid;
+
+    /*
+       No
+       Patient
+       Gender
+       Age
+       Mobile
+       Date
+       Visit
+       Status
+       Charge
+       Action
+    */
+
+    grid-template-columns:
+        50px
+        minmax(180px, 1.5fr)
+        85px
+        65px
+        130px
+        115px
+        75px
+        90px
+        95px
+        115px;
+
+    gap: 10px;
+
+    align-items: center;
+
+    padding: 14px 10px;
+
+    border-bottom: 1px solid #eef2f5;
+
+    transition: background 0.15s ease;
+}
+
+.patient-row:hover {
+    background: #f8fcfd;
+}
+
+.patient-row:last-child {
+    border-bottom: none;
+}
+
+.column-header {
+    color: #64748b;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    background: #f8fafc;
+}
+
+.patient-name {
+    font-weight: 700;
+    color: #172033;
+}
+
+.patient-extra {
+    color: #64748b;
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.appointment-date {
+    display: inline-block;
+    padding: 7px 9px;
+    border-radius: 9px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.mobile {
+    color: #475569;
+    font-size: 13px;
+}
+
+.patient-no {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ecfeff;
+    color: #0e7490;
+    font-weight: 750;
+    font-size: 12px;
+}
+
+/* =====================================================
+   VISIT
+===================================================== */
+
+.visit-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 48px;
+    padding: 7px 8px;
+
+    border-radius: 8px;
+
+    background: #f1f5f9;
+    color: #334155;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 65px;
+
+    padding: 7px 9px;
+
+    border-radius: 8px;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+}
+
+.status-new {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.status-old {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+/* =====================================================
+   STATUS ACTION
+===================================================== */
+
+.status-box {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.old-btn {
+    border: none;
+
+    background: #f59e0b;
+
+    color: white;
+
+    padding: 6px 8px;
+
+    border-radius: 7px;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.old-btn:hover {
+    background: #d97706;
+}
+
+.old-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* =====================================================
+   CHARGE
+===================================================== */
+
+.charge {
+    font-size: 13px;
+    font-weight: 800;
+    color: #0f766e;
+}
+
+.charge::first-letter {
+    font-size: 12px;
+}
+
+/* =====================================================
+   FOLLOW BUTTON
+===================================================== */
+
+.follow-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 36px;
+
+    padding: 0 11px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #16a34a;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.follow-btn:hover {
+    background: #15803d;
+}
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.section-empty {
+    padding: 22px 15px;
+    text-align: center;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.empty {
+    padding: 32px 20px;
+    text-align: center;
+    color: #64748b;
+}
+
+.empty-icon {
+    font-size: 34px;
+    margin-bottom: 8px;
+}
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.toast {
+    position: fixed;
+
+    right: 20px;
+    bottom: 20px;
+
+    z-index: 9999;
+
+    padding: 13px 18px;
+
+    border-radius: 10px;
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.2);
+
+    opacity: 0;
+
+    transform: translateY(20px);
+
+    pointer-events: none;
+
+    transition: 0.25s;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast.success {
+    background: #16a34a;
+}
+
+.toast.error {
+    background: #dc2626;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 1200px) {
+
+    .patient-row {
+
+        grid-template-columns:
+            50px
+            minmax(180px, 1.5fr)
+            80px
+            60px
+            120px
+            110px
+            65px
+            85px
+            85px
+            100px;
+
+    }
+
+}
+
+@media (max-width: 1000px) {
+
+    .controls {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .controls .search {
+        grid-column: 1 / -1;
+    }
+
+    .summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .patient-row {
+
+        grid-template-columns:
+            48px
+            minmax(180px, 1fr)
+            90px
+            90px;
+
+    }
+
+    .patient-row > div:nth-child(3),
+    .patient-row > div:nth-child(4),
+    .patient-row > div:nth-child(5),
+    .patient-row > div:nth-child(6),
+    .patient-row > div:nth-child(7),
+    .patient-row > div:nth-child(8) {
+
+        display: none;
+
+    }
+
+    /*
+       Keep Charge and Action
+    */
+
+    .patient-row > div:nth-child(9),
+    .patient-row > div:nth-child(10) {
+
+        display: block;
+
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .patient-row {
+
+        grid-template-columns:
+            42px
+            1fr;
+
+    }
+
+    .patient-row > div:nth-child(3),
+    .patient-row > div:nth-child(4),
+    .patient-row > div:nth-child(5),
+    .patient-row > div:nth-child(6),
+    .patient-row > div:nth-child(7),
+    .patient-row > div:nth-child(8),
+    .patient-row > div:nth-child(9),
+    .patient-row > div:nth-child(10) {
+
+        display: none;
+
+    }
+
+    .column-header {
+        display: none;
+    }
+
+    .patient-name {
+        font-size: 14px;
+    }
+
+    .patient-extra {
+        max-width: 230px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .follow-btn {
+        margin-top: 7px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .header {
+        padding: 20px 16px;
+    }
+
+    .header-left h1 {
+        font-size: 22px;
+    }
+
+    .controls {
+        width: 92%;
+        grid-template-columns: 1fr;
+    }
+
+    .controls .search {
+        grid-column: auto;
+    }
+
+    .summary {
+        width: 92%;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .container {
+        width: 92%;
+    }
+
+    .doctor-header {
+        padding: 16px;
+    }
+
+    .doctor-name {
+        font-size: 17px;
+    }
+
+    .doctor-stats {
+        width: 100%;
+    }
+
+    .doctor-stat {
+        flex: 1;
+        text-align: center;
+    }
+
+    .appointment-section {
+        margin: 10px;
+    }
+
+    .patients {
+        padding: 0 6px 6px;
+    }
+
+}
+
+</style>
 
 </head>
 
-
 <body>
-
 
 <!-- =====================================================
      HEADER
@@ -1164,11 +801,10 @@
         </h1>
 
         <p>
-            Manage patients by doctor and appointment date
+            Manage patients, visits, status and charges
         </p>
 
     </div>
-
 
     <div class="header-badge">
 
@@ -1181,13 +817,11 @@
 </header>
 
 
-
 <!-- =====================================================
      FILTERS
 ===================================================== -->
 
 <div class="controls">
-
 
     <select
         class="control"
@@ -1232,9 +866,7 @@
 
     </select>
 
-
 </div>
-
 
 
 <!-- =====================================================
@@ -1243,11 +875,10 @@
 
 <div class="summary">
 
-
     <div class="summary-card">
 
         <div class="summary-label">
-            Total Patients
+            Total Appointments
         </div>
 
         <div
@@ -1307,13 +938,11 @@
 
     </div>
 
-
 </div>
 
 
-
 <!-- =====================================================
-     DATA
+     MAIN DATA
 ===================================================== -->
 
 <div
@@ -1321,19 +950,15 @@
     id="appointmentsContainer"
 >
 
-
 {% if patients %}
 
-
     {% set grouped = {} %}
-
 
     {% for p in patients %}
 
         {% set doctor =
             p.doctor_name or "Unknown Doctor"
         %}
-
 
         {% if doctor not in grouped %}
 
@@ -1345,14 +970,11 @@
 
         {% endif %}
 
-
         {% set _ =
             grouped[doctor].append(p)
         %}
 
-
     {% endfor %}
-
 
 
     <!-- =================================================
@@ -1361,12 +983,10 @@
 
     {% for doctor, doctor_patients in grouped.items()|sort %}
 
-
     <section
         class="doctor-card"
         data-doctor="{{ doctor|lower }}"
     >
-
 
         <!-- =================================================
              DOCTOR HEADER
@@ -1374,14 +994,11 @@
 
         <div class="doctor-header">
 
-
             <div class="doctor-info">
-
 
                 <div class="doctor-avatar">
                     👨‍⚕️
                 </div>
-
 
                 <div>
 
@@ -1391,7 +1008,6 @@
 
                     </div>
 
-
                     <div class="doctor-subtitle">
 
                         Patient Appointment List
@@ -1400,12 +1016,10 @@
 
                 </div>
 
-
             </div>
 
 
             <div class="doctor-stats">
-
 
                 <div class="doctor-stat">
 
@@ -1419,9 +1033,7 @@
 
             </div>
 
-
         </div>
-
 
 
         <!-- =================================================
@@ -1432,7 +1044,6 @@
             class="appointment-section today-section"
             data-section="today"
         >
-
 
             <div class="section-header">
 
@@ -1456,103 +1067,200 @@
 
             <div class="patients">
 
-
                 <div class="patient-row column-header">
 
                     <div>No</div>
-
                     <div>Patient</div>
-
                     <div>Gender</div>
-
                     <div>Age</div>
-
                     <div>Mobile</div>
-
                     <div>Date</div>
-
+                    <div>Visit</div>
+                    <div>Status</div>
+                    <div>Charge</div>
                     <div>Action</div>
 
                 </div>
 
 
-                {% set today_patients = [] %}
-
                 {% for p in doctor_patients %}
 
-                    <div
-                        class="patient-row appointment-row"
-                        data-doctor="{{ doctor|lower }}"
-                        data-date="{{ p.appointment_date }}"
-                        data-status="today"
-                        data-search="
-                            {{ p.patient_name|default('')|lower }}
-                            {{ p.mobile|default('')|lower }}
-                            {{ doctor|default('')|lower }}
-                            {{ p.gender|default('')|lower }}
-                        "
-                    >
+                <div
+                    class="patient-row appointment-row"
 
-                        <div>
-                            <div class="patient-no">
-                                0
-                            </div>
-                        </div>
+                    data-id="{{ p.id|default('') }}"
 
+                    data-doctor="{{ doctor|lower }}"
 
-                        <div>
+                    data-date="{{ p.appointment_date|default('') }}"
 
-                            <div class="patient-name">
-                                {{ p.patient_name }}
-                            </div>
+                    data-status="today"
 
-                            <div class="patient-extra">
-                                {{ p.address }}
-                            </div>
+                    data-patient-status="{{ p.patient_status|default('NEW')|upper }}"
 
-                        </div>
+                    data-search="
+                        {{ p.patient_name|default('')|lower }}
+                        {{ p.mobile|default('')|lower }}
+                        {{ doctor|default('')|lower }}
+                        {{ p.gender|default('')|lower }}
+                    "
+                >
 
+                    <!-- No -->
 
-                        <div>
-                            {{ p.gender }}
-                        </div>
+                    <div>
 
-
-                        <div>
-                            {{ p.age }}
-                        </div>
-
-
-                        <div>
-
-                            <div class="mobile">
-                                📱 {{ p.mobile }}
-                            </div>
-
-                        </div>
-
-
-                        <div>
-
-                            <span class="appointment-date">
-                                {{ p.appointment_date }}
-                            </span>
-
-                        </div>
-
-
-                        <div>
-
-                            <a
-                                href="/followups/{{ uid }}"
-                                class="follow-btn"
-                            >
-                                Follow-up
-                            </a>
-
+                        <div class="patient-no">
+                            0
                         </div>
 
                     </div>
+
+
+                    <!-- Patient -->
+
+                    <div>
+
+                        <div class="patient-name">
+                            {{ p.patient_name|default('Unknown') }}
+                        </div>
+
+                        <div class="patient-extra">
+                            {{ p.address|default('') }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Gender -->
+
+                    <div>
+                        {{ p.gender|default('-') }}
+                    </div>
+
+
+                    <!-- Age -->
+
+                    <div>
+                        {{ p.age|default('-') }}
+                    </div>
+
+
+                    <!-- Mobile -->
+
+                    <div>
+
+                        <div class="mobile">
+                            📱 {{ p.mobile|default('-') }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Date -->
+
+                    <div>
+
+                        <span class="appointment-date">
+
+                            {{ p.appointment_date|default('-') }}
+
+                            {% if p.appointment_time %}
+                                <br>
+                                <small>
+                                    🕐 {{ p.appointment_time }}
+                                </small>
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- Visit -->
+
+                    <div>
+
+                        <span class="visit-badge">
+
+                            Visit
+                            {{ p.visit_number|default('-') }}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="status-box">
+
+                        {% set current_status =
+                            p.patient_status|default('NEW')|upper
+                        %}
+
+                        <span
+                            class="status-badge
+                            {% if current_status == 'OLD' %}
+                                status-old
+                            {% else %}
+                                status-new
+                            {% endif %}"
+                            data-status-badge
+                        >
+
+                            {% if current_status == 'OLD' %}
+                                OLD
+                            {% else %}
+                                NEW
+                            {% endif %}
+
+                        </span>
+
+
+                        {% if current_status != 'OLD' %}
+
+                        <button
+                            type="button"
+                            class="old-btn"
+                            data-appointment-id="{{ p.id|default('') }}"
+                            onclick="markPatientOld(this)"
+                        >
+                            Mark OLD
+                        </button>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Charge -->
+
+                    <div>
+
+                        <span class="charge">
+
+                            ₹{{ p.charge|default(0) }}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- Action -->
+
+                    <div>
+
+                        <a
+                            href="/followups/{{ uid }}"
+                            class="follow-btn"
+                        >
+                            Follow-up
+                        </a>
+
+                    </div>
+
+                </div>
 
                 {% endfor %}
 
@@ -1565,11 +1273,9 @@
                     No appointments today.
                 </div>
 
-
             </div>
 
         </div>
-
 
 
         <!-- =================================================
@@ -1580,7 +1286,6 @@
             class="appointment-section upcoming-section"
             data-section="upcoming"
         >
-
 
             <div class="section-header">
 
@@ -1604,21 +1309,17 @@
 
             <div class="patients">
 
-
                 <div class="patient-row column-header">
 
                     <div>No</div>
-
                     <div>Patient</div>
-
                     <div>Gender</div>
-
                     <div>Age</div>
-
                     <div>Mobile</div>
-
                     <div>Date</div>
-
+                    <div>Visit</div>
+                    <div>Status</div>
+                    <div>Charge</div>
                     <div>Action</div>
 
                 </div>
@@ -1626,81 +1327,182 @@
 
                 {% for p in doctor_patients %}
 
-                    <div
-                        class="patient-row appointment-row"
-                        data-doctor="{{ doctor|lower }}"
-                        data-date="{{ p.appointment_date }}"
-                        data-status="upcoming"
-                        data-search="
-                            {{ p.patient_name|default('')|lower }}
-                            {{ p.mobile|default('')|lower }}
-                            {{ doctor|default('')|lower }}
-                            {{ p.gender|default('')|lower }}
-                        "
-                    >
+                <div
+                    class="patient-row appointment-row"
 
-                        <div>
+                    data-id="{{ p.id|default('') }}"
 
-                            <div class="patient-no">
-                                0
-                            </div>
+                    data-doctor="{{ doctor|lower }}"
 
-                        </div>
+                    data-date="{{ p.appointment_date|default('') }}"
 
+                    data-status="upcoming"
 
-                        <div>
+                    data-patient-status="{{ p.patient_status|default('NEW')|upper }}"
 
-                            <div class="patient-name">
-                                {{ p.patient_name }}
-                            </div>
+                    data-search="
+                        {{ p.patient_name|default('')|lower }}
+                        {{ p.mobile|default('')|lower }}
+                        {{ doctor|default('')|lower }}
+                        {{ p.gender|default('')|lower }}
+                    "
+                >
 
-                            <div class="patient-extra">
-                                {{ p.address }}
-                            </div>
+                    <!-- No -->
 
-                        </div>
+                    <div>
 
-
-                        <div>
-                            {{ p.gender }}
-                        </div>
-
-
-                        <div>
-                            {{ p.age }}
-                        </div>
-
-
-                        <div>
-
-                            <div class="mobile">
-                                📱 {{ p.mobile }}
-                            </div>
-
-                        </div>
-
-
-                        <div>
-
-                            <span class="appointment-date">
-                                {{ p.appointment_date }}
-                            </span>
-
-                        </div>
-
-
-                        <div>
-
-                            <a
-                                href="/followups/{{ uid }}"
-                                class="follow-btn"
-                            >
-                                Follow-up
-                            </a>
-
+                        <div class="patient-no">
+                            0
                         </div>
 
                     </div>
+
+
+                    <!-- Patient -->
+
+                    <div>
+
+                        <div class="patient-name">
+                            {{ p.patient_name|default('Unknown') }}
+                        </div>
+
+                        <div class="patient-extra">
+                            {{ p.address|default('') }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Gender -->
+
+                    <div>
+                        {{ p.gender|default('-') }}
+                    </div>
+
+
+                    <!-- Age -->
+
+                    <div>
+                        {{ p.age|default('-') }}
+                    </div>
+
+
+                    <!-- Mobile -->
+
+                    <div>
+
+                        <div class="mobile">
+                            📱 {{ p.mobile|default('-') }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Date -->
+
+                    <div>
+
+                        <span class="appointment-date">
+
+                            {{ p.appointment_date|default('-') }}
+
+                            {% if p.appointment_time %}
+                                <br>
+                                <small>
+                                    🕐 {{ p.appointment_time }}
+                                </small>
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- Visit -->
+
+                    <div>
+
+                        <span class="visit-badge">
+
+                            Visit
+                            {{ p.visit_number|default('-') }}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="status-box">
+
+                        {% set current_status =
+                            p.patient_status|default('NEW')|upper
+                        %}
+
+                        <span
+                            class="status-badge
+                            {% if current_status == 'OLD' %}
+                                status-old
+                            {% else %}
+                                status-new
+                            {% endif %}"
+                            data-status-badge
+                        >
+
+                            {% if current_status == 'OLD' %}
+                                OLD
+                            {% else %}
+                                NEW
+                            {% endif %}
+
+                        </span>
+
+
+                        {% if current_status != 'OLD' %}
+
+                        <button
+                            type="button"
+                            class="old-btn"
+                            data-appointment-id="{{ p.id|default('') }}"
+                            onclick="markPatientOld(this)"
+                        >
+                            Mark OLD
+                        </button>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Charge -->
+
+                    <div>
+
+                        <span class="charge">
+
+                            ₹{{ p.charge|default(0) }}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- Action -->
+
+                    <div>
+
+                        <a
+                            href="/followups/{{ uid }}"
+                            class="follow-btn"
+                        >
+                            Follow-up
+                        </a>
+
+                    </div>
+
+                </div>
 
                 {% endfor %}
 
@@ -1713,11 +1515,9 @@
                     No upcoming appointments.
                 </div>
 
-
             </div>
 
         </div>
-
 
 
         <!-- =================================================
@@ -1728,7 +1528,6 @@
             class="appointment-section past-section"
             data-section="past"
         >
-
 
             <div class="section-header">
 
@@ -1752,21 +1551,17 @@
 
             <div class="patients">
 
-
                 <div class="patient-row column-header">
 
                     <div>No</div>
-
                     <div>Patient</div>
-
                     <div>Gender</div>
-
                     <div>Age</div>
-
                     <div>Mobile</div>
-
                     <div>Date</div>
-
+                    <div>Visit</div>
+                    <div>Status</div>
+                    <div>Charge</div>
                     <div>Action</div>
 
                 </div>
@@ -1774,81 +1569,182 @@
 
                 {% for p in doctor_patients %}
 
-                    <div
-                        class="patient-row appointment-row"
-                        data-doctor="{{ doctor|lower }}"
-                        data-date="{{ p.appointment_date }}"
-                        data-status="past"
-                        data-search="
-                            {{ p.patient_name|default('')|lower }}
-                            {{ p.mobile|default('')|lower }}
-                            {{ doctor|default('')|lower }}
-                            {{ p.gender|default('')|lower }}
-                        "
-                    >
+                <div
+                    class="patient-row appointment-row"
 
-                        <div>
+                    data-id="{{ p.id|default('') }}"
 
-                            <div class="patient-no">
-                                0
-                            </div>
+                    data-doctor="{{ doctor|lower }}"
 
-                        </div>
+                    data-date="{{ p.appointment_date|default('') }}"
 
+                    data-status="past"
 
-                        <div>
+                    data-patient-status="{{ p.patient_status|default('NEW')|upper }}"
 
-                            <div class="patient-name">
-                                {{ p.patient_name }}
-                            </div>
+                    data-search="
+                        {{ p.patient_name|default('')|lower }}
+                        {{ p.mobile|default('')|lower }}
+                        {{ doctor|default('')|lower }}
+                        {{ p.gender|default('')|lower }}
+                    "
+                >
 
-                            <div class="patient-extra">
-                                {{ p.address }}
-                            </div>
+                    <!-- No -->
 
-                        </div>
+                    <div>
 
-
-                        <div>
-                            {{ p.gender }}
-                        </div>
-
-
-                        <div>
-                            {{ p.age }}
-                        </div>
-
-
-                        <div>
-
-                            <div class="mobile">
-                                📱 {{ p.mobile }}
-                            </div>
-
-                        </div>
-
-
-                        <div>
-
-                            <span class="appointment-date">
-                                {{ p.appointment_date }}
-                            </span>
-
-                        </div>
-
-
-                        <div>
-
-                            <a
-                                href="/followups/{{ uid }}"
-                                class="follow-btn"
-                            >
-                                Follow-up
-                            </a>
-
+                        <div class="patient-no">
+                            0
                         </div>
 
                     </div>
+
+
+                    <!-- Patient -->
+
+                    <div>
+
+                        <div class="patient-name">
+                            {{ p.patient_name|default('Unknown') }}
+                        </div>
+
+                        <div class="patient-extra">
+                            {{ p.address|default('') }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Gender -->
+
+                    <div>
+                        {{ p.gender|default('-') }}
+                    </div>
+
+
+                    <!-- Age -->
+
+                    <div>
+                        {{ p.age|default('-') }}
+                    </div>
+
+
+                    <!-- Mobile -->
+
+                    <div>
+
+                        <div class="mobile">
+                            📱 {{ p.mobile|default('-') }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Date -->
+
+                    <div>
+
+                        <span class="appointment-date">
+
+                            {{ p.appointment_date|default('-') }}
+
+                            {% if p.appointment_time %}
+                                <br>
+                                <small>
+                                    🕐 {{ p.appointment_time }}
+                                </small>
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- Visit -->
+
+                    <div>
+
+                        <span class="visit-badge">
+
+                            Visit
+                            {{ p.visit_number|default('-') }}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="status-box">
+
+                        {% set current_status =
+                            p.patient_status|default('NEW')|upper
+                        %}
+
+                        <span
+                            class="status-badge
+                            {% if current_status == 'OLD' %}
+                                status-old
+                            {% else %}
+                                status-new
+                            {% endif %}"
+                            data-status-badge
+                        >
+
+                            {% if current_status == 'OLD' %}
+                                OLD
+                            {% else %}
+                                NEW
+                            {% endif %}
+
+                        </span>
+
+
+                        {% if current_status != 'OLD' %}
+
+                        <button
+                            type="button"
+                            class="old-btn"
+                            data-appointment-id="{{ p.id|default('') }}"
+                            onclick="markPatientOld(this)"
+                        >
+                            Mark OLD
+                        </button>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- Charge -->
+
+                    <div>
+
+                        <span class="charge">
+
+                            ₹{{ p.charge|default(0) }}
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- Action -->
+
+                    <div>
+
+                        <a
+                            href="/followups/{{ uid }}"
+                            class="follow-btn"
+                        >
+                            Follow-up
+                        </a>
+
+                    </div>
+
+                </div>
 
                 {% endfor %}
 
@@ -1861,20 +1757,15 @@
                     No past appointments.
                 </div>
 
-
             </div>
 
         </div>
 
-
     </section>
-
 
     {% endfor %}
 
-
 {% else %}
-
 
     <div class="doctor-card">
 
@@ -1896,38 +1787,35 @@
 
     </div>
 
-
 {% endif %}
-
 
 </div>
 
 
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
 
 <script>
 
-
-// =====================================================
-// ELEMENTS
-// =====================================================
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
 const doctorFilter =
-    document.getElementById(
-        "doctorFilter"
-    );
-
+    document.getElementById("doctorFilter");
 
 const searchInput =
-    document.getElementById(
-        "searchInput"
-    );
-
+    document.getElementById("searchInput");
 
 const dateFilter =
-    document.getElementById(
-        "dateFilter"
-    );
-
+    document.getElementById("dateFilter");
 
 const doctorCards =
     document.querySelectorAll(
@@ -1935,37 +1823,26 @@ const doctorCards =
     );
 
 
-// =====================================================
-// TODAY DATE
-// =====================================================
+/* =====================================================
+   TODAY
+===================================================== */
 
 function todayISO() {
 
-    const now =
-        new Date();
-
+    const now = new Date();
 
     const year =
         now.getFullYear();
 
-
     const month =
         String(
             now.getMonth() + 1
-        ).padStart(
-            2,
-            "0"
-        );
-
+        ).padStart(2, "0");
 
     const day =
         String(
             now.getDate()
-        ).padStart(
-            2,
-            "0"
-        );
-
+        ).padStart(2, "0");
 
     return (
         year +
@@ -1977,14 +1854,12 @@ function todayISO() {
 
 }
 
-
-const today =
-    todayISO();
+const today = todayISO();
 
 
-// =====================================================
-// NORMALIZE DATE
-// =====================================================
+/* =====================================================
+   DATE NORMALIZATION
+===================================================== */
 
 function normalizeDate(value) {
 
@@ -1992,21 +1867,9 @@ function normalizeDate(value) {
         return "";
     }
 
-
     value =
         String(value)
             .trim();
-
-
-    /*
-       Expected database format:
-
-       YYYY-MM-DD
-
-       Example:
-
-       2026-08-21
-    */
 
     if (
         /^\d{4}-\d{2}-\d{2}$/.test(value)
@@ -2016,19 +1879,10 @@ function normalizeDate(value) {
 
     }
 
-
-    /*
-       Also support:
-
-       DD-MM-YYYY
-       DD/MM/YYYY
-    */
-
-    let match =
+    const match =
         value.match(
             /^(\d{2})[-\/](\d{2})[-\/](\d{4})$/
         );
-
 
     if (match) {
 
@@ -2042,537 +1896,476 @@ function normalizeDate(value) {
 
     }
 
-
     return value;
 
 }
 
 
-// =====================================================
-// DOCTORS
-// =====================================================
+/* =====================================================
+   DOCTOR FILTER
+===================================================== */
 
 const doctors =
     new Set();
 
+doctorCards.forEach(card => {
 
-doctorCards.forEach(
-    card => {
+    const doctor =
+        card.dataset.doctor;
 
-        const doctor =
-            card.dataset.doctor;
+    if (doctor) {
 
-
-        if (doctor) {
-
-            doctors.add(
-                doctor
-            );
-
-        }
+        doctors.add(
+            doctor
+        );
 
     }
-);
+
+});
 
 
 [...doctors]
     .sort()
-    .forEach(
-        doctor => {
+    .forEach(doctor => {
 
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                doctor;
-
-
-            option.textContent =
-                "Dr. " +
-                doctor.replace(
-                    /\b\w/g,
-                    c =>
-                        c.toUpperCase()
-                );
-
-
-            doctorFilter.appendChild(
-                option
+        const option =
+            document.createElement(
+                "option"
             );
+
+        option.value =
+            doctor;
+
+        option.textContent =
+            "Dr. " +
+            doctor.replace(
+                /\b\w/g,
+                c => c.toUpperCase()
+            );
+
+        doctorFilter.appendChild(
+            option
+        );
+
+    });
+
+
+/* =====================================================
+   APPOINTMENT STATUS
+===================================================== */
+
+doctorCards.forEach(card => {
+
+    const rows =
+        card.querySelectorAll(
+            ".appointment-row"
+        );
+
+    rows.forEach(row => {
+
+        const date =
+            normalizeDate(
+                row.dataset.date
+            );
+
+        let status;
+
+        if (date === today) {
+
+            status = "today";
 
         }
-    );
+        else if (date > today) {
+
+            status = "upcoming";
+
+        }
+        else {
+
+            status = "past";
+
+        }
+
+        row.dataset.status =
+            status;
+
+    });
+
+});
 
 
-// =====================================================
-// SET APPOINTMENT STATUS
-// =====================================================
+/* =====================================================
+   SORT + NUMBER
+===================================================== */
 
-doctorCards.forEach(
-    card => {
+doctorCards.forEach(card => {
 
-        const rows =
-            card.querySelectorAll(
+    const sections =
+        card.querySelectorAll(
+            ".appointment-section"
+        );
+
+    sections.forEach(section => {
+
+        const status =
+            section.dataset.section;
+
+        const patientsContainer =
+            section.querySelector(
+                ".patients"
+            );
+
+        const allRows = [
+            ...card.querySelectorAll(
                 ".appointment-row"
+            )
+        ];
+
+        const matchingRows =
+            allRows.filter(
+                row =>
+                    row.dataset.status ===
+                    status
             );
 
 
-        rows.forEach(
-            row => {
+        /*
+           TODAY:
+           earliest time/date first
 
-                const date =
+           UPCOMING:
+           nearest date first
+
+           PAST:
+           latest past date first
+        */
+
+        matchingRows.sort(
+            (a, b) => {
+
+                const dateA =
                     normalizeDate(
-                        row.dataset.date
+                        a.dataset.date
                     );
 
+                const dateB =
+                    normalizeDate(
+                        b.dataset.date
+                    );
 
-                let status;
+                if (status === "past") {
 
+                    if (
+                        dateA !== dateB
+                    ) {
 
-                if (
-                    date === today
-                ) {
+                        return dateB.localeCompare(
+                            dateA
+                        );
 
-                    status =
-                        "today";
-
-                }
-                else if (
-                    date > today
-                ) {
-
-                    status =
-                        "upcoming";
+                    }
 
                 }
                 else {
 
-                    status =
-                        "past";
-
-                }
-
-
-                row.dataset.status =
-                    status;
-
-            }
-        );
-
-    }
-);
-
-
-// =====================================================
-// SORT + NUMBER EACH SECTION
-// =====================================================
-
-doctorCards.forEach(
-    card => {
-
-        const sections =
-            card.querySelectorAll(
-                ".appointment-section"
-            );
-
-
-        sections.forEach(
-            section => {
-
-                const status =
-                    section.dataset.section;
-
-
-                const patientsContainer =
-                    section.querySelector(
-                        ".patients"
-                    );
-
-
-                const rows = [
-                    ...patientsContainer.querySelectorAll(
-                        ".appointment-row"
-                    )
-                ];
-
-
-                /*
-                   Only rows belonging to this section
-                   are used.
-                */
-
-                const matchingRows =
-                    rows.filter(
-                        row =>
-                            row.dataset.status ===
-                            status
-                    );
-
-
-                /*
-                   Sort by appointment date.
-
-                   TODAY:
-                   earliest date first
-
-                   UPCOMING:
-                   nearest date first
-
-                   PAST:
-                   newest past date first
-                */
-
-                matchingRows.sort(
-                    (a, b) => {
-
-                        const dateA =
-                            normalizeDate(
-                                a.dataset.date
-                            );
-
-
-                        const dateB =
-                            normalizeDate(
-                                b.dataset.date
-                            );
-
-
-                        if (
-                            status === "past"
-                        ) {
-
-                            return dateB.localeCompare(
-                                dateA
-                            );
-
-                        }
-
+                    if (
+                        dateA !== dateB
+                    ) {
 
                         return dateA.localeCompare(
                             dateB
                         );
 
                     }
-                );
-
-
-                /*
-                   Number from 1 for every section.
-                */
-
-                matchingRows.forEach(
-                    (row, index) => {
-
-                        const number =
-                            row.querySelector(
-                                ".patient-no"
-                            );
-
-
-                        if (number) {
-
-                            number.textContent =
-                                index + 1;
-
-                        }
-
-
-                        /*
-                           Move row into correct section.
-                        */
-
-                        patientsContainer.appendChild(
-                            row
-                        );
-
-                    }
-                );
-
-
-                /*
-                   Count
-                */
-
-                const count =
-                    section.querySelector(
-                        "[data-count]"
-                    );
-
-
-                if (count) {
-
-                    count.textContent =
-                        matchingRows.length;
 
                 }
 
 
-                /*
-                   Empty message
-                */
+                const timeA =
+                    getTimeValue(a);
 
-                const empty =
-                    section.querySelector(
-                        "[data-empty]"
+                const timeB =
+                    getTimeValue(b);
+
+
+                if (status === "past") {
+
+                    return timeB.localeCompare(
+                        timeA
                     );
 
-
-                if (empty) {
-
-                    empty.style.display =
-                        matchingRows.length === 0
-                        ? "block"
-                        : "none";
-
                 }
+
+                return timeA.localeCompare(
+                    timeB
+                );
 
             }
         );
 
+
+        matchingRows.forEach(
+            (row, index) => {
+
+                const number =
+                    row.querySelector(
+                        ".patient-no"
+                    );
+
+                if (number) {
+
+                    number.textContent =
+                        index + 1;
+
+                }
+
+                patientsContainer.appendChild(
+                    row
+                );
+
+            }
+        );
+
+
+        const count =
+            section.querySelector(
+                "[data-count]"
+            );
+
+        if (count) {
+
+            count.textContent =
+                matchingRows.length;
+
+        }
+
+
+        const empty =
+            section.querySelector(
+                "[data-empty]"
+            );
+
+        if (empty) {
+
+            empty.style.display =
+                matchingRows.length === 0
+                ? "block"
+                : "none";
+
+        }
+
+    });
+
+});
+
+
+/* =====================================================
+   TIME
+===================================================== */
+
+function getTimeValue(row) {
+
+    const dateElement =
+        row.querySelector(
+            ".appointment-date"
+        );
+
+    if (!dateElement) {
+        return "";
     }
-);
+
+    const small =
+        dateElement.querySelector(
+            "small"
+        );
+
+    if (!small) {
+        return "";
+    }
+
+    return small.textContent
+        .replace("🕐", "")
+        .trim();
+
+}
 
 
-// =====================================================
-// FILTER
-// =====================================================
+/* =====================================================
+   FILTER
+===================================================== */
 
 function applyFilters() {
 
     const selectedDoctor =
         doctorFilter.value;
 
-
     const search =
         searchInput.value
             .trim()
             .toLowerCase();
 
-
     const selectedDate =
         dateFilter.value;
-
 
     let visibleTotal =
         0;
 
 
-    doctorCards.forEach(
-        card => {
+    doctorCards.forEach(card => {
 
-            const doctor =
-                card.dataset.doctor;
+        const doctor =
+            card.dataset.doctor;
 
+        const doctorMatch =
+            selectedDoctor === "all" ||
+            doctor === selectedDoctor;
 
-            const doctorMatch =
-                selectedDoctor === "all" ||
-                doctor === selectedDoctor;
-
-
-            let doctorHasVisible =
-                false;
+        let doctorHasVisible =
+            false;
 
 
-            card
-                .querySelectorAll(
-                    ".appointment-section"
-                )
-                .forEach(
-                    section => {
+        card
+            .querySelectorAll(
+                ".appointment-section"
+            )
+            .forEach(section => {
 
-                        const status =
-                            section.dataset.section;
+                const status =
+                    section.dataset.section;
 
-
-                        let sectionVisible =
-                            0;
+                let sectionVisible =
+                    0;
 
 
-                        section
-                            .querySelectorAll(
-                                ".appointment-row"
+                section
+                    .querySelectorAll(
+                        ".appointment-row"
+                    )
+                    .forEach(row => {
+
+                        const rowStatus =
+                            row.dataset.status;
+
+                        const rowSearch =
+                            (
+                                row.dataset.search ||
+                                ""
                             )
-                            .forEach(
-                                row => {
-
-                                    const rowStatus =
-                                        row.dataset.status;
-
-
-                                    const rowSearch =
-                                        (
-                                            row.dataset.search ||
-                                            ""
-                                        )
-                                        .replace(
-                                            /\s+/g,
-                                            " "
-                                        )
-                                        .trim();
+                            .replace(
+                                /\s+/g,
+                                " "
+                            )
+                            .trim();
 
 
-                                    const searchMatch =
-                                        !search ||
-                                        rowSearch.includes(
-                                            search
-                                        );
-
-
-                                    let dateMatch =
-                                        true;
-
-
-                                    if (
-                                        selectedDate !==
-                                        "all"
-                                    ) {
-
-                                        dateMatch =
-                                            rowStatus ===
-                                            selectedDate;
-
-                                    }
-
-
-                                    const show =
-                                        doctorMatch &&
-                                        searchMatch &&
-                                        dateMatch &&
-                                        rowStatus ===
-                                            status;
-
-
-                                    row.style.display =
-                                        show
-                                        ? "grid"
-                                        : "none";
-
-
-                                    if (show) {
-
-                                        sectionVisible++;
-
-                                        visibleTotal++;
-
-                                        doctorHasVisible =
-                                            true;
-
-                                    }
-
-                                }
+                        const searchMatch =
+                            !search ||
+                            rowSearch.includes(
+                                search
                             );
 
 
-                        /*
-                           Update visible section count.
-                        */
-
-                        const count =
-                            section.querySelector(
-                                "[data-count]"
-                            );
+                        let dateMatch =
+                            true;
 
 
-                        if (count) {
+                        if (
+                            selectedDate !==
+                            "all"
+                        ) {
 
-                            count.textContent =
-                                sectionVisible;
+                            dateMatch =
+                                rowStatus ===
+                                selectedDate;
 
                         }
 
 
-                        /*
-                           Show/hide section.
-
-                           If filtering by a particular
-                           date type, only that section
-                           is shown.
-                        */
-
-                        let showSection =
-                            sectionVisible > 0;
+                        const show =
+                            doctorMatch &&
+                            searchMatch &&
+                            dateMatch &&
+                            rowStatus === status;
 
 
-                        if (
-                            selectedDate ===
-                            "all"
-                        ) {
+                        row.style.display =
+                            show
+                            ? "grid"
+                            : "none";
 
-                            /*
-                               Always show all sections
-                               when All Dates selected.
-                            */
 
-                            showSection =
+                        if (show) {
+
+                            sectionVisible++;
+
+                            visibleTotal++;
+
+                            doctorHasVisible =
                                 true;
 
                         }
 
-
-                        section.style.display =
-                            showSection
-                            ? "block"
-                            : "none";
+                    });
 
 
-                        /*
-                           Empty message for filtered
-                           section.
-                        */
+                const count =
+                    section.querySelector(
+                        "[data-count]"
+                    );
 
-                        const empty =
-                            section.querySelector(
-                                "[data-empty]"
-                            );
+                if (count) {
 
+                    count.textContent =
+                        sectionVisible;
 
-                        if (empty) {
-
-                            if (
-                                selectedDate ===
-                                "all"
-                            ) {
-
-                                empty.style.display =
-                                    sectionVisible === 0
-                                    ? "block"
-                                    : "none";
-
-                            }
-                            else {
-
-                                empty.style.display =
-                                    sectionVisible === 0
-                                    ? "block"
-                                    : "none";
-
-                            }
-
-                        }
-
-                    }
-                );
+                }
 
 
-            /*
-               Doctor card visibility
-            */
-
-            card.style.display =
-                doctorHasVisible
-                ? "block"
-                : "none";
-
-        }
-    );
+                let showSection =
+                    sectionVisible > 0;
 
 
-    /*
-       Total filtered count
-    */
+                if (
+                    selectedDate ===
+                    "all"
+                ) {
+
+                    showSection =
+                        true;
+
+                }
+
+
+                section.style.display =
+                    showSection
+                    ? "block"
+                    : "none";
+
+
+                const empty =
+                    section.querySelector(
+                        "[data-empty]"
+                    );
+
+                if (empty) {
+
+                    empty.style.display =
+                        sectionVisible === 0
+                        ? "block"
+                        : "none";
+
+                }
+
+            });
+
+
+        card.style.display =
+            doctorHasVisible
+            ? "block"
+            : "none";
+
+    });
+
 
     document.getElementById(
         "totalCount"
@@ -2582,57 +2375,46 @@ function applyFilters() {
 }
 
 
-// =====================================================
-// SUMMARY COUNTS
-// =====================================================
+/* =====================================================
+   SUMMARY
+===================================================== */
 
-let total =
-    0;
-
-let todayTotal =
-    0;
-
-let upcomingTotal =
-    0;
+let total = 0;
+let todayTotal = 0;
+let upcomingTotal = 0;
 
 
-doctorCards.forEach(
-    card => {
+doctorCards.forEach(card => {
 
-        card
-            .querySelectorAll(
-                ".appointment-row"
-            )
-            .forEach(
-                row => {
+    card
+        .querySelectorAll(
+            ".appointment-row"
+        )
+        .forEach(row => {
 
-                    total++;
+            total++;
 
+            if (
+                row.dataset.status ===
+                "today"
+            ) {
 
-                    if (
-                        row.dataset.status ===
-                        "today"
-                    ) {
+                todayTotal++;
 
-                        todayTotal++;
+            }
 
-                    }
+            if (
+                row.dataset.status ===
+                "upcoming"
+            ) {
 
+                upcomingTotal++;
 
-                    if (
-                        row.dataset.status ===
-                        "upcoming"
-                    ) {
+            }
 
-                        upcomingTotal++;
+        });
 
-                    }
-
-                }
-            );
-
-    }
-);
+});
 
 
 document.getElementById(
@@ -2659,9 +2441,383 @@ document.getElementById(
     upcomingTotal;
 
 
-// =====================================================
-// EVENTS
-// =====================================================
+/* =====================================================
+   TOAST
+===================================================== */
+
+function showToast(
+    message,
+    type = "success"
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+    toast.textContent =
+        message;
+
+    toast.className =
+        "toast " +
+        type +
+        " show";
+
+
+    setTimeout(() => {
+
+        toast.classList.remove(
+            "show"
+        );
+
+    }, 3000);
+
+}
+
+
+/* =====================================================
+   MARK PATIENT OLD
+===================================================== */
+
+async function markPatientOld(button) {
+
+    const appointmentId =
+        button.dataset.appointmentId;
+
+
+    if (!appointmentId) {
+
+        showToast(
+            "Appointment ID not found.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            "Mark this patient as OLD?\n\n" +
+            "Future appointments of this patient " +
+            "will automatically show OLD status."
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "Saving...";
+
+
+    try {
+
+        /*
+           Firebase authentication token.
+
+           Your login page should already store
+           the Firebase user login session.
+        */
+
+        const user =
+            await getFirebaseUser();
+
+
+        if (!user) {
+
+            throw new Error(
+                "Please login again."
+            );
+
+        }
+
+
+        const token =
+            await user.getIdToken();
+
+
+        const response =
+            await fetch(
+                "/api/patient/status",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json",
+
+                        "Authorization":
+                            "Bearer " + token
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            hospital_id:
+                                "{{ uid }}",
+
+                            appointment_id:
+                                appointmentId,
+
+                            status:
+                                "OLD"
+
+                        })
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.error ||
+                "Unable to update patient."
+            );
+
+        }
+
+
+        /*
+           Update ALL rows of same patient
+           currently displayed on this page.
+
+           We use mobile number as patient identity.
+        */
+
+        const currentRow =
+            button.closest(
+                ".appointment-row"
+            );
+
+
+        const mobileElement =
+            currentRow.querySelector(
+                ".mobile"
+            );
+
+
+        let mobile =
+            mobileElement
+            ? mobileElement.textContent
+                .replace("📱", "")
+                .trim()
+            : "";
+
+
+        const normalizedMobile =
+            normalizeMobile(
+                mobile
+            );
+
+
+        document
+            .querySelectorAll(
+                ".appointment-row"
+            )
+            .forEach(row => {
+
+                const rowMobileElement =
+                    row.querySelector(
+                        ".mobile"
+                    );
+
+
+                if (!rowMobileElement) {
+                    return;
+                }
+
+
+                const rowMobile =
+                    normalizeMobile(
+                        rowMobileElement
+                            .textContent
+                            .replace("📱", "")
+                            .trim()
+                    );
+
+
+                if (
+                    rowMobile &&
+                    normalizedMobile &&
+                    rowMobile ===
+                    normalizedMobile
+                ) {
+
+                    updateRowToOld(
+                        row
+                    );
+
+                }
+
+            });
+
+
+        showToast(
+            "Patient marked as OLD successfully."
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+        showToast(
+            error.message ||
+            "Something went wrong.",
+            "error"
+        );
+
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "Mark OLD";
+
+    }
+
+}
+
+
+/* =====================================================
+   UPDATE ROW UI
+===================================================== */
+
+function updateRowToOld(row) {
+
+    row.dataset.patientStatus =
+        "OLD";
+
+
+    const badge =
+        row.querySelector(
+            "[data-status-badge]"
+        );
+
+
+    if (badge) {
+
+        badge.textContent =
+            "OLD";
+
+        badge.classList.remove(
+            "status-new"
+        );
+
+        badge.classList.add(
+            "status-old"
+        );
+
+    }
+
+
+    const button =
+        row.querySelector(
+            ".old-btn"
+        );
+
+
+    if (button) {
+
+        button.remove();
+
+    }
+
+}
+
+
+/* =====================================================
+   NORMALIZE MOBILE
+===================================================== */
+
+function normalizeMobile(
+    mobile
+) {
+
+    let digits =
+        String(mobile || "")
+        .replace(
+            /\D/g,
+            ""
+        );
+
+
+    if (
+        digits.length === 12 &&
+        digits.startsWith("91")
+    ) {
+
+        digits =
+            digits.substring(2);
+
+    }
+
+
+    return digits;
+
+}
+
+
+/* =====================================================
+   FIREBASE USER
+=====================================================
+
+   IMPORTANT:
+
+   Firebase SDK must be available on your
+   login/dashboard page.
+
+   If your app uses Firebase Auth in another
+   way, replace this function with your existing
+   Firebase authentication code.
+===================================================== */
+
+async function getFirebaseUser() {
+
+    /*
+       If Firebase Auth is already initialized
+       globally:
+    */
+
+    if (
+        typeof firebase !== "undefined" &&
+        firebase.auth
+    ) {
+
+        return firebase.auth().currentUser;
+
+    }
+
+
+    throw new Error(
+        "Firebase authentication is not loaded."
+    );
+
+}
+
+
+/* =====================================================
+   EVENTS
+===================================================== */
 
 doctorFilter.addEventListener(
     "change",
@@ -2681,15 +2837,13 @@ dateFilter.addEventListener(
 );
 
 
-// =====================================================
-// INITIAL
-// =====================================================
+/* =====================================================
+   INITIAL
+===================================================== */
 
 applyFilters();
 
-
 </script>
-
 
 </body>
 
