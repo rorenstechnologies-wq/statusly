@@ -6,6 +6,8 @@
 
     <title>Doctor Appointments</title>
 
+    <link rel="icon" href="data:,">
+
     <style>
         * {
             box-sizing: border-box;
@@ -15,63 +17,62 @@
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
             background: #f4f7fb;
-            color: #1f2937;
+            color: #172033;
         }
 
         .header {
-            background: linear-gradient(135deg, #087f8c, #2563eb);
+            background: linear-gradient(135deg, #087f8c, #1565c0);
             color: white;
-            padding: 24px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+            padding: 22px 25px;
         }
 
         .header h1 {
-            margin: 0 0 7px 0;
+            margin: 0;
             font-size: 28px;
         }
 
         .header p {
-            margin: 0;
-            opacity: 0.92;
+            margin: 7px 0 0;
+            opacity: 0.9;
         }
 
         .container {
-            max-width: 1500px;
-            margin: auto;
-            padding: 25px;
+            max-width: 1450px;
+            margin: 25px auto;
+            padding: 0 18px;
         }
 
         .filters {
             background: white;
             padding: 18px;
             border-radius: 14px;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+            box-shadow: 0 3px 15px rgba(0,0,0,.08);
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 15px;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
 
-        .filter-box label {
+        .filters label {
             display: block;
-            font-weight: bold;
+            font-size: 13px;
+            font-weight: 700;
             margin-bottom: 7px;
-            font-size: 14px;
         }
 
-        .filter-box input,
-        .filter-box select {
+        .filters select,
+        .filters input {
             width: 100%;
             padding: 11px 12px;
-            border: 1px solid #d5dce5;
+            border: 1px solid #d5dce7;
             border-radius: 9px;
             font-size: 14px;
             outline: none;
         }
 
-        .filter-box input:focus,
-        .filter-box select:focus {
-            border-color: #2563eb;
+        .filters select:focus,
+        .filters input:focus {
+            border-color: #1565c0;
         }
 
         .summary {
@@ -85,166 +86,176 @@
             background: white;
             border-radius: 14px;
             padding: 20px;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+            box-shadow: 0 3px 15px rgba(0,0,0,.07);
         }
 
         .summary-card .number {
-            font-size: 30px;
-            font-weight: bold;
-            color: #2563eb;
+            font-size: 28px;
+            font-weight: 800;
+            color: #1565c0;
         }
 
         .summary-card .label {
+            color: #687386;
             margin-top: 5px;
-            color: #64748b;
         }
 
         .doctor-card {
             background: white;
-            border-radius: 16px;
-            margin-bottom: 25px;
+            border-radius: 15px;
+            margin-bottom: 28px;
+            box-shadow: 0 3px 18px rgba(0,0,0,.08);
             overflow: hidden;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.07);
         }
 
-        .doctor-header {
-            padding: 18px 20px;
-            background: linear-gradient(135deg, #0f766e, #2563eb);
+        .doctor-title {
+            background: linear-gradient(135deg, #087f8c, #1565c0);
             color: white;
+            padding: 17px 20px;
+            font-size: 19px;
+            font-weight: 700;
         }
 
-        .doctor-header h2 {
-            margin: 0;
-            font-size: 21px;
-        }
-
-        .doctor-header p {
-            margin: 5px 0 0 0;
-            opacity: 0.9;
-        }
-
-        .section {
+        .date-section {
             padding: 18px;
         }
 
-        .section-title {
-            font-size: 18px;
-            font-weight: bold;
+        .date-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #eef2f7;
+            font-size: 17px;
+            font-weight: 800;
         }
 
-        .today-title {
-            color: #0f766e;
+        .date-title.today {
+            color: #087f8c;
         }
 
-        .upcoming-title {
-            color: #2563eb;
+        .date-title.upcoming {
+            color: #1565c0;
         }
 
-        .past-title {
-            color: #64748b;
+        .date-title.past {
+            color: #777;
         }
 
         .table-wrapper {
+            width: 100%;
             overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1150px;
+            min-width: 1050px;
         }
 
         th {
-            background: #f1f5f9;
-            padding: 12px 10px;
-            text-align: left;
+            background: #f0f4f9;
+            color: #354052;
             font-size: 13px;
-            color: #475569;
+            text-align: left;
+            padding: 12px;
             white-space: nowrap;
         }
 
         td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #edf1f5;
+            padding: 12px;
+            border-bottom: 1px solid #edf0f4;
             font-size: 14px;
             vertical-align: middle;
         }
 
-        tr:hover td {
+        tr:hover {
             background: #fafcff;
         }
 
         .patient-name {
-            font-weight: bold;
+            font-weight: 700;
         }
 
         .mobile {
-            white-space: nowrap;
+            color: #4d596b;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .badge-new {
+            background: #e7f7ed;
+            color: #16803c;
+        }
+
+        .badge-old {
+            background: #eef2ff;
+            color: #3949ab;
         }
 
         .visit-badge {
-            display: inline-block;
+            background: #fff4dc;
+            color: #9a6500;
             padding: 5px 9px;
             border-radius: 20px;
-            background: #e0f2fe;
-            color: #0369a1;
-            font-weight: bold;
+            font-weight: 800;
             font-size: 12px;
         }
 
-        .type-badge {
-            display: inline-block;
-            padding: 5px 9px;
-            border-radius: 20px;
-            font-weight: bold;
+        .amount-box {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .amount-input {
+            width: 95px;
+            padding: 7px 8px;
+            border: 1px solid #ccd4df;
+            border-radius: 7px;
+        }
+
+        .save-amount {
+            border: none;
+            background: #087f8c;
+            color: white;
+            padding: 7px 9px;
+            border-radius: 7px;
+            cursor: pointer;
             font-size: 12px;
         }
 
-        .type-new {
-            background: #dcfce7;
-            color: #166534;
+        .save-amount:hover {
+            opacity: .9;
         }
 
-        .type-old {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .amount {
-            font-weight: bold;
-            color: #047857;
-            white-space: nowrap;
-        }
-
-        .action-box {
+        .action-buttons {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
-            min-width: 270px;
+            gap: 7px;
         }
 
-        button,
-        .action-link {
+        button {
+            font-family: inherit;
+        }
+
+        .action-btn {
             border: none;
-            cursor: pointer;
-            border-radius: 7px;
             padding: 8px 11px;
+            border-radius: 8px;
+            cursor: pointer;
             font-size: 12px;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-block;
+            font-weight: 700;
         }
 
         .details-btn {
-            background: #2563eb;
+            background: #1565c0;
             color: white;
-        }
-
-        .details-btn:hover {
-            background: #1d4ed8;
         }
 
         .old-btn {
@@ -252,148 +263,138 @@
             color: white;
         }
 
-        .old-btn:hover {
-            background: #d97706;
-        }
-
         .follow-btn {
-            background: #0f766e;
+            display: inline-block;
+            text-decoration: none;
+            background: #087f8c;
             color: white;
-        }
-
-        .follow-btn:hover {
-            background: #115e59;
-        }
-
-        .amount-box {
-            display: flex;
-            gap: 5px;
-            align-items: center;
-        }
-
-        .amount-input {
-            width: 90px;
-            padding: 7px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-        }
-
-        .save-amount-btn {
-            background: #16a34a;
-            color: white;
-            padding: 7px 9px;
+            padding: 8px 11px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
         }
 
         .empty {
-            padding: 18px;
-            background: #f8fafc;
-            border-radius: 10px;
-            color: #64748b;
+            padding: 20px;
             text-align: center;
+            color: #7a8494;
+            background: #fafbfc;
+            border-radius: 9px;
         }
 
-        .no-results {
-            display: none;
-            background: white;
-            padding: 40px;
-            text-align: center;
-            border-radius: 14px;
-            color: #64748b;
+        .hidden {
+            display: none !important;
         }
 
         /* MODAL */
 
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.65);
-            padding: 25px;
-            overflow-y: auto;
-        }
-
-        .modal-overlay.show {
-            display: block;
-        }
-
         .modal {
-            max-width: 900px;
-            margin: 30px auto;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.55);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 9999;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 850px;
+            max-height: 90vh;
+            overflow-y: auto;
             background: white;
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.25);
+            border-radius: 16px;
+            box-shadow: 0 15px 50px rgba(0,0,0,.25);
         }
 
         .modal-header {
-            padding: 20px;
-            background: linear-gradient(135deg, #087f8c, #2563eb);
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: linear-gradient(135deg, #087f8c, #1565c0);
             color: white;
+            padding: 17px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 15px;
         }
 
         .modal-header h2 {
             margin: 0;
+            font-size: 20px;
         }
 
-        .close-btn {
-            background: rgba(255,255,255,0.18);
+        .close-modal {
+            border: none;
+            background: transparent;
             color: white;
-            font-size: 22px;
-            width: 38px;
-            height: 38px;
-            padding: 0;
+            font-size: 27px;
+            cursor: pointer;
         }
 
         .modal-body {
-            padding: 22px;
+            padding: 20px;
         }
 
-        .patient-grid {
+        .patient-info {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
             margin-bottom: 25px;
         }
 
-        .detail-card {
-            background: #f8fafc;
-            border: 1px solid #e5e7eb;
+        .info-card {
+            background: #f6f8fb;
             border-radius: 10px;
             padding: 13px;
         }
 
-        .detail-card .label {
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 4px;
+        .info-card .title {
+            color: #778195;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
-        .detail-card .value {
-            font-weight: bold;
+        .info-card .value {
+            margin-top: 4px;
+            font-size: 15px;
+            font-weight: 700;
+            word-break: break-word;
         }
 
         .history-title {
-            margin: 15px 0 12px;
-            font-size: 19px;
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .history-total {
+            background: #e9f8f5;
+            color: #087f8c;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-weight: 800;
         }
 
         .history-table {
-            min-width: 700px;
+            width: 100%;
+            min-width: 650px;
         }
 
-        .total-box {
-            margin-top: 15px;
-            padding: 15px;
-            background: #ecfdf5;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #047857;
+        .history-wrapper {
+            overflow-x: auto;
+        }
+
+        .history-table th {
+            background: #edf4fb;
         }
 
         .status-message {
@@ -401,21 +402,16 @@
             right: 20px;
             bottom: 20px;
             z-index: 10000;
-            display: none;
-            max-width: 350px;
-            padding: 14px 18px;
+            padding: 13px 17px;
             border-radius: 10px;
+            background: #172033;
             color: white;
-            font-weight: bold;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,.2);
         }
 
-        .status-success {
-            background: #16a34a;
-        }
-
-        .status-error {
-            background: #dc2626;
+        .status-message.show {
+            display: block;
         }
 
         @media (max-width: 900px) {
@@ -427,26 +423,18 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .patient-grid {
+            .patient-info {
                 grid-template-columns: 1fr;
             }
         }
 
         @media (max-width: 550px) {
-            .container {
-                padding: 12px;
-            }
-
             .summary {
                 grid-template-columns: 1fr;
             }
 
             .header h1 {
-                font-size: 22px;
-            }
-
-            .modal-overlay {
-                padding: 10px;
+                font-size: 23px;
             }
         }
     </style>
@@ -464,28 +452,25 @@
     <!-- FILTERS -->
     <div class="filters">
 
-        <div class="filter-box">
+        <div>
             <label for="doctorFilter">Doctor</label>
             <select id="doctorFilter">
-                <option value="ALL">All Doctors</option>
+                <option value="all">All Doctors</option>
             </select>
         </div>
 
-        <div class="filter-box">
+        <div>
             <label for="searchInput">Search Patient</label>
             <input
                 type="text"
                 id="searchInput"
-                placeholder="Search name or mobile..."
+                placeholder="Patient name or mobile"
             >
         </div>
 
-        <div class="filter-box">
+        <div>
             <label for="dateFilter">Date</label>
-            <input
-                type="date"
-                id="dateFilter"
-            >
+            <input type="date" id="dateFilter">
         </div>
 
     </div>
@@ -515,29 +500,24 @@
 
     </div>
 
-    <!-- APPOINTMENTS WILL BE RENDERED HERE -->
-    <div id="appointmentsContainer"></div>
-
-    <div id="noResults" class="no-results">
-        <h3>No appointments found</h3>
-        <p>Try changing your search or filters.</p>
-    </div>
+    <!-- DOCTORS -->
+    <div id="doctorContainer"></div>
 
 </div>
 
 
 <!-- DETAILS MODAL -->
-<div id="detailsModal" class="modal-overlay">
+<div class="modal" id="detailsModal">
 
-    <div class="modal">
+    <div class="modal-box">
 
         <div class="modal-header">
-            <h2>👤 Patient Details</h2>
+            <h2>Patient Details</h2>
 
             <button
                 type="button"
-                class="close-btn"
-                onclick="closeDetails()"
+                class="close-modal"
+                id="closeModal"
             >
                 ×
             </button>
@@ -545,7 +525,98 @@
 
         <div class="modal-body">
 
-            <div id="patientDetailsContent"></div>
+            <div class="patient-info">
+
+                <div class="info-card">
+                    <div class="title">Patient Name</div>
+                    <div class="value" id="detailName">-</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="title">Mobile</div>
+                    <div class="value" id="detailMobile">-</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="title">Gender</div>
+                    <div class="value" id="detailGender">-</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="title">Age</div>
+                    <div class="value" id="detailAge">-</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="title">Address</div>
+                    <div class="value" id="detailAddress">-</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="title">Doctor</div>
+                    <div class="value" id="detailDoctor">-</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="title">Specialization</div>
+                    <div class="value" id="detailSpecialization">-</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="title">Appointment Date</div>
+                    <div class="value" id="detailDate">-</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="title">Appointment Time</div>
+                    <div class="value" id="detailTime">-</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="title">Current Visit</div>
+                    <div class="value" id="detailVisit">-</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="title">Current Type</div>
+                    <div class="value" id="detailType">-</div>
+                </div>
+
+                <div class="info-card">
+                    <div class="title">Current Amount</div>
+                    <div class="value" id="detailAmount">₹0</div>
+                </div>
+
+            </div>
+
+            <div class="history-title">
+                Previous Visit History
+            </div>
+
+            <div class="history-total" id="historyTotal">
+                Total Amount Paid: ₹0
+            </div>
+
+            <div class="history-wrapper">
+
+                <table class="history-table">
+
+                    <thead>
+                        <tr>
+                            <th>Visit</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Doctor</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="historyBody"></tbody>
+
+                </table>
+
+            </div>
 
         </div>
 
@@ -554,1605 +625,1398 @@
 </div>
 
 
-<div id="statusMessage" class="status-message"></div>
+<div class="status-message" id="statusMessage"></div>
 
 
 <script>
-/*
-    ============================================================
-    APPOINTMENT DATA
-    ============================================================
-*/
-
-var appointments = {{ patients | tojson | safe }};
-
-if (!Array.isArray(appointments)) {
-    appointments = [];
-}
-
-
-/*
-    ============================================================
-    BASIC HELPERS
-    ============================================================
-*/
-
-function escapeHtml(value) {
-    var text = String(value === undefined || value === null ? "" : value);
-
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-
-function normalizeMobile(mobile) {
-    var digits = String(mobile || "").replace(/\D/g, "");
-
-    if (digits.length === 12 && digits.indexOf("91") === 0) {
-        digits = digits.substring(2);
-    }
-
-    return digits;
-}
-
-
-function normalizeDate(value) {
-    if (!value) {
-        return "";
-    }
-
-    var text = String(value).trim();
-
     /*
-        YYYY-MM-DD
-    */
-    if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
-        return text;
+     * IMPORTANT:
+     * Flask route sends:
+     *
+     * render_template(
+     *     "appointments.html",
+     *     patients=patients,
+     *     uid=uid
+     * )
+     *
+     * Therefore we MUST use "patients", not "appointments".
+     */
+
+    const appointmentData = {{ patients | default([]) | tojson | safe }};
+
+    const hospitalUid = {{ uid | default("") | tojson | safe }};
+
+    let allAppointments = [];
+
+    if (Array.isArray(appointmentData)) {
+        allAppointments = appointmentData;
+    } else if (
+        appointmentData &&
+        typeof appointmentData === "object"
+    ) {
+        allAppointments = Object.keys(appointmentData).map(function(key) {
+            const item = appointmentData[key] || {};
+            item.id = item.id || key;
+            return item;
+        });
     }
 
-    /*
-        DD-MM-YYYY
-    */
-    if (/^\d{2}-\d{2}-\d{4}$/.test(text)) {
-        var a = text.split("-");
-        return a[2] + "-" + a[1] + "-" + a[0];
+
+    /* -----------------------------------------
+       BASIC HELPERS
+    ----------------------------------------- */
+
+    function escapeHtml(value) {
+        const text = String(value === undefined || value === null ? "" : value);
+
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
-    /*
-        DD/MM/YYYY
-    */
-    if (/^\d{2}\/\d{2}\/\d{4}$/.test(text)) {
-        var b = text.split("/");
-        return b[2] + "-" + b[1] + "-" + b[0];
+
+    function normalizeMobile(value) {
+        let digits = String(value || "").replace(/\D/g, "");
+
+        if (digits.length === 12 && digits.startsWith("91")) {
+            digits = digits.substring(2);
+        }
+
+        return digits;
     }
 
-    return "";
-}
 
-
-function todayISO() {
-    var now = new Date();
-
-    var year = now.getFullYear();
-    var month = String(now.getMonth() + 1).padStart(2, "0");
-    var day = String(now.getDate()).padStart(2, "0");
-
-    return year + "-" + month + "-" + day;
-}
-
-
-function getAppointmentDate(p) {
-    return normalizeDate(
-        p.appointment_date ||
-        p.date ||
-        ""
-    );
-}
-
-
-function getAppointmentTime(p) {
-    return String(
-        p.appointment_time ||
-        p.time ||
-        "00:00"
-    );
-}
-
-
-function getAppointmentTimestamp(p) {
-    var date = getAppointmentDate(p);
-    var time = getAppointmentTime(p);
-
-    if (!date) {
-        return 0;
+    function getDateValue(item) {
+        return String(
+            item.appointment_date ||
+            item.date ||
+            ""
+        ).trim();
     }
 
-    var timestamp = new Date(
-        date + "T" + time
-    ).getTime();
 
-    if (isNaN(timestamp)) {
-        timestamp = new Date(date).getTime();
+    function getTimeValue(item) {
+        return String(
+            item.appointment_time ||
+            item.time ||
+            ""
+        ).trim();
     }
 
-    return isNaN(timestamp) ? 0 : timestamp;
-}
 
-
-function getDoctorName(p) {
-    return String(
-        p.doctor_name ||
-        p.doctor ||
-        "Unknown Doctor"
-    ).trim();
-}
-
-
-function getVisitNumber(p) {
-    var number = parseInt(p.visit_number, 10);
-
-    if (!isNaN(number) && number > 0) {
-        return number;
+    function getDoctorName(item) {
+        return String(
+            item.doctor_name ||
+            "Unknown Doctor"
+        ).trim();
     }
 
-    return 1;
-}
 
-
-function getPatientType(p) {
-    var type = String(
-        p.patient_status ||
-        p.type ||
-        "NEW"
-    ).toUpperCase();
-
-    if (getVisitNumber(p) === 1) {
-        return "NEW";
+    function getPatientName(item) {
+        return String(
+            item.patient_name ||
+            "Unknown Patient"
+        ).trim();
     }
 
-    if (type !== "OLD") {
-        return "NEW";
+
+    function getType(item) {
+        let value = String(
+            item.patient_status ||
+            item.type ||
+            "NEW"
+        ).toUpperCase().trim();
+
+        if (value !== "OLD" && value !== "NEW") {
+            value = "NEW";
+        }
+
+        /*
+         * Visit 1 must always remain NEW.
+         */
+        const visit = Number(item.visit_number || 1);
+
+        if (visit <= 1) {
+            return "NEW";
+        }
+
+        return value;
     }
 
-    return "OLD";
-}
 
+    function getVisitNumber(item) {
+        const value = Number(item.visit_number);
 
-function getAmount(p) {
-    var amount = Number(p.amount);
+        if (!Number.isFinite(value) || value < 1) {
+            return 1;
+        }
 
-    if (isNaN(amount)) {
-        return 0;
+        return value;
     }
 
-    return amount;
-}
 
+    function getAmount(item) {
+        const value = Number(item.amount);
 
-function formatAmount(amount) {
-    var value = Number(amount);
+        if (!Number.isFinite(value)) {
+            return 0;
+        }
 
-    if (isNaN(value)) {
-        value = 0;
+        return value;
     }
 
-    return "₹" + value.toFixed(2);
-}
 
+    function formatAmount(amount) {
+        const value = Number(amount || 0);
 
-function formatDate(date) {
-    if (!date) {
-        return "-";
+        return "₹" + value.toLocaleString("en-IN", {
+            maximumFractionDigits: 2
+        });
     }
 
-    var parts = date.split("-");
 
-    if (parts.length !== 3) {
+    function parseAppointmentDate(value) {
+        if (!value) {
+            return null;
+        }
+
+        const str = String(value).trim();
+
+        let date = null;
+
+        if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+            date = new Date(str + "T00:00:00");
+        }
+
+        else if (/^\d{2}-\d{2}-\d{4}$/.test(str)) {
+            const parts = str.split("-");
+
+            date = new Date(
+                Number(parts[2]),
+                Number(parts[1]) - 1,
+                Number(parts[0])
+            );
+        }
+
+        else if (/^\d{2}\/\d{2}\/\d{4}$/.test(str)) {
+            const parts = str.split("/");
+
+            date = new Date(
+                Number(parts[2]),
+                Number(parts[1]) - 1,
+                Number(parts[0])
+            );
+        }
+
+        else {
+            const temp = new Date(str);
+
+            if (!Number.isNaN(temp.getTime())) {
+                date = temp;
+            }
+        }
+
+        if (!date || Number.isNaN(date.getTime())) {
+            return null;
+        }
+
+        date.setHours(0, 0, 0, 0);
+
         return date;
     }
 
-    return parts[2] + "-" + parts[1] + "-" + parts[0];
-}
 
+    function todayDate() {
+        const date = new Date();
 
-function getSection(p) {
-    var date = getAppointmentDate(p);
-    var today = todayISO();
+        date.setHours(0, 0, 0, 0);
 
-    if (!date) {
-        return "PAST";
+        return date;
     }
 
-    if (date === today) {
-        return "TODAY";
+
+    function getDateStatus(item) {
+        const date = parseAppointmentDate(getDateValue(item));
+
+        if (!date) {
+            return "past";
+        }
+
+        const today = todayDate();
+
+        if (date.getTime() === today.getTime()) {
+            return "today";
+        }
+
+        if (date.getTime() > today.getTime()) {
+            return "upcoming";
+        }
+
+        return "past";
     }
 
-    if (date > today) {
-        return "UPCOMING";
+
+    function dateSortValue(item) {
+        const date = parseAppointmentDate(getDateValue(item));
+
+        if (!date) {
+            return 0;
+        }
+
+        return date.getTime();
     }
 
-    return "PAST";
-}
 
+    function timeSortValue(item) {
+        const value = getTimeValue(item);
 
-/*
-    ============================================================
-    STATUS MESSAGE
-    ============================================================
-*/
+        if (!value) {
+            return 0;
+        }
 
-function showMessage(message, success) {
-    var box = document.getElementById("statusMessage");
+        const match = value.match(/(\d{1,2}):(\d{2})/);
 
-    box.textContent = message;
-    box.className = "status-message";
+        if (!match) {
+            return 0;
+        }
 
-    if (success) {
-        box.classList.add("status-success");
-    } else {
-        box.classList.add("status-error");
+        return Number(match[1]) * 60 + Number(match[2]);
     }
 
-    box.style.display = "block";
 
-    setTimeout(function() {
-        box.style.display = "none";
-    }, 3000);
-}
+    function formatDate(value) {
+        const date = parseAppointmentDate(value);
+
+        if (!date) {
+            return value || "-";
+        }
+
+        return date.toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        });
+    }
 
 
-/*
-    ============================================================
-    FIREBASE TOKEN
-    ============================================================
-*/
+    /* -----------------------------------------
+       STATUS MESSAGE
+    ----------------------------------------- */
 
-async function getFirebaseToken() {
+    let statusTimer = null;
 
-    /*
-        First try Firebase currentUser.
-        This works when your login page uses Firebase Auth.
-    */
+    function showStatus(message) {
+        const box = document.getElementById("statusMessage");
 
-    try {
+        box.textContent = message;
+        box.classList.add("show");
 
-        if (
-            typeof firebase !== "undefined" &&
-            firebase.auth &&
-            firebase.auth().currentUser
-        ) {
-            var token = await firebase
-                .auth()
-                .currentUser
-                .getIdToken(true);
+        clearTimeout(statusTimer);
 
-            if (token) {
-                return token;
+        statusTimer = setTimeout(function() {
+            box.classList.remove("show");
+        }, 3000);
+    }
+
+
+    /* -----------------------------------------
+       FILTERS
+    ----------------------------------------- */
+
+    function populateDoctors() {
+        const select = document.getElementById("doctorFilter");
+
+        const doctors = [];
+
+        allAppointments.forEach(function(item) {
+            const doctor = getDoctorName(item);
+
+            if (!doctors.includes(doctor)) {
+                doctors.push(doctor);
             }
-        }
+        });
 
-    } catch (error) {
-        console.log("Firebase token error:", error);
+        doctors.sort(function(a, b) {
+            return a.localeCompare(b);
+        });
+
+        doctors.forEach(function(doctor) {
+            const option = document.createElement("option");
+
+            option.value = doctor;
+            option.textContent = doctor;
+
+            select.appendChild(option);
+        });
     }
 
 
-    /*
-        Fallback: common localStorage names.
-    */
+    function getFilteredAppointments() {
+        const doctorFilter =
+            document.getElementById("doctorFilter").value;
 
-    var keys = [
-        "idToken",
-        "id_token",
-        "firebaseToken",
-        "authToken",
-        "token"
-    ];
+        const search =
+            document.getElementById("searchInput").value
+                .toLowerCase()
+                .trim();
 
-    for (var i = 0; i < keys.length; i++) {
+        const dateFilter =
+            document.getElementById("dateFilter").value;
 
-        var value = localStorage.getItem(keys[i]);
+        return allAppointments.filter(function(item) {
 
-        if (value) {
-            return value;
-        }
-    }
+            const doctor = getDoctorName(item);
 
-    return null;
-}
+            const name = getPatientName(item).toLowerCase();
 
+            const mobile = normalizeMobile(item.mobile);
 
-/*
-    ============================================================
-    DOCTOR LIST
-    ============================================================
-*/
+            const itemDate = getDateValue(item);
 
-function loadDoctorFilter() {
-
-    var select = document.getElementById("doctorFilter");
-
-    var doctors = {};
-
-    for (var i = 0; i < appointments.length; i++) {
-
-        var doctor = getDoctorName(appointments[i]);
-
-        doctors[doctor] = true;
-    }
-
-    var names = Object.keys(doctors).sort();
-
-    for (var j = 0; j < names.length; j++) {
-
-        var option = document.createElement("option");
-
-        option.value = names[j];
-        option.textContent = names[j];
-
-        select.appendChild(option);
-    }
-}
-
-
-/*
-    ============================================================
-    FILTER
-    ============================================================
-*/
-
-function getFilteredAppointments() {
-
-    var doctor = document
-        .getElementById("doctorFilter")
-        .value;
-
-    var search = document
-        .getElementById("searchInput")
-        .value
-        .toLowerCase()
-        .trim();
-
-    var selectedDate = document
-        .getElementById("dateFilter")
-        .value;
-
-    var result = [];
-
-    for (var i = 0; i < appointments.length; i++) {
-
-        var p = appointments[i];
-
-        var doctorName = getDoctorName(p);
-
-        var patientName = String(
-            p.patient_name || p.name || ""
-        ).toLowerCase();
-
-        var mobile = normalizeMobile(p.mobile);
-
-        var date = getAppointmentDate(p);
-
-        if (
-            doctor !== "ALL" &&
-            doctorName !== doctor
-        ) {
-            continue;
-        }
-
-        if (
-            search &&
-            patientName.indexOf(search) === -1 &&
-            mobile.indexOf(search) === -1
-        ) {
-            continue;
-        }
-
-        if (
-            selectedDate &&
-            date !== selectedDate
-        ) {
-            continue;
-        }
-
-        result.push(p);
-    }
-
-    return result;
-}
-
-
-/*
-    ============================================================
-    RENDER
-    ============================================================
-*/
-
-function renderAppointments() {
-
-    var container = document.getElementById(
-        "appointmentsContainer"
-    );
-
-    container.innerHTML = "";
-
-    var filtered = getFilteredAppointments();
-
-    updateSummary(filtered);
-
-    if (filtered.length === 0) {
-
-        document.getElementById(
-            "noResults"
-        ).style.display = "block";
-
-        return;
-    }
-
-    document.getElementById(
-        "noResults"
-    ).style.display = "none";
-
-
-    /*
-        Group by doctor
-    */
-
-    var doctorGroups = {};
-
-    for (var i = 0; i < filtered.length; i++) {
-
-        var appointment = filtered[i];
-
-        var doctor = getDoctorName(appointment);
-
-        if (!doctorGroups[doctor]) {
-            doctorGroups[doctor] = [];
-        }
-
-        doctorGroups[doctor].push(appointment);
-    }
-
-
-    var doctors = Object.keys(doctorGroups).sort();
-
-
-    for (var d = 0; d < doctors.length; d++) {
-
-        var doctorName = doctors[d];
-
-        var doctorAppointments =
-            doctorGroups[doctorName];
-
-
-        /*
-            Separate date sections
-        */
-
-        var today = [];
-        var upcoming = [];
-        var past = [];
-
-
-        for (
-            var x = 0;
-            x < doctorAppointments.length;
-            x++
-        ) {
-
-            var item = doctorAppointments[x];
-
-            var section = getSection(item);
-
-            if (section === "TODAY") {
-                today.push(item);
-            } else if (section === "UPCOMING") {
-                upcoming.push(item);
-            } else {
-                past.push(item);
+            if (
+                doctorFilter !== "all" &&
+                doctor !== doctorFilter
+            ) {
+                return false;
             }
-        }
 
+            if (search) {
+                if (
+                    !name.includes(search) &&
+                    !mobile.includes(search)
+                ) {
+                    return false;
+                }
+            }
 
-        /*
-            TODAY: time ascending
-        */
+            if (dateFilter) {
 
-        today.sort(function(a, b) {
-            return getAppointmentTimestamp(a) -
-                   getAppointmentTimestamp(b);
+                const parsed = parseAppointmentDate(itemDate);
+
+                if (!parsed) {
+                    return false;
+                }
+
+                const year = parsed.getFullYear();
+                const month = String(
+                    parsed.getMonth() + 1
+                ).padStart(2, "0");
+                const day = String(
+                    parsed.getDate()
+                ).padStart(2, "0");
+
+                const normalized =
+                    year + "-" + month + "-" + day;
+
+                if (normalized !== dateFilter) {
+                    return false;
+                }
+            }
+
+            return true;
         });
-
-
-        /*
-            UPCOMING: nearest date first
-        */
-
-        upcoming.sort(function(a, b) {
-            return getAppointmentTimestamp(a) -
-                   getAppointmentTimestamp(b);
-        });
-
-
-        /*
-            PAST: latest past first
-        */
-
-        past.sort(function(a, b) {
-            return getAppointmentTimestamp(b) -
-                   getAppointmentTimestamp(a);
-        });
-
-
-        var doctorCard = document.createElement("div");
-
-        doctorCard.className = "doctor-card";
-
-
-        doctorCard.innerHTML =
-            '<div class="doctor-header">' +
-                '<h2>👨‍⚕️ ' +
-                escapeHtml(doctorName) +
-                '</h2>' +
-                '<p>' +
-                doctorAppointments.length +
-                ' appointment(s)' +
-                '</p>' +
-            '</div>';
-
-
-        doctorCard.appendChild(
-            createSection(
-                "TODAY",
-                "today-title",
-                today
-            )
-        );
-
-
-        doctorCard.appendChild(
-            createSection(
-                "UPCOMING",
-                "upcoming-title",
-                upcoming
-            )
-        );
-
-
-        doctorCard.appendChild(
-            createSection(
-                "PAST",
-                "past-title",
-                past
-            )
-        );
-
-
-        container.appendChild(doctorCard);
-    }
-}
-
-
-/*
-    ============================================================
-    CREATE SECTION
-    ============================================================
-*/
-
-function createSection(title, titleClass, list) {
-
-    var section = document.createElement("div");
-
-    section.className = "section";
-
-
-    var heading = document.createElement("div");
-
-    heading.className =
-        "section-title " + titleClass;
-
-    heading.textContent =
-        title + " (" + list.length + ")";
-
-
-    section.appendChild(heading);
-
-
-    if (list.length === 0) {
-
-        var empty = document.createElement("div");
-
-        empty.className = "empty";
-
-        empty.textContent =
-            "No appointments in this section.";
-
-        section.appendChild(empty);
-
-        return section;
     }
 
 
-    var wrapper = document.createElement("div");
+    /* -----------------------------------------
+       RENDER
+    ----------------------------------------- */
 
-    wrapper.className = "table-wrapper";
+    function renderAppointments() {
 
+        const container =
+            document.getElementById("doctorContainer");
 
-    var table = document.createElement("table");
+        container.innerHTML = "";
 
+        const filtered = getFilteredAppointments();
 
-    table.innerHTML =
-        "<thead>" +
-            "<tr>" +
-                "<th>No</th>" +
-                "<th>Patient</th>" +
-                "<th>Gender</th>" +
-                "<th>Age</th>" +
-                "<th>Mobile</th>" +
-                "<th>Date / Time</th>" +
-                "<th>Visit</th>" +
-                "<th>Type</th>" +
-                "<th>Amount</th>" +
-                "<th>Action / Follow-up</th>" +
-            "</tr>" +
-        "</thead>" +
-        "<tbody></tbody>";
+        updateSummary(filtered);
 
+        if (filtered.length === 0) {
 
-    var tbody = table.querySelector("tbody");
-
-
-    for (var i = 0; i < list.length; i++) {
-
-        var p = list[i];
-
-        var row = createRow(p, i + 1);
-
-        tbody.appendChild(row);
-    }
-
-
-    wrapper.appendChild(table);
-
-    section.appendChild(wrapper);
-
-    return section;
-}
-
-
-/*
-    ============================================================
-    CREATE TABLE ROW
-    ============================================================
-*/
-
-function createRow(p, number) {
-
-    var row = document.createElement("tr");
-
-
-    var id = String(
-        p.id ||
-        p.appointment_id ||
-        ""
-    );
-
-
-    var patientName = p.patient_name || p.name || "-";
-
-    var gender = p.gender || "-";
-
-    var age = p.age || "-";
-
-    var mobile = p.mobile || "-";
-
-    var date = getAppointmentDate(p);
-
-    var time = getAppointmentTime(p);
-
-    var visit = getVisitNumber(p);
-
-    var type = getPatientType(p);
-
-    var amount = getAmount(p);
-
-
-    var typeClass =
-        type === "OLD"
-            ? "type-old"
-            : "type-new";
-
-
-    row.innerHTML =
-        "<td>" +
-            number +
-        "</td>" +
-
-        "<td>" +
-            '<div class="patient-name">' +
-                escapeHtml(patientName) +
-            "</div>" +
-        "</td>" +
-
-        "<td>" +
-            escapeHtml(gender) +
-        "</td>" +
-
-        "<td>" +
-            escapeHtml(age) +
-        "</td>" +
-
-        '<td class="mobile">' +
-            escapeHtml(mobile) +
-        "</td>" +
-
-        "<td>" +
-            escapeHtml(formatDate(date)) +
-            "<br>" +
-            '<small>' +
-                escapeHtml(time) +
-            "</small>" +
-        "</td>" +
-
-        "<td>" +
-            '<span class="visit-badge">' +
-                "Visit " + visit +
-            "</span>" +
-        "</td>" +
-
-        "<td>" +
-            '<span class="type-badge ' +
-                typeClass +
-            '">' +
-                type +
-            "</span>" +
-        "</td>" +
-
-        "<td>" +
-            '<div class="amount-box">' +
-                '<input ' +
-                    'type="number" ' +
-                    'min="0" ' +
-                    'step="0.01" ' +
-                    'class="amount-input" ' +
-                    'id="amount-' +
-                        escapeHtml(id) +
-                    '" ' +
-                    'value="' +
-                        escapeHtml(amount) +
-                    '">' +
-
-                '<button ' +
-                    'type="button" ' +
-                    'class="save-amount-btn" ' +
-                    'onclick="saveAmount(\'' +
-                        escapeJs(id) +
-                    '\')">' +
-                    "Save" +
-                "</button>" +
-            "</div>" +
-        "</td>" +
-
-        "<td>" +
-            '<div class="action-box">' +
-
-                '<button ' +
-                    'type="button" ' +
-                    'class="details-btn" ' +
-                    'onclick="showDetails(\'' +
-                        escapeJs(id) +
-                    '\')">' +
-                    "Details" +
-                "</button>" +
-
-                (
-                    type === "NEW"
-                    ? '<button ' +
-                        'type="button" ' +
-                        'class="old-btn" ' +
-                        'onclick="makeOld(\'' +
-                            escapeJs(id) +
-                        '\')">' +
-                        "Make OLD" +
-                      "</button>"
-                    : ""
-                ) +
-
-                '<a ' +
-                    'class="action-link follow-btn" ' +
-                    'href="/followups/{{ uid }}">' +
-                    "Follow-up" +
-                "</a>" +
-
-            "</div>" +
-        "</td>";
-
-
-    return row;
-}
-
-
-/*
-    Escape JavaScript string
-*/
-
-function escapeJs(value) {
-
-    return String(value || "")
-        .replace(/\\/g, "\\\\")
-        .replace(/'/g, "\\'")
-        .replace(/"/g, '\\"')
-        .replace(/\r/g, "\\r")
-        .replace(/\n/g, "\\n");
-}
-
-
-/*
-    ============================================================
-    SUMMARY
-    ============================================================
-*/
-
-function updateSummary(list) {
-
-    document.getElementById(
-        "totalPatients"
-    ).textContent = list.length;
-
-
-    var doctors = {};
-
-    var today = 0;
-
-    var upcoming = 0;
-
-
-    for (var i = 0; i < list.length; i++) {
-
-        var p = list[i];
-
-        doctors[getDoctorName(p)] = true;
-
-        var section = getSection(p);
-
-        if (section === "TODAY") {
-            today++;
-        }
-
-        if (section === "UPCOMING") {
-            upcoming++;
-        }
-    }
-
-
-    document.getElementById(
-        "totalDoctors"
-    ).textContent =
-        Object.keys(doctors).length;
-
-
-    document.getElementById(
-        "todayCount"
-    ).textContent = today;
-
-
-    document.getElementById(
-        "upcomingCount"
-    ).textContent = upcoming;
-}
-
-
-/*
-    ============================================================
-    DETAILS
-    ============================================================
-*/
-
-function showDetails(appointmentId) {
-
-    var current = null;
-
-
-    for (var i = 0; i < appointments.length; i++) {
-
-        var id = String(
-            appointments[i].id ||
-            appointments[i].appointment_id ||
-            ""
-        );
-
-        if (id === String(appointmentId)) {
-
-            current = appointments[i];
-
-            break;
-        }
-    }
-
-
-    if (!current) {
-
-        showMessage(
-            "Appointment details not found.",
-            false
-        );
-
-        return;
-    }
-
-
-    var patientMobile =
-        normalizeMobile(current.mobile);
-
-
-    /*
-        Find all visits of same patient.
-        We match hospital + normalized mobile.
-    */
-
-    var history = [];
-
-
-    for (var j = 0; j < appointments.length; j++) {
-
-        var other = appointments[j];
-
-        var otherMobile =
-            normalizeMobile(other.mobile);
-
-
-        var sameHospital = true;
-
-        if (
-            current.hospital_id &&
-            other.hospital_id
-        ) {
-            sameHospital =
-                String(current.hospital_id) ===
-                String(other.hospital_id);
-        }
-
-
-        if (
-            sameHospital &&
-            otherMobile &&
-            otherMobile === patientMobile
-        ) {
-            history.push(other);
-        }
-    }
-
-
-    /*
-        Latest first
-    */
-
-    history.sort(function(a, b) {
-
-        return getAppointmentTimestamp(b) -
-               getAppointmentTimestamp(a);
-
-    });
-
-
-    var totalAmount = 0;
-
-    for (var k = 0; k < history.length; k++) {
-
-        totalAmount += getAmount(history[k]);
-    }
-
-
-    var html = "";
-
-
-    html +=
-        '<div class="patient-grid">' +
-
-            '<div class="detail-card">' +
-                '<div class="label">Patient Name</div>' +
-                '<div class="value">' +
-                    escapeHtml(
-                        current.patient_name ||
-                        current.name ||
-                        "-"
-                    ) +
-                "</div>" +
-            "</div>" +
-
-            '<div class="detail-card">' +
-                '<div class="label">Mobile</div>' +
-                '<div class="value">' +
-                    escapeHtml(
-                        current.mobile || "-"
-                    ) +
-                "</div>" +
-            "</div>" +
-
-            '<div class="detail-card">' +
-                '<div class="label">Gender</div>' +
-                '<div class="value">' +
-                    escapeHtml(
-                        current.gender || "-"
-                    ) +
-                "</div>" +
-            "</div>" +
-
-            '<div class="detail-card">' +
-                '<div class="label">Age</div>' +
-                '<div class="value">' +
-                    escapeHtml(
-                        current.age || "-"
-                    ) +
-                "</div>" +
-            "</div>" +
-
-            '<div class="detail-card">' +
-                '<div class="label">Address</div>' +
-                '<div class="value">' +
-                    escapeHtml(
-                        current.address || "-"
-                    ) +
-                "</div>" +
-            "</div>" +
-
-            '<div class="detail-card">' +
-                '<div class="label">Doctor</div>' +
-                '<div class="value">' +
-                    escapeHtml(
-                        getDoctorName(current)
-                    ) +
-                "</div>" +
-            "</div>" +
-
-            '<div class="detail-card">' +
-                '<div class="label">Specialization</div>' +
-                '<div class="value">' +
-                    escapeHtml(
-                        current.specialization || "-"
-                    ) +
-                "</div>" +
-            "</div>" +
-
-            '<div class="detail-card">' +
-                '<div class="label">Current Visit</div>' +
-                '<div class="value">' +
-                    "Visit " +
-                    getVisitNumber(current) +
-                "</div>" +
-            "</div>" +
-
-            '<div class="detail-card">' +
-                '<div class="label">Current Type</div>' +
-                '<div class="value">' +
-                    getPatientType(current) +
-                "</div>" +
-            "</div>" +
-
-            '<div class="detail-card">' +
-                '<div class="label">Current Amount</div>' +
-                '<div class="value">' +
-                    formatAmount(
-                        getAmount(current)
-                    ) +
-                "</div>" +
-            "</div>" +
-
-        "</div>";
-
-
-    html +=
-        '<h3 class="history-title">' +
-            "📋 Previous Visit History" +
-        "</h3>";
-
-
-    if (history.length === 0) {
-
-        html +=
-            '<div class="empty">' +
-                "No previous visit history found." +
-            "</div>";
-
-    } else {
-
-        html +=
-            '<div class="table-wrapper">' +
-
-                '<table class="history-table">' +
-
-                    "<thead>" +
-                        "<tr>" +
-                            "<th>No</th>" +
-                            "<th>Visit</th>" +
-                            "<th>Date</th>" +
-                            "<th>Time</th>" +
-                            "<th>Doctor</th>" +
-                            "<th>Type</th>" +
-                            "<th>Amount</th>" +
-                        "</tr>" +
-                    "</thead>" +
-
-                    "<tbody>";
-
-
-        for (var h = 0; h < history.length; h++) {
-
-            var visitItem = history[h];
-
-            html +=
-                "<tr>" +
-
-                    "<td>" +
-                        (h + 1) +
-                    "</td>" +
-
-                    "<td>" +
-                        '<span class="visit-badge">' +
-                            "Visit " +
-                            getVisitNumber(visitItem) +
-                        "</span>" +
-                    "</td>" +
-
-                    "<td>" +
-                        escapeHtml(
-                            formatDate(
-                                getAppointmentDate(
-                                    visitItem
-                                )
-                            )
-                        ) +
-                    "</td>" +
-
-                    "<td>" +
-                        escapeHtml(
-                            getAppointmentTime(
-                                visitItem
-                            )
-                        ) +
-                    "</td>" +
-
-                    "<td>" +
-                        escapeHtml(
-                            getDoctorName(
-                                visitItem
-                            )
-                        ) +
-                    "</td>" +
-
-                    "<td>" +
-                        escapeHtml(
-                            getPatientType(
-                                visitItem
-                            )
-                        ) +
-                    "</td>" +
-
-                    "<td>" +
-                        '<strong>' +
-                            formatAmount(
-                                getAmount(
-                                    visitItem
-                                )
-                            ) +
-                        "</strong>" +
-                    "</td>" +
-
-                "</tr>";
-        }
-
-
-        html +=
-                    "</tbody>" +
-                "</table>" +
-
-            "</div>";
-    }
-
-
-    html +=
-        '<div class="total-box">' +
-            "💰 Total Amount Paid: " +
-            formatAmount(totalAmount) +
-        "</div>";
-
-
-    document.getElementById(
-        "patientDetailsContent"
-    ).innerHTML = html;
-
-
-    document.getElementById(
-        "detailsModal"
-    ).classList.add("show");
-}
-
-
-/*
-    ============================================================
-    CLOSE DETAILS
-    ============================================================
-*/
-
-function closeDetails() {
-
-    document.getElementById(
-        "detailsModal"
-    ).classList.remove("show");
-}
-
-
-document.getElementById(
-    "detailsModal"
-).addEventListener(
-    "click",
-    function(event) {
-
-        if (event.target === this) {
-            closeDetails();
-        }
-
-    }
-);
-
-
-/*
-    ============================================================
-    MAKE OLD
-    ============================================================
-*/
-
-async function makeOld(appointmentId) {
-
-    var current = null;
-
-
-    for (var i = 0; i < appointments.length; i++) {
-
-        var id = String(
-            appointments[i].id ||
-            appointments[i].appointment_id ||
-            ""
-        );
-
-        if (id === String(appointmentId)) {
-
-            current = appointments[i];
-
-            break;
-        }
-    }
-
-
-    if (!current) {
-
-        showMessage(
-            "Patient appointment not found.",
-            false
-        );
-
-        return;
-    }
-
-
-    var mobile = normalizeMobile(
-        current.mobile
-    );
-
-
-    if (!mobile) {
-
-        showMessage(
-            "Patient mobile number is missing.",
-            false
-        );
-
-        return;
-    }
-
-
-    if (!confirm(
-        "Are you sure you want to make this patient OLD?"
-    )) {
-        return;
-    }
-
-
-    try {
-
-        var token = await getFirebaseToken();
-
-
-        if (!token) {
-
-            showMessage(
-                "Login session not found. Please login again.",
-                false
-            );
+            container.innerHTML =
+                '<div class="empty">No appointments found.</div>';
 
             return;
         }
 
 
-        var response = await fetch(
-            "/api/doctor/make-patient-old",
-            {
-                method: "POST",
+        const doctorMap = {};
 
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization":
-                        "Bearer " + token
-                },
+        filtered.forEach(function(item) {
 
-                body: JSON.stringify({
-                    mobile: mobile
-                })
+            const doctor = getDoctorName(item);
+
+            if (!doctorMap[doctor]) {
+                doctorMap[doctor] = [];
+            }
+
+            doctorMap[doctor].push(item);
+        });
+
+
+        const doctors = Object.keys(doctorMap).sort(
+            function(a, b) {
+                return a.localeCompare(b);
             }
         );
 
 
-        var data = await response.json();
+        doctors.forEach(function(doctor) {
+
+            const doctorAppointments =
+                doctorMap[doctor];
+
+            doctorAppointments.sort(function(a, b) {
+
+                const dateDiff =
+                    dateSortValue(b) - dateSortValue(a);
+
+                if (dateDiff !== 0) {
+                    return dateDiff;
+                }
+
+                return (
+                    timeSortValue(b) -
+                    timeSortValue(a)
+                );
+            });
 
 
-        if (!response.ok || !data.success) {
+            const doctorCard =
+                document.createElement("div");
+
+            doctorCard.className = "doctor-card";
+
+
+            const doctorTitle =
+                document.createElement("div");
+
+            doctorTitle.className = "doctor-title";
+
+            doctorTitle.textContent =
+                "👨‍⚕️ " + doctor;
+
+
+            doctorCard.appendChild(doctorTitle);
+
+
+            const sections = [
+                {
+                    key: "today",
+                    title: "📅 TODAY",
+                    className: "today"
+                },
+                {
+                    key: "upcoming",
+                    title: "🔵 UPCOMING",
+                    className: "upcoming"
+                },
+                {
+                    key: "past",
+                    title: "🕘 PAST",
+                    className: "past"
+                }
+            ];
+
+
+            sections.forEach(function(section) {
+
+                const items =
+                    doctorAppointments.filter(
+                        function(item) {
+                            return getDateStatus(item) === section.key;
+                        }
+                    );
+
+
+                if (items.length === 0) {
+                    return;
+                }
+
+
+                const sectionDiv =
+                    document.createElement("div");
+
+                sectionDiv.className =
+                    "date-section";
+
+
+                const title =
+                    document.createElement("div");
+
+                title.className =
+                    "date-title " + section.className;
+
+                title.textContent =
+                    section.title + " (" + items.length + ")";
+
+
+                sectionDiv.appendChild(title);
+
+
+                const wrapper =
+                    document.createElement("div");
+
+                wrapper.className =
+                    "table-wrapper";
+
+
+                const table =
+                    document.createElement("table");
+
+
+                table.innerHTML =
+                    "<thead>" +
+                    "<tr>" +
+                    "<th>No</th>" +
+                    "<th>Patient</th>" +
+                    "<th>Gender</th>" +
+                    "<th>Age</th>" +
+                    "<th>Mobile</th>" +
+                    "<th>Date</th>" +
+                    "<th>Visit</th>" +
+                    "<th>Type</th>" +
+                    "<th>Amount</th>" +
+                    "<th>Action</th>" +
+                    "</tr>" +
+                    "</thead>";
+
+
+                const tbody =
+                    document.createElement("tbody");
+
+
+                items.forEach(function(item, index) {
+
+                    const row =
+                        document.createElement("tr");
+
+                    const visit =
+                        getVisitNumber(item);
+
+                    const type =
+                        getType(item);
+
+                    const amount =
+                        getAmount(item);
+
+
+                    row.innerHTML =
+                        "<td>" +
+                        (index + 1) +
+                        "</td>" +
+
+                        "<td>" +
+                        '<div class="patient-name">' +
+                        escapeHtml(getPatientName(item)) +
+                        "</div>" +
+                        "</td>" +
+
+                        "<td>" +
+                        escapeHtml(item.gender || "-") +
+                        "</td>" +
+
+                        "<td>" +
+                        escapeHtml(item.age || "-") +
+                        "</td>" +
+
+                        "<td>" +
+                        '<span class="mobile">' +
+                        escapeHtml(item.mobile || "-") +
+                        "</span>" +
+                        "</td>" +
+
+                        "<td>" +
+                        escapeHtml(
+                            formatDate(getDateValue(item))
+                        ) +
+                        "</td>" +
+
+                        "<td>" +
+                        '<span class="visit-badge">' +
+                        "Visit " + visit +
+                        "</span>" +
+                        "</td>" +
+
+                        "<td>" +
+                        '<span class="badge ' +
+                        (type === "OLD"
+                            ? "badge-old"
+                            : "badge-new") +
+                        '">' +
+                        type +
+                        "</span>" +
+                        "</td>" +
+
+                        "<td>" +
+                        '<div class="amount-box">' +
+                        '<input class="amount-input" ' +
+                        'type="number" min="0" step="0.01" ' +
+                        'value="' + escapeHtml(amount) + '" ' +
+                        'data-appointment-id="' +
+                        escapeHtml(item.id || "") +
+                        '">' +
+
+                        '<button class="save-amount" ' +
+                        'type="button" ' +
+                        'data-action="save-amount" ' +
+                        'data-appointment-id="' +
+                        escapeHtml(item.id || "") +
+                        '">' +
+                        "Save" +
+                        "</button>" +
+                        "</div>" +
+                        "</td>" +
+
+                        "<td>" +
+                        '<div class="action-buttons">' +
+
+                        '<button class="action-btn details-btn" ' +
+                        'type="button" ' +
+                        'data-action="details" ' +
+                        'data-appointment-id="' +
+                        escapeHtml(item.id || "") +
+                        '">' +
+                        "Details" +
+                        "</button>" +
+
+                        '<button class="action-btn old-btn" ' +
+                        'type="button" ' +
+                        'data-action="make-old" ' +
+                        'data-mobile="' +
+                        escapeHtml(item.mobile || "") +
+                        '">' +
+                        (type === "OLD"
+                            ? "OLD"
+                            : "Make OLD") +
+                        "</button>" +
+
+                        '<a class="follow-btn" ' +
+                        'href="/followups/' +
+                        encodeURIComponent(hospitalUid) +
+                        '">' +
+                        "Follow-up" +
+                        "</a>" +
+
+                        "</div>" +
+                        "</td>";
+
+
+                    tbody.appendChild(row);
+                });
+
+
+                table.appendChild(tbody);
+
+                wrapper.appendChild(table);
+
+                sectionDiv.appendChild(wrapper);
+
+                doctorCard.appendChild(sectionDiv);
+            });
+
+
+            container.appendChild(doctorCard);
+        });
+    }
+
+
+    /* -----------------------------------------
+       SUMMARY
+    ----------------------------------------- */
+
+    function updateSummary(items) {
+
+        document.getElementById("totalPatients")
+            .textContent = items.length;
+
+
+        const doctors = new Set();
+
+        items.forEach(function(item) {
+            doctors.add(getDoctorName(item));
+        });
+
+        document.getElementById("totalDoctors")
+            .textContent = doctors.size;
+
+
+        const today =
+            items.filter(function(item) {
+                return getDateStatus(item) === "today";
+            }).length;
+
+
+        const upcoming =
+            items.filter(function(item) {
+                return getDateStatus(item) === "upcoming";
+            }).length;
+
+
+        document.getElementById("todayCount")
+            .textContent = today;
+
+        document.getElementById("upcomingCount")
+            .textContent = upcoming;
+    }
+
+
+    /* -----------------------------------------
+       FIREBASE AUTH TOKEN
+    ----------------------------------------- */
+
+    async function getAuthToken() {
+
+        /*
+         * Firebase must already be initialized
+         * by your login/session code.
+         */
+
+        if (
+            typeof firebase === "undefined" ||
+            !firebase.auth
+        ) {
+            throw new Error(
+                "Firebase Auth is not available on this page."
+            );
+        }
+
+
+        const user =
+            firebase.auth().currentUser;
+
+
+        if (!user) {
 
             throw new Error(
-                data.error ||
+                "Login session not found. Please login again."
+            );
+        }
+
+
+        return await user.getIdToken(true);
+    }
+
+
+    /* -----------------------------------------
+       SAVE AMOUNT
+    ----------------------------------------- */
+
+    async function saveAmount(appointmentId, input) {
+
+        if (!appointmentId) {
+            showStatus("Appointment ID missing.");
+            return;
+        }
+
+
+        const amount =
+            Number(input.value);
+
+
+        if (!Number.isFinite(amount) || amount < 0) {
+            showStatus("Please enter a valid amount.");
+            return;
+        }
+
+
+        try {
+
+            const token =
+                await getAuthToken();
+
+
+            const response =
+                await fetch(
+                    "/api/appointment/" +
+                    encodeURIComponent(appointmentId) +
+                    "/amount",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization":
+                                "Bearer " + token
+                        },
+
+                        body: JSON.stringify({
+                            amount: amount
+                        })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok || !data.success) {
+
+                throw new Error(
+                    data.error ||
+                    "Unable to update amount."
+                );
+            }
+
+
+            const item =
+                allAppointments.find(
+                    function(x) {
+                        return String(x.id) ===
+                            String(appointmentId);
+                    }
+                );
+
+
+            if (item) {
+                item.amount = amount;
+            }
+
+
+            showStatus(
+                "Appointment amount updated successfully."
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "SAVE AMOUNT ERROR:",
+                error
+            );
+
+            showStatus(
+                error.message ||
+                "Unable to save amount."
+            );
+        }
+    }
+
+
+    /* -----------------------------------------
+       MAKE PATIENT OLD
+    ----------------------------------------- */
+
+    async function makePatientOld(mobile) {
+
+        const normalized =
+            normalizeMobile(mobile);
+
+
+        if (!normalized) {
+            showStatus("Mobile number missing.");
+            return;
+        }
+
+
+        if (
+            !confirm(
+                "Make this patient OLD?\n\n" +
+                "Visit 1 will remain NEW.\n" +
+                "Visit 2 onward will show OLD."
+            )
+        ) {
+            return;
+        }
+
+
+        try {
+
+            const token =
+                await getAuthToken();
+
+
+            const response =
+                await fetch(
+                    "/api/doctor/make-patient-old",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization":
+                                "Bearer " + token
+                        },
+
+                        body: JSON.stringify({
+                            mobile: normalized
+                        })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok || !data.success) {
+
+                throw new Error(
+                    data.error ||
+                    "Unable to make patient OLD."
+                );
+            }
+
+
+            /*
+             * Update current page immediately.
+             * Do NOT change amount.
+             */
+
+            allAppointments.forEach(function(item) {
+
+                if (
+                    normalizeMobile(item.mobile) ===
+                    normalized
+                ) {
+
+                    const visit =
+                        getVisitNumber(item);
+
+                    if (visit > 1) {
+                        item.patient_status = "OLD";
+                        item.type = "OLD";
+                    }
+
+                    /*
+                     * Visit 1 remains NEW.
+                     */
+                    if (visit === 1) {
+                        item.patient_status = "NEW";
+                        item.type = "NEW";
+                    }
+                }
+            });
+
+
+            renderAppointments();
+
+
+            showStatus(
+                "Patient successfully changed to OLD."
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "MAKE OLD ERROR:",
+                error
+            );
+
+            showStatus(
+                error.message ||
                 "Unable to make patient OLD."
             );
         }
+    }
 
 
-        /*
-            Update local appointment data.
-            Visit 1 must remain NEW.
-            Visit 2+ become OLD.
-        */
+    /* -----------------------------------------
+       DETAILS
+    ----------------------------------------- */
 
-        for (
-            var j = 0;
-            j < appointments.length;
-            j++
-        ) {
+    async function showDetails(appointmentId) {
 
-            var p = appointments[j];
-
-            if (
-                normalizeMobile(p.mobile) === mobile
-            ) {
-
-                if (getVisitNumber(p) > 1) {
-                    p.patient_status = "OLD";
+        const item =
+            allAppointments.find(
+                function(x) {
+                    return String(x.id) ===
+                        String(appointmentId);
                 }
-
-                if (getVisitNumber(p) === 1) {
-                    p.patient_status = "NEW";
-                }
-            }
-        }
-
-
-        showMessage(
-            "Patient successfully changed to OLD.",
-            true
-        );
-
-
-        renderAppointments();
-
-    } catch (error) {
-
-        console.error(
-            "MAKE OLD ERROR:",
-            error
-        );
-
-        showMessage(
-            error.message ||
-            "Failed to make patient OLD.",
-            false
-        );
-    }
-}
-
-
-/*
-    ============================================================
-    SAVE AMOUNT
-    ============================================================
-*/
-
-async function saveAmount(appointmentId) {
-
-    var input = document.getElementById(
-        "amount-" + appointmentId
-    );
-
-
-    if (!input) {
-
-        showMessage(
-            "Amount field not found.",
-            false
-        );
-
-        return;
-    }
-
-
-    var amount = Number(input.value);
-
-
-    if (isNaN(amount) || amount < 0) {
-
-        showMessage(
-            "Please enter a valid amount.",
-            false
-        );
-
-        return;
-    }
-
-
-    try {
-
-        var token = await getFirebaseToken();
-
-
-        if (!token) {
-
-            showMessage(
-                "Login session not found. Please login again.",
-                false
             );
 
+
+        if (!item) {
+            showStatus("Appointment not found.");
             return;
         }
 
 
-        var response = await fetch(
-            "/api/appointment/" +
-            encodeURIComponent(appointmentId) +
-            "/amount",
-            {
-                method: "POST",
+        document.getElementById("detailName")
+            .textContent =
+            getPatientName(item);
 
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization":
-                        "Bearer " + token
-                },
 
-                body: JSON.stringify({
-                    amount: amount
-                })
+        document.getElementById("detailMobile")
+            .textContent =
+            item.mobile || "-";
+
+
+        document.getElementById("detailGender")
+            .textContent =
+            item.gender || "-";
+
+
+        document.getElementById("detailAge")
+            .textContent =
+            item.age || "-";
+
+
+        document.getElementById("detailAddress")
+            .textContent =
+            item.address || "-";
+
+
+        document.getElementById("detailDoctor")
+            .textContent =
+            getDoctorName(item);
+
+
+        document.getElementById("detailSpecialization")
+            .textContent =
+            item.specialization || "-";
+
+
+        document.getElementById("detailDate")
+            .textContent =
+            formatDate(getDateValue(item));
+
+
+        document.getElementById("detailTime")
+            .textContent =
+            getTimeValue(item) || "-";
+
+
+        document.getElementById("detailVisit")
+            .textContent =
+            "Visit " + getVisitNumber(item);
+
+
+        document.getElementById("detailType")
+            .textContent =
+            getType(item);
+
+
+        document.getElementById("detailAmount")
+            .textContent =
+            formatAmount(getAmount(item));
+
+
+        const historyBody =
+            document.getElementById("historyBody");
+
+
+        historyBody.innerHTML =
+            '<tr><td colspan="6" style="text-align:center;">Loading...</td></tr>';
+
+
+        document.getElementById("historyTotal")
+            .textContent =
+            "Total Amount Paid: ₹0";
+
+
+        document.getElementById("detailsModal")
+            .classList.add("show");
+
+
+        try {
+
+            const token =
+                await getAuthToken();
+
+
+            const mobile =
+                normalizeMobile(item.mobile);
+
+
+            const response =
+                await fetch(
+                    "/api/patient/history?mobile=" +
+                    encodeURIComponent(mobile),
+                    {
+                        method: "GET",
+
+                        headers: {
+                            "Authorization":
+                                "Bearer " + token
+                        }
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok || !data.success) {
+
+                throw new Error(
+                    data.error ||
+                    "Unable to load patient history."
+                );
+            }
+
+
+            let history =
+                Array.isArray(data.history)
+                    ? data.history
+                    : [];
+
+
+            /*
+             * Newest date/time first.
+             */
+
+            history.sort(function(a, b) {
+
+                const dateDiff =
+                    dateSortValue(b) -
+                    dateSortValue(a);
+
+                if (dateDiff !== 0) {
+                    return dateDiff;
+                }
+
+                return (
+                    timeSortValue(b) -
+                    timeSortValue(a)
+                );
+            });
+
+
+            historyBody.innerHTML = "";
+
+
+            if (history.length === 0) {
+
+                historyBody.innerHTML =
+                    '<tr>' +
+                    '<td colspan="6" style="text-align:center;">' +
+                    "No previous visits found." +
+                    "</td>" +
+                    "</tr>";
+
+                return;
+            }
+
+
+            let totalAmount = 0;
+
+
+            history.forEach(function(visitItem) {
+
+                const amount =
+                    getAmount(visitItem);
+
+
+                totalAmount += amount;
+
+
+                const row =
+                    document.createElement("tr");
+
+
+                row.innerHTML =
+                    "<td>" +
+                    '<span class="visit-badge">' +
+                    "Visit " +
+                    getVisitNumber(visitItem) +
+                    "</span>" +
+                    "</td>" +
+
+                    "<td>" +
+                    escapeHtml(
+                        formatDate(
+                            getDateValue(visitItem)
+                        )
+                    ) +
+                    "</td>" +
+
+                    "<td>" +
+                    escapeHtml(
+                        getTimeValue(visitItem) || "-"
+                    ) +
+                    "</td>" +
+
+                    "<td>" +
+                    escapeHtml(
+                        getDoctorName(visitItem)
+                    ) +
+                    "</td>" +
+
+                    "<td>" +
+                    '<span class="badge ' +
+                    (
+                        getType(visitItem) === "OLD"
+                            ? "badge-old"
+                            : "badge-new"
+                    ) +
+                    '">' +
+                    getType(visitItem) +
+                    "</span>" +
+                    "</td>" +
+
+                    "<td>" +
+                    formatAmount(amount) +
+                    "</td>";
+
+
+                historyBody.appendChild(row);
+            });
+
+
+            document.getElementById("historyTotal")
+                .textContent =
+                "Total Amount Paid: " +
+                formatAmount(totalAmount);
+
+
+        } catch (error) {
+
+            console.error(
+                "PATIENT HISTORY ERROR:",
+                error
+            );
+
+
+            historyBody.innerHTML =
+                '<tr>' +
+                '<td colspan="6" style="text-align:center;color:#c62828;">' +
+                escapeHtml(
+                    error.message ||
+                    "Unable to load patient history."
+                ) +
+                "</td>" +
+                "</tr>";
+        }
+    }
+
+
+    /* -----------------------------------------
+       EVENT HANDLERS
+    ----------------------------------------- */
+
+    document.addEventListener(
+        "click",
+        function(event) {
+
+            const button =
+                event.target.closest(
+                    "[data-action]"
+                );
+
+
+            if (!button) {
+                return;
+            }
+
+
+            const action =
+                button.getAttribute(
+                    "data-action"
+                );
+
+
+            if (action === "details") {
+
+                const id =
+                    button.getAttribute(
+                        "data-appointment-id"
+                    );
+
+                showDetails(id);
+            }
+
+
+            if (action === "make-old") {
+
+                const mobile =
+                    button.getAttribute(
+                        "data-mobile"
+                    );
+
+                makePatientOld(mobile);
+            }
+
+
+            if (action === "save-amount") {
+
+                const id =
+                    button.getAttribute(
+                        "data-appointment-id"
+                    );
+
+
+                const row =
+                    button.closest("tr");
+
+
+                const input =
+                    row.querySelector(
+                        ".amount-input"
+                    );
+
+
+                saveAmount(id, input);
+            }
+
+        }
+    );
+
+
+    document.getElementById("closeModal")
+        .addEventListener(
+            "click",
+            function() {
+                document.getElementById(
+                    "detailsModal"
+                ).classList.remove("show");
             }
         );
 
 
-        var data = await response.json();
+    document.getElementById("detailsModal")
+        .addEventListener(
+            "click",
+            function(event) {
 
-
-        if (!response.ok || !data.success) {
-
-            throw new Error(
-                data.error ||
-                "Amount update failed."
-            );
-        }
-
-
-        /*
-            Update local appointment
-        */
-
-        for (
-            var i = 0;
-            i < appointments.length;
-            i++
-        ) {
-
-            var id = String(
-                appointments[i].id ||
-                appointments[i].appointment_id ||
-                ""
-            );
-
-            if (id === String(appointmentId)) {
-
-                appointments[i].amount =
-                    amount;
-
-                break;
+                if (
+                    event.target.id ===
+                    "detailsModal"
+                ) {
+                    event.currentTarget.classList.remove(
+                        "show"
+                    );
+                }
             }
-        }
-
-
-        showMessage(
-            "Amount updated successfully.",
-            true
         );
 
 
-        renderAppointments();
-
-    } catch (error) {
-
-        console.error(
-            "SAVE AMOUNT ERROR:",
-            error
+    document.getElementById("doctorFilter")
+        .addEventListener(
+            "change",
+            renderAppointments
         );
 
-        showMessage(
-            error.message ||
-            "Failed to update amount.",
-            false
+
+    document.getElementById("searchInput")
+        .addEventListener(
+            "input",
+            renderAppointments
         );
-    }
-}
 
 
-/*
-    ============================================================
-    FILTER EVENTS
-    ============================================================
-*/
-
-document.getElementById(
-    "doctorFilter"
-).addEventListener(
-    "change",
-    renderAppointments
-);
+    document.getElementById("dateFilter")
+        .addEventListener(
+            "change",
+            renderAppointments
+        );
 
 
-document.getElementById(
-    "searchInput"
-).addEventListener(
-    "input",
-    renderAppointments
-);
+    /* -----------------------------------------
+       INITIALIZE
+    ----------------------------------------- */
 
+    populateDoctors();
 
-document.getElementById(
-    "dateFilter"
-).addEventListener(
-    "change",
-    renderAppointments
-);
-
-
-/*
-    ============================================================
-    ESCAPE KEY CLOSE MODAL
-    ============================================================
-*/
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (event.key === "Escape") {
-            closeDetails();
-        }
-
-    }
-);
-
-
-/*
-    ============================================================
-    START
-    ============================================================
-*/
-
-loadDoctorFilter();
-
-renderAppointments();
+    renderAppointments();
 
 </script>
 
