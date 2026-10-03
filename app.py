@@ -142,12 +142,10 @@ PLANS = {
 # ============================================================
 
 def utc_now():
-
     return datetime.utcnow()
 
 
 def format_whatsapp_number(mobile):
-
     if not mobile:
         return ""
 
@@ -165,7 +163,6 @@ def format_whatsapp_number(mobile):
 
 
 def cashfree_headers():
-
     return {
         "x-client-id": CASHFREE_CLIENT_ID,
         "x-client-secret": CASHFREE_CLIENT_SECRET,
@@ -173,35 +170,6 @@ def cashfree_headers():
         "Content-Type": "application/json",
         "Accept": "application/json"
     }
-
-
-# ============================================================
-# HOSPITAL-WISE PATIENT COUNTER
-# ============================================================
-
-def get_next_patient_number(hospital_id):
-
-    if not hospital_id:
-        raise ValueError(
-            "Hospital ID is required"
-        )
-
-    counter_ref = db.reference(
-        f"counters/{hospital_id}/patient_no"
-    )
-
-    def increment(current):
-
-        if current is None:
-            return 1
-
-        return int(current) + 1
-
-    patient_no = counter_ref.transaction(
-        increment
-    )
-
-    return int(patient_no)
 
 
 # ============================================================
@@ -216,32 +184,21 @@ def get_authenticated_user():
     )
 
     if not authorization:
-        print(
-            "AUTH ERROR: Authorization header missing"
-        )
+        print("AUTH ERROR: Authorization header missing")
         return None
 
-    if not authorization.startswith(
-        "Bearer "
-    ):
-        print(
-            "AUTH ERROR: Invalid Authorization format"
-        )
+    if not authorization.startswith("Bearer "):
+        print("AUTH ERROR: Invalid Authorization format")
         return None
 
     token = authorization[7:].strip()
 
     if not token:
-        print(
-            "AUTH ERROR: Firebase token missing"
-        )
+        print("AUTH ERROR: Firebase token missing")
         return None
 
     try:
-
-        decoded = auth.verify_id_token(
-            token
-        )
+        decoded = auth.verify_id_token(token)
 
         print(
             "FIREBASE USER:",
@@ -252,14 +209,8 @@ def get_authenticated_user():
         return decoded
 
     except Exception as e:
-
-        print(
-            "FIREBASE AUTH ERROR:",
-            str(e)
-        )
-
+        print("FIREBASE AUTH ERROR:", str(e))
         traceback.print_exc()
-
         return None
 
 
@@ -281,27 +232,20 @@ def get_subscription(uid):
 
 def subscription_is_active(uid):
 
-    subscription = get_subscription(
-        uid
-    )
+    subscription = get_subscription(uid)
 
     if not subscription:
         return False
 
-    if subscription.get(
-        "payment_status"
-    ) != "PAID":
+    if subscription.get("payment_status") != "PAID":
         return False
 
-    expiry_string = subscription.get(
-        "expiry"
-    )
+    expiry_string = subscription.get("expiry")
 
     if not expiry_string:
         return False
 
     try:
-
         expiry = datetime.fromisoformat(
             expiry_string
         )
@@ -309,12 +253,10 @@ def subscription_is_active(uid):
         return utc_now() < expiry
 
     except Exception as e:
-
         print(
             "SUBSCRIPTION EXPIRY ERROR:",
             str(e)
         )
-
         return False
 
 
@@ -322,9 +264,7 @@ def subscription_is_active(uid):
 # FIREBASE SERVICE WORKER
 # ============================================================
 
-@app.route(
-    "/firebase-messaging-sw.js"
-)
+@app.route("/firebase-messaging-sw.js")
 def firebase_sw():
 
     return send_from_directory(
@@ -339,34 +279,22 @@ def firebase_sw():
 
 @app.route("/")
 def home():
-
-    return render_template(
-        "index.html"
-    )
+    return render_template("index.html")
 
 
 @app.route("/login-page")
 def login_page():
-
-    return render_template(
-        "login.html"
-    )
+    return render_template("login.html")
 
 
 @app.route("/payment")
 def payment():
-
-    return render_template(
-        "payment.html"
-    )
+    return render_template("payment.html")
 
 
 @app.route("/dashboard")
 def dashboard():
-
-    return render_template(
-        "dashboard.html"
-    )
+    return render_template("dashboard.html")
 
 
 @app.route("/temp-dash")
@@ -387,10 +315,7 @@ def temp_dash():
 # LOGIN
 # ============================================================
 
-@app.route(
-    "/login",
-    methods=["POST"]
-)
+@app.route("/login", methods=["POST"])
 def login():
 
     try:
@@ -398,15 +323,11 @@ def login():
         decoded = get_authenticated_user()
 
         if not decoded:
-
             return jsonify({
-                "error":
-                    "Authentication required"
+                "error": "Authentication required"
             }), 401
 
-        uid = decoded.get(
-            "uid"
-        )
+        uid = decoded.get("uid")
 
         hospital = (
             db.reference(
@@ -417,8 +338,7 @@ def login():
 
         return jsonify({
 
-            "uid":
-                uid,
+            "uid": uid,
 
             "hospitalId":
                 hospital.get(
@@ -436,16 +356,11 @@ def login():
 
     except Exception as e:
 
-        print(
-            "LOGIN ERROR:",
-            str(e)
-        )
-
+        print("LOGIN ERROR:", str(e))
         traceback.print_exc()
 
         return jsonify({
-            "error":
-                str(e)
+            "error": str(e)
         }), 401
 
 
@@ -464,23 +379,17 @@ def create_payment_order():
         decoded = get_authenticated_user()
 
         if not decoded:
-
             return jsonify({
                 "success": False,
-                "error":
-                    "Authentication required"
+                "error": "Authentication required"
             }), 401
 
-        uid = decoded.get(
-            "uid"
-        )
+        uid = decoded.get("uid")
 
         if not uid:
-
             return jsonify({
                 "success": False,
-                "error":
-                    "UID missing"
+                "error": "UID missing"
             }), 400
 
         data = request.get_json(
@@ -495,37 +404,26 @@ def create_payment_order():
         ).lower()
 
         if plan not in PLANS:
-
             return jsonify({
                 "success": False,
-                "error":
-                    "Invalid plan"
+                "error": "Invalid plan"
             }), 400
 
         plan_data = PLANS[plan]
 
-        amount = plan_data[
-            "amount"
-        ]
-
-        duration_days = plan_data[
-            "duration_days"
-        ]
+        amount = plan_data["amount"]
+        duration_days = plan_data["duration_days"]
 
         if not CASHFREE_CLIENT_ID:
-
             return jsonify({
                 "success": False,
-                "error":
-                    "CASHFREE_CLIENT_ID is missing"
+                "error": "CASHFREE_CLIENT_ID is missing"
             }), 500
 
         if not CASHFREE_CLIENT_SECRET:
-
             return jsonify({
                 "success": False,
-                "error":
-                    "CASHFREE_CLIENT_SECRET is missing"
+                "error": "CASHFREE_CLIENT_SECRET is missing"
             }), 500
 
         customer_name = data.get(
@@ -535,10 +433,7 @@ def create_payment_order():
 
         customer_email = data.get(
             "customer_email",
-            decoded.get(
-                "email",
-                ""
-            )
+            decoded.get("email", "")
         )
 
         customer_phone = data.get(
@@ -557,16 +452,12 @@ def create_payment_order():
             customer_phone = "9999999999"
 
         if len(customer_phone) == 12:
-            customer_phone = (
-                customer_phone[-10:]
-            )
+            customer_phone = customer_phone[-10:]
 
         if len(customer_phone) != 10:
-
             return jsonify({
                 "success": False,
-                "error":
-                    "Valid 10 digit customer phone is required"
+                "error": "Valid 10 digit customer phone is required"
             }), 400
 
         order_id = (
@@ -618,10 +509,7 @@ def create_payment_order():
                 f"Statusly {plan} subscription"
         }
 
-        print(
-            "Creating Cashfree order:",
-            order_id
-        )
+        print("Creating Cashfree order:", order_id)
 
         response = requests.post(
 
@@ -751,11 +639,9 @@ def create_payment_order():
 
         return jsonify({
 
-            "success":
-                False,
+            "success": False,
 
-            "error":
-                str(e)
+            "error": str(e)
 
         }), 500
 
@@ -764,30 +650,22 @@ def create_payment_order():
 # ACTIVATE SUBSCRIPTION
 # ============================================================
 
-def activate_subscription(
-    order_id
-):
+def activate_subscription(order_id):
 
     try:
 
         payment_ref = (
-            db.reference(
-                "payment_orders"
-            )
+            db.reference("payment_orders")
             .child(order_id)
         )
 
-        payment_order = (
-            payment_ref.get()
-        )
+        payment_order = payment_ref.get()
 
         if not payment_order:
 
             return {
-                "success":
-                    False,
-                "error":
-                    "Local payment order not found"
+                "success": False,
+                "error": "Local payment order not found"
             }
 
         if payment_order.get(
@@ -795,45 +673,27 @@ def activate_subscription(
         ):
 
             return {
-                "success":
-                    True,
-                "already_activated":
-                    True
+                "success": True,
+                "already_activated": True
             }
 
-        uid = payment_order.get(
-            "uid"
-        )
-
-        plan = payment_order.get(
-            "plan"
-        )
-
-        amount = payment_order.get(
-            "amount"
-        )
-
-        duration_days = (
-            payment_order.get(
-                "duration_days"
-            )
+        uid = payment_order.get("uid")
+        plan = payment_order.get("plan")
+        amount = payment_order.get("amount")
+        duration_days = payment_order.get(
+            "duration_days"
         )
 
         if not uid or not plan:
-
             return {
-                "success":
-                    False,
-                "error":
-                    "Payment order data incomplete"
+                "success": False,
+                "error": "Payment order data incomplete"
             }
 
         expiry = (
             utc_now()
             + timedelta(
-                days=int(
-                    duration_days
-                )
+                days=int(duration_days)
             )
         )
 
@@ -855,10 +715,7 @@ def activate_subscription(
 
                 payments = response.json()
 
-                if isinstance(
-                    payments,
-                    list
-                ):
+                if isinstance(payments, list):
 
                     for payment in payments:
 
@@ -866,11 +723,9 @@ def activate_subscription(
                             "payment_status"
                         ) == "SUCCESS":
 
-                            payment_id = (
-                                payment.get(
-                                    "cf_payment_id",
-                                    ""
-                                )
+                            payment_id = payment.get(
+                                "cf_payment_id",
+                                ""
                             )
 
                             break
@@ -980,16 +835,12 @@ def activate_subscription(
     "/cashfree/order-status/<order_id>",
     methods=["GET"]
 )
-def cashfree_order_status(
-    order_id
-):
+def cashfree_order_status(order_id):
 
     try:
 
         local_order = (
-            db.reference(
-                "payment_orders"
-            )
+            db.reference("payment_orders")
             .child(order_id)
             .get()
         )
@@ -1034,14 +885,10 @@ def cashfree_order_status(
 
             }), response.status_code
 
-        cashfree_order = (
-            response.json()
-        )
+        cashfree_order = response.json()
 
-        status = (
-            cashfree_order.get(
-                "order_status"
-            )
+        status = cashfree_order.get(
+            "order_status"
         )
 
         print(
@@ -1052,10 +899,8 @@ def cashfree_order_status(
 
         if status == "PAID":
 
-            activation = (
-                activate_subscription(
-                    order_id
-                )
+            activation = activate_subscription(
+                order_id
             )
 
             return jsonify({
@@ -1155,7 +1000,6 @@ def cashfree_webhook():
         )
 
         if not order_id:
-
             return "EVENT_RECEIVED", 200
 
         response = requests.get(
@@ -1170,9 +1014,7 @@ def cashfree_webhook():
 
         if response.ok:
 
-            order_data = (
-                response.json()
-            )
+            order_data = response.json()
 
             if order_data.get(
                 "order_status"
@@ -1208,9 +1050,7 @@ def check_subscription():
 
     try:
 
-        decoded = (
-            get_authenticated_user()
-        )
+        decoded = get_authenticated_user()
 
         if not decoded:
 
@@ -1224,20 +1064,14 @@ def check_subscription():
 
             }), 401
 
-        uid = decoded.get(
-            "uid"
+        uid = decoded.get("uid")
+
+        subscription = get_subscription(
+            uid
         )
 
-        subscription = (
-            get_subscription(
-                uid
-            )
-        )
-
-        active = (
-            subscription_is_active(
-                uid
-            )
+        active = subscription_is_active(
+            uid
         )
 
         return jsonify({
@@ -1292,9 +1126,7 @@ def save_hospital():
         # AUTHENTICATE USER
         # ----------------------------------------------------
 
-        decoded = (
-            get_authenticated_user()
-        )
+        decoded = get_authenticated_user()
 
         if not decoded:
 
@@ -1308,9 +1140,7 @@ def save_hospital():
 
             }), 401
 
-        uid = decoded.get(
-            "uid"
-        )
+        uid = decoded.get("uid")
 
         if not uid:
 
@@ -1328,9 +1158,7 @@ def save_hospital():
         # CHECK SUBSCRIPTION
         # ----------------------------------------------------
 
-        if not subscription_is_active(
-            uid
-        ):
+        if not subscription_is_active(uid):
 
             return jsonify({
 
@@ -1533,14 +1361,11 @@ def book_page(uid):
         uid=uid
     )
 
-
 # ============================================================
 # AI VOICE APPOINTMENT PAGE
 # ============================================================
 
-@app.route(
-    "/hospital/<uid>/voice-book"
-)
+@app.route("/hospital/<uid>/voice-book")
 def voice_book_page(uid):
 
     hospital = (
@@ -1550,15 +1375,11 @@ def voice_book_page(uid):
     )
 
     if not hospital:
-
         return "Hospital not found", 404
 
     return render_template(
-
         "voice-appointment.html",
-
         hospital=hospital,
-
         uid=uid
     )
 
@@ -1567,9 +1388,7 @@ def voice_book_page(uid):
 # VOICE APPOINTMENT - GET HOSPITAL DATA
 # ============================================================
 
-@app.route(
-    "/api/voice/hospital/<uid>"
-)
+@app.route("/api/voice/hospital/<uid>")
 def voice_hospital_data(uid):
 
     try:
@@ -1584,13 +1403,8 @@ def voice_hospital_data(uid):
         if not hospital:
 
             return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Hospital not found"
-
+                "success": False,
+                "error": "Hospital not found"
             }), 404
 
         doctors = hospital.get(
@@ -1625,11 +1439,9 @@ def voice_hospital_data(uid):
 
         return jsonify({
 
-            "success":
-                True,
+            "success": True,
 
             "hospital": {
-
                 "hospital_name":
                     hospital.get(
                         "hospital_name",
@@ -1648,11 +1460,9 @@ def voice_hospital_data(uid):
 
         return jsonify({
 
-            "success":
-                False,
+            "success": False,
 
-            "error":
-                str(e)
+            "error": str(e)
 
         }), 500
 
@@ -1752,73 +1562,43 @@ def voice_book_appointment():
         if not hospital_id:
 
             return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Hospital ID missing"
-
+                "success": False,
+                "error": "Hospital ID missing"
             }), 400
 
         if not patient_name:
 
             return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Patient name required"
-
+                "success": False,
+                "error": "Patient name required"
             }), 400
 
         if not doctor_name:
 
             return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Doctor name required"
-
+                "success": False,
+                "error": "Doctor name required"
             }), 400
 
         if not appointment_date:
 
             return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Appointment date required"
-
+                "success": False,
+                "error": "Appointment date required"
             }), 400
 
         if not appointment_time:
 
             return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Appointment time required"
-
+                "success": False,
+                "error": "Appointment time required"
             }), 400
 
         if not mobile:
 
             return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Mobile number required"
-
+                "success": False,
+                "error": "Mobile number required"
             }), 400
 
         # ----------------------------------------------------
@@ -1834,9 +1614,7 @@ def voice_book_appointment():
 
         if len(mobile_digits) == 12:
 
-            mobile_digits = (
-                mobile_digits[-10:]
-            )
+            mobile_digits = mobile_digits[-10:]
 
         if len(mobile_digits) != 10:
 
@@ -1897,14 +1675,9 @@ def voice_book_appointment():
                 )
             ).strip()
 
-            if (
-                existing_name.lower()
-                ==
-                doctor_name.lower()
-            ):
+            if existing_name.lower() == doctor_name.lower():
 
                 selected_doctor = doctor
-
                 break
 
         if not selected_doctor:
@@ -1920,13 +1693,24 @@ def voice_book_appointment():
             }), 404
 
         # ----------------------------------------------------
-        # PATIENT NUMBER - HOSPITAL WISE
+        # PATIENT NUMBER
         # ----------------------------------------------------
 
+        counter_ref = db.reference(
+            "counters/patient_no"
+        )
+
+        current_number = (
+            counter_ref.get()
+            or 0
+        )
+
         patient_no = (
-            get_next_patient_number(
-                hospital_id
-            )
+            int(current_number) + 1
+        )
+
+        counter_ref.set(
+            patient_no
         )
 
         # ----------------------------------------------------
@@ -1989,9 +1773,7 @@ def voice_book_appointment():
             )
         )
 
-        patient_id = (
-            appointment_ref.key
-        )
+        patient_id = appointment_ref.key
 
         # ----------------------------------------------------
         # WHATSAPP CONFIRMATION
@@ -2076,8 +1858,6 @@ def voice_book_appointment():
                 str(e)
 
         }), 500
-
-
 # ============================================================
 # BOOK APPOINTMENT
 # ============================================================
@@ -2107,13 +1887,19 @@ def book_appointment():
             }), 400
 
         # ----------------------------------------------------
-        # PATIENT NUMBER - HOSPITAL WISE
+        # PATIENT NUMBER
         # ----------------------------------------------------
 
+        counter_ref = db.reference(
+            "counters/patient_no"
+        )
+
         patient_no = (
-            get_next_patient_number(
-                hospital_id
-            )
+            counter_ref.get() or 0
+        ) + 1
+
+        counter_ref.set(
+            patient_no
         )
 
         # ----------------------------------------------------
@@ -2173,16 +1959,11 @@ def book_appointment():
         }
 
         ref = (
-            db.reference(
-                "appointments"
-            ).push(
-                appointment
-            )
+            db.reference("appointments")
+            .push(appointment)
         )
 
-        patient_id = (
-            ref.key
-        )
+        patient_id = ref.key
 
         # ----------------------------------------------------
         # FCM TOKEN
@@ -2230,18 +2011,14 @@ def book_appointment():
             or {}
         )
 
-        hospital_name = (
-            hospital.get(
-                "hospital_name",
-                "Hospital"
-            )
+        hospital_name = hospital.get(
+            "hospital_name",
+            "Hospital"
         )
 
-        doctor_name = (
-            appointment.get(
-                "doctor_name",
-                "Doctor"
-            )
+        doctor_name = appointment.get(
+            "doctor_name",
+            "Doctor"
         )
 
         specialization = ""
@@ -2255,11 +2032,9 @@ def book_appointment():
                 "doctor_name"
             ) == doctor_name:
 
-                specialization = (
-                    doctor.get(
-                        "specialization",
-                        ""
-                    )
+                specialization = doctor.get(
+                    "specialization",
+                    ""
                 )
 
                 break
@@ -2272,17 +2047,13 @@ def book_appointment():
 
             "success.html",
 
-            patient_id=
-                patient_id,
+            patient_id=patient_id,
 
-            hospital_name=
-                hospital_name,
+            hospital_name=hospital_name,
 
-            doctor_name=
-                doctor_name,
+            doctor_name=doctor_name,
 
-            specialization=
-                specialization,
+            specialization=specialization,
 
             appointment_date=
                 appointment.get(
@@ -2321,9 +2092,7 @@ def book_appointment():
 # GET HOSPITAL APPOINTMENTS
 # ============================================================
 
-def get_hospital_appointments(
-    hospital_id
-):
+def get_hospital_appointments(hospital_id):
 
     if not hospital_id:
         return []
@@ -2354,9 +2123,7 @@ def get_hospital_appointments(
             appointment
         )
 
-        appointment["id"] = (
-            appointment_id
-        )
+        appointment["id"] = appointment_id
 
         appointments.append(
             appointment
@@ -2372,9 +2139,7 @@ def get_hospital_appointments(
 @app.route(
     "/api/analytics/overview/<hospital_id>"
 )
-def analytics_overview(
-    hospital_id
-):
+def analytics_overview(hospital_id):
 
     try:
 
@@ -2399,9 +2164,7 @@ def analytics_overview(
                 )
             ).strip().lower()
 
-            gender_counts[
-                gender
-            ] += 1
+            gender_counts[gender] += 1
 
         return jsonify({
 
@@ -2466,9 +2229,7 @@ def analytics_overview(
 @app.route(
     "/api/analytics/gender/<hospital_id>"
 )
-def analytics_gender(
-    hospital_id
-):
+def analytics_gender(hospital_id):
 
     try:
 
@@ -2501,7 +2262,6 @@ def analytics_gender(
 
             "data":
                 dict(gender)
-
         })
 
     except Exception as e:
@@ -2526,9 +2286,7 @@ def analytics_gender(
 @app.route(
     "/api/analytics/age/<hospital_id>"
 )
-def analytics_age(
-    hospital_id
-):
+def analytics_age(hospital_id):
 
     try:
 
@@ -2556,32 +2314,24 @@ def analytics_age(
                 age = 0
 
             if age <= 0:
-
                 group = "Unknown"
 
             elif age <= 18:
-
                 group = "0-18"
 
             elif age <= 30:
-
                 group = "19-30"
 
             elif age <= 45:
-
                 group = "31-45"
 
             elif age <= 60:
-
                 group = "46-60"
 
             else:
-
                 group = "60+"
 
-            age_groups[
-                group
-            ] += 1
+            age_groups[group] += 1
 
         return jsonify({
 
@@ -2590,7 +2340,6 @@ def analytics_age(
 
             "data":
                 dict(age_groups)
-
         })
 
     except Exception as e:
@@ -2615,9 +2364,7 @@ def analytics_age(
 @app.route(
     "/api/analytics/doctors/<hospital_id>"
 )
-def analytics_doctors(
-    hospital_id
-):
+def analytics_doctors(hospital_id):
 
     try:
 
@@ -2652,7 +2399,6 @@ def analytics_doctors(
                 dict(
                     doctors.most_common()
                 )
-
         })
 
     except Exception as e:
@@ -2677,9 +2423,7 @@ def analytics_doctors(
 @app.route(
     "/api/analytics/daily/<hospital_id>"
 )
-def analytics_daily(
-    hospital_id
-):
+def analytics_daily(hospital_id):
 
     try:
 
@@ -2711,7 +2455,6 @@ def analytics_daily(
                         daily.items()
                     )
                 )
-
         })
 
     except Exception as e:
@@ -2736,9 +2479,7 @@ def analytics_daily(
 @app.route(
     "/api/analytics/time/<hospital_id>"
 )
-def analytics_time(
-    hospital_id
-):
+def analytics_time(hospital_id):
 
     try:
 
@@ -2771,7 +2512,6 @@ def analytics_time(
 
             "data":
                 dict(times)
-
         })
 
     except Exception as e:
@@ -2796,9 +2536,7 @@ def analytics_time(
 @app.route(
     "/api/analytics/location/<hospital_id>"
 )
-def analytics_location(
-    hospital_id
-):
+def analytics_location(hospital_id):
 
     try:
 
@@ -2831,9 +2569,7 @@ def analytics_location(
             if not location:
                 location = "Unknown"
 
-            locations[
-                location
-            ] += 1
+            locations[location] += 1
 
         return jsonify({
 
@@ -2844,7 +2580,6 @@ def analytics_location(
                 dict(
                     locations.most_common()
                 )
-
         })
 
     except Exception as e:
@@ -2861,21 +2596,16 @@ def analytics_location(
 
         }), 500
 
-
 # ============================================================
 # DOCTOR WORKING HOURS ANALYTICS
 # ============================================================
 
-def parse_opd_hours(
-    opd_time
-):
+def parse_opd_hours(opd_time):
 
     if not opd_time:
         return 0
 
-    opd_time = str(
-        opd_time
-    ).strip()
+    opd_time = str(opd_time).strip()
 
     # Support:
     # 09:00 AM - 01:00 PM
@@ -2883,53 +2613,29 @@ def parse_opd_hours(
     # 09:00 AM to 01:00 PM
 
     if " - " in opd_time:
-
-        parts = opd_time.split(
-            " - ",
-            1
-        )
+        parts = opd_time.split(" - ", 1)
 
     elif " to " in opd_time.lower():
-
-        parts = opd_time.lower().split(
-            " to ",
-            1
-        )
+        parts = opd_time.lower().split(" to ", 1)
 
     elif "-" in opd_time:
-
-        parts = opd_time.split(
-            "-",
-            1
-        )
+        parts = opd_time.split("-", 1)
 
     else:
-
         return 0
 
     if len(parts) != 2:
         return 0
 
-    start_text = (
-        parts[0].strip()
-    )
-
-    end_text = (
-        parts[1].strip()
-    )
+    start_text = parts[0].strip()
+    end_text = parts[1].strip()
 
     formats = [
-
         "%I:%M %p",
-
         "%I:%M%p",
-
         "%I %p",
-
         "%H:%M",
-
         "%H:%M:%S"
-
     ]
 
     start_time = None
@@ -2938,31 +2644,25 @@ def parse_opd_hours(
     for fmt in formats:
 
         try:
-
             start_time = datetime.strptime(
                 start_text,
                 fmt
             )
-
             break
 
         except ValueError:
-
             pass
 
     for fmt in formats:
 
         try:
-
             end_time = datetime.strptime(
                 end_text,
                 fmt
             )
-
             break
 
         except ValueError:
-
             pass
 
     if not start_time or not end_time:
@@ -2970,29 +2670,19 @@ def parse_opd_hours(
 
     start_minutes = (
         start_time.hour * 60
-        +
-        start_time.minute
+        + start_time.minute
     )
 
     end_minutes = (
         end_time.hour * 60
-        +
-        end_time.minute
+        + end_time.minute
     )
 
     # Overnight OPD
-
     if end_minutes < start_minutes:
+        end_minutes += 24 * 60
 
-        end_minutes += (
-            24 * 60
-        )
-
-    minutes = (
-        end_minutes
-        -
-        start_minutes
-    )
+    minutes = end_minutes - start_minutes
 
     return round(
         minutes / 60,
@@ -3003,9 +2693,7 @@ def parse_opd_hours(
 @app.route(
     "/api/analytics/doctor-working-hours/<hospital_id>"
 )
-def analytics_doctor_working_hours(
-    hospital_id
-):
+def analytics_doctor_working_hours(hospital_id):
 
     try:
 
@@ -3024,8 +2712,7 @@ def analytics_doctor_working_hours(
 
             return jsonify({
 
-                "success":
-                    False,
+                "success": False,
 
                 "error":
                     "Hospital not found"
@@ -3066,8 +2753,7 @@ def analytics_doctor_working_hours(
 
         week_start = (
             today
-            -
-            timedelta(
+            - timedelta(
                 days=today.weekday()
             )
         )
@@ -3115,31 +2801,29 @@ def analytics_doctor_working_hours(
             # DAILY WORKING HOURS
             # ------------------------------------------------
 
-            hours_per_day = (
-                parse_opd_hours(
-                    opd_time
-                )
+            hours_per_day = parse_opd_hours(
+                opd_time
             )
 
             # ------------------------------------------------
             # WORKING DAYS
-            # ------------------------------------------------
+            #
             # Currently:
             # Monday-Sunday = 7 days
+            #
+            # If later you add working_days to doctor data,
+            # this can be made fully schedule-aware.
+            # ------------------------------------------------
 
             week_hours = round(
                 hours_per_day * 7,
                 2
             )
 
-            month_days = (
-                today.day
-            )
+            month_days = today.day
 
             month_hours = round(
-                hours_per_day
-                *
-                month_days,
+                hours_per_day * month_days,
                 2
             )
 
@@ -3169,8 +2853,7 @@ def analytics_doctor_working_hours(
 
                 if (
                     appointment_doctor
-                    !=
-                    doctor_name
+                    != doctor_name
                 ):
                     continue
 
@@ -3190,8 +2873,7 @@ def analytics_doctor_working_hours(
 
                 "opd_time":
                     opd_time
-                    or
-                    "-",
+                    or "-",
 
                 "hours_per_day":
                     hours_per_day,
@@ -3242,8 +2924,6 @@ def analytics_doctor_working_hours(
                 str(e)
 
         }), 500
-
-
 # ============================================================
 # APPOINTMENTS LIST
 # ============================================================
@@ -3310,16 +2990,12 @@ def save_followup():
             "patient_id"
         )
 
-        next_visit_date = (
-            request.form.get(
-                "next_visit_date"
-            )
+        next_visit_date = request.form.get(
+            "next_visit_date"
         )
 
-        doctor_notes = (
-            request.form.get(
-                "doctor_notes"
-            )
+        doctor_notes = request.form.get(
+            "doctor_notes"
         )
 
         if not patient_id:
@@ -3335,15 +3011,11 @@ def save_followup():
             }), 400
 
         patient_ref = (
-            db.reference(
-                "appointments"
-            )
+            db.reference("appointments")
             .child(patient_id)
         )
 
-        patient = (
-            patient_ref.get()
-        )
+        patient = patient_ref.get()
 
         if not patient:
 
@@ -3369,10 +3041,8 @@ def save_followup():
                 utc_now().isoformat()
         })
 
-        fcm_result = (
-            send_notification(
-                patient_id
-            )
+        fcm_result = send_notification(
+            patient_id
         )
 
         whatsapp_result = (
@@ -3467,7 +3137,6 @@ def save_token():
 
             "message":
                 "Token saved"
-
         })
 
     except Exception as e:
@@ -3492,9 +3161,7 @@ def save_token():
 # FCM NOTIFICATION
 # ============================================================
 
-def send_notification(
-    patient_id
-):
+def send_notification(patient_id):
 
     try:
 
@@ -3638,11 +3305,8 @@ def send_aisensy_appointment_confirmation(
     if not patient:
 
         return {
-            "success":
-                False,
-
-            "error":
-                "Patient not found"
+            "success": False,
+            "error": "Patient not found"
         }
 
     mobile = patient.get(
@@ -3652,37 +3316,26 @@ def send_aisensy_appointment_confirmation(
     if not mobile:
 
         return {
-            "success":
-                False,
-
-            "error":
-                "Patient mobile number missing"
+            "success": False,
+            "error": "Patient mobile number missing"
         }
 
-    recipient = (
-        format_whatsapp_number(
-            mobile
-        )
+    recipient = format_whatsapp_number(
+        mobile
     )
 
     if not recipient:
 
         return {
-            "success":
-                False,
-
-            "error":
-                "Invalid mobile number"
+            "success": False,
+            "error": "Invalid mobile number"
         }
 
     if not AISENSY_API_KEY:
 
         return {
-            "success":
-                False,
-
-            "error":
-                "AISENSY_API_KEY is missing"
+            "success": False,
+            "error": "AISENSY_API_KEY is missing"
         }
 
     hospital_id = patient.get(
@@ -3748,7 +3401,6 @@ def send_aisensy_appointment_confirmation(
             appointment_time,
 
             patient_id
-
         ]
     }
 
@@ -3779,7 +3431,6 @@ def send_aisensy_appointment_confirmation(
 
             "response":
                 response.text
-
         }
 
     except Exception as e:
@@ -3796,7 +3447,6 @@ def send_aisensy_appointment_confirmation(
 
             "error":
                 str(e)
-
         }
 
 
@@ -3804,9 +3454,7 @@ def send_aisensy_appointment_confirmation(
 # AISENSY FOLLOW-UP
 # ============================================================
 
-def send_whatsapp_followup(
-    patient_id
-):
+def send_whatsapp_followup(patient_id):
 
     patient = (
         db.reference(
@@ -3819,13 +3467,8 @@ def send_whatsapp_followup(
     if not patient:
 
         return {
-
-            "success":
-                False,
-
-            "error":
-                "Patient not found"
-
+            "success": False,
+            "error": "Patient not found"
         }
 
     mobile = patient.get(
@@ -3835,43 +3478,26 @@ def send_whatsapp_followup(
     if not mobile:
 
         return {
-
-            "success":
-                False,
-
-            "error":
-                "Patient mobile number missing"
-
+            "success": False,
+            "error": "Patient mobile number missing"
         }
 
-    recipient = (
-        format_whatsapp_number(
-            mobile
-        )
+    recipient = format_whatsapp_number(
+        mobile
     )
 
     if not recipient:
 
         return {
-
-            "success":
-                False,
-
-            "error":
-                "Invalid mobile number"
-
+            "success": False,
+            "error": "Invalid mobile number"
         }
 
     if not AISENSY_API_KEY:
 
         return {
-
-            "success":
-                False,
-
-            "error":
-                "AISENSY_API_KEY is missing"
-
+            "success": False,
+            "error": "AISENSY_API_KEY is missing"
         }
 
     hospital_id = patient.get(
@@ -3928,7 +3554,6 @@ def send_whatsapp_followup(
             doctor_name,
 
             next_visit_date
-
         ]
     }
 
@@ -3959,7 +3584,6 @@ def send_whatsapp_followup(
 
             "response":
                 response.text
-
         }
 
     except Exception as e:
@@ -3976,7 +3600,6 @@ def send_whatsapp_followup(
 
             "error":
                 str(e)
-
         }
 
 
@@ -3991,7 +3614,6 @@ def send_whatsapp_followup(
 def whatsapp_webhook():
 
     if request.method == "HEAD":
-
         return "", 200
 
     if request.method == "GET":
@@ -4034,14 +3656,11 @@ def whatsapp_webhook():
 
     return "EVENT_RECEIVED", 200
 
-
 # ============================================================
 # ANALYTICS PAGE
 # ============================================================
 
-@app.route(
-    "/analytics/<uid>"
-)
+@app.route("/analytics/<uid>")
 def analytics_page(uid):
 
     hospital = (
@@ -4052,23 +3671,13 @@ def analytics_page(uid):
     )
 
     if not hospital:
-
-        return (
-            "Hospital not found",
-            404
-        )
+        return "Hospital not found", 404
 
     return render_template(
-
         "analytics.html",
-
         uid=uid,
-
         hospital=hospital
-
     )
-
-
 # ============================================================
 # RUN
 # ============================================================
@@ -4076,11 +3685,7 @@ def analytics_page(uid):
 if __name__ == "__main__":
 
     app.run(
-
         debug=True,
-
         host="0.0.0.0",
-
         port=5000
-
     )
