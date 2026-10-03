@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,6 +12,24 @@
 >
 
 <title>Doctor Appointments</title>
+
+<!-- =====================================================
+     FIREBASE
+===================================================== -->
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<!--
+IMPORTANT:
+Load the SAME Firebase configuration file that
+your login/dashboard uses.
+
+If your file has another path, change this path.
+-->
+<script src="/static/js/firebase-config.js"></script>
+
 
 <style>
 
@@ -309,19 +328,6 @@ body {
 .patient-row {
     display: grid;
 
-    /*
-       No
-       Patient
-       Gender
-       Age
-       Mobile
-       Date
-       Visit
-       Status
-       Charge
-       Action
-    */
-
     grid-template-columns:
         50px
         minmax(180px, 1.5fr)
@@ -426,6 +432,12 @@ body {
    STATUS
 ===================================================== */
 
+.status-box {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
 .status-badge {
     display: inline-flex;
 
@@ -459,12 +471,6 @@ body {
    STATUS ACTION
 ===================================================== */
 
-.status-box {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
 .old-btn {
     border: none;
 
@@ -495,17 +501,13 @@ body {
 }
 
 /* =====================================================
-   CHARGE
+   AMOUNT
 ===================================================== */
 
 .charge {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 800;
     color: #0f766e;
-}
-
-.charge::first-letter {
-    font-size: 12px;
 }
 
 /* =====================================================
@@ -670,10 +672,6 @@ body {
 
     }
 
-    /*
-       Keep Charge and Action
-    */
-
     .patient-row > div:nth-child(9),
     .patient-row > div:nth-child(10) {
 
@@ -786,7 +784,9 @@ body {
 
 </head>
 
+
 <body>
+
 
 <!-- =====================================================
      HEADER
@@ -942,7 +942,7 @@ body {
 
 
 <!-- =====================================================
-     MAIN DATA
+     MAIN
 ===================================================== -->
 
 <div
@@ -977,10 +977,6 @@ body {
     {% endfor %}
 
 
-    <!-- =================================================
-         DOCTOR LOOP
-    ================================================= -->
-
     {% for doctor, doctor_patients in grouped.items()|sort %}
 
     <section
@@ -1003,15 +999,11 @@ body {
                 <div>
 
                     <div class="doctor-name">
-
                         Dr. {{ doctor }}
-
                     </div>
 
                     <div class="doctor-subtitle">
-
                         Patient Appointment List
-
                     </div>
 
                 </div>
@@ -1077,7 +1069,7 @@ body {
                     <div>Date</div>
                     <div>Visit</div>
                     <div>Status</div>
-                    <div>Charge</div>
+                    <div>Amount</div>
                     <div>Action</div>
 
                 </div>
@@ -1094,10 +1086,6 @@ body {
 
                     data-date="{{ p.appointment_date|default('') }}"
 
-                    data-status="today"
-
-                    data-patient-status="{{ p.patient_status|default('NEW')|upper }}"
-
                     data-search="
                         {{ p.patient_name|default('')|lower }}
                         {{ p.mobile|default('')|lower }}
@@ -1106,18 +1094,10 @@ body {
                     "
                 >
 
-                    <!-- No -->
-
                     <div>
-
-                        <div class="patient-no">
-                            0
-                        </div>
-
+                        <div class="patient-no">0</div>
                     </div>
 
-
-                    <!-- Patient -->
 
                     <div>
 
@@ -1132,21 +1112,15 @@ body {
                     </div>
 
 
-                    <!-- Gender -->
-
                     <div>
                         {{ p.gender|default('-') }}
                     </div>
 
 
-                    <!-- Age -->
-
                     <div>
                         {{ p.age|default('-') }}
                     </div>
 
-
-                    <!-- Mobile -->
 
                     <div>
 
@@ -1157,8 +1131,6 @@ body {
                     </div>
 
 
-                    <!-- Date -->
-
                     <div>
 
                         <span class="appointment-date">
@@ -1166,18 +1138,19 @@ body {
                             {{ p.appointment_date|default('-') }}
 
                             {% if p.appointment_time %}
+
                                 <br>
+
                                 <small>
                                     🕐 {{ p.appointment_time }}
                                 </small>
+
                             {% endif %}
 
                         </span>
 
                     </div>
 
-
-                    <!-- Visit -->
 
                     <div>
 
@@ -1190,8 +1163,6 @@ body {
 
                     </div>
 
-
-                    <!-- Status -->
 
                     <div class="status-box">
 
@@ -1209,11 +1180,7 @@ body {
                             data-status-badge
                         >
 
-                            {% if current_status == 'OLD' %}
-                                OLD
-                            {% else %}
-                                NEW
-                            {% endif %}
+                            {{ current_status }}
 
                         </span>
 
@@ -1234,8 +1201,6 @@ body {
                     </div>
 
 
-                    <!-- Charge -->
-
                     <div>
 
                         <span class="charge">
@@ -1246,8 +1211,6 @@ body {
 
                     </div>
 
-
-                    <!-- Action -->
 
                     <div>
 
@@ -1319,7 +1282,7 @@ body {
                     <div>Date</div>
                     <div>Visit</div>
                     <div>Status</div>
-                    <div>Charge</div>
+                    <div>Amount</div>
                     <div>Action</div>
 
                 </div>
@@ -1336,10 +1299,6 @@ body {
 
                     data-date="{{ p.appointment_date|default('') }}"
 
-                    data-status="upcoming"
-
-                    data-patient-status="{{ p.patient_status|default('NEW')|upper }}"
-
                     data-search="
                         {{ p.patient_name|default('')|lower }}
                         {{ p.mobile|default('')|lower }}
@@ -1348,18 +1307,10 @@ body {
                     "
                 >
 
-                    <!-- No -->
-
                     <div>
-
-                        <div class="patient-no">
-                            0
-                        </div>
-
+                        <div class="patient-no">0</div>
                     </div>
 
-
-                    <!-- Patient -->
 
                     <div>
 
@@ -1374,21 +1325,15 @@ body {
                     </div>
 
 
-                    <!-- Gender -->
-
                     <div>
                         {{ p.gender|default('-') }}
                     </div>
 
 
-                    <!-- Age -->
-
                     <div>
                         {{ p.age|default('-') }}
                     </div>
 
-
-                    <!-- Mobile -->
 
                     <div>
 
@@ -1399,8 +1344,6 @@ body {
                     </div>
 
 
-                    <!-- Date -->
-
                     <div>
 
                         <span class="appointment-date">
@@ -1408,18 +1351,19 @@ body {
                             {{ p.appointment_date|default('-') }}
 
                             {% if p.appointment_time %}
+
                                 <br>
+
                                 <small>
                                     🕐 {{ p.appointment_time }}
                                 </small>
+
                             {% endif %}
 
                         </span>
 
                     </div>
 
-
-                    <!-- Visit -->
 
                     <div>
 
@@ -1432,8 +1376,6 @@ body {
 
                     </div>
 
-
-                    <!-- Status -->
 
                     <div class="status-box">
 
@@ -1451,11 +1393,7 @@ body {
                             data-status-badge
                         >
 
-                            {% if current_status == 'OLD' %}
-                                OLD
-                            {% else %}
-                                NEW
-                            {% endif %}
+                            {{ current_status }}
 
                         </span>
 
@@ -1476,8 +1414,6 @@ body {
                     </div>
 
 
-                    <!-- Charge -->
-
                     <div>
 
                         <span class="charge">
@@ -1488,8 +1424,6 @@ body {
 
                     </div>
 
-
-                    <!-- Action -->
 
                     <div>
 
@@ -1561,7 +1495,7 @@ body {
                     <div>Date</div>
                     <div>Visit</div>
                     <div>Status</div>
-                    <div>Charge</div>
+                    <div>Amount</div>
                     <div>Action</div>
 
                 </div>
@@ -1578,10 +1512,6 @@ body {
 
                     data-date="{{ p.appointment_date|default('') }}"
 
-                    data-status="past"
-
-                    data-patient-status="{{ p.patient_status|default('NEW')|upper }}"
-
                     data-search="
                         {{ p.patient_name|default('')|lower }}
                         {{ p.mobile|default('')|lower }}
@@ -1590,18 +1520,10 @@ body {
                     "
                 >
 
-                    <!-- No -->
-
                     <div>
-
-                        <div class="patient-no">
-                            0
-                        </div>
-
+                        <div class="patient-no">0</div>
                     </div>
 
-
-                    <!-- Patient -->
 
                     <div>
 
@@ -1616,21 +1538,15 @@ body {
                     </div>
 
 
-                    <!-- Gender -->
-
                     <div>
                         {{ p.gender|default('-') }}
                     </div>
 
 
-                    <!-- Age -->
-
                     <div>
                         {{ p.age|default('-') }}
                     </div>
 
-
-                    <!-- Mobile -->
 
                     <div>
 
@@ -1641,8 +1557,6 @@ body {
                     </div>
 
 
-                    <!-- Date -->
-
                     <div>
 
                         <span class="appointment-date">
@@ -1650,18 +1564,19 @@ body {
                             {{ p.appointment_date|default('-') }}
 
                             {% if p.appointment_time %}
+
                                 <br>
+
                                 <small>
                                     🕐 {{ p.appointment_time }}
                                 </small>
+
                             {% endif %}
 
                         </span>
 
                     </div>
 
-
-                    <!-- Visit -->
 
                     <div>
 
@@ -1674,8 +1589,6 @@ body {
 
                     </div>
 
-
-                    <!-- Status -->
 
                     <div class="status-box">
 
@@ -1693,11 +1606,7 @@ body {
                             data-status-badge
                         >
 
-                            {% if current_status == 'OLD' %}
-                                OLD
-                            {% else %}
-                                NEW
-                            {% endif %}
+                            {{ current_status }}
 
                         </span>
 
@@ -1718,8 +1627,6 @@ body {
                     </div>
 
 
-                    <!-- Charge -->
-
                     <div>
 
                         <span class="charge">
@@ -1730,8 +1637,6 @@ body {
 
                     </div>
 
-
-                    <!-- Action -->
 
                     <div>
 
@@ -1908,7 +1813,7 @@ function normalizeDate(value) {
 const doctors =
     new Set();
 
-doctorCards.forEach(card => {
+doctorCards.forEach(function(card) {
 
     const doctor =
         card.dataset.doctor;
@@ -1926,7 +1831,7 @@ doctorCards.forEach(card => {
 
 [...doctors]
     .sort()
-    .forEach(doctor => {
+    .forEach(function(doctor) {
 
         const option =
             document.createElement(
@@ -1940,7 +1845,9 @@ doctorCards.forEach(card => {
             "Dr. " +
             doctor.replace(
                 /\b\w/g,
-                c => c.toUpperCase()
+                function(c) {
+                    return c.toUpperCase();
+                }
             );
 
         doctorFilter.appendChild(
@@ -1954,14 +1861,14 @@ doctorCards.forEach(card => {
    APPOINTMENT STATUS
 ===================================================== */
 
-doctorCards.forEach(card => {
+doctorCards.forEach(function(card) {
 
     const rows =
         card.querySelectorAll(
             ".appointment-row"
         );
 
-    rows.forEach(row => {
+    rows.forEach(function(row) {
 
         const date =
             normalizeDate(
@@ -1995,172 +1902,7 @@ doctorCards.forEach(card => {
 
 
 /* =====================================================
-   SORT + NUMBER
-===================================================== */
-
-doctorCards.forEach(card => {
-
-    const sections =
-        card.querySelectorAll(
-            ".appointment-section"
-        );
-
-    sections.forEach(section => {
-
-        const status =
-            section.dataset.section;
-
-        const patientsContainer =
-            section.querySelector(
-                ".patients"
-            );
-
-        const allRows = [
-            ...card.querySelectorAll(
-                ".appointment-row"
-            )
-        ];
-
-        const matchingRows =
-            allRows.filter(
-                row =>
-                    row.dataset.status ===
-                    status
-            );
-
-
-        /*
-           TODAY:
-           earliest time/date first
-
-           UPCOMING:
-           nearest date first
-
-           PAST:
-           latest past date first
-        */
-
-        matchingRows.sort(
-            (a, b) => {
-
-                const dateA =
-                    normalizeDate(
-                        a.dataset.date
-                    );
-
-                const dateB =
-                    normalizeDate(
-                        b.dataset.date
-                    );
-
-                if (status === "past") {
-
-                    if (
-                        dateA !== dateB
-                    ) {
-
-                        return dateB.localeCompare(
-                            dateA
-                        );
-
-                    }
-
-                }
-                else {
-
-                    if (
-                        dateA !== dateB
-                    ) {
-
-                        return dateA.localeCompare(
-                            dateB
-                        );
-
-                    }
-
-                }
-
-
-                const timeA =
-                    getTimeValue(a);
-
-                const timeB =
-                    getTimeValue(b);
-
-
-                if (status === "past") {
-
-                    return timeB.localeCompare(
-                        timeA
-                    );
-
-                }
-
-                return timeA.localeCompare(
-                    timeB
-                );
-
-            }
-        );
-
-
-        matchingRows.forEach(
-            (row, index) => {
-
-                const number =
-                    row.querySelector(
-                        ".patient-no"
-                    );
-
-                if (number) {
-
-                    number.textContent =
-                        index + 1;
-
-                }
-
-                patientsContainer.appendChild(
-                    row
-                );
-
-            }
-        );
-
-
-        const count =
-            section.querySelector(
-                "[data-count]"
-            );
-
-        if (count) {
-
-            count.textContent =
-                matchingRows.length;
-
-        }
-
-
-        const empty =
-            section.querySelector(
-                "[data-empty]"
-            );
-
-        if (empty) {
-
-            empty.style.display =
-                matchingRows.length === 0
-                ? "block"
-                : "none";
-
-        }
-
-    });
-
-});
-
-
-/* =====================================================
-   TIME
+   GET TIME
 ===================================================== */
 
 function getTimeValue(row) {
@@ -2191,6 +1933,166 @@ function getTimeValue(row) {
 
 
 /* =====================================================
+   SORT
+===================================================== */
+
+function sortAppointments() {
+
+    doctorCards.forEach(function(card) {
+
+        const sections =
+            card.querySelectorAll(
+                ".appointment-section"
+            );
+
+        sections.forEach(function(section) {
+
+            const status =
+                section.dataset.section;
+
+            const patientsContainer =
+                section.querySelector(
+                    ".patients"
+                );
+
+            const allRows = [
+                ...card.querySelectorAll(
+                    ".appointment-row"
+                )
+            ];
+
+            const matchingRows =
+                allRows.filter(
+                    function(row) {
+
+                        return (
+                            row.dataset.status ===
+                            status
+                        );
+
+                    }
+                );
+
+
+            matchingRows.sort(
+                function(a, b) {
+
+                    const dateA =
+                        normalizeDate(
+                            a.dataset.date
+                        );
+
+                    const dateB =
+                        normalizeDate(
+                            b.dataset.date
+                        );
+
+
+                    if (
+                        dateA !== dateB
+                    ) {
+
+                        if (
+                            status === "past"
+                        ) {
+
+                            return dateB.localeCompare(
+                                dateA
+                            );
+
+                        }
+
+                        return dateA.localeCompare(
+                            dateB
+                        );
+
+                    }
+
+
+                    const timeA =
+                        getTimeValue(a);
+
+                    const timeB =
+                        getTimeValue(b);
+
+
+                    if (
+                        status === "past"
+                    ) {
+
+                        return timeB.localeCompare(
+                            timeA
+                        );
+
+                    }
+
+
+                    return timeA.localeCompare(
+                        timeB
+                    );
+
+                }
+            );
+
+
+            matchingRows.forEach(
+                function(row, index) {
+
+                    const number =
+                        row.querySelector(
+                            ".patient-no"
+                        );
+
+                    if (number) {
+
+                        number.textContent =
+                            index + 1;
+
+                    }
+
+                    patientsContainer.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+
+            const count =
+                section.querySelector(
+                    "[data-count]"
+                );
+
+            if (count) {
+
+                count.textContent =
+                    matchingRows.length;
+
+            }
+
+
+            const empty =
+                section.querySelector(
+                    "[data-empty]"
+                );
+
+            if (empty) {
+
+                empty.style.display =
+                    matchingRows.length === 0
+                    ? "block"
+                    : "none";
+
+            }
+
+        });
+
+    });
+
+}
+
+
+/* =====================================================
    FILTER
 ===================================================== */
 
@@ -2207,11 +2109,14 @@ function applyFilters() {
     const selectedDate =
         dateFilter.value;
 
-    let visibleTotal =
-        0;
+    let visibleTotal = 0;
+
+    let visibleToday = 0;
+
+    let visibleUpcoming = 0;
 
 
-    doctorCards.forEach(card => {
+    doctorCards.forEach(function(card) {
 
         const doctor =
             card.dataset.doctor;
@@ -2228,20 +2133,19 @@ function applyFilters() {
             .querySelectorAll(
                 ".appointment-section"
             )
-            .forEach(section => {
+            .forEach(function(section) {
 
                 const status =
                     section.dataset.section;
 
-                let sectionVisible =
-                    0;
+                let sectionVisible = 0;
 
 
                 section
                     .querySelectorAll(
                         ".appointment-row"
                     )
-                    .forEach(row => {
+                    .forEach(function(row) {
 
                         const rowStatus =
                             row.dataset.status;
@@ -2265,13 +2169,11 @@ function applyFilters() {
                             );
 
 
-                        let dateMatch =
-                            true;
+                        let dateMatch = true;
 
 
                         if (
-                            selectedDate !==
-                            "all"
+                            selectedDate !== "all"
                         ) {
 
                             dateMatch =
@@ -2303,6 +2205,26 @@ function applyFilters() {
                             doctorHasVisible =
                                 true;
 
+
+                            if (
+                                rowStatus ===
+                                "today"
+                            ) {
+
+                                visibleToday++;
+
+                            }
+
+
+                            if (
+                                rowStatus ===
+                                "upcoming"
+                            ) {
+
+                                visibleUpcoming++;
+
+                            }
+
                         }
 
                     });
@@ -2326,12 +2248,10 @@ function applyFilters() {
 
 
                 if (
-                    selectedDate ===
-                    "all"
+                    selectedDate === "all"
                 ) {
 
-                    showSection =
-                        true;
+                    showSection = true;
 
                 }
 
@@ -2372,73 +2292,19 @@ function applyFilters() {
     ).textContent =
         visibleTotal;
 
+
+    document.getElementById(
+        "todayCount"
+    ).textContent =
+        visibleToday;
+
+
+    document.getElementById(
+        "upcomingCount"
+    ).textContent =
+        visibleUpcoming;
+
 }
-
-
-/* =====================================================
-   SUMMARY
-===================================================== */
-
-let total = 0;
-let todayTotal = 0;
-let upcomingTotal = 0;
-
-
-doctorCards.forEach(card => {
-
-    card
-        .querySelectorAll(
-            ".appointment-row"
-        )
-        .forEach(row => {
-
-            total++;
-
-            if (
-                row.dataset.status ===
-                "today"
-            ) {
-
-                todayTotal++;
-
-            }
-
-            if (
-                row.dataset.status ===
-                "upcoming"
-            ) {
-
-                upcomingTotal++;
-
-            }
-
-        });
-
-});
-
-
-document.getElementById(
-    "totalCount"
-).textContent =
-    total;
-
-
-document.getElementById(
-    "doctorCount"
-).textContent =
-    doctors.size;
-
-
-document.getElementById(
-    "todayCount"
-).textContent =
-    todayTotal;
-
-
-document.getElementById(
-    "upcomingCount"
-).textContent =
-    upcomingTotal;
 
 
 /* =====================================================
@@ -2464,13 +2330,183 @@ function showToast(
         " show";
 
 
-    setTimeout(() => {
+    setTimeout(
+        function() {
 
-        toast.classList.remove(
-            "show"
+            toast.classList.remove(
+                "show"
+            );
+
+        },
+        3000
+    );
+
+}
+
+
+/* =====================================================
+   NORMALIZE MOBILE
+===================================================== */
+
+function normalizeMobile(mobile) {
+
+    let digits =
+        String(mobile || "")
+            .replace(
+                /\D/g,
+                ""
+            );
+
+
+    if (
+        digits.length === 12 &&
+        digits.startsWith("91")
+    ) {
+
+        digits =
+            digits.substring(2);
+
+    }
+
+
+    return digits;
+
+}
+
+
+/* =====================================================
+   FIREBASE USER
+===================================================== */
+
+async function getFirebaseUser() {
+
+    /*
+     * Check Firebase SDK
+     */
+
+    if (
+        typeof firebase === "undefined"
+    ) {
+
+        throw new Error(
+            "Firebase SDK is not loaded."
         );
 
-    }, 3000);
+    }
+
+
+    if (
+        typeof firebase.auth !== "function"
+    ) {
+
+        throw new Error(
+            "Firebase Authentication SDK is not loaded."
+        );
+
+    }
+
+
+    /*
+     * Check Firebase app
+     */
+
+    if (
+        !firebase.apps ||
+        firebase.apps.length === 0
+    ) {
+
+        throw new Error(
+            "Firebase is not initialized."
+        );
+
+    }
+
+
+    /*
+     * Check current user
+     */
+
+    const currentUser =
+        firebase.auth().currentUser;
+
+
+    if (currentUser) {
+
+        return currentUser;
+
+    }
+
+
+    /*
+     * Firebase may need time to restore
+     * the existing login session.
+     */
+
+    return await new Promise(
+        function(resolve, reject) {
+
+            let completed = false;
+
+            const unsubscribe =
+                firebase.auth()
+                    .onAuthStateChanged(
+                        function(user) {
+
+                            if (completed) {
+                                return;
+                            }
+
+                            completed = true;
+
+                            unsubscribe();
+
+
+                            if (user) {
+
+                                resolve(user);
+
+                            }
+                            else {
+
+                                reject(
+                                    new Error(
+                                        "Please login again."
+                                    )
+                                );
+
+                            }
+
+                        }
+                    );
+
+
+            /*
+             * Safety timeout
+             */
+
+            setTimeout(
+                function() {
+
+                    if (completed) {
+                        return;
+                    }
+
+                    completed = true;
+
+                    unsubscribe();
+
+                    reject(
+                        new Error(
+                            "Authentication timeout. Please login again."
+                        )
+                    );
+
+                },
+                10000
+            );
+
+        }
+    );
 
 }
 
@@ -2512,38 +2548,32 @@ async function markPatientOld(button) {
     }
 
 
-    button.disabled =
-        true;
+    button.disabled = true;
 
-    button.textContent =
-        "Saving...";
+    button.textContent = "Saving...";
 
 
     try {
 
         /*
-           Firebase authentication token.
-
-           Your login page should already store
-           the Firebase user login session.
-        */
+         * Get logged-in Firebase user
+         */
 
         const user =
             await getFirebaseUser();
 
 
-        if (!user) {
-
-            throw new Error(
-                "Please login again."
-            );
-
-        }
-
+        /*
+         * Get fresh ID token
+         */
 
         const token =
-            await user.getIdToken();
+            await user.getIdToken(true);
 
+
+        /*
+         * Backend request
+         */
 
         const response =
             await fetch(
@@ -2580,8 +2610,20 @@ async function markPatientOld(button) {
             );
 
 
-        const result =
-            await response.json();
+        let result = {};
+
+
+        try {
+
+            result =
+                await response.json();
+
+        }
+        catch (e) {
+
+            result = {};
+
+        }
 
 
         if (!response.ok) {
@@ -2595,11 +2637,8 @@ async function markPatientOld(button) {
 
 
         /*
-           Update ALL rows of same patient
-           currently displayed on this page.
-
-           We use mobile number as patient identity.
-        */
+         * Find current row
+         */
 
         const currentRow =
             button.closest(
@@ -2607,18 +2646,39 @@ async function markPatientOld(button) {
             );
 
 
+        if (!currentRow) {
+
+            throw new Error(
+                "Appointment row not found."
+            );
+
+        }
+
+
+        /*
+         * Get current patient's mobile
+         */
+
         const mobileElement =
             currentRow.querySelector(
                 ".mobile"
             );
 
 
-        let mobile =
-            mobileElement
-            ? mobileElement.textContent
-                .replace("📱", "")
-                .trim()
-            : "";
+        let mobile = "";
+
+
+        if (mobileElement) {
+
+            mobile =
+                mobileElement.textContent
+                    .replace(
+                        "📱",
+                        ""
+                    )
+                    .trim();
+
+        }
 
 
         const normalizedMobile =
@@ -2627,58 +2687,75 @@ async function markPatientOld(button) {
             );
 
 
+        /*
+         * Update all appointments
+         * of same patient.
+         */
+
         document
             .querySelectorAll(
                 ".appointment-row"
             )
-            .forEach(row => {
+            .forEach(
+                function(row) {
 
-                const rowMobileElement =
-                    row.querySelector(
-                        ".mobile"
-                    );
+                    const rowMobileElement =
+                        row.querySelector(
+                            ".mobile"
+                        );
 
 
-                if (!rowMobileElement) {
-                    return;
+                    if (
+                        !rowMobileElement
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const rowMobile =
+                        normalizeMobile(
+                            rowMobileElement
+                                .textContent
+                                .replace(
+                                    "📱",
+                                    ""
+                                )
+                                .trim()
+                        );
+
+
+                    if (
+                        normalizedMobile &&
+                        rowMobile &&
+                        normalizedMobile ===
+                        rowMobile
+                    ) {
+
+                        updateRowToOld(
+                            row
+                        );
+
+                    }
+
                 }
-
-
-                const rowMobile =
-                    normalizeMobile(
-                        rowMobileElement
-                            .textContent
-                            .replace("📱", "")
-                            .trim()
-                    );
-
-
-                if (
-                    rowMobile &&
-                    normalizedMobile &&
-                    rowMobile ===
-                    normalizedMobile
-                ) {
-
-                    updateRowToOld(
-                        row
-                    );
-
-                }
-
-            });
+            );
 
 
         showToast(
-            "Patient marked as OLD successfully."
+            "Patient marked as OLD successfully.",
+            "success"
         );
 
     }
     catch (error) {
 
         console.error(
+            "Mark OLD Error:",
             error
         );
+
 
         showToast(
             error.message ||
@@ -2687,8 +2764,7 @@ async function markPatientOld(button) {
         );
 
 
-        button.disabled =
-            false;
+        button.disabled = false;
 
         button.textContent =
             "Mark OLD";
@@ -2699,7 +2775,7 @@ async function markPatientOld(button) {
 
 
 /* =====================================================
-   UPDATE ROW UI
+   UPDATE ROW TO OLD
 ===================================================== */
 
 function updateRowToOld(row) {
@@ -2719,9 +2795,11 @@ function updateRowToOld(row) {
         badge.textContent =
             "OLD";
 
+
         badge.classList.remove(
             "status-new"
         );
+
 
         badge.classList.add(
             "status-old"
@@ -2741,76 +2819,6 @@ function updateRowToOld(row) {
         button.remove();
 
     }
-
-}
-
-
-/* =====================================================
-   NORMALIZE MOBILE
-===================================================== */
-
-function normalizeMobile(
-    mobile
-) {
-
-    let digits =
-        String(mobile || "")
-        .replace(
-            /\D/g,
-            ""
-        );
-
-
-    if (
-        digits.length === 12 &&
-        digits.startsWith("91")
-    ) {
-
-        digits =
-            digits.substring(2);
-
-    }
-
-
-    return digits;
-
-}
-
-
-/* =====================================================
-   FIREBASE USER
-=====================================================
-
-   IMPORTANT:
-
-   Firebase SDK must be available on your
-   login/dashboard page.
-
-   If your app uses Firebase Auth in another
-   way, replace this function with your existing
-   Firebase authentication code.
-===================================================== */
-
-async function getFirebaseUser() {
-
-    /*
-       If Firebase Auth is already initialized
-       globally:
-    */
-
-    if (
-        typeof firebase !== "undefined" &&
-        firebase.auth
-    ) {
-
-        return firebase.auth().currentUser;
-
-    }
-
-
-    throw new Error(
-        "Firebase authentication is not loaded."
-    );
 
 }
 
@@ -2841,10 +2849,14 @@ dateFilter.addEventListener(
    INITIAL
 ===================================================== */
 
+sortAppointments();
+
 applyFilters();
 
 </script>
 
+
 </body>
 
 </html>
+```
