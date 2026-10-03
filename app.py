@@ -163,64 +163,61 @@ def format_whatsapp_number(mobile):
 
 
 # ============================================================
-# MOBILE NORMALIZATION
+# PATIENT NAME NORMALIZATION
 # ============================================================
 
-def normalize_mobile(mobile):
+def normalize_patient_name(name):
     """
-    Converts mobile number into a consistent 10 digit number.
+    Normalizes the complete patient name.
 
-    Examples:
-
-    9876543210
-    +919876543210
-    919876543210
-
-    ->
-
-    9876543210
+    Example:
+        "  Raj   Patil  " -> "raj patil"
+        "RAJ PATIL"       -> "raj patil"
     """
 
-    digits = "".join(
-        filter(
-            str.isdigit,
-            str(mobile or "")
-        )
+    name = str(name or "").strip()
+
+    # Collapse multiple spaces
+    name = " ".join(name.split())
+
+    return name.lower()
+
+
+def get_patient_key_by_name(patient_name):
+    """
+    Firebase-safe patient key based on FULL patient name.
+    """
+
+    name_key = normalize_patient_name(patient_name)
+
+    if not name_key:
+        return ""
+
+    # Firebase keys cannot contain . # $ [ ]
+    return (
+        name_key
+        .replace(".", "_")
+        .replace("#", "_")
+        .replace("$", "_")
+        .replace("[", "_")
+        .replace("]", "_")
+        .replace("/", "_")
     )
 
-    if len(digits) == 12 and digits.startswith("91"):
-        digits = digits[-10:]
 
-    return digits
+def get_patient_record(hospital_id, patient_name):
 
-
-def get_patient_key(mobile):
-    return normalize_mobile(mobile)
-
-
-# ============================================================
-# PATIENT MASTER
-# ============================================================
-
-def get_patient_record(
-    hospital_id,
-    mobile
-):
-    """
-    Gets hospital-wise patient master record.
-    """
-
-    mobile_key = get_patient_key(
-        mobile
+    name_key = get_patient_key_by_name(
+        patient_name
     )
 
-    if not hospital_id or not mobile_key:
+    if not hospital_id or not name_key:
         return None
 
     return (
         db.reference("patients")
         .child(hospital_id)
-        .child(mobile_key)
+        .child(name_key)
         .get()
     )
 
@@ -228,43 +225,60 @@ def get_patient_record(
 def register_patient_visit(
     hospital_id,
     patient_name,
-    mobile
+    mobile=""
 ):
     """
-    Patient visit management.
+    Patient visit management based ONLY on FULL NAME.
 
     First appointment:
-        Visit 1
-        NEW
+        Visit 1 -> NEW
 
-    After Doctor/Admin makes patient OLD:
-        Visit 2 onward
-        OLD
+    Later appointments with the same full name:
+        Visit 2+ -> OLD
+
+    Mobile number is stored as contact information,
+    but is NOT used to identify the patient.
     """
 
-    mobile_key = get_patient_key(
-        mobile
+    # --------------------------------------------------------
+    # FULL NAME REQUIRED
+    # --------------------------------------------------------
+
+    patient_name = " ".join(
+        str(patient_name or "").strip().split()
     )
+
+    if not patient_name:
+        raise ValueError(
+            "Full patient name required"
+        )
+
+    # --------------------------------------------------------
+    # NAME KEY
+    # --------------------------------------------------------
+
+    name_key = get_patient_key_by_name(
+        patient_name
+    )
+
+    if not name_key:
+        raise ValueError(
+            "Full patient name required"
+        )
 
     if not hospital_id:
         raise ValueError(
             "Hospital ID missing"
         )
 
-    if not mobile_key:
-        raise ValueError(
-            "Mobile number required"
-        )
-
-    if len(mobile_key) != 10:
-        raise ValueError(
-            "Valid 10 digit mobile number required"
-        )
+    # --------------------------------------------------------
+    # PATIENT MASTER
+    # --------------------------------------------------------
 
     patient_ref = (
         db.reference("patients")
         .child(hospital_id)
-        .child(mobile_key)
+        .child(name_key)
     )
 
     existing = patient_ref.get()
@@ -276,25 +290,22 @@ def register_patient_visit(
     if not existing:
 
         visit_number = 1
-
         patient_status = "NEW"
 
         patient_data = {
+            "hospital_id": hospital_id,
 
-            "hospital_id":
-                hospital_id,
+            "patient_name": patient_name,
 
-            "mobile":
-                mobile_key,
+            "patient_name_key": name_key,
 
-            "patient_name":
-                patient_name,
+            "mobile": normalize_mobile(
+                mobile
+            ),
 
-            "patient_status":
-                "NEW",
+            "patient_status": "NEW",
 
-            "visit_count":
-                1,
+            "visit_count": 1,
 
             "created_at":
                 utc_now().isoformat(),
@@ -327,23 +338,22 @@ def register_patient_visit(
             previous_visit_count + 1
         )
 
-        patient_status = str(
-            existing.get(
-                "patient_status",
-                "NEW"
-            )
-        ).upper().strip()
-
-        if patient_status not in [
-            "NEW",
-            "OLD"
-        ]:
-            patient_status = "NEW"
+        # Once the same full name exists,
+        # every subsequent visit is OLD.
+        patient_status = "OLD"
 
         patient_ref.update({
 
             "patient_name":
                 patient_name,
+
+            "mobile":
+                normalize_mobile(
+                    mobile
+                ),
+
+            "patient_status":
+                "OLD",
 
             "visit_count":
                 visit_number,
@@ -353,9 +363,8 @@ def register_patient_visit(
         })
 
     return {
-
-        "patient_key":
-            mobile_key,
+        "patient_name":
+            patient_name,
 
         "visit_number":
             visit_number,
@@ -363,7 +372,6 @@ def register_patient_visit(
         "patient_status":
             patient_status
     }
-
 
 # ============================================================
 # CASHFREE HEADERS
@@ -2322,6 +2330,9 @@ def voice_book_appointment():
 # ============================================================
 # BOOK APPOINTMENT
 # ============================================================
+# ============================================================
+# BOOK APPOINTMENT
+# ============================================================
 
 @app.route(
     "/book_appointment",
@@ -2331,26 +2342,67 @@ def book_appointment():
 
     try:
 
+        # ====================================================
+        # HOSPITAL ID
+        # ====================================================
+
         hospital_id = request.form.get(
-            "hospital_id"
-        )
+            "hospital_id",
+            ""
+        ).strip()
 
         if not hospital_id:
 
             return jsonify({
-
-                "success":
-                    False,
-
-                "error":
-                    "Hospital ID missing"
-
+                "success": False,
+                "error": "Hospital ID missing"
             }), 400
+
+
+        # ====================================================
+        # FULL PATIENT NAME
+        # ====================================================
 
         patient_name = request.form.get(
             "patient_name",
             ""
         ).strip()
+
+        # Remove extra spaces
+        patient_name = " ".join(
+            patient_name.split()
+        )
+
+
+        # ----------------------------------------------------
+        # FULL NAME REQUIRED
+        # ----------------------------------------------------
+
+        if not patient_name:
+
+            return jsonify({
+                "success": False,
+                "error": "Full patient name required"
+            }), 400
+
+
+        # ----------------------------------------------------
+        # REQUIRE FIRST + LAST NAME
+        # ----------------------------------------------------
+
+        name_parts = patient_name.split()
+
+        if len(name_parts) < 2:
+
+            return jsonify({
+                "success": False,
+                "error": "Please enter patient's full name"
+            }), 400
+
+
+        # ====================================================
+        # MOBILE
+        # ====================================================
 
         mobile = normalize_mobile(
             request.form.get(
@@ -2359,9 +2411,15 @@ def book_appointment():
             )
         )
 
-        # ----------------------------------------------------
+
+        # ====================================================
         # PATIENT MASTER / VISIT
-        # ----------------------------------------------------
+        #
+        # IMPORTANT:
+        # NEW / OLD is determined by FULL NAME.
+        #
+        # Mobile is only stored as contact information.
+        # ====================================================
 
         patient_info = register_patient_visit(
 
@@ -2375,6 +2433,7 @@ def book_appointment():
                 mobile
         )
 
+
         visit_number = patient_info[
             "visit_number"
         ]
@@ -2383,9 +2442,10 @@ def book_appointment():
             "patient_status"
         ]
 
-        # ----------------------------------------------------
+
+        # ====================================================
         # PATIENT NUMBER
-        # ----------------------------------------------------
+        # ====================================================
 
         counter_ref = db.reference(
             "counters/patient_no"
@@ -2405,14 +2465,45 @@ def book_appointment():
             patient_no
         )
 
-        # ----------------------------------------------------
+
+        # ====================================================
+        # FORM DATA
+        # ====================================================
+
+        doctor_name = request.form.get(
+            "doctor_name",
+            ""
+        ).strip()
+
+        gender = request.form.get(
+            "gender",
+            ""
+        ).strip()
+
+        age = request.form.get(
+            "age",
+            ""
+        ).strip()
+
+        address = request.form.get(
+            "address",
+            ""
+        ).strip()
+
+        appointment_date = request.form.get(
+            "appointment_date",
+            ""
+        ).strip()
+
+        appointment_time = request.form.get(
+            "appointment_time",
+            ""
+        ).strip()
+
+
+        # ====================================================
         # APPOINTMENT
-        # ----------------------------------------------------
-        #
-        # Amount is decided by Doctor/Admin.
-        # Initial value = 0.
-        #
-        # ----------------------------------------------------
+        # ====================================================
 
         appointment = {
 
@@ -2423,40 +2514,28 @@ def book_appointment():
                 patient_no,
 
             "doctor_name":
-                request.form.get(
-                    "doctor_name"
-                ),
+                doctor_name,
 
             "patient_name":
                 patient_name,
 
             "gender":
-                request.form.get(
-                    "gender"
-                ),
+                gender,
 
             "age":
-                request.form.get(
-                    "age"
-                ),
+                age,
 
             "mobile":
                 mobile,
 
             "address":
-                request.form.get(
-                    "address"
-                ),
+                address,
 
             "appointment_date":
-                request.form.get(
-                    "appointment_date"
-                ),
+                appointment_date,
 
             "appointment_time":
-                request.form.get(
-                    "appointment_time"
-                ),
+                appointment_time,
 
             "visit_number":
                 visit_number,
@@ -2471,6 +2550,11 @@ def book_appointment():
                 utc_now().isoformat()
         }
 
+
+        # ====================================================
+        # SAVE APPOINTMENT
+        # ====================================================
+
         ref = (
             db.reference(
                 "appointments"
@@ -2481,13 +2565,15 @@ def book_appointment():
 
         patient_id = ref.key
 
-        # ----------------------------------------------------
+
+        # ====================================================
         # FCM TOKEN
-        # ----------------------------------------------------
+        # ====================================================
 
         fcm_token = request.form.get(
-            "fcm_token"
-        )
+            "fcm_token",
+            ""
+        ).strip()
 
         if fcm_token:
 
@@ -2501,9 +2587,10 @@ def book_appointment():
                     fcm_token
             })
 
-        # ----------------------------------------------------
+
+        # ====================================================
         # WHATSAPP
-        # ----------------------------------------------------
+        # ====================================================
 
         whatsapp_result = (
             send_aisensy_appointment_confirmation(
@@ -2516,9 +2603,10 @@ def book_appointment():
             whatsapp_result
         )
 
-        # ----------------------------------------------------
+
+        # ====================================================
         # HOSPITAL DATA
-        # ----------------------------------------------------
+        # ====================================================
 
         hospital = (
             db.reference(
@@ -2532,10 +2620,10 @@ def book_appointment():
             "Hospital"
         )
 
-        doctor_name = appointment.get(
-            "doctor_name",
-            "Doctor"
-        )
+
+        # ====================================================
+        # DOCTOR SPECIALIZATION
+        # ====================================================
 
         specialization = ""
 
@@ -2550,12 +2638,17 @@ def book_appointment():
             ):
                 continue
 
-            if (
+            existing_doctor_name = str(
                 doctor.get(
-                    "doctor_name"
+                    "doctor_name",
+                    ""
                 )
+            ).strip()
+
+            if (
+                existing_doctor_name.lower()
                 ==
-                doctor_name
+                doctor_name.lower()
             ):
 
                 specialization = doctor.get(
@@ -2565,9 +2658,10 @@ def book_appointment():
 
                 break
 
-        # ----------------------------------------------------
+
+        # ====================================================
         # SUCCESS PAGE
-        # ----------------------------------------------------
+        # ====================================================
 
         return render_template(
 
@@ -2586,17 +2680,29 @@ def book_appointment():
                 specialization,
 
             appointment_date=
-                appointment.get(
-                    "appointment_date",
-                    ""
-                ),
+                appointment_date,
 
             appointment_time=
-                appointment.get(
-                    "appointment_time",
-                    ""
-                )
+                appointment_time
         )
+
+
+    # ========================================================
+    # ERROR
+    # ========================================================
+
+    except ValueError as e:
+
+        return jsonify({
+
+            "success":
+                False,
+
+            "error":
+                str(e)
+
+        }), 400
+
 
     except Exception as e:
 
@@ -2616,7 +2722,6 @@ def book_appointment():
                 str(e)
 
         }), 500
-
 
 # ============================================================
 # GET HOSPITAL APPOINTMENTS
