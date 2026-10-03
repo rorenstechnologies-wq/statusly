@@ -7,6 +7,62 @@
     <title>Statusly - Appointments</title>
     
     <style>
+       /* =========================================================
+   TABLE WITH HORIZONTAL SCROLL
+   ========================================================= */
+
+.table-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Keep table wide enough so columns don't become too small */
+.table-container table {
+    width: 100%;
+    min-width: 1100px;
+    border-collapse: collapse;
+}
+
+/* Table cells */
+.table-container th,
+.table-container td {
+    padding: 12px 14px;
+    white-space: nowrap;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Header */
+.table-container th {
+    background: #f8fafc;
+    color: #374151;
+    font-weight: 600;
+}
+
+/* Hover */
+.table-container tbody tr:hover {
+    background: #f8fafc;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .table-container table {
+        min-width: 1100px;
+    }
+
+    .table-container th,
+    .table-container td {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+}
         * {
             box-sizing: border-box;
             margin: 0;
