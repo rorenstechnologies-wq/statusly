@@ -19,6 +19,13 @@
             box-sizing: border-box;
         }
 
+        html,
+        body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
@@ -27,9 +34,9 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            HEADER
-        ========================================= */
+        ===================================================== */
 
         .header {
 
@@ -41,6 +48,7 @@
                 );
 
             color: white;
+
             padding: 24px 30px;
 
             box-shadow:
@@ -51,38 +59,48 @@
         .header h1 {
 
             margin: 0;
+
             font-size: 25px;
+
             font-weight: 800;
         }
 
         .header p {
 
             margin: 7px 0 0;
+
             font-size: 13px;
+
             opacity: .9;
         }
 
 
-        /* =========================================
+        /* =====================================================
            CONTAINER
-        ========================================= */
+        ===================================================== */
 
         .container {
 
+            width: 100%;
+
             max-width: 1550px;
+
             margin: auto;
+
             padding: 25px;
         }
 
 
-        /* =========================================
-           FILTERS
-        ========================================= */
+        /* =====================================================
+           FILTER CARD
+        ===================================================== */
 
         .filter-card {
 
             background: white;
+
             padding: 18px;
+
             border-radius: 14px;
 
             box-shadow:
@@ -107,6 +125,7 @@
             display: block;
 
             font-size: 10px;
+
             font-weight: 800;
 
             color: #64748b;
@@ -119,7 +138,9 @@
 
             width: 100%;
 
-            padding: 11px 12px;
+            min-height: 40px;
+
+            padding: 10px 12px;
 
             border:
                 1px solid #dbe4e8;
@@ -140,16 +161,16 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            SUMMARY
-        ========================================= */
+        ===================================================== */
 
         .summary-grid {
 
             display: grid;
 
             grid-template-columns:
-                repeat(4,1fr);
+                repeat(4, 1fr);
 
             gap: 15px;
 
@@ -178,7 +199,10 @@
         .summary-icon {
 
             width: 45px;
+
             height: 45px;
+
+            min-width: 45px;
 
             border-radius: 12px;
 
@@ -214,9 +238,9 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            DOCTOR CARD
-        ========================================= */
+        ===================================================== */
 
         .doctor-card {
 
@@ -252,6 +276,8 @@
             justify-content: space-between;
 
             align-items: center;
+
+            gap: 10px;
         }
 
         .doctor-title {
@@ -261,12 +287,17 @@
             align-items: center;
 
             gap: 11px;
+
+            min-width: 0;
         }
 
         .doctor-avatar {
 
             width: 43px;
+
             height: 43px;
+
+            min-width: 43px;
 
             border-radius: 12px;
 
@@ -310,12 +341,14 @@
             font-size: 9px;
 
             font-weight: 800;
+
+            white-space: nowrap;
         }
 
 
-        /* =========================================
+        /* =====================================================
            SECTION
-        ========================================= */
+        ===================================================== */
 
         .section {
 
@@ -351,13 +384,23 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            TABLE
-        ========================================= */
+        ===================================================== */
 
         .table-wrapper {
 
+            width: 100%;
+
+            max-width: 100%;
+
             overflow-x: auto;
+
+            overflow-y: hidden;
+
+            -webkit-overflow-scrolling: touch;
+
+            scrollbar-width: thin;
 
             border:
                 1px solid #e5edf1;
@@ -365,9 +408,28 @@
             border-radius: 11px;
         }
 
+        .table-wrapper::-webkit-scrollbar {
+
+            height: 7px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-track {
+
+            background: #f1f5f9;
+
+            border-radius: 10px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb {
+
+            background: #94a3b8;
+
+            border-radius: 10px;
+        }
+
         table {
 
-            width: 100%;
+            width: max-content;
 
             min-width: 1400px;
 
@@ -406,6 +468,8 @@
             font-size: 10px;
 
             vertical-align: middle;
+
+            white-space: nowrap;
         }
 
         tr:last-child td {
@@ -419,9 +483,9 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            PATIENT
-        ========================================= */
+        ===================================================== */
 
         .patient-cell {
 
@@ -431,15 +495,16 @@
 
             gap: 9px;
 
-            min-width: 170px;
+            min-width: 180px;
         }
 
         .patient-avatar {
 
             width: 35px;
+
             height: 35px;
 
-            flex-shrink: 0;
+            min-width: 35px;
 
             border-radius: 10px;
 
@@ -461,6 +526,14 @@
             color: #1e293b;
 
             font-size: 10px;
+
+            max-width: 180px;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
         }
 
         .patient-id {
@@ -475,9 +548,9 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            TYPE
-        ========================================= */
+        ===================================================== */
 
         .type-badge {
 
@@ -507,9 +580,9 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            VISIT
-        ========================================= */
+        ===================================================== */
 
         .visit-badge {
 
@@ -529,9 +602,9 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            AMOUNT
-        ========================================= */
+        ===================================================== */
 
         .amount-box {
 
@@ -545,6 +618,8 @@
         .amount-input {
 
             width: 75px;
+
+            height: 31px;
 
             padding: 6px 7px;
 
@@ -564,6 +639,8 @@
         }
 
         .save-amount {
+
+            height: 31px;
 
             border: none;
 
@@ -588,9 +665,9 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            MAKE OLD
-        ========================================= */
+        ===================================================== */
 
         .old-btn {
 
@@ -647,9 +724,9 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            ACTION
-        ========================================= */
+        ===================================================== */
 
         .action-buttons {
 
@@ -658,6 +735,8 @@
             gap: 6px;
 
             align-items: center;
+
+            white-space: nowrap;
         }
 
         .details-btn {
@@ -713,9 +792,9 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            MODAL
-        ========================================= */
+        ===================================================== */
 
         .modal {
 
@@ -726,34 +805,36 @@
             inset: 0;
 
             background:
-                rgba(15,23,42,.62);
+                rgba(15,23,42,.65);
 
-            z-index: 9999;
+            z-index: 99999;
 
-            padding: 25px;
+            padding: 20px;
 
             overflow-y: auto;
-        }
-
-        .modal.show {
-
-            display: flex;
 
             align-items: center;
 
             justify-content: center;
         }
 
+        .modal.show {
 
-        /* =========================================
+            display: flex;
+        }
+
+
+        /* =====================================================
            DETAILS MODAL
-        ========================================= */
+        ===================================================== */
 
         .details-modal-content {
 
             width: 100%;
 
-            max-width: 980px;
+            max-width: 1050px;
+
+            max-height: 92vh;
 
             background: #f8fafc;
 
@@ -763,10 +844,36 @@
 
             box-shadow:
                 0 25px 70px
-                rgba(0,0,0,.25);
+                rgba(0,0,0,.28);
+
+            animation:
+                detailsModalIn .22s ease;
+        }
+
+        @keyframes detailsModalIn {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(15px)
+                    scale(.97);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
         }
 
         .modal-header {
+
+            min-height: 68px;
 
             background:
                 linear-gradient(
@@ -777,7 +884,7 @@
 
             color: white;
 
-            padding: 17px 22px;
+            padding: 13px 18px;
 
             display: flex;
 
@@ -802,26 +909,39 @@
 
             color: white;
 
-            width: 32px;
+            width: 35px;
 
-            height: 32px;
+            height: 35px;
 
-            border-radius: 8px;
+            border-radius: 9px;
 
             cursor: pointer;
 
-            font-size: 17px;
+            font-size: 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
         }
 
         .details-body {
 
-            padding: 20px;
+            padding: 18px;
+
+            max-height:
+                calc(92vh - 68px);
+
+            overflow-y: auto;
+
+            -webkit-overflow-scrolling: touch;
         }
 
 
-        /* =========================================
+        /* =====================================================
            PATIENT PROFILE
-        ========================================= */
+        ===================================================== */
 
         .patient-profile-header {
 
@@ -831,7 +951,9 @@
 
             align-items: center;
 
-            padding: 22px;
+            gap: 15px;
+
+            padding: 18px;
 
             background:
                 linear-gradient(
@@ -843,27 +965,31 @@
             border:
                 1px solid #dcefee;
 
-            border-radius: 16px;
+            border-radius: 15px;
 
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
 
         .patient-profile-left {
+
+            min-width: 0;
 
             display: flex;
 
             align-items: center;
 
-            gap: 15px;
+            gap: 13px;
         }
 
         .large-patient-avatar {
 
-            width: 65px;
+            width: 58px;
 
-            height: 65px;
+            height: 58px;
 
-            border-radius: 17px;
+            min-width: 58px;
+
+            border-radius: 15px;
 
             display: flex;
 
@@ -871,7 +997,7 @@
 
             justify-content: center;
 
-            font-size: 29px;
+            font-size: 26px;
 
             background:
                 linear-gradient(
@@ -887,25 +1013,27 @@
 
             margin: 0;
 
-            font-size: 20px;
+            font-size: 18px;
 
             font-weight: 800;
+
+            overflow-wrap: anywhere;
         }
 
         .patient-profile-left p {
 
-            margin: 5px 0 0;
+            margin: 4px 0 0;
 
             color: #64748b;
 
-            font-size: 9px;
+            font-size: 8px;
         }
 
         .patient-phone {
 
-            margin-top: 7px;
+            margin-top: 6px;
 
-            font-size: 11px;
+            font-size: 10px;
 
             font-weight: 700;
 
@@ -915,13 +1043,17 @@
         .detail-old,
         .detail-new {
 
-            padding: 9px 13px;
+            flex-shrink: 0;
+
+            padding: 8px 11px;
 
             border-radius: 999px;
 
-            font-size: 9px;
+            font-size: 8px;
 
             font-weight: 800;
+
+            white-space: nowrap;
         }
 
         .detail-old {
@@ -939,20 +1071,20 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            DETAIL SECTION
-        ========================================= */
+        ===================================================== */
 
         .detail-section {
 
-            margin-bottom: 18px;
+            margin-bottom: 13px;
 
-            padding: 18px;
+            padding: 16px;
 
             border:
                 1px solid #e5edf1;
 
-            border-radius: 14px;
+            border-radius: 13px;
 
             background: white;
         }
@@ -965,20 +1097,20 @@
 
             gap: 8px;
 
-            margin-bottom: 15px;
+            margin-bottom: 12px;
 
             color: #134e4a;
 
-            font-size: 12px;
+            font-size: 11px;
 
             font-weight: 800;
         }
 
         .detail-section-title > span:first-child {
 
-            width: 28px;
+            width: 27px;
 
-            height: 28px;
+            height: 27px;
 
             display: flex;
 
@@ -1003,27 +1135,31 @@
 
             border-radius: 999px;
 
-            font-size: 8px;
+            font-size: 7px;
+
+            white-space: nowrap;
         }
 
 
-        /* =========================================
+        /* =====================================================
            PATIENT INFO
-        ========================================= */
+        ===================================================== */
 
         .patient-info-grid {
 
             display: grid;
 
             grid-template-columns:
-                repeat(3,1fr);
+                repeat(3, minmax(0,1fr));
 
-            gap: 10px;
+            gap: 9px;
         }
 
         .info-item {
 
-            padding: 12px;
+            min-width: 0;
+
+            padding: 11px;
 
             background: #f8fafc;
 
@@ -1044,7 +1180,7 @@
 
             color: #94a3b8;
 
-            font-size: 8px;
+            font-size: 7px;
 
             font-weight: 800;
 
@@ -1053,21 +1189,27 @@
 
         .info-item strong {
 
-            font-size: 10px;
+            display: block;
+
+            font-size: 9px;
 
             color: #334155;
+
+            line-height: 1.5;
+
+            overflow-wrap: anywhere;
         }
 
 
-        /* =========================================
+        /* =====================================================
            CURRENT APPOINTMENT
-        ========================================= */
+        ===================================================== */
 
         .current-appointment-card {
 
-            border-radius: 12px;
+            border-radius: 11px;
 
-            padding: 16px;
+            padding: 14px;
 
             background:
                 linear-gradient(
@@ -1086,11 +1228,11 @@
 
             align-items: center;
 
-            gap: 11px;
+            gap: 10px;
 
-            padding-bottom: 14px;
+            padding-bottom: 11px;
 
-            margin-bottom: 14px;
+            margin-bottom: 11px;
 
             border-bottom:
                 1px solid #e5edf1;
@@ -1098,11 +1240,13 @@
 
         .small-doctor-avatar {
 
-            width: 43px;
+            width: 40px;
 
-            height: 43px;
+            height: 40px;
 
-            border-radius: 11px;
+            min-width: 40px;
+
+            border-radius: 10px;
 
             display: flex;
 
@@ -1112,14 +1256,14 @@
 
             background: #e0f2fe;
 
-            font-size: 20px;
+            font-size: 18px;
         }
 
         .doctor-profile strong {
 
             display: block;
 
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .doctor-profile span {
@@ -1130,7 +1274,7 @@
 
             color: #64748b;
 
-            font-size: 9px;
+            font-size: 8px;
         }
 
         .appointment-info {
@@ -1138,14 +1282,16 @@
             display: grid;
 
             grid-template-columns:
-                repeat(4,1fr);
+                repeat(4,minmax(0,1fr));
 
-            gap: 10px;
+            gap: 8px;
         }
 
         .appointment-info div {
 
-            padding: 10px;
+            min-width: 0;
+
+            padding: 9px;
 
             background: white;
 
@@ -1159,38 +1305,48 @@
 
             display: block;
 
-            font-size: 7px;
+            font-size: 6px;
 
             font-weight: 800;
 
             color: #94a3b8;
 
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .appointment-info strong {
 
-            font-size: 10px;
+            display: block;
+
+            font-size: 9px;
+
+            line-height: 1.5;
+
+            overflow-wrap: anywhere;
         }
 
         .current-amount {
 
-            color: #0f766e;
+            color: #0f766e !important;
         }
 
 
-        /* =========================================
+        /* =====================================================
            HISTORY
-        ========================================= */
+        ===================================================== */
 
         .visit-history {
+
+            width: 100%;
 
             border:
                 1px solid #e8eef2;
 
             border-radius: 10px;
 
-            overflow: hidden;
+            overflow-x: auto;
+
+            -webkit-overflow-scrolling: touch;
         }
 
         .history-heading {
@@ -1205,6 +1361,8 @@
                 .8fr;
 
             gap: 10px;
+
+            min-width: 650px;
 
             padding: 9px 12px;
 
@@ -1233,6 +1391,8 @@
             align-items: center;
 
             gap: 10px;
+
+            min-width: 650px;
 
             padding: 12px;
 
@@ -1269,12 +1429,12 @@
 
             color: #94a3b8;
 
-            font-size: 8px;
+            font-size: 7px;
         }
 
         .visit-time {
 
-            font-size: 9px;
+            font-size: 8px;
 
             color: #475569;
         }
@@ -1285,7 +1445,7 @@
 
             color: #0f766e;
 
-            font-size: 10px;
+            font-size: 9px;
         }
 
         .history-status {
@@ -1296,9 +1456,11 @@
 
             border-radius: 999px;
 
-            font-size: 8px;
+            font-size: 7px;
 
             font-weight: 800;
+
+            white-space: nowrap;
         }
 
         .history-old {
@@ -1316,15 +1478,15 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            TOTAL PAID
-        ========================================= */
+        ===================================================== */
 
         .total-paid-card {
 
-            margin-top: 12px;
+            margin-top: 10px;
 
-            padding: 14px 16px;
+            padding: 13px 15px;
 
             border-radius: 10px;
 
@@ -1346,7 +1508,7 @@
 
             display: block;
 
-            font-size: 10px;
+            font-size: 9px;
 
             font-weight: 800;
 
@@ -1359,22 +1521,22 @@
 
             margin-top: 3px;
 
-            font-size: 8px;
+            font-size: 7px;
 
             color: #65a30d;
         }
 
         .total-paid-card strong {
 
-            font-size: 19px;
+            font-size: 18px;
 
             color: #15803d;
         }
 
 
-        /* =========================================
-           MAKE OLD CONFIRM BOX
-        ========================================= */
+        /* =====================================================
+           CONFIRM MODAL
+        ===================================================== */
 
         .confirm-box {
 
@@ -1519,9 +1681,9 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            EMPTY
-        ========================================= */
+        ===================================================== */
 
         .empty {
 
@@ -1535,11 +1697,11 @@
         }
 
 
-        /* =========================================
-           RESPONSIVE
-        ========================================= */
+        /* =====================================================
+           MOBILE
+        ===================================================== */
 
-        @media(max-width:900px) {
+        @media(max-width: 900px) {
 
             .summary-grid {
 
@@ -1563,38 +1725,896 @@
                 grid-template-columns:
                     repeat(2,1fr);
             }
+
         }
 
 
-        @media(max-width:600px) {
+        @media(max-width: 600px) {
+
+            /* PAGE */
 
             .container {
 
-                padding: 13px;
+                width: 100%;
+
+                padding: 10px;
             }
+
+
+            /* HEADER */
 
             .header {
 
-                padding: 18px;
+                padding: 17px 14px;
             }
 
             .header h1 {
 
-                font-size: 20px;
+                font-size: 18px;
+
+                line-height: 1.3;
             }
+
+            .header p {
+
+                font-size: 10px;
+
+                line-height: 1.5;
+            }
+
+
+            /* FILTER */
+
+            .filter-card {
+
+                padding: 12px;
+
+                border-radius: 12px;
+
+                margin-bottom: 13px;
+            }
+
+            .filters {
+
+                grid-template-columns: 1fr;
+
+                gap: 10px;
+            }
+
+            .filter-group label {
+
+                font-size: 8px;
+
+                margin-bottom: 5px;
+            }
+
+            .filter-group select,
+            .filter-group input {
+
+                min-height: 42px;
+
+                padding: 10px;
+
+                font-size: 12px;
+            }
+
+
+            /* SUMMARY */
 
             .summary-grid {
 
-                grid-template-columns: 1fr;
+                grid-template-columns:
+                    repeat(2,minmax(0,1fr));
+
+                gap: 8px;
+
+                margin-bottom: 14px;
             }
 
+            .summary-card {
+
+                min-width: 0;
+
+                padding: 11px;
+
+                border-radius: 11px;
+
+                gap: 8px;
+            }
+
+            .summary-icon {
+
+                width: 34px;
+
+                height: 34px;
+
+                min-width: 34px;
+
+                border-radius: 9px;
+
+                font-size: 16px;
+            }
+
+            .summary-card span {
+
+                font-size: 7px;
+            }
+
+            .summary-card strong {
+
+                margin-top: 3px;
+
+                font-size: 17px;
+            }
+
+
+            /* DOCTOR */
+
+            .doctor-card {
+
+                width: 100%;
+
+                border-radius: 13px;
+
+                margin-bottom: 13px;
+            }
+
+            .doctor-header {
+
+                padding: 12px;
+            }
+
+            .doctor-title {
+
+                gap: 8px;
+            }
+
+            .doctor-avatar {
+
+                width: 36px;
+
+                height: 36px;
+
+                min-width: 36px;
+
+                border-radius: 9px;
+
+                font-size: 17px;
+            }
+
+            .doctor-title h2 {
+
+                font-size: 12px;
+
+                max-width: 180px;
+
+                overflow: hidden;
+
+                text-overflow: ellipsis;
+
+                white-space: nowrap;
+            }
+
+            .doctor-title p {
+
+                font-size: 8px;
+
+                margin-top: 2px;
+            }
+
+            .doctor-count {
+
+                padding: 5px 8px;
+
+                font-size: 7px;
+            }
+
+
+            /* SECTION */
+
+            .section {
+
+                padding: 11px;
+            }
+
+            .section-title {
+
+                font-size: 9px;
+
+                margin-bottom: 8px;
+            }
+
+            .section-title span {
+
+                padding: 5px 7px;
+
+                font-size: 7px;
+            }
+
+
+            /* TABLE */
+
+            .table-wrapper {
+
+                width: 100%;
+
+                overflow-x: auto;
+
+                overflow-y: hidden;
+
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .table-wrapper::after {
+
+                content:
+                    "← Swipe horizontally →";
+
+                position: sticky;
+
+                left: 50%;
+
+                display: block;
+
+                width: fit-content;
+
+                margin:
+                    0 auto 4px;
+
+                padding: 4px 8px;
+
+                background:
+                    rgba(15,118,110,.92);
+
+                color: white;
+
+                border-radius: 999px;
+
+                font-size: 7px;
+
+                font-weight: 700;
+
+                pointer-events: none;
+            }
+
+            table {
+
+                min-width: 1400px;
+            }
+
+            th {
+
+                padding: 10px 9px;
+
+                font-size: 8px;
+            }
+
+            td {
+
+                padding: 10px 9px;
+
+                font-size: 9px;
+            }
+
+            .patient-cell {
+
+                min-width: 180px;
+            }
+
+            .patient-avatar {
+
+                width: 32px;
+
+                height: 32px;
+
+                min-width: 32px;
+
+                font-size: 14px;
+            }
+
+            .patient-name {
+
+                font-size: 9px;
+            }
+
+            .patient-id {
+
+                font-size: 7px;
+            }
+
+
+            /* AMOUNT */
+
+            .amount-box {
+
+                gap: 5px;
+            }
+
+            .amount-input {
+
+                width: 80px;
+
+                height: 31px;
+            }
+
+            .save-amount {
+
+                height: 31px;
+            }
+
+
+            /* OLD */
+
+            .old-btn {
+
+                padding: 7px 9px;
+
+                font-size: 8px;
+            }
+
+            .already-old {
+
+                padding: 6px 8px;
+
+                font-size: 7px;
+            }
+
+
+            /* ACTION */
+
+            .action-buttons {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                gap: 5px;
+            }
+
+            .details-btn,
+            .follow-btn {
+
+                min-width: 85px;
+
+                width: 100%;
+
+                text-align: center;
+
+                padding: 8px 9px;
+
+                font-size: 8px;
+            }
+
+
+            /* =================================================
+               DETAILS FULL SCREEN
+            ================================================= */
+
+            #detailsModal {
+
+                padding: 0;
+
+                align-items: flex-start;
+
+                justify-content: center;
+            }
+
+            .details-modal-content {
+
+                width: 100vw;
+
+                max-width: 100vw;
+
+                height: 100vh;
+
+                max-height: 100vh;
+
+                border-radius: 0;
+
+                overflow: hidden;
+            }
+
+            .modal-header {
+
+                min-height: 60px;
+
+                height: 60px;
+
+                padding:
+                    10px 13px;
+
+                position: sticky;
+
+                top: 0;
+
+                z-index: 20;
+            }
+
+            .modal-header h2 {
+
+                font-size: 13px;
+            }
+
+            .close-btn {
+
+                width: 34px;
+
+                height: 34px;
+
+                font-size: 19px;
+            }
+
+            .details-body {
+
+                height:
+                    calc(100vh - 60px);
+
+                max-height:
+                    calc(100vh - 60px);
+
+                padding: 10px;
+
+                overflow-y: auto;
+            }
+
+
+            /* PROFILE */
+
             .patient-profile-header {
+
+                padding: 13px;
 
                 flex-direction: column;
 
                 align-items: flex-start;
 
-                gap: 12px;
+                gap: 10px;
+
+                border-radius: 12px;
+            }
+
+            .patient-profile-left {
+
+                width: 100%;
+
+                gap: 10px;
+            }
+
+            .large-patient-avatar {
+
+                width: 48px;
+
+                height: 48px;
+
+                min-width: 48px;
+
+                border-radius: 12px;
+
+                font-size: 21px;
+            }
+
+            .patient-profile-left h2 {
+
+                font-size: 15px;
+
+                line-height: 1.35;
+            }
+
+            .patient-profile-left p {
+
+                font-size: 7px;
+            }
+
+            .patient-phone {
+
+                font-size: 9px;
+            }
+
+            .detail-old,
+            .detail-new {
+
+                width: 100%;
+
+                text-align: center;
+
+                padding: 7px;
+
+                font-size: 8px;
+            }
+
+
+            /* DETAIL SECTION */
+
+            .detail-section {
+
+                padding: 12px;
+
+                margin-bottom: 10px;
+
+                border-radius: 11px;
+            }
+
+            .detail-section-title {
+
+                font-size: 10px;
+
+                margin-bottom: 10px;
+            }
+
+            .detail-section-title > span:first-child {
+
+                width: 25px;
+
+                height: 25px;
+            }
+
+
+            /* PATIENT INFO */
+
+            .patient-info-grid {
+
+                grid-template-columns:
+                    repeat(2,minmax(0,1fr));
+
+                gap: 7px;
+            }
+
+            .info-item {
+
+                min-height: 55px;
+
+                padding: 9px;
+            }
+
+            .info-item.full {
+
+                grid-column: 1 / -1;
+            }
+
+            .info-item span {
+
+                font-size: 6px;
+
+                margin-bottom: 4px;
+            }
+
+            .info-item strong {
+
+                font-size: 8px;
+            }
+
+
+            /* CURRENT APPOINTMENT */
+
+            .current-appointment-card {
+
+                padding: 11px;
+
+                border-radius: 10px;
+            }
+
+            .doctor-profile {
+
+                padding-bottom: 10px;
+
+                margin-bottom: 10px;
+            }
+
+            .small-doctor-avatar {
+
+                width: 37px;
+
+                height: 37px;
+
+                min-width: 37px;
+
+                font-size: 16px;
+            }
+
+            .doctor-profile strong {
+
+                font-size: 10px;
+            }
+
+            .doctor-profile span {
+
+                font-size: 7px;
+            }
+
+            .appointment-info {
+
+                grid-template-columns:
+                    repeat(2,minmax(0,1fr));
+
+                gap: 6px;
+            }
+
+            .appointment-info div {
+
+                padding: 9px;
+
+                border-radius: 7px;
+            }
+
+            .appointment-info span {
+
+                font-size: 6px;
+            }
+
+            .appointment-info strong {
+
+                font-size: 8px;
+            }
+
+
+            /* =================================================
+               MOBILE VISIT HISTORY
+            ================================================= */
+
+            .visit-history {
+
+                border: none;
+
+                overflow: visible;
+            }
+
+            .history-heading {
+
+                display: none;
+            }
+
+            .visit-history-row {
+
+                min-width: 0;
+
+                display: grid;
+
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 7px;
+
+                padding: 10px;
+
+                margin-bottom: 7px;
+
+                border:
+                    1px solid #e5edf1;
+
+                border-radius: 9px;
+
+                background: white;
+
+                box-shadow:
+                    0 2px 8px
+                    rgba(15,23,42,.04);
+            }
+
+            .visit-history-row:last-child {
+
+                margin-bottom: 0;
+            }
+
+            .visit-number {
+
+                grid-column: 1;
+
+                grid-row: 1;
+            }
+
+            .visit-doctor {
+
+                grid-column: 1 / -1;
+
+                grid-row: 2;
+
+                padding-top: 7px;
+
+                border-top:
+                    1px solid #edf2f5;
+            }
+
+            .visit-time {
+
+                grid-column: 1;
+
+                grid-row: 3;
+
+                padding: 7px;
+
+                border-radius: 7px;
+
+                background: #f8fafc;
+
+                font-size: 8px;
+            }
+
+            .visit-amount {
+
+                grid-column: 2;
+
+                grid-row: 3;
+
+                padding: 7px;
+
+                border-radius: 7px;
+
+                background: #f0fdfa;
+
+                text-align: right;
+
+                font-size: 9px;
+            }
+
+            .visit-history-row > div:last-child {
+
+                grid-column: 1 / -1;
+
+                grid-row: 4;
+            }
+
+            .history-status {
+
+                display: block;
+
+                width: 100%;
+
+                text-align: center;
+
+                padding: 6px;
+
+                font-size: 7px;
+            }
+
+
+            /* TOTAL */
+
+            .total-paid-card {
+
+                padding: 12px;
+
+                border-radius: 10px;
+            }
+
+            .total-paid-card span {
+
+                font-size: 8px;
+            }
+
+            .total-paid-card small {
+
+                font-size: 7px;
+            }
+
+            .total-paid-card strong {
+
+                font-size: 16px;
+            }
+
+
+            /* =================================================
+               OLD CONFIRM
+            ================================================= */
+
+            #oldModal {
+
+                padding: 12px;
+
+                align-items: center;
+
+                justify-content: center;
+            }
+
+            .confirm-box {
+
+                width: 100%;
+
+                max-width: 360px;
+
+                padding: 24px 18px;
+
+                border-radius: 16px;
+            }
+
+            .confirm-icon {
+
+                width: 52px;
+
+                height: 52px;
+
+                font-size: 23px;
+
+                margin-bottom: 13px;
+            }
+
+            .confirm-box h3 {
+
+                font-size: 16px;
+            }
+
+            .confirm-box p {
+
+                font-size: 10px;
+
+                line-height: 1.7;
+
+                margin: 11px 0 18px;
+            }
+
+            .confirm-actions {
+
+                width: 100%;
+
+                display: grid;
+
+                grid-template-columns:
+                    1fr 1fr;
+
+                gap: 7px;
+            }
+
+            .cancel-btn,
+            .confirm-old-btn {
+
+                width: 100%;
+
+                min-height: 42px;
+
+                padding: 9px;
+
+                font-size: 9px;
+            }
+
+        }
+
+
+        /* =====================================================
+           VERY SMALL MOBILE
+        ===================================================== */
+
+        @media(max-width:380px) {
+
+            .container {
+
+                padding: 7px;
+            }
+
+            .summary-grid {
+
+                gap: 6px;
+            }
+
+            .summary-card {
+
+                padding: 9px;
+            }
+
+            .summary-icon {
+
+                width: 30px;
+
+                height: 30px;
+
+                min-width: 30px;
+
+                font-size: 14px;
+            }
+
+            .summary-card strong {
+
+                font-size: 15px;
+            }
+
+            .doctor-title h2 {
+
+                max-width: 125px;
+            }
+
+            .doctor-count {
+
+                font-size: 6px;
+
+                padding: 4px 6px;
             }
 
             .patient-info-grid {
@@ -1609,20 +2629,29 @@
 
             .appointment-info {
 
-                grid-template-columns:
-                    repeat(2,1fr);
+                grid-template-columns: 1fr;
             }
 
-            .history-heading {
+        }
 
-                display: none;
-            }
 
-            .visit-history-row {
+        /* =====================================================
+           TOUCH
+        ===================================================== */
 
-                grid-template-columns:
-                    1fr 1fr;
-            }
+        button,
+        input,
+        select,
+        a {
+
+            -webkit-tap-highlight-color:
+                transparent;
+        }
+
+        button,
+        a {
+
+            touch-action: manipulation;
         }
 
     </style>
@@ -2092,8 +3121,16 @@ async function statuslyFetch(
 
 /* =====================================================
    FLASK DATA
+
    IMPORTANT:
-   ROUTE SENDS patients=patients
+   Flask route sends:
+
+   render_template(
+       "appointments.html",
+       patients=patients,
+       uid=uid
+   )
+
 ===================================================== */
 
 const APPOINTMENTS =
@@ -2297,7 +3334,7 @@ function todayISO() {
 
 
 /* =====================================================
-   MONEY
+   AMOUNT
 ===================================================== */
 
 function amount(
@@ -2316,6 +3353,10 @@ function amount(
 
 }
 
+
+/* =====================================================
+   MONEY
+===================================================== */
 
 function money(
     value
@@ -2437,18 +3478,6 @@ function getPatientType(
     p
 ) {
 
-    const visit =
-        Number(
-            p.visit_number || 1
-        );
-
-
-    /*
-       IMPORTANT:
-       Backend should save current status.
-       Visit 1 is allowed to become OLD now.
-    */
-
     const status =
         String(
             p.patient_status ||
@@ -2461,6 +3490,65 @@ function getPatientType(
     return status === "OLD"
         ? "OLD"
         : "NEW";
+
+}
+
+
+/* =====================================================
+   APPOINTMENT SORT
+===================================================== */
+
+function sortAppointments(
+    list
+) {
+
+    return [...list].sort(
+        (a, b) => {
+
+            const dateA =
+                normalizeDate(
+                    a.appointment_date
+                );
+
+            const dateB =
+                normalizeDate(
+                    b.appointment_date
+                );
+
+
+            const timeA =
+                String(
+                    a.appointment_time ||
+                    "00:00"
+                );
+
+            const timeB =
+                String(
+                    b.appointment_time ||
+                    "00:00"
+                );
+
+
+            const valueA =
+                new Date(
+                    dateA +
+                    "T" +
+                    timeA
+                ).getTime();
+
+
+            const valueB =
+                new Date(
+                    dateB +
+                    "T" +
+                    timeB
+                ).getTime();
+
+
+            return valueB - valueA;
+
+        }
+    );
 
 }
 
@@ -2572,7 +3660,6 @@ function createRow(
     number
 ) {
 
-
     const visit =
         Number(
             p.visit_number || 1
@@ -2588,11 +3675,6 @@ function createRow(
     let oldButton = "";
 
 
-    /*
-       EVERY NEW PATIENT GETS
-       MAKE OLD OPTION
-    */
-
     if (
         type === "NEW"
     ) {
@@ -2602,17 +3684,15 @@ function createRow(
             <button
                 type="button"
                 class="old-btn"
-                onclick="
-                    openOldModal(
-                        '${escapeHtml(
-                            p.mobile || ""
-                        )}',
-                        '${escapeHtml(
-                            p.patient_name ||
-                            "Patient"
-                        )}'
-                    )
-                "
+                onclick="openOldModal(
+                    '${escapeHtml(
+                        p.mobile || ""
+                    )}',
+                    '${escapeHtml(
+                        p.patient_name ||
+                        "Patient"
+                    )}'
+                )"
             >
 
                 🔄 Make OLD
@@ -2642,7 +3722,6 @@ function createRow(
 
         <tr>
 
-
             <td>
 
                 <strong>
@@ -2656,11 +3735,9 @@ function createRow(
 
                 <div class="patient-cell">
 
-
                     <div class="patient-avatar">
                         👤
                     </div>
-
 
                     <div>
 
@@ -2672,7 +3749,6 @@ function createRow(
                             )}
 
                         </div>
-
 
                         <span class="patient-id">
 
@@ -2686,7 +3762,6 @@ function createRow(
                         </span>
 
                     </div>
-
 
                 </div>
 
@@ -2733,7 +3808,6 @@ function createRow(
                     )}
 
                 </strong>
-
 
                 <div
                     style="
@@ -2794,7 +3868,6 @@ function createRow(
 
                 <div class="amount-box">
 
-
                     <input
                         type="number"
                         min="0"
@@ -2808,23 +3881,19 @@ function createRow(
                         )}"
                     >
 
-
                     <button
                         type="button"
                         class="save-amount"
-                        onclick="
-                            saveAmount(
-                                '${escapeHtml(
-                                    p.id
-                                )}'
-                            )
-                        "
+                        onclick="saveAmount(
+                            '${escapeHtml(
+                                p.id
+                            )}'
+                        )"
                     >
 
                         Save
 
                     </button>
-
 
                 </div>
 
@@ -2842,17 +3911,14 @@ function createRow(
 
                 <div class="action-buttons">
 
-
                     <button
                         type="button"
                         class="details-btn"
-                        onclick="
-                            showDetails(
-                                '${escapeHtml(
-                                    p.id
-                                )}'
-                            )
-                        "
+                        onclick="showDetails(
+                            '${escapeHtml(
+                                p.id
+                            )}'
+                        )"
                     >
 
                         👁 Details
@@ -2869,11 +3935,9 @@ function createRow(
 
                     </a>
 
-
                 </div>
 
             </td>
-
 
         </tr>
 
@@ -2911,7 +3975,6 @@ function render() {
     const filtered =
         APPOINTMENTS.filter(
             p => {
-
 
                 const doctorName =
                     p.doctor_name ||
@@ -3052,38 +4115,10 @@ function render() {
         ([doctorName, patients]) => {
 
 
-            patients.sort(
-                (a,b) => {
-
-                    const dateA =
-                        normalizeDate(
-                            a.appointment_date
-                        ) +
-                        "T" +
-                        (
-                            a.appointment_time ||
-                            "00:00"
-                        );
-
-
-                    const dateB =
-                        normalizeDate(
-                            b.appointment_date
-                        ) +
-                        "T" +
-                        (
-                            b.appointment_time ||
-                            "00:00"
-                        );
-
-
-                    return (
-                        new Date(dateB) -
-                        new Date(dateA)
-                    );
-
-                }
-            );
+            patients =
+                sortAppointments(
+                    patients
+                );
 
 
             const card =
@@ -3100,14 +4135,11 @@ function render() {
 
                 <div class="doctor-header">
 
-
                     <div class="doctor-title">
-
 
                         <div class="doctor-avatar">
                             👨‍⚕️
                         </div>
-
 
                         <div>
 
@@ -3119,13 +4151,11 @@ function render() {
 
                             </h2>
 
-
                             <p>
                                 Doctor Appointments
                             </p>
 
                         </div>
-
 
                     </div>
 
@@ -3137,7 +4167,6 @@ function render() {
                         Patients
 
                     </div>
-
 
                 </div>
 
@@ -3168,7 +4197,7 @@ function render() {
 
 
             categories.forEach(
-                ([category,title]) => {
+                ([category, title]) => {
 
 
                     const rows =
@@ -3347,45 +4376,15 @@ function(id) {
 
 
     const history =
-        APPOINTMENTS
-        .filter(
-            p =>
-                normalizeMobile(
-                    p.mobile
-                ) === mobile
-        )
-        .sort(
-            (a,b) => {
+        sortAppointments(
 
+            APPOINTMENTS.filter(
+                p =>
+                    normalizeMobile(
+                        p.mobile
+                    ) === mobile
+            )
 
-                const dateA =
-                    normalizeDate(
-                        a.appointment_date
-                    ) +
-                    "T" +
-                    (
-                        a.appointment_time ||
-                        "00:00"
-                    );
-
-
-                const dateB =
-                    normalizeDate(
-                        b.appointment_date
-                    ) +
-                    "T" +
-                    (
-                        b.appointment_time ||
-                        "00:00"
-                    );
-
-
-                return (
-                    new Date(dateB) -
-                    new Date(dateA)
-                );
-
-            }
         );
 
 
@@ -3400,133 +4399,138 @@ function(id) {
             (
                 total,
                 p
-            ) =>
-                total +
-                amount(
-                    p.amount
-                ),
+            ) => {
+
+                return total +
+                    amount(
+                        p.amount
+                    );
+
+            },
             0
         );
 
 
-    const historyHTML =
-        history.map(
-            p => {
+    let historyHTML = "";
 
 
-                const visit =
-                    Number(
-                        p.visit_number ||
-                        1
-                    );
+    history.forEach(
+        p => {
 
 
-                const type =
-                    getPatientType(
-                        p
-                    );
+            const visit =
+                Number(
+                    p.visit_number ||
+                    1
+                );
 
 
-                return `
-
-                    <div class="visit-history-row">
-
-
-                        <div class="visit-number">
-
-                            <strong>
-                                Visit ${visit}
-                            </strong>
-
-                            <span>
-
-                                ${formatDate(
-                                    p.appointment_date
-                                )}
-
-                            </span>
-
-                        </div>
+            const type =
+                getPatientType(
+                    p
+                );
 
 
-                        <div class="visit-doctor">
+            historyHTML += `
 
-                            <strong>
-
-                                👨‍⚕️
-
-                                ${escapeHtml(
-                                    p.doctor_name ||
-                                    "Unknown Doctor"
-                                )}
-
-                            </strong>
+                <div class="visit-history-row">
 
 
-                            <span>
+                    <div class="visit-number">
 
-                                ${escapeHtml(
-                                    p.specialization ||
-                                    "General"
-                                )}
+                        <strong>
 
-                            </span>
+                            Visit ${visit}
 
-                        </div>
+                        </strong>
 
+                        <span>
 
-                        <div class="visit-time">
-
-                            🕐
-
-                            ${escapeHtml(
-                                p.appointment_time ||
-                                "-"
+                            ${formatDate(
+                                p.appointment_date
                             )}
 
-                        </div>
-
-
-                        <div class="visit-amount">
-
-                            ${money(
-                                p.amount
-                            )}
-
-                        </div>
-
-
-                        <div>
-
-                            <span
-                                class="
-                                    history-status
-                                    ${
-                                        type === "OLD"
-                                            ? "history-old"
-                                            : "history-new"
-                                    }
-                                "
-                            >
-
-                                ${
-                                    type === "OLD"
-                                        ? "🔵 OLD"
-                                        : "🆕 NEW"
-                                }
-
-                            </span>
-
-                        </div>
-
+                        </span>
 
                     </div>
 
-                `;
 
-            }
-        )
-        .join("");
+                    <div class="visit-doctor">
+
+                        <strong>
+
+                            👨‍⚕️
+
+                            ${escapeHtml(
+                                p.doctor_name ||
+                                "Unknown Doctor"
+                            )}
+
+                        </strong>
+
+                        <span>
+
+                            ${escapeHtml(
+                                p.specialization ||
+                                "General"
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="visit-time">
+
+                        🕐
+
+                        ${escapeHtml(
+                            p.appointment_time ||
+                            "-"
+                        )}
+
+                    </div>
+
+
+                    <div class="visit-amount">
+
+                        ${money(
+                            p.amount
+                        )}
+
+                    </div>
+
+
+                    <div>
+
+                        <span
+                            class="
+                                history-status
+                                ${
+                                    type === "OLD"
+                                        ? "history-old"
+                                        : "history-new"
+                                }
+                            "
+                        >
+
+                            ${
+                                type === "OLD"
+                                    ? "🔵 OLD"
+                                    : "🆕 NEW"
+                            }
+
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+        }
+    );
 
 
     document.getElementById(
@@ -3534,464 +4538,363 @@ function(id) {
     ).innerHTML = `
 
 
-        <div>
+        <!-- PROFILE -->
+
+        <div class="patient-profile-header">
 
 
-            <!-- PROFILE -->
-
-            <div class="patient-profile-header">
+            <div class="patient-profile-left">
 
 
-                <div class="patient-profile-left">
+                <div class="large-patient-avatar">
 
-
-                    <div class="large-patient-avatar">
-                        👤
-                    </div>
-
-
-                    <div>
-
-                        <h2>
-
-                            ${escapeHtml(
-                                current.patient_name ||
-                                "Unknown Patient"
-                            )}
-
-                        </h2>
-
-
-                        <p>
-
-                            Patient No:
-
-                            ${escapeHtml(
-                                current.patient_no ||
-                                "-"
-                            )}
-
-                        </p>
-
-
-                        <div class="patient-phone">
-
-                            📱
-
-                            ${escapeHtml(
-                                current.mobile ||
-                                "-"
-                            )}
-
-                        </div>
-
-                    </div>
-
+                    👤
 
                 </div>
 
 
-                <div
-                    class="
-                        ${
-                            status === "OLD"
-                                ? "detail-old"
-                                : "detail-new"
-                        }
-                    "
-                >
+                <div>
 
+                    <h2>
+
+                        ${escapeHtml(
+                            current.patient_name ||
+                            "Unknown Patient"
+                        )}
+
+                    </h2>
+
+
+                    <p>
+
+                        Patient No:
+
+                        ${escapeHtml(
+                            current.patient_no ||
+                            "-"
+                        )}
+
+                    </p>
+
+
+                    <div class="patient-phone">
+
+                        📱
+
+                        ${escapeHtml(
+                            current.mobile ||
+                            "-"
+                        )}
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div
+                class="
                     ${
                         status === "OLD"
-                            ? "🔵 OLD PATIENT"
-                            : "🆕 NEW PATIENT"
+                            ? "detail-old"
+                            : "detail-new"
                     }
+                "
+            >
 
-                </div>
-
+                ${
+                    status === "OLD"
+                        ? "🔵 OLD PATIENT"
+                        : "🆕 NEW PATIENT"
+                }
 
             </div>
 
 
-            <!-- PATIENT INFO -->
-
-            <div class="detail-section">
+        </div>
 
 
-                <div class="detail-section-title">
+        <!-- PATIENT INFORMATION -->
 
-                    <span>
-                        👤
-                    </span>
-
-                    Patient Information
-
-                </div>
+        <div class="detail-section">
 
 
-                <div class="patient-info-grid">
+            <div class="detail-section-title">
 
+                <span>
+                    👤
+                </span>
 
-                    <div class="info-item">
-
-                        <span>
-                            PATIENT NAME
-                        </span>
-
-                        <strong>
-
-                            ${escapeHtml(
-                                current.patient_name ||
-                                "-"
-                            )}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="info-item">
-
-                        <span>
-                            GENDER
-                        </span>
-
-                        <strong>
-
-                            ${escapeHtml(
-                                current.gender ||
-                                "-"
-                            )}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="info-item">
-
-                        <span>
-                            AGE
-                        </span>
-
-                        <strong>
-
-                            ${escapeHtml(
-                                current.age ||
-                                "-"
-                            )}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="info-item">
-
-                        <span>
-                            MOBILE
-                        </span>
-
-                        <strong>
-
-                            ${escapeHtml(
-                                current.mobile ||
-                                "-"
-                            )}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="info-item">
-
-                        <span>
-                            PATIENT TYPE
-                        </span>
-
-                        <strong>
-
-                            ${status}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="info-item">
-
-                        <span>
-                            TOTAL VISITS
-                        </span>
-
-                        <strong>
-
-                            ${history.length}
-
-                        </strong>
-
-                    </div>
-
-
-                    <div class="info-item full">
-
-                        <span>
-                            ADDRESS
-                        </span>
-
-                        <strong>
-
-                            ${escapeHtml(
-                                current.address ||
-                                "Address not available"
-                            )}
-
-                        </strong>
-
-                    </div>
-
-
-                </div>
+                Patient Information
 
             </div>
 
 
-            <!-- CURRENT APPOINTMENT -->
-
-            <div class="detail-section">
+            <div class="patient-info-grid">
 
 
-                <div class="detail-section-title">
+                <div class="info-item">
 
                     <span>
-                        📅
+                        PATIENT NAME
                     </span>
-
-                    Current Appointment
-
-                </div>
-
-
-                <div class="current-appointment-card">
-
-
-                    <div class="doctor-profile">
-
-
-                        <div class="small-doctor-avatar">
-                            👨‍⚕️
-                        </div>
-
-
-                        <div>
-
-                            <strong>
-
-                                ${escapeHtml(
-                                    current.doctor_name ||
-                                    "Unknown Doctor"
-                                )}
-
-                            </strong>
-
-
-                            <span>
-
-                                ${escapeHtml(
-                                    current.specialization ||
-                                    "General"
-                                )}
-
-                            </span>
-
-                        </div>
-
-
-                    </div>
-
-
-                    <div class="appointment-info">
-
-
-                        <div>
-
-                            <span>
-                                DATE
-                            </span>
-
-                            <strong>
-
-                                📅
-
-                                ${formatDate(
-                                    current.appointment_date
-                                )}
-
-                            </strong>
-
-                        </div>
-
-
-                        <div>
-
-                            <span>
-                                TIME
-                            </span>
-
-                            <strong>
-
-                                🕐
-
-                                ${escapeHtml(
-                                    current.appointment_time ||
-                                    "-"
-                                )}
-
-                            </strong>
-
-                        </div>
-
-
-                        <div>
-
-                            <span>
-                                VISIT
-                            </span>
-
-                            <strong>
-
-                                Visit
-                                ${
-                                    current.visit_number ||
-                                    1
-                                }
-
-                            </strong>
-
-                        </div>
-
-
-                        <div>
-
-                            <span>
-                                AMOUNT
-                            </span>
-
-                            <strong class="current-amount">
-
-                                ${money(
-                                    current.amount
-                                )}
-
-                            </strong>
-
-                        </div>
-
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
-
-            <!-- VISIT HISTORY -->
-
-            <div class="detail-section">
-
-
-                <div class="detail-section-title">
-
-
-                    <span>
-                        📋
-                    </span>
-
-
-                    Complete Visit History
-
-
-                    <span class="visit-count">
-
-                        ${history.length}
-
-                        Visits
-
-                    </span>
-
-
-                </div>
-
-
-                <div class="visit-history">
-
-
-                    <div class="history-heading">
-
-                        <div>
-                            Visit / Date
-                        </div>
-
-                        <div>
-                            Doctor
-                        </div>
-
-                        <div>
-                            Time
-                        </div>
-
-                        <div>
-                            Amount
-                        </div>
-
-                        <div>
-                            Type
-                        </div>
-
-                    </div>
-
-
-                    ${
-                        historyHTML ||
-                        `
-                            <div class="empty">
-                                No previous visits.
-                            </div>
-                        `
-                    }
-
-
-                </div>
-
-
-                <div class="total-paid-card">
-
-
-                    <div>
-
-                        <span>
-                            Total Amount Paid
-                        </span>
-
-                        <small>
-                            Across
-                            ${history.length}
-                            visits
-                        </small>
-
-                    </div>
-
 
                     <strong>
 
-                        ${money(
-                            totalPaid
+                        ${escapeHtml(
+                            current.patient_name ||
+                            "-"
                         )}
 
                     </strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span>
+                        GENDER
+                    </span>
+
+                    <strong>
+
+                        ${escapeHtml(
+                            current.gender ||
+                            "-"
+                        )}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span>
+                        AGE
+                    </span>
+
+                    <strong>
+
+                        ${escapeHtml(
+                            current.age ||
+                            "-"
+                        )}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span>
+                        MOBILE
+                    </span>
+
+                    <strong>
+
+                        ${escapeHtml(
+                            current.mobile ||
+                            "-"
+                        )}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span>
+                        PATIENT TYPE
+                    </span>
+
+                    <strong>
+
+                        ${status}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="info-item">
+
+                    <span>
+                        TOTAL VISITS
+                    </span>
+
+                    <strong>
+
+                        ${history.length}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="info-item full">
+
+                    <span>
+                        ADDRESS
+                    </span>
+
+                    <strong>
+
+                        ${escapeHtml(
+                            current.address ||
+                            "Address not available"
+                        )}
+
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- CURRENT APPOINTMENT -->
+
+        <div class="detail-section">
+
+
+            <div class="detail-section-title">
+
+                <span>
+                    📅
+                </span>
+
+                Current Appointment
+
+            </div>
+
+
+            <div class="current-appointment-card">
+
+
+                <div class="doctor-profile">
+
+
+                    <div class="small-doctor-avatar">
+
+                        👨‍⚕️
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+
+                            ${escapeHtml(
+                                current.doctor_name ||
+                                "Unknown Doctor"
+                            )}
+
+                        </strong>
+
+
+                        <span>
+
+                            ${escapeHtml(
+                                current.specialization ||
+                                "General"
+                            )}
+
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="appointment-info">
+
+
+                    <div>
+
+                        <span>
+                            DATE
+                        </span>
+
+                        <strong>
+
+                            📅
+
+                            ${formatDate(
+                                current.appointment_date
+                            )}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            TIME
+                        </span>
+
+                        <strong>
+
+                            🕐
+
+                            ${escapeHtml(
+                                current.appointment_time ||
+                                "-"
+                            )}
+
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            VISIT
+                        </span>
+
+                        <strong>
+
+                            Visit
+                            ${
+                                current.visit_number ||
+                                1
+                            }
+
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            AMOUNT
+                        </span>
+
+                        <strong
+                            class="current-amount"
+                        >
+
+                            ${money(
+                                current.amount
+                            )}
+
+                        </strong>
+
+                    </div>
 
 
                 </div>
@@ -4002,6 +4905,128 @@ function(id) {
 
         </div>
 
+
+        <!-- VISIT HISTORY -->
+
+        <div class="detail-section">
+
+
+            <div class="detail-section-title">
+
+
+                <span>
+                    📋
+                </span>
+
+
+                Complete Visit History
+
+
+                <span class="visit-count">
+
+                    ${history.length}
+
+                    Visits
+
+                </span>
+
+
+            </div>
+
+
+            <div class="visit-history">
+
+
+                <div class="history-heading">
+
+
+                    <div>
+                        Visit / Date
+                    </div>
+
+
+                    <div>
+                        Doctor
+                    </div>
+
+
+                    <div>
+                        Time
+                    </div>
+
+
+                    <div>
+                        Amount
+                    </div>
+
+
+                    <div>
+                        Type
+                    </div>
+
+
+                </div>
+
+
+                ${
+                    historyHTML ||
+                    `
+                        <div class="empty">
+
+                            No previous visits.
+
+                        </div>
+                    `
+                }
+
+
+            </div>
+
+
+            <div class="total-paid-card">
+
+
+                <div>
+
+                    <span>
+
+                        Total Amount Paid
+
+                    </span>
+
+
+                    <small>
+
+                        Across
+
+                        ${history.length}
+
+                        visit${
+                            history.length === 1
+                                ? ""
+                                : "s"
+                        }
+
+                    </small>
+
+                </div>
+
+
+                <strong>
+
+                    ${money(
+                        totalPaid
+                    )}
+
+                </strong>
+
+
+            </div>
+
+
+        </div>
+
+
     `;
 
 
@@ -4010,6 +5035,10 @@ function(id) {
     ).classList.add(
         "show"
     );
+
+
+    document.body.style.overflow =
+        "hidden";
 
 };
 
@@ -4026,6 +5055,10 @@ function() {
     ).classList.remove(
         "show"
     );
+
+
+    document.body.style.overflow =
+        "";
 
 };
 
@@ -4068,10 +5101,6 @@ function(
     }
 
 
-    /*
-       EXACT MESSAGE
-    */
-
     document.getElementById(
         "oldMessage"
     ).innerHTML = `
@@ -4104,6 +5133,10 @@ function(
         "show"
     );
 
+
+    document.body.style.overflow =
+        "hidden";
+
 };
 
 
@@ -4125,6 +5158,10 @@ function() {
     ).classList.remove(
         "show"
     );
+
+
+    document.body.style.overflow =
+        "";
 
 };
 
@@ -4353,6 +5390,24 @@ async function(
                 "Unable to save amount."
 
             );
+
+        }
+
+
+        /* Update local appointment data too */
+
+        const appointment =
+            APPOINTMENTS.find(
+                p =>
+                    String(p.id) ===
+                    String(appointmentId)
+            );
+
+
+        if (appointment) {
+
+            appointment.amount =
+                amountValue;
 
         }
 
