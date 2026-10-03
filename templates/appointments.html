@@ -1,3198 +1,774 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="theme-color" content="#0f766e">
+    <title>Appointments | Statusly</title>
 
-    <title>Statusly | Doctor Appointments</title>
-
-    <!-- =====================================================
-         FIREBASE COMPAT SDK
-    ====================================================== -->
-
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-app-compat.js"></script>
-
     <script src="https://www.gstatic.com/firebasejs/12.15.0/firebase-auth-compat.js"></script>
 
-
-    <!-- =====================================================
-         FONT
-    ====================================================== -->
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
-
     <style>
-
-        /* =====================================================
-           RESET
-        ====================================================== */
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        html,
         body {
-            width: 100%;
-            min-height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f8fb;
+            color: #263238;
         }
 
-        body {
-
-            font-family:
-                "Inter",
-                Arial,
-                sans-serif;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #f0fdfa 0%,
-                    #f8fafc 55%,
-                    #eef6ff 100%
-                );
-
-            color: #172033;
-
-            overflow-x: hidden;
-        }
-
-
-        /* =====================================================
-           PAGE
-        ====================================================== */
-
-        .page {
-
-            width: 100%;
-            min-height: 100vh;
-
-            padding: 24px;
-        }
-
-
-        .container {
-
-            width: 100%;
-            max-width: 1450px;
-
-            margin: auto;
-        }
-
-
-        /* =====================================================
-           HEADER
-        ====================================================== */
+        /* ================= HEADER ================= */
 
         .header {
-
-            background: #ffffff;
-
-            border:
-                1px solid #e2eaee;
-
-            border-radius: 18px;
-
-            padding: 20px 24px;
-
-            margin-bottom: 18px;
-
-            box-shadow:
-                0 10px 30px
-                rgba(15, 23, 42, .06);
-
+            background: linear-gradient(135deg, #00695c, #00897b);
+            color: white;
+            padding: 18px 25px;
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
-
-            gap: 15px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
         }
 
-
-        .header-left {
-
-            min-width: 0;
-        }
-
-
-        .brand {
-
-            color: #0f766e;
-
+        .header-left h1 {
             font-size: 25px;
-
-            font-weight: 800;
+            margin-bottom: 4px;
         }
 
-
-        .brand span {
-
-            color: #64748b;
+        .header-left p {
+            font-size: 13px;
+            opacity: 0.9;
         }
-
-
-        .page-title {
-
-            margin-top: 5px;
-
-            font-size: 22px;
-
-            font-weight: 800;
-
-            color: #172033;
-        }
-
-
-        .page-subtitle {
-
-            margin-top: 5px;
-
-            color: #64748b;
-
-            font-size: 12px;
-        }
-
 
         .total-badge {
-
-            flex-shrink: 0;
-
-            background:
-                #ecfdf5;
-
-            color:
-                #0f766e;
-
-            border:
-                1px solid #ccefe5;
-
-            border-radius:
-                999px;
-
-            padding:
-                10px 15px;
-
-            font-size:
-                12px;
-
-            font-weight:
-                800;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 9px 15px;
+            border-radius: 25px;
+            font-size: 14px;
         }
 
+        /* ================= CONTAINER ================= */
 
-        /* =====================================================
-           FILTER PANEL
-        ====================================================== */
+        .container {
+            width: 96%;
+            max-width: 1500px;
+            margin: 25px auto;
+        }
 
-        .filter-panel {
+        /* ================= FILTERS ================= */
 
-            background: #ffffff;
-
-            border:
-                1px solid #e2eaee;
-
-            border-radius: 16px;
-
+        .filter-box {
+            background: white;
+            border-radius: 14px;
             padding: 18px;
-
-            margin-bottom: 18px;
-
-            box-shadow:
-                0 8px 25px
-                rgba(15, 23, 42, .05);
+            margin-bottom: 20px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
         }
 
-
-        .filter-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                1fr 1.5fr 1fr;
-
-            gap: 12px;
-        }
-
-
-        .filter-field label {
-
-            display: block;
-
-            margin-bottom: 6px;
-
-            color: #475569;
-
-            font-size: 10px;
-
-            font-weight: 800;
-
-            text-transform: uppercase;
-        }
-
-
-        .filter-field input,
-        .filter-field select {
-
-            width: 100%;
-
-            height: 43px;
-
-            padding: 0 12px;
-
-            border:
-                1px solid #d9e4e8;
-
-            border-radius: 9px;
-
-            background: #fbfdfe;
-
-            color: #172033;
-
-            font-family: inherit;
-
-            font-size: 12px;
-
-            outline: none;
-        }
-
-
-        .filter-field input:focus,
-        .filter-field select:focus {
-
-            border-color: #0f766e;
-
-            background: #ffffff;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(15, 118, 110, .08);
-        }
-
-
-        /* =====================================================
-           DATE FILTER
-        ====================================================== */
-
-        .date-filter {
-
+        .filter-row {
             display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
 
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #546e7a;
+        }
+
+        select,
+        input {
+            height: 42px;
+            border: 1px solid #cfd8dc;
+            border-radius: 8px;
+            padding: 0 12px;
+            font-size: 14px;
+            outline: none;
+            background: white;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: #00897b;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 240px;
+        }
+
+        .search-box input {
+            width: 100%;
+        }
+
+        .date-buttons {
+            display: flex;
             gap: 7px;
-
-            margin-top: 14px;
-
             flex-wrap: wrap;
         }
 
-
         .date-btn {
-
+            height: 38px;
+            padding: 0 14px;
             border: none;
-
-            background: #f1f5f9;
-
-            color: #64748b;
-
-            padding: 9px 15px;
-
-            border-radius: 9px;
-
-            font-family: inherit;
-
-            font-size: 11px;
-
-            font-weight: 800;
-
+            border-radius: 20px;
+            background: #eceff1;
+            color: #455a64;
             cursor: pointer;
-        }
-
-
-        .date-btn:hover {
-
-            background: #e2e8f0;
-        }
-
-
-        .date-btn.active {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #0f766e,
-                    #0e7490
-                );
-
-            color: #ffffff;
-        }
-
-
-        /* =====================================================
-           SUMMARY CARDS
-        ====================================================== */
-
-        .summary-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 14px;
-
-            margin-bottom: 20px;
-        }
-
-
-        .summary-card {
-
-            background: #ffffff;
-
-            border:
-                1px solid #e2eaee;
-
-            border-radius: 15px;
-
-            padding: 17px;
-
-            box-shadow:
-                0 8px 25px
-                rgba(15, 23, 42, .05);
-        }
-
-
-        .summary-label {
-
-            color: #64748b;
-
-            font-size: 10px;
-
-            font-weight: 800;
-
-            text-transform: uppercase;
-        }
-
-
-        .summary-value {
-
-            color: #172033;
-
-            font-size: 25px;
-
-            font-weight: 800;
-
-            margin-top: 7px;
-        }
-
-
-        /* =====================================================
-           DOCTOR CARD
-        ====================================================== */
-
-        .doctor-card {
-
-            background: #ffffff;
-
-            border:
-                1px solid #e2eaee;
-
-            border-radius: 18px;
-
-            margin-bottom: 18px;
-
-            overflow: hidden;
-
-            box-shadow:
-                0 8px 25px
-                rgba(15, 23, 42, .05);
-        }
-
-
-        .doctor-header {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            gap: 12px;
-
-            padding: 16px 18px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #f0fdfa,
-                    #f8fafc
-                );
-
-            border-bottom:
-                1px solid #e5eeee;
-        }
-
-
-        .doctor-name {
-
-            font-size: 15px;
-
-            font-weight: 800;
-
-            color: #0f766e;
-        }
-
-
-        .doctor-count {
-
-            background: #ffffff;
-
-            border:
-                1px solid #d8e9e8;
-
-            color: #475569;
-
-            padding: 6px 10px;
-
-            border-radius: 999px;
-
-            font-size: 10px;
-
-            font-weight: 800;
-        }
-
-
-        /* =====================================================
-           SECTION
-        ====================================================== */
-
-        .appointment-section {
-
-            padding: 16px 18px;
-        }
-
-
-        .section-title {
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            margin-bottom: 10px;
-        }
-
-
-        .section-title h3 {
-
-            font-size: 13px;
-
-            font-weight: 800;
-
-            color: #172033;
-        }
-
-
-        .section-title span {
-
-            font-size: 10px;
-
-            color: #64748b;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           TABLE
-        ====================================================== */
-
-        .table-wrapper {
-
-            width: 100%;
-
-            overflow-x: auto;
-
-            border:
-                1px solid #e8eef0;
-
-            border-radius: 12px;
-        }
-
-
-        table {
-
-            width: 100%;
-
-            min-width: 1050px;
-
-            border-collapse: collapse;
-        }
-
-
-        th {
-
-            background: #f8fafc;
-
-            color: #64748b;
-
-            padding: 11px 10px;
-
-            text-align: left;
-
-            font-size: 9px;
-
-            font-weight: 800;
-
-            text-transform: uppercase;
-
-            white-space: nowrap;
-
-            border-bottom:
-                1px solid #e8eef0;
-        }
-
-
-        td {
-
-            padding: 12px 10px;
-
-            border-bottom:
-                1px solid #eef2f4;
-
-            font-size: 11px;
-
-            color: #334155;
-
-            white-space: nowrap;
-
-            vertical-align: middle;
-        }
-
-
-        tr:last-child td {
-
-            border-bottom: none;
-        }
-
-
-        tbody tr:hover {
-
-            background: #f8fffd;
-        }
-
-
-        .patient-name {
-
-            color: #172033;
-
-            font-weight: 800;
-        }
-
-
-        .mobile {
-
-            color: #475569;
-
             font-weight: 600;
         }
 
+        .date-btn.active {
+            background: #00897b;
+            color: white;
+        }
 
-        .date {
+        /* ================= SUMMARY ================= */
 
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 18px;
+            border-radius: 13px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+        }
+
+        .summary-card .label {
+            color: #78909c;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .summary-card .value {
+            color: #00695c;
+            font-size: 26px;
             font-weight: 700;
-
-            color: #334155;
         }
 
+        /* ================= SECTION ================= */
 
-        /* =====================================================
-           STATUS
-        ====================================================== */
-
-        .patient-status {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            min-width: 58px;
-
-            padding: 5px 8px;
-
-            border-radius: 999px;
-
-            font-size: 9px;
-
-            font-weight: 800;
+        .section {
+            background: white;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 22px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
         }
 
-
-        .patient-status.new {
-
-            background: #eff6ff;
-
-            color: #2563eb;
-
-            border:
-                1px solid #dbeafe;
-        }
-
-
-        .patient-status.old {
-
-            background: #ecfdf5;
-
-            color: #15803d;
-
-            border:
-                1px solid #bbf7d0;
-        }
-
-
-        /* =====================================================
-           VISIT
-        ====================================================== */
-
-        .visit-number {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            min-width: 34px;
-
-            height: 28px;
-
-            border-radius: 8px;
-
-            background: #f1f5f9;
-
-            color: #334155;
-
-            font-weight: 800;
-
-            font-size: 10px;
-        }
-
-
-        /* =====================================================
-           AMOUNT
-        ====================================================== */
-
-        .amount {
-
-            color: #0f766e;
-
-            font-weight: 800;
-
-            font-size: 12px;
-        }
-
-
-        .amount::before {
-
-            content: "₹";
-        }
-
-
-        /* =====================================================
-           BUTTONS
-        ====================================================== */
-
-        .action-group {
-
+        .section-header {
             display: flex;
-
+            justify-content: space-between;
             align-items: center;
-
-            gap: 6px;
+            margin-bottom: 15px;
         }
 
+        .section-title {
+            font-size: 19px;
+            font-weight: 700;
+            color: #00695c;
+        }
 
-        .action-btn {
+        .section-count {
+            background: #e0f2f1;
+            color: #00695c;
+            padding: 5px 11px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
 
-            border: none;
+        /* ================= TABLE ================= */
 
-            border-radius: 7px;
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
 
-            padding: 7px 9px;
+        .appointments-table {
+            width: 100%;
+            min-width: 1150px;
+            border-collapse: collapse;
+        }
 
-            font-family: inherit;
+        .appointments-table th {
+            background: #f1f8f7;
+            color: #455a64;
+            padding: 13px 10px;
+            text-align: left;
+            font-size: 12px;
+            white-space: nowrap;
+            border-bottom: 2px solid #e0e0e0;
+        }
 
-            font-size: 9px;
-
-            font-weight: 800;
-
-            cursor: pointer;
-
+        .appointments-table td {
+            padding: 13px 10px;
+            border-bottom: 1px solid #eeeeee;
+            font-size: 13px;
+            vertical-align: middle;
             white-space: nowrap;
         }
 
-
-        .old-btn {
-
-            background: #fff7ed;
-
-            color: #c2410c;
-
-            border:
-                1px solid #fed7aa;
+        .appointments-table tbody tr:hover {
+            background: #f8fbfb;
         }
 
-
-        .old-btn:hover {
-
-            background: #ffedd5;
+        .patient-name {
+            font-weight: 700;
+            color: #263238;
         }
 
-
-        .old-btn:disabled {
-
-            opacity: .6;
-
-            cursor: not-allowed;
+        .mobile-number {
+            color: #546e7a;
         }
 
-
-        .old-btn.done {
-
-            background: #ecfdf5;
-
-            color: #15803d;
-
-            border-color: #bbf7d0;
+        .amount {
+            font-weight: 700;
+            color: #00695c;
+            font-size: 14px;
         }
 
+        /* ================= TYPE ================= */
 
-        .follow-btn {
-
-            background: #eff6ff;
-
-            color: #2563eb;
-
-            border:
-                1px solid #dbeafe;
-
-            text-decoration: none;
-
-            display: inline-flex;
-
-            align-items: center;
+        .patient-type {
+            display: inline-block;
+            min-width: 55px;
+            text-align: center;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
         }
 
-
-        .follow-btn:hover {
-
-            background: #dbeafe;
+        .new-type {
+            background: #e8f5e9;
+            color: #2e7d32;
         }
 
+        .old-type {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
 
-        /* =====================================================
-           EMPTY
-        ====================================================== */
+        /* ================= STATUS ================= */
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .status-pending {
+            background: #fff8e1;
+            color: #f57f17;
+        }
+
+        .status-completed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-cancelled {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .action-box {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 7px;
+            padding: 7px 11px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .btn-old {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .btn-old:hover {
+            background: #bbdefb;
+        }
+
+        .btn-follow {
+            background: #e0f2f1;
+            color: #00695c;
+        }
+
+        .btn-follow:hover {
+            background: #b2dfdb;
+        }
+
+        /* ================= DOCTOR ================= */
+
+        .doctor-title {
+            margin: 20px 0 10px;
+            padding: 10px 13px;
+            background: #f5f7f8;
+            border-left: 4px solid #00897b;
+            border-radius: 7px;
+            color: #37474f;
+            font-weight: 700;
+        }
+
+        /* ================= EMPTY ================= */
 
         .empty {
-
-            padding: 35px 20px;
-
             text-align: center;
-
-            color: #94a3b8;
-
-            font-size: 12px;
-
-            font-weight: 700;
+            padding: 35px 15px;
+            color: #90a4ae;
         }
 
-
-        .hidden {
-
-            display: none !important;
+        .empty-icon {
+            font-size: 35px;
+            margin-bottom: 10px;
         }
 
-
-        /* =====================================================
-           TOAST
-        ====================================================== */
-
-        #toast {
-
-            position: fixed;
-
-            left: 50%;
-
-            bottom: 25px;
-
-            transform:
-                translate(-50%, 100px);
-
-            background: #172033;
-
-            color: #ffffff;
-
-            padding: 12px 18px;
-
-            border-radius: 10px;
-
-            font-size: 11px;
-
-            font-weight: 700;
-
-            z-index: 99999;
-
-            opacity: 0;
-
-            transition:
-                .3s ease;
-        }
-
-
-        #toast.show {
-
-            opacity: 1;
-
-            transform:
-                translate(-50%, 0);
-        }
-
-
-        #toast.success {
-
-            background: #15803d;
-        }
-
-
-        #toast.error {
-
-            background: #dc2626;
-        }
-
-
-        /* =====================================================
-           LOADING
-        ====================================================== */
+        /* ================= LOADING ================= */
 
         .loading {
-
-            padding: 40px;
-
             text-align: center;
-
-            color: #64748b;
-
-            font-size: 12px;
-
-            font-weight: 700;
+            padding: 30px;
+            color: #607d8b;
         }
 
-
-        .spinner {
-
-            display: inline-block;
-
-            width: 17px;
-
-            height: 17px;
-
-            border:
-                2px solid #dbeafe;
-
-            border-top-color:
-                #0f766e;
-
-            border-radius: 50%;
-
-            animation:
-                spin .7s linear infinite;
-
-            vertical-align: middle;
-
-            margin-right: 7px;
-        }
-
-
-        @keyframes spin {
-
-            to {
-                transform: rotate(360deg);
-            }
-
-        }
-
-
-        /* =====================================================
-           MOBILE
-        ====================================================== */
+        /* ================= MOBILE ================= */
 
         @media (max-width: 900px) {
 
-            .page {
-
-                padding: 12px;
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
-
 
             .header {
-
-                padding: 16px;
-
-                align-items: flex-start;
-
-                flex-direction: column;
+                padding: 15px;
             }
 
-
-            .total-badge {
-
-                align-self: flex-start;
+            .header-left h1 {
+                font-size: 20px;
             }
+        }
 
+        @media (max-width: 600px) {
 
-            .filter-grid {
-
-                grid-template-columns: 1fr;
+            .container {
+                width: 94%;
+                margin-top: 15px;
             }
-
 
             .summary-grid {
-
-                grid-template-columns:
-                    repeat(2, 1fr);
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
             }
 
-
-            .doctor-header {
-
+            .summary-card {
                 padding: 14px;
             }
 
-
-            .appointment-section {
-
-                padding: 12px;
-            }
-
-        }
-
-
-        @media (max-width: 480px) {
-
-            .page {
-
-                padding: 7px;
-            }
-
-
-            .brand {
-
+            .summary-card .value {
                 font-size: 21px;
             }
 
-
-            .page-title {
-
-                font-size: 18px;
+            .header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
             }
 
-
-            .page-subtitle {
-
-                font-size: 10px;
+            .total-badge {
+                align-self: flex-start;
             }
-
-
-            .filter-panel {
-
-                padding: 12px;
-            }
-
-
-            .summary-grid {
-
-                gap: 8px;
-            }
-
-
-            .summary-card {
-
-                padding: 12px;
-            }
-
-
-            .summary-value {
-
-                font-size: 21px;
-            }
-
-
-            .date-filter {
-
-                gap: 5px;
-            }
-
-
-            .date-btn {
-
-                flex: 1;
-
-                padding: 8px 6px;
-
-                font-size: 9px;
-            }
-
         }
-
     </style>
-
 </head>
-
 
 <body>
 
+<!-- ================= HEADER ================= -->
 
-<div class="page">
+<header class="header">
 
-    <div class="container">
+    <div class="header-left">
+        <h1>📅 Doctor Appointments</h1>
+        <p>Manage hospital appointments and patients</p>
+    </div>
+
+    <div class="total-badge">
+        Total Appointments:
+        <strong id="totalAppointments">0</strong>
+    </div>
+
+</header>
 
 
-        <!-- =================================================
-             HEADER
-        ================================================== -->
+<div class="container">
 
-        <div class="header">
+    <!-- ================= FILTERS ================= -->
 
-            <div class="header-left">
+    <div class="filter-box">
 
-                <div class="brand">
-                    Statusly<span>.in</span>
-                </div>
+        <div class="filter-row">
 
-                <div class="page-title">
-                    Doctor Appointments
-                </div>
+            <div class="filter-group">
 
-                <div class="page-subtitle">
-                    View and manage hospital patient appointments.
-                </div>
+                <label>Doctor</label>
+
+                <select id="doctorFilter">
+                    <option value="all">All Doctors</option>
+                </select>
 
             </div>
 
+
+            <div class="filter-group search-box">
+
+                <label>Search Patient / Doctor / Mobile</label>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search patient, doctor or mobile..."
+                >
+
+            </div>
+
+        </div>
+
+
+        <br>
+
+
+        <div class="date-buttons">
+
+            <button
+                class="date-btn active"
+                data-filter="all">
+                All
+            </button>
+
+            <button
+                class="date-btn"
+                data-filter="today">
+                Today
+            </button>
+
+            <button
+                class="date-btn"
+                data-filter="upcoming">
+                Upcoming
+            </button>
+
+            <button
+                class="date-btn"
+                data-filter="past">
+                Past
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SUMMARY ================= -->
+
+    <div class="summary-grid">
+
+        <div class="summary-card">
+
+            <div class="label">
+                Total Patients
+            </div>
 
             <div
-                id="totalBadge"
-                class="total-badge"
-            >
-                Total: 0
+                class="value"
+                id="totalPatients">
+                0
             </div>
 
         </div>
 
 
-        <!-- =================================================
-             FILTERS
-        ================================================== -->
+        <div class="summary-card">
 
-        <div class="filter-panel">
-
-
-            <div class="filter-grid">
-
-
-                <div class="filter-field">
-
-                    <label>
-                        Doctor
-                    </label>
-
-                    <select id="doctorFilter">
-
-                        <option value="all">
-                            All Doctors
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="filter-field">
-
-                    <label>
-                        Search Patient / Doctor / Mobile
-                    </label>
-
-                    <input
-                        id="searchInput"
-                        type="text"
-                        placeholder="Search patient name, doctor or mobile..."
-                    >
-
-                </div>
-
-
-                <div class="filter-field">
-
-                    <label>
-                        Date
-                    </label>
-
-                    <input
-                        id="specificDate"
-                        type="date"
-                    >
-
-                </div>
-
-
+            <div class="label">
+                Doctors
             </div>
 
-
-            <div class="date-filter">
-
-                <button
-                    class="date-btn active"
-                    data-filter="all"
-                >
-                    All
-                </button>
-
-                <button
-                    class="date-btn"
-                    data-filter="today"
-                >
-                    Today
-                </button>
-
-                <button
-                    class="date-btn"
-                    data-filter="upcoming"
-                >
-                    Upcoming
-                </button>
-
-                <button
-                    class="date-btn"
-                    data-filter="past"
-                >
-                    Past
-                </button>
-
+            <div
+                class="value"
+                id="totalDoctors">
+                0
             </div>
-
 
         </div>
 
 
-        <!-- =================================================
-             SUMMARY
-        ================================================== -->
+        <div class="summary-card">
 
-        <div class="summary-grid">
-
-
-            <div class="summary-card">
-
-                <div class="summary-label">
-                    Total Patients
-                </div>
-
-                <div
-                    id="summaryTotal"
-                    class="summary-value"
-                >
-                    0
-                </div>
-
+            <div class="label">
+                Today's Appointments
             </div>
 
-
-            <div class="summary-card">
-
-                <div class="summary-label">
-                    Doctors
-                </div>
-
-                <div
-                    id="summaryDoctors"
-                    class="summary-value"
-                >
-                    0
-                </div>
-
+            <div
+                class="value"
+                id="todayAppointments">
+                0
             </div>
-
-
-            <div class="summary-card">
-
-                <div class="summary-label">
-                    Today
-                </div>
-
-                <div
-                    id="summaryToday"
-                    class="summary-value"
-                >
-                    0
-                </div>
-
-            </div>
-
-
-            <div class="summary-card">
-
-                <div class="summary-label">
-                    Upcoming
-                </div>
-
-                <div
-                    id="summaryUpcoming"
-                    class="summary-value"
-                >
-                    0
-                </div>
-
-            </div>
-
 
         </div>
 
 
-        <!-- =================================================
-             APPOINTMENTS
-        ================================================== -->
+        <div class="summary-card">
+
+            <div class="label">
+                Upcoming
+            </div>
+
+            <div
+                class="value"
+                id="upcomingAppointments">
+                0
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= APPOINTMENTS ================= -->
+
+    <div class="section">
+
+        <div class="section-header">
+
+            <div class="section-title">
+                📋 Appointments
+            </div>
+
+            <div
+                class="section-count"
+                id="visibleCount">
+                0
+            </div>
+
+        </div>
+
 
         <div id="appointmentsContainer">
 
             <div class="loading">
-
-                <span class="spinner"></span>
-
                 Loading appointments...
-
             </div>
 
         </div>
-
 
     </div>
 
 </div>
 
 
-<div id="toast"></div>
-
-
 <script>
 
+    /* =========================================================
+       FIREBASE CONFIG
+       SAME CONFIG AS LOGIN.HTML
+       ========================================================= */
 
-/* =========================================================
-   FIREBASE CONFIG
-   SAME CONFIG AS login.html
-========================================================= */
+    const firebaseConfig = {
 
-const firebaseConfig = {
+        apiKey:
+            "AIzaSyDbHoUVO_oXHCnY040sBLOiXVS6s6xJEb8",
 
-    apiKey:
-        "AIzaSyDbHoUVO_oXHCnY040sBLOiXVS6s6xJEb8",
+        authDomain:
+            "hospital-57fc8.firebaseapp.com",
 
-    authDomain:
-        "hospital-57fc8.firebaseapp.com",
+        databaseURL:
+            "https://hospital-57fc8-default-rtdb.firebaseio.com",
 
-    databaseURL:
-        "https://hospital-57fc8-default-rtdb.firebaseio.com",
+        projectId:
+            "hospital-57fc8",
 
-    projectId:
-        "hospital-57fc8",
+        storageBucket:
+            "hospital-57fc8.firebasestorage.app",
 
-    storageBucket:
-        "hospital-57fc8.firebasestorage.app",
+        messagingSenderId:
+            "711314420912",
 
-    messagingSenderId:
-        "711314420912",
+        appId:
+            "1:711314420912:web:14ec889664980679a13775"
 
-    appId:
-        "1:711314420912:web:14ec889664980679a13775"
-
-};
-
-
-/* =========================================================
-   FIREBASE INITIALIZATION
-========================================================= */
-
-if (!firebase.apps.length) {
-
-    firebase.initializeApp(
-        firebaseConfig
-    );
-
-}
+    };
 
 
-const auth =
-    firebase.auth();
+    /* =========================================================
+       INITIALIZE FIREBASE
+       ========================================================= */
 
-
-/* =========================================================
-   HOSPITAL ID
-========================================================= */
-
-const hospitalId =
-    "{{ uid }}";
-
-
-/* =========================================================
-   DATA
-========================================================= */
-
-let allAppointments = [];
-
-let activeDateFilter = "all";
-
-
-/* =========================================================
-   NORMALIZE MOBILE
-========================================================= */
-
-function normalizeMobile(mobile) {
-
-    let digits =
-        String(mobile || "")
-            .replace(/\D/g, "");
-
-    if (
-        digits.length === 12 &&
-        digits.startsWith("91")
-    ) {
-
-        digits =
-            digits.slice(-10);
-
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
     }
 
-    return digits;
-}
+    const auth = firebase.auth();
 
 
-/* =========================================================
-   DATE HELPERS
-========================================================= */
+    /* =========================================================
+       DATA
+       ========================================================= */
 
-function toDateObject(value) {
+    let allAppointments = [];
 
-    if (!value) {
-        return null;
-    }
+    let currentDateFilter = "all";
 
-    const str =
-        String(value).trim();
+    let currentDoctor = "all";
+
+    let currentSearch = "";
 
 
-    /*
-     * YYYY-MM-DD
-     */
+    /* =========================================================
+       GET UID
+       ========================================================= */
 
-    if (
-        /^\d{4}-\d{2}-\d{2}$/.test(str)
-    ) {
+    function getHospitalId() {
 
-        const parts =
-            str.split("-");
-
-        return new Date(
-            Number(parts[0]),
-            Number(parts[1]) - 1,
-            Number(parts[2])
+        return (
+            localStorage.getItem("hospitalId") ||
+            localStorage.getItem("uid") ||
+            ""
         );
 
     }
 
 
-    /*
-     * DD-MM-YYYY
-     */
+    /* =========================================================
+       DATE PARSER
+       ========================================================= */
 
-    if (
-        /^\d{2}-\d{2}-\d{4}$/.test(str)
-    ) {
+    function parseDate(value) {
 
-        const parts =
-            str.split("-");
-
-        return new Date(
-            Number(parts[2]),
-            Number(parts[1]) - 1,
-            Number(parts[0])
-        );
-
-    }
-
-
-    /*
-     * DD/MM/YYYY
-     */
-
-    if (
-        /^\d{2}\/\d{2}\/\d{4}$/.test(str)
-    ) {
-
-        const parts =
-            str.split("/");
-
-        return new Date(
-            Number(parts[2]),
-            Number(parts[1]) - 1,
-            Number(parts[0])
-        );
-
-    }
-
-
-    const parsed =
-        new Date(str);
-
-    return isNaN(
-        parsed.getTime()
-    )
-        ? null
-        : parsed;
-}
-
-
-/* =========================================================
-   LOCAL DATE
-========================================================= */
-
-function todayISO() {
-
-    const now =
-        new Date();
-
-    const year =
-        now.getFullYear();
-
-    const month =
-        String(
-            now.getMonth() + 1
-        ).padStart(2, "0");
-
-    const day =
-        String(
-            now.getDate()
-        ).padStart(2, "0");
-
-    return (
-        year +
-        "-" +
-        month +
-        "-" +
-        day
-    );
-
-}
-
-
-/* =========================================================
-   DATE KEY
-========================================================= */
-
-function dateKey(value) {
-
-    const date =
-        toDateObject(value);
-
-    if (!date) {
-        return "";
-    }
-
-    const year =
-        date.getFullYear();
-
-    const month =
-        String(
-            date.getMonth() + 1
-        ).padStart(2, "0");
-
-    const day =
-        String(
-            date.getDate()
-        ).padStart(2, "0");
-
-    return (
-        year +
-        "-" +
-        month +
-        "-" +
-        day
-    );
-
-}
-
-
-/* =========================================================
-   DATE STATUS
-========================================================= */
-
-function getDateStatus(value) {
-
-    const key =
-        dateKey(value);
-
-    const today =
-        todayISO();
-
-
-    if (!key) {
-        return "past";
-    }
-
-
-    if (key === today) {
-        return "today";
-    }
-
-
-    if (key > today) {
-        return "upcoming";
-    }
-
-
-    return "past";
-}
-
-
-/* =========================================================
-   TIME TO NUMBER
-========================================================= */
-
-function timeNumber(value) {
-
-    if (!value) {
-        return 0;
-    }
-
-    const str =
-        String(value)
-            .trim()
-            .toUpperCase();
-
-
-    let match =
-        str.match(
-            /^(\d{1,2}):(\d{2})\s*(AM|PM)?$/
-        );
-
-
-    if (!match) {
-
-        return 0;
-
-    }
-
-
-    let hour =
-        Number(match[1]);
-
-    const minute =
-        Number(match[2]);
-
-    const ampm =
-        match[3];
-
-
-    if (ampm === "AM" && hour === 12) {
-        hour = 0;
-    }
-
-
-    if (ampm === "PM" && hour !== 12) {
-        hour += 12;
-    }
-
-
-    return (
-        hour * 60 +
-        minute
-    );
-
-}
-
-
-/* =========================================================
-   SORT APPOINTMENTS
-   LATEST FIRST
-========================================================= */
-
-function sortAppointments(list) {
-
-    return list.sort(
-        (a, b) => {
-
-            const dateA =
-                toDateObject(
-                    a.appointment_date
-                );
-
-            const dateB =
-                toDateObject(
-                    b.appointment_date
-                );
-
-
-            const timeA =
-                timeNumber(
-                    a.appointment_time
-                );
-
-            const timeB =
-                timeNumber(
-                    b.appointment_time
-                );
-
-
-            const valueA =
-                dateA
-                    ? dateA.getTime()
-                    : 0;
-
-            const valueB =
-                dateB
-                    ? dateB.getTime()
-                    : 0;
-
-
-            if (
-                valueA !== valueB
-            ) {
-
-                return valueB - valueA;
-
-            }
-
-
-            return timeB - timeA;
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   FORMAT DATE
-========================================================= */
-
-function formatDate(value) {
-
-    const date =
-        toDateObject(value);
-
-    if (!date) {
-        return "-";
-    }
-
-
-    return date.toLocaleDateString(
-        "en-IN",
-        {
-            day: "2-digit",
-            month: "short",
-            year: "numeric"
-        }
-    );
-
-}
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHtml(value) {
-
-    return String(
-        value ?? ""
-    )
-    .replace(
-        /&/g,
-        "&amp;"
-    )
-    .replace(
-        /</g,
-        "&lt;"
-    )
-    .replace(
-        />/g,
-        "&gt;"
-    )
-    .replace(
-        /"/g,
-        "&quot;"
-    )
-    .replace(
-        /'/g,
-        "&#039;"
-    );
-
-}
-
-
-/* =========================================================
-   SHOW TOAST
-========================================================= */
-
-let toastTimer = null;
-
-
-function showToast(
-    message,
-    type = "success"
-) {
-
-    const toast =
-        document.getElementById(
-            "toast"
-        );
-
-
-    toast.textContent =
-        message;
-
-
-    toast.className =
-        "";
-
-
-    toast.classList.add(
-        "show",
-        type
-    );
-
-
-    clearTimeout(
-        toastTimer
-    );
-
-
-    toastTimer =
-        setTimeout(
-            () => {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            3000
-        );
-
-}
-
-
-/* =========================================================
-   GET FIREBASE USER
-========================================================= */
-
-async function getFirebaseUser() {
-
-    if (auth.currentUser) {
-
-        return auth.currentUser;
-
-    }
-
-
-    return new Promise(
-        (resolve, reject) => {
-
-            let finished = false;
-
-
-            const unsubscribe =
-                auth.onAuthStateChanged(
-                    user => {
-
-                        if (finished) {
-                            return;
-                        }
-
-
-                        finished = true;
-
-                        unsubscribe();
-
-
-                        if (user) {
-
-                            resolve(user);
-
-                        }
-                        else {
-
-                            reject(
-                                new Error(
-                                    "Firebase user is not logged in."
-                                )
-                            );
-
-                        }
-
-                    }
-                );
-
-
-            setTimeout(
-                () => {
-
-                    if (finished) {
-                        return;
-                    }
-
-
-                    finished = true;
-
-                    unsubscribe();
-
-
-                    reject(
-                        new Error(
-                            "Firebase authentication timeout."
-                        )
-                    );
-
-                },
-                10000
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   LOAD APPOINTMENTS FROM PAGE
-========================================================= */
-
-function loadAppointments() {
-
-    /*
-     * Jinja sends backend appointments
-     * into JavaScript.
-     */
-
-    const rawAppointments =
-        {{ patients|default([])|tojson }};
-
-
-    if (
-        Array.isArray(
-            rawAppointments
-        )
-    ) {
-
-        allAppointments =
-            rawAppointments.map(
-                appointment => {
-
-                    return {
-                        ...appointment
-                    };
-
-                }
-            );
-
-    }
-    else {
-
-        allAppointments = [];
-
-    }
-
-
-    /*
-     * Make sure appointment IDs exist
-     */
-
-    allAppointments =
-        allAppointments.map(
-            (appointment, index) => {
-
-                if (
-                    !appointment.id &&
-                    appointment.appointment_id
-                ) {
-
-                    appointment.id =
-                        appointment.appointment_id;
-
-                }
-
-
-                if (!appointment.id) {
-
-                    appointment.id =
-                        "appointment-" +
-                        index;
-
-                }
-
-
-                if (
-                    !appointment.patient_status
-                ) {
-
-                    appointment.patient_status =
-                        "NEW";
-
-                }
-
-
-                if (
-                    !appointment.visit_number
-                ) {
-
-                    appointment.visit_number =
-                        "-";
-
-                }
-
-
-                if (
-                    appointment.charge === undefined ||
-                    appointment.charge === null
-                ) {
-
-                    appointment.charge = 0;
-
-                }
-
-
-                return appointment;
-
-            }
-        );
-
-
-    sortAppointments(
-        allAppointments
-    );
-
-
-    populateDoctorFilter();
-
-    updateSummary();
-
-    renderAppointments();
-
-}
-
-
-/* =========================================================
-   POPULATE DOCTOR FILTER
-========================================================= */
-
-function populateDoctorFilter() {
-
-    const select =
-        document.getElementById(
-            "doctorFilter"
-        );
-
-
-    const doctors =
-        new Set();
-
-
-    allAppointments.forEach(
-        appointment => {
-
-            const doctor =
-                String(
-                    appointment.doctor_name || ""
-                ).trim();
-
-
-            if (doctor) {
-
-                doctors.add(
-                    doctor
-                );
-
-            }
-
-        }
-    );
-
-
-    select.innerHTML =
-        '<option value="all">All Doctors</option>';
-
-
-    Array.from(doctors)
-        .sort(
-            (a, b) =>
-                a.localeCompare(b)
-        )
-        .forEach(
-            doctor => {
-
-                const option =
-                    document.createElement(
-                        "option"
-                    );
-
-                option.value =
-                    doctor;
-
-                option.textContent =
-                    doctor;
-
-                select.appendChild(
-                    option
-                );
-
-            }
-        );
-
-}
-
-
-/* =========================================================
-   GET FILTERED APPOINTMENTS
-========================================================= */
-
-function getFilteredAppointments() {
-
-    const search =
-        document
-            .getElementById(
-                "searchInput"
-            )
-            .value
-            .trim()
-            .toLowerCase();
-
-
-    const doctor =
-        document
-            .getElementById(
-                "doctorFilter"
-            )
-            .value;
-
-
-    const specificDate =
-        document
-            .getElementById(
-                "specificDate"
-            )
-            .value;
-
-
-    let filtered =
-        allAppointments.filter(
-            appointment => {
-
-                const patient =
-                    String(
-                        appointment.patient_name || ""
-                    ).toLowerCase();
-
-
-                const doctorName =
-                    String(
-                        appointment.doctor_name || ""
-                    ).toLowerCase();
-
-
-                const mobile =
-                    String(
-                        appointment.mobile || ""
-                    ).toLowerCase();
-
-
-                const matchesSearch =
-                    !search ||
-                    patient.includes(search) ||
-                    doctorName.includes(search) ||
-                    mobile.includes(search);
-
-
-                const matchesDoctor =
-                    doctor === "all" ||
-                    String(
-                        appointment.doctor_name || ""
-                    ) === doctor;
-
-
-                const matchesDate =
-                    !specificDate ||
-                    dateKey(
-                        appointment.appointment_date
-                    ) === specificDate;
-
-
-                const matchesSection =
-                    activeDateFilter === "all" ||
-                    getDateStatus(
-                        appointment.appointment_date
-                    ) === activeDateFilter;
-
-
-                return (
-                    matchesSearch &&
-                    matchesDoctor &&
-                    matchesDate &&
-                    matchesSection
-                );
-
-            }
-        );
-
-
-    return sortAppointments(
-        filtered
-    );
-
-}
-
-
-/* =========================================================
-   UPDATE SUMMARY
-========================================================= */
-
-function updateSummary() {
-
-    const total =
-        allAppointments.length;
-
-
-    const doctors =
-        new Set();
-
-
-    let today = 0;
-
-    let upcoming = 0;
-
-
-    allAppointments.forEach(
-        appointment => {
-
-            if (
-                appointment.doctor_name
-            ) {
-
-                doctors.add(
-                    appointment.doctor_name
-                );
-
-            }
-
-
-            const status =
-                getDateStatus(
-                    appointment.appointment_date
-                );
-
-
-            if (
-                status === "today"
-            ) {
-
-                today++;
-
-            }
-
-
-            if (
-                status === "upcoming"
-            ) {
-
-                upcoming++;
-
-            }
-
-        }
-    );
-
-
-    document
-        .getElementById(
-            "summaryTotal"
-        )
-        .textContent =
-        total;
-
-
-    document
-        .getElementById(
-            "summaryDoctors"
-        )
-        .textContent =
-        doctors.size;
-
-
-    document
-        .getElementById(
-            "summaryToday"
-        )
-        .textContent =
-        today;
-
-
-    document
-        .getElementById(
-            "summaryUpcoming"
-        )
-        .textContent =
-        upcoming;
-
-
-    document
-        .getElementById(
-            "totalBadge"
-        )
-        .textContent =
-        "Total: " + total;
-
-}
-
-
-/* =========================================================
-   RENDER APPOINTMENTS
-========================================================= */
-
-function renderAppointments() {
-
-    const container =
-        document.getElementById(
-            "appointmentsContainer"
-        );
-
-
-    const appointments =
-        getFilteredAppointments();
-
-
-    if (
-        appointments.length === 0
-    ) {
-
-        container.innerHTML = `
-
-            <div class="doctor-card">
-
-                <div class="empty">
-
-                    No appointments found.
-
-                </div>
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    /*
-     * Group by doctor
-     */
-
-    const grouped =
-        {};
-
-
-    appointments.forEach(
-        appointment => {
-
-            const doctor =
-                appointment.doctor_name ||
-                "Doctor";
-
-
-            if (
-                !grouped[doctor]
-            ) {
-
-                grouped[doctor] = [];
-
-            }
-
-
-            grouped[doctor].push(
-                appointment
-            );
-
-        }
-    );
-
-
-    let html = "";
-
-
-    Object.keys(grouped)
-        .sort()
-        .forEach(
-            doctor => {
-
-                const list =
-                    grouped[doctor];
-
-
-                html += `
-
-                    <div
-                        class="doctor-card"
-                    >
-
-                        <div class="doctor-header">
-
-                            <div class="doctor-name">
-
-                                👨‍⚕️
-                                ${escapeHtml(doctor)}
-
-                            </div>
-
-                            <div class="doctor-count">
-
-                                ${list.length}
-                                Appointments
-
-                            </div>
-
-                        </div>
-
-                `;
-
-
-                /*
-                 * Separate today / upcoming / past
-                 */
-
-                const sections = [
-                    {
-                        key: "today",
-                        title: "Today"
-                    },
-                    {
-                        key: "upcoming",
-                        title: "Upcoming"
-                    },
-                    {
-                        key: "past",
-                        title: "Past"
-                    }
-                ];
-
-
-                sections.forEach(
-                    section => {
-
-                        const sectionAppointments =
-                            list.filter(
-                                appointment =>
-                                    getDateStatus(
-                                        appointment.appointment_date
-                                    ) ===
-                                    section.key
-                            );
-
-
-                        if (
-                            sectionAppointments.length === 0
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        /*
-                         * Latest first
-                         */
-
-                        sortAppointments(
-                            sectionAppointments
-                        );
-
-
-                        html += `
-
-                            <div
-                                class="appointment-section"
-                            >
-
-                                <div class="section-title">
-
-                                    <h3>
-                                        ${section.title}
-                                    </h3>
-
-                                    <span>
-                                        ${sectionAppointments.length}
-                                        appointment(s)
-                                    </span>
-
-                                </div>
-
-
-                                <div class="table-wrapper">
-
-                                    <table>
-
-                                        <thead>
-
-                                            <tr>
-
-                                                <th>
-                                                    No
-                                                </th>
-
-                                                <th>
-                                                    Patient
-                                                </th>
-
-                                                <th>
-                                                    Visit
-                                                </th>
-
-                                                <th>
-                                                    Status
-                                                </th>
-
-                                                <th>
-                                                    Gender
-                                                </th>
-
-                                                <th>
-                                                    Age
-                                                </th>
-
-                                                <th>
-                                                    Mobile
-                                                </th>
-
-                                                <th>
-                                                    Date
-                                                </th>
-
-                                                <th>
-                                                    Time
-                                                </th>
-
-                                                <th>
-                                                    Amount
-                                                </th>
-
-                                                <th>
-                                                    Action
-                                                </th>
-
-                                            </tr>
-
-                                        </thead>
-
-                                        <tbody>
-
-                        `;
-
-
-                        sectionAppointments.forEach(
-                            (appointment, index) => {
-
-                                const status =
-                                    String(
-                                        appointment.patient_status ||
-                                        "NEW"
-                                    ).toUpperCase();
-
-
-                                const normalizedStatus =
-                                    status === "OLD"
-                                        ? "OLD"
-                                        : "NEW";
-
-
-                                const mobile =
-                                    appointment.mobile ||
-                                    "";
-
-
-                                const visit =
-                                    appointment.visit_number ||
-                                    "-";
-
-
-                                const charge =
-                                    Number(
-                                        appointment.charge || 0
-                                    );
-
-
-                                const amount =
-                                    Number.isFinite(
-                                        charge
-                                    )
-                                        ? charge
-                                        : 0;
-
-
-                                html += `
-
-                                    <tr
-                                        data-appointment-id="${escapeHtml(
-                                            appointment.id || ""
-                                        )}"
-                                        data-patient-mobile="${escapeHtml(
-                                            mobile
-                                        )}"
-                                    >
-
-                                        <td>
-                                            ${index + 1}
-                                        </td>
-
-
-                                        <td>
-
-                                            <div class="patient-name">
-
-                                                ${escapeHtml(
-                                                    appointment.patient_name ||
-                                                    "Unknown Patient"
-                                                )}
-
-                                            </div>
-
-                                        </td>
-
-
-                                        <td>
-
-                                            <span class="visit-number">
-
-                                                ${escapeHtml(
-                                                    visit
-                                                )}
-
-                                            </span>
-
-                                        </td>
-
-
-                                        <td>
-
-                                            <span
-                                                class="patient-status ${
-                                                    normalizedStatus === "OLD"
-                                                        ? "old"
-                                                        : "new"
-                                                }"
-                                            >
-
-                                                ${normalizedStatus}
-
-                                            </span>
-
-                                        </td>
-
-
-                                        <td>
-
-                                            ${escapeHtml(
-                                                appointment.gender ||
-                                                "-"
-                                            )}
-
-                                        </td>
-
-
-                                        <td>
-
-                                            ${escapeHtml(
-                                                appointment.age ||
-                                                "-"
-                                            )}
-
-                                        </td>
-
-
-                                        <td>
-
-                                            <span class="mobile">
-
-                                                ${escapeHtml(
-                                                    mobile ||
-                                                    "-"
-                                                )}
-
-                                            </span>
-
-                                        </td>
-
-
-                                        <td>
-
-                                            <span class="date">
-
-                                                ${formatDate(
-                                                    appointment.appointment_date
-                                                )}
-
-                                            </span>
-
-                                        </td>
-
-
-                                        <td>
-
-                                            ${escapeHtml(
-                                                appointment.appointment_time ||
-                                                "-"
-                                            )}
-
-                                        </td>
-
-
-                                        <td>
-
-                                            <span class="amount">
-
-                                                ${amount.toFixed(2)}
-
-                                            </span>
-
-                                        </td>
-
-
-                                        <td>
-
-                                            <div class="action-group">
-
-                        `;
-
-
-                                /*
-                                 * Only NEW patient gets Mark OLD.
-                                 */
-
-                                if (
-                                    normalizedStatus ===
-                                    "NEW"
-                                ) {
-
-                                    html += `
-
-                                        <button
-                                            type="button"
-                                            class="action-btn old-btn"
-                                            data-appointment-id="${escapeHtml(
-                                                appointment.id || ""
-                                            )}"
-                                            data-patient-mobile="${escapeHtml(
-                                                mobile
-                                            )}"
-                                            onclick="markPatientOld(this)"
-                                        >
-
-                                            Mark OLD
-
-                                        </button>
-
-                                    `;
-
-                                }
-                                else {
-
-                                    html += `
-
-                                        <span
-                                            class="action-btn old-btn done"
-                                        >
-                                            OLD
-                                        </span>
-
-                                    `;
-
-                                }
-
-
-                                /*
-                                 * Follow-up
-                                 */
-
-                                html += `
-
-                                    <a
-                                        href="/followups/${encodeURIComponent(
-                                            hospitalId
-                                        )}"
-                                        class="action-btn follow-btn"
-                                    >
-
-                                        Follow-up
-
-                                    </a>
-
-                                `;
-
-
-                                html += `
-
-                                            </div>
-
-                                        </td>
-
-                                    </tr>
-
-                                `;
-
-                            }
-                        );
-
-
-                        html += `
-
-                                        </tbody>
-
-                                    </table>
-
-                                </div>
-
-                            </div>
-
-                        `;
-
-                    }
-                );
-
-
-                html += `
-
-                    </div>
-
-                `;
-
-            }
-        );
-
-
-    container.innerHTML =
-        html;
-
-}
-
-
-/* =========================================================
-   MARK PATIENT OLD
-========================================================= */
-
-async function markPatientOld(button) {
-
-    if (
-        !button ||
-        button.disabled
-    ) {
-
-        return;
-
-    }
-
-
-    const appointmentId =
-        button.dataset.appointmentId ||
-        "";
-
-
-    const patientMobile =
-        button.dataset.patientMobile ||
-        "";
-
-
-    if (
-        !patientMobile
-    ) {
-
-        showToast(
-            "Patient mobile number is missing.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    const confirmOld =
-        window.confirm(
-            "Are you sure you want to mark this patient as OLD?\n\nOnce changed, future appointments for this patient will automatically be treated as OLD."
-        );
-
-
-    if (!confirmOld) {
-
-        return;
-
-    }
-
-
-    try {
-
-        button.disabled = true;
-
-        button.textContent =
-            "Updating...";
-
-
-        /*
-         * Get Firebase user
-         */
-
-        const user =
-            await getFirebaseUser();
-
-
-        /*
-         * Get fresh Firebase token
-         */
-
-        const token =
-            await user.getIdToken(
-                true
-            );
-
-
-        if (!token) {
-
-            throw new Error(
-                "Firebase authentication token missing."
-            );
-
+        if (!value) {
+            return new Date(0);
         }
 
-
-        /*
-         * Backend request
-         */
-
-        const response =
-            await fetch(
-                "/api/patient/status",
-                {
-
-                    method:
-                        "POST",
-
-                    headers: {
-
-                        "Authorization":
-                            "Bearer " +
-                            token,
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            hospital_id:
-                                hospitalId,
-
-                            appointment_id:
-                                appointmentId,
-
-                            patient_key:
-                                patientMobile,
-
-                            status:
-                                "OLD"
-
-                        })
-
-                }
-            );
+        value = String(value).trim();
 
 
-        let data = {};
-
-
-        try {
-
-            data =
-                await response.json();
-
-        }
-        catch {
-
-            data = {};
-
-        }
-
+        /* YYYY-MM-DD */
 
         if (
-            !response.ok
+            /^\d{4}-\d{2}-\d{2}$/.test(value)
         ) {
 
-            throw new Error(
-                data.error ||
-                "Unable to update patient status."
+            const parts = value.split("-");
+
+            return new Date(
+                Number(parts[0]),
+                Number(parts[1]) - 1,
+                Number(parts[2])
             );
 
         }
 
 
-        /*
-         * Normalize mobile
-         */
+        /* DD-MM-YYYY */
 
-        const targetMobile =
-            normalizeMobile(
-                patientMobile
+        if (
+            /^\d{2}-\d{2}-\d{4}$/.test(value)
+        ) {
+
+            const parts = value.split("-");
+
+            return new Date(
+                Number(parts[2]),
+                Number(parts[1]) - 1,
+                Number(parts[0])
             );
 
-
-        /*
-         * Update local data
-         *
-         * IMPORTANT:
-         * Do NOT change charge here.
-         *
-         * Current appointment keeps
-         * the historical amount.
-         */
-
-        allAppointments =
-            allAppointments.map(
-                appointment => {
-
-                    const appointmentMobile =
-                        normalizeMobile(
-                            appointment.mobile
-                        );
+        }
 
 
-                    if (
-                        appointmentMobile ===
-                        targetMobile
-                    ) {
+        /* DD/MM/YYYY */
 
-                        appointment.patient_status =
-                            "OLD";
+        if (
+            /^\d{2}\/\d{2}\/\d{4}$/.test(value)
+        ) {
 
-                    }
+            const parts = value.split("/");
 
-
-                    return appointment;
-
-                }
+            return new Date(
+                Number(parts[2]),
+                Number(parts[1]) - 1,
+                Number(parts[0])
             );
 
-
-        /*
-         * Re-render page
-         */
-
-        renderAppointments();
+        }
 
 
-        showToast(
-            "Patient marked as OLD successfully.",
-            "success"
+        const parsed = new Date(value);
+
+        return isNaN(parsed.getTime())
+            ? new Date(0)
+            : parsed;
+
+    }
+
+
+    /* =========================================================
+       NORMALIZE DATE
+       ========================================================= */
+
+    function dateOnly(value) {
+
+        const d = parseDate(value);
+
+        return new Date(
+            d.getFullYear(),
+            d.getMonth(),
+            d.getDate()
         );
 
     }
-    catch (error) {
-
-        console.error(
-            "Mark OLD Error:",
-            error
-        );
 
 
-        showToast(
-            error.message ||
-            "Unable to update patient.",
-            "error"
-        );
+    /* =========================================================
+       TODAY
+       ========================================================= */
 
+    function isToday(value) {
 
-        button.disabled = false;
+        const today = dateOnly(new Date());
 
-        button.textContent =
-            "Mark OLD";
+        const date = dateOnly(value);
 
-    }
-
-}
-
-
-/* =========================================================
-   MAKE FUNCTION GLOBAL
-========================================================= */
-
-window.markPatientOld =
-    markPatientOld;
-
-
-/* =========================================================
-   SEARCH EVENT
-========================================================= */
-
-document
-    .getElementById(
-        "searchInput"
-    )
-    .addEventListener(
-        "input",
-        renderAppointments
-    );
-
-
-/* =========================================================
-   DOCTOR FILTER EVENT
-========================================================= */
-
-document
-    .getElementById(
-        "doctorFilter"
-    )
-    .addEventListener(
-        "change",
-        renderAppointments
-    );
-
-
-/* =========================================================
-   SPECIFIC DATE EVENT
-========================================================= */
-
-document
-    .getElementById(
-        "specificDate"
-    )
-    .addEventListener(
-        "change",
-        renderAppointments
-    );
-
-
-/* =========================================================
-   DATE FILTER BUTTONS
-========================================================= */
-
-document
-    .querySelectorAll(
-        ".date-btn"
-    )
-    .forEach(
-        button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    document
-                        .querySelectorAll(
-                            ".date-btn"
-                        )
-                        .forEach(
-                            btn => {
-
-                                btn.classList.remove(
-                                    "active"
-                                );
-
-                            }
-                        );
-
-
-                    button.classList.add(
-                        "active"
-                    );
-
-
-                    activeDateFilter =
-                        button.dataset.filter ||
-                        "all";
-
-
-                    renderAppointments();
-
-                }
-            );
-
-        }
-    );
-
-
-/* =========================================================
-   FIREBASE SESSION CHECK
-========================================================= */
-
-auth.onAuthStateChanged(
-    user => {
-
-        if (user) {
-
-            console.log(
-                "Firebase session active:",
-                user.uid
-            );
-
-        }
-        else {
-
-            console.warn(
-                "No Firebase user currently active."
-            );
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   INITIAL LOAD
-========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        loadAppointments();
-
-    }
-);
-
-</script>
-
-
-</body>
-
-</html>
+        return (
+            toda
+```
