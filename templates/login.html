@@ -66,8 +66,11 @@
     .bg-circle {
 
         position: fixed;
+
         border-radius: 50%;
+
         pointer-events: none;
+
         z-index: 0;
     }
 
@@ -100,29 +103,32 @@
         min-height: 100vh;
 
         display: flex;
+
         justify-content: center;
+
         align-items: center;
 
         padding: 24px;
 
         position: relative;
+
         z-index: 1;
     }
 
     .login-shell {
 
         width: 100%;
+
         max-width: 930px;
 
         display: grid;
 
         grid-template-columns:
-            .70fr 1.30fr;
+            0.70fr 1.30fr;
 
         background: #ffffff;
 
-        border:
-            1px solid #e2eaee;
+        border: 1px solid #e2eaee;
 
         border-radius: 22px;
 
@@ -133,13 +139,10 @@
             rgba(15,23,42,.12);
     }
 
-    /* =====================================================
-       BRAND
-    ====================================================== */
-
     .brand-panel {
 
         position: relative;
+
         overflow: hidden;
 
         color: white;
@@ -193,6 +196,7 @@
     .brand-content {
 
         position: relative;
+
         z-index: 2;
     }
 
@@ -202,6 +206,7 @@
         height: 58px;
 
         display: flex;
+
         align-items: center;
         justify-content: center;
 
@@ -228,18 +233,21 @@
     .brand-name {
 
         font-size: 27px;
+
         font-weight: 800;
 
         margin-bottom: 7px;
     }
 
     .brand-name span {
+
         opacity: .72;
     }
 
     .brand-title {
 
         font-size: 23px;
+
         font-weight: 800;
 
         line-height: 1.18;
@@ -262,12 +270,14 @@
         margin-top: 22px;
 
         display: grid;
+
         gap: 8px;
     }
 
     .feature {
 
         display: flex;
+
         align-items: center;
 
         gap: 9px;
@@ -281,7 +291,9 @@
         height: 29px;
 
         display: flex;
+
         justify-content: center;
+
         align-items: center;
 
         flex-shrink: 0;
@@ -293,10 +305,6 @@
 
         font-size: 14px;
     }
-
-    /* =====================================================
-       FORM
-    ====================================================== */
 
     .form-panel {
 
@@ -312,6 +320,7 @@
         display: flex;
 
         justify-content: space-between;
+
         align-items: center;
 
         gap: 12px;
@@ -352,10 +361,12 @@
     }
 
     .home-link:hover {
+
         color: #0f766e;
     }
 
     .heading {
+
         margin-bottom: 22px;
     }
 
@@ -400,6 +411,7 @@
     }
 
     .plan-box.show {
+
         display: block;
     }
 
@@ -452,14 +464,17 @@
     }
 
     .section {
+
         display: none;
     }
 
     .section.active {
+
         display: block;
     }
 
     .field {
+
         margin-bottom: 14px;
     }
 
@@ -512,10 +527,12 @@
     }
 
     .password-wrap {
+
         position: relative;
     }
 
     .password-wrap input {
+
         padding-right: 48px;
     }
 
@@ -526,8 +543,7 @@
         top: 50%;
         right: 6px;
 
-        transform:
-            translateY(-50%);
+        transform: translateY(-50%);
 
         width: 36px;
         height: 36px;
@@ -575,10 +591,11 @@
             rgba(15,118,110,.18);
 
         transition:
-            transform .15s ease;
+            .2s ease;
     }
 
     .main-btn:hover {
+
         transform: translateY(-1px);
     }
 
@@ -587,8 +604,6 @@
         opacity: .65;
 
         cursor: not-allowed;
-
-        transform: none;
     }
 
     .loader {
@@ -652,10 +667,12 @@
     }
 
     #message.success {
+
         color: #15803d;
     }
 
     #message.error {
+
         color: #dc2626;
     }
 
@@ -678,6 +695,7 @@
     }
 
     .form-footer strong {
+
         color: #475569;
     }
 
@@ -688,13 +706,9 @@
         font-weight: 700;
     }
 
-    /* =====================================================
-       AUTO LOGIN SCREEN
-    ====================================================== */
+    /* SESSION CHECK SCREEN */
 
-    #autoLoginScreen {
-
-        display: none;
+    #sessionCheck {
 
         position: fixed;
 
@@ -702,87 +716,59 @@
 
         z-index: 9999;
 
+        display: flex;
+
         align-items: center;
+
         justify-content: center;
 
         background:
             linear-gradient(
                 135deg,
                 #eefcf8,
-                #f2f9ff
+                #f2f9ff,
+                #ffffff
             );
     }
 
-    .auto-login-card {
-
-        width: min(90%, 380px);
-
-        background: #ffffff;
-
-        border-radius: 18px;
-
-        padding: 32px;
+    .session-box {
 
         text-align: center;
 
-        box-shadow:
-            0 20px 60px
-            rgba(15,23,42,.12);
+        padding: 30px;
     }
 
-    .auto-login-icon {
+    .session-spinner {
 
-        width: 58px;
-        height: 58px;
+        width: 42px;
+        height: 42px;
 
         margin: 0 auto 16px;
 
-        display: flex;
-
-        align-items: center;
-        justify-content: center;
-
-        border-radius: 50%;
-
-        background: #ecfdf5;
-
-        font-size: 25px;
-    }
-
-    .auto-login-card h2 {
-
-        font-size: 20px;
-
-        margin-bottom: 7px;
-    }
-
-    .auto-login-card p {
-
-        color: #64748b;
-
-        font-size: 12px;
-
-        line-height: 1.6;
-
-        margin-bottom: 18px;
-    }
-
-    .auto-spinner {
-
-        width: 25px;
-        height: 25px;
-
-        margin: auto;
-
         border:
-            3px solid #dbeafe;
+            4px solid #d9f3ee;
 
-        border-top-color: #0f766e;
+        border-top-color:
+            #0f766e;
 
         border-radius: 50%;
 
         animation:
             spin .7s linear infinite;
+    }
+
+    .session-box h2 {
+
+        font-size: 18px;
+
+        margin-bottom: 6px;
+    }
+
+    .session-box p {
+
+        color: #64748b;
+
+        font-size: 12px;
     }
 
     @media (max-width: 900px) {
@@ -813,8 +799,7 @@
 
             width: 100%;
 
-            padding:
-                20px 20px 18px;
+            padding: 20px 20px 18px;
         }
 
         .logo-box {
@@ -850,11 +835,10 @@
             font-size: 11px;
 
             line-height: 1.5;
-
-            max-width: 100%;
         }
 
         .feature-list {
+
             display: none;
         }
 
@@ -862,17 +846,16 @@
 
             width: 100%;
 
-            min-width: 0;
-
-            padding:
-                26px 20px 22px;
+            padding: 26px 20px 22px;
         }
 
         .heading h1 {
+
             font-size: 27px;
         }
 
         .heading p {
+
             font-size: 12px;
         }
     }
@@ -880,6 +863,7 @@
     @media (max-width: 480px) {
 
         .page {
+
             padding: 7px;
         }
 
@@ -894,47 +878,16 @@
 
         .brand-panel {
 
-            padding:
-                18px 16px 16px;
-        }
-
-        .brand-panel::before {
-
-            width: 170px;
-            height: 170px;
-
-            top: -105px;
-            right: -75px;
-        }
-
-        .brand-panel::after {
-
-            width: 130px;
-            height: 130px;
-
-            bottom: -80px;
-            left: -65px;
-        }
-
-        .logo-box {
-
-            width: 44px;
-            height: 44px;
-
-            border-radius: 11px;
-        }
-
-        .logo-box img {
-
-            width: 35px;
-            height: 35px;
+            padding: 18px 16px 16px;
         }
 
         .brand-name {
+
             font-size: 21px;
         }
 
         .brand-title {
+
             font-size: 17px;
         }
 
@@ -947,48 +900,24 @@
 
         .form-panel {
 
-            padding:
-                22px 15px 18px;
-        }
-
-        .top-line {
-            margin-bottom: 17px;
-        }
-
-        .security {
-
-            font-size: 9px;
-
-            padding:
-                7px 9px;
-        }
-
-        .home-link {
-            font-size: 11px;
-        }
-
-        .heading {
-            margin-bottom: 18px;
+            padding: 22px 15px 18px;
         }
 
         .heading h1 {
+
             font-size: 24px;
         }
 
         .heading p {
-            font-size: 11px;
-        }
 
-        .tabs {
-            margin-bottom: 20px;
+            font-size: 11px;
         }
 
         .tab {
 
             font-size: 10px;
 
-            padding:
-                9px 4px;
+            padding: 9px 4px;
         }
 
         input {
@@ -1004,19 +933,6 @@
 
             font-size: 12px;
         }
-
-        .form-footer {
-
-            margin-top: 18px;
-
-            padding-top: 13px;
-
-            font-size: 9px;
-        }
-
-        .footer-tagline {
-            font-size: 9px;
-        }
     }
 
 </style>
@@ -1026,482 +942,462 @@
 
 <body>
 
-<div
-    id="autoLoginScreen"
->
 
+<!-- ================================================
+     SESSION CHECK
+================================================= -->
 
-<div class="auto-login-card">
+<div id="sessionCheck">
 
-    <div class="auto-login-icon">
-        🔐
+    <div class="session-box">
+
+        <div class="session-spinner"></div>
+
+        <h2>
+            Checking your session...
+        </h2>
+
+        <p>
+            Please wait.
+        </p>
+
     </div>
 
-    <h2>
-        Welcome back
-    </h2>
-
-    <p>
-        Your session is still active.
-        Taking you to your hospital dashboard...
-    </p>
-
-    <div class="auto-spinner"></div>
-
 </div>
 
-
-</div>
 
 <div class="bg-circle circle-one"></div>
 
 <div class="bg-circle circle-two"></div>
 
+
 <div class="page">
 
-```
-<div class="login-shell">
+    <div class="login-shell">
 
-    <!-- =================================================
-         BRAND PANEL
-    ================================================== -->
+        <!-- =========================================
+             BRAND
+        ========================================== -->
 
-    <section class="brand-panel">
+        <section class="brand-panel">
 
-        <div class="brand-content">
+            <div class="brand-content">
 
-            <div class="logo-box">
+                <div class="logo-box">
 
-                <img
-                    src="/static/statusly-logo.png"
-                    alt="Statusly Logo"
+                    <img
+                        src="/static/statusly-logo.png"
+                        alt="Statusly Logo"
+                    >
+
+                </div>
+
+                <div class="brand-name">
+
+                    Statusly<span>.in</span>
+
+                </div>
+
+                <div class="brand-title">
+
+                    Hospital management,
+                    made simple.
+
+                </div>
+
+                <p class="brand-text">
+
+                    A simple platform for hospitals and clinics
+                    to manage appointments, doctors, patients,
+                    follow-ups and patient communication.
+
+                </p>
+
+                <div class="feature-list">
+
+                    <div class="feature">
+
+                        <span class="feature-icon">📅</span>
+
+                        Appointment Management
+
+                    </div>
+
+                    <div class="feature">
+
+                        <span class="feature-icon">👨‍⚕️</span>
+
+                        Doctor Management
+
+                    </div>
+
+                    <div class="feature">
+
+                        <span class="feature-icon">👥</span>
+
+                        Patient Management
+
+                    </div>
+
+                    <div class="feature">
+
+                        <span class="feature-icon">🔄</span>
+
+                        Follow-up Management
+
+                    </div>
+
+                    <div class="feature">
+
+                        <span class="feature-icon">📱</span>
+
+                        Patient Notifications
+
+                    </div>
+
+                    <div class="feature">
+
+                        <span class="feature-icon">🔐</span>
+
+                        Secure Access
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             FORM
+        ========================================== -->
+
+        <section class="form-panel">
+
+            <div class="top-line">
+
+                <span class="security">
+
+                    🔒 Secure Login
+
+                </span>
+
+                <a
+                    href="/"
+                    class="home-link"
                 >
 
-            </div>
+                    ← Home
 
-            <div class="brand-name">
-                Statusly<span>.in</span>
-            </div>
-
-            <div class="brand-title">
-
-                Hospital management,
-                made simple.
+                </a>
 
             </div>
 
-            <p class="brand-text">
 
-                A simple platform for hospitals and clinics
-                to manage appointments, doctors, patients,
-                follow-ups and patient communication.
+            <div class="heading">
 
-            </p>
+                <h1>
+                    Welcome back
+                </h1>
 
-            <div class="feature-list">
-
-                <div class="feature">
-
-                    <span class="feature-icon">
-                        📅
-                    </span>
-
-                    Appointment Management
-
-                </div>
-
-                <div class="feature">
-
-                    <span class="feature-icon">
-                        👨‍⚕️
-                    </span>
-
-                    Doctor Management
-
-                </div>
-
-                <div class="feature">
-
-                    <span class="feature-icon">
-                        👥
-                    </span>
-
-                    Patient Management
-
-                </div>
-
-                <div class="feature">
-
-                    <span class="feature-icon">
-                        🔄
-                    </span>
-
-                    Follow-up Management
-
-                </div>
-
-                <div class="feature">
-
-                    <span class="feature-icon">
-                        📱
-                    </span>
-
-                    Patient Notifications
-
-                </div>
-
-                <div class="feature">
-
-                    <span class="feature-icon">
-                        🔐
-                    </span>
-
-                    Secure Access
-
-                </div>
+                <p>
+                    Sign in to continue to your hospital dashboard.
+                </p>
 
             </div>
 
-        </div>
 
-    </section>
-
-
-    <!-- =================================================
-         FORM PANEL
-    ================================================== -->
-
-    <section class="form-panel">
-
-        <div class="top-line">
-
-            <span class="security">
-                🔒 Secure Login
-            </span>
-
-            <a
-                href="/"
-                class="home-link"
+            <div
+                id="planBox"
+                class="plan-box"
             >
-                ← Home
-            </a>
 
-        </div>
+                Selected plan:
+                <strong id="planName"></strong>
 
-
-        <div class="heading">
-
-            <h1>
-                Welcome back
-            </h1>
-
-            <p>
-                Sign in to continue to your hospital dashboard.
-            </p>
-
-        </div>
+            </div>
 
 
-        <div
-            id="planBox"
-            class="plan-box"
-        >
+            <div class="tabs">
 
-            Selected plan:
-            <strong id="planName"></strong>
-
-        </div>
-
-
-        <!-- =================================================
-             TABS
-        ================================================== -->
-
-        <div class="tabs">
-
-            <button
-                id="loginTab"
-                class="tab active"
-                type="button"
-                onclick="showSection('login')"
-            >
-                Login
-            </button>
-
-            <button
-                id="registerTab"
-                class="tab"
-                type="button"
-                onclick="showSection('register')"
-            >
-                Register
-            </button>
-
-            <button
-                id="forgotTab"
-                class="tab"
-                type="button"
-                onclick="showSection('forgot')"
-            >
-                Forgot
-            </button>
-
-        </div>
-
-
-        <!-- =================================================
-             LOGIN
-        ================================================== -->
-
-        <div
-            id="login"
-            class="section active"
-        >
-
-            <div class="field">
-
-                <label>
-                    Admin Email
-                </label>
-
-                <input
-                    id="loginEmail"
-                    type="email"
-                    autocomplete="email"
-                    placeholder="admin@hospital.com"
+                <button
+                    id="loginTab"
+                    class="tab active"
+                    onclick="showSection('login')"
                 >
+                    Login
+                </button>
+
+                <button
+                    id="registerTab"
+                    class="tab"
+                    onclick="showSection('register')"
+                >
+                    Register
+                </button>
+
+                <button
+                    id="forgotTab"
+                    class="tab"
+                    onclick="showSection('forgot')"
+                >
+                    Forgot
+                </button>
 
             </div>
 
 
-            <div class="field">
+            <!-- LOGIN -->
 
-                <label>
-                    Password
-                </label>
+            <div
+                id="login"
+                class="section active"
+            >
 
-                <div class="password-wrap">
+                <div class="field">
+
+                    <label>
+                        Admin Email
+                    </label>
 
                     <input
-                        id="loginPassword"
-                        type="password"
-                        autocomplete="current-password"
-                        placeholder="Enter password"
+                        id="loginEmail"
+                        type="email"
+                        autocomplete="email"
+                        placeholder="admin@hospital.com"
                     >
-
-                    <button
-                        type="button"
-                        class="eye-btn"
-                        onclick="togglePassword('loginPassword', this)"
-                    >
-                        👁
-                    </button>
 
                 </div>
 
+
+                <div class="field">
+
+                    <label>
+                        Password
+                    </label>
+
+                    <div class="password-wrap">
+
+                        <input
+                            id="loginPassword"
+                            type="password"
+                            autocomplete="current-password"
+                            placeholder="Enter password"
+                        >
+
+                        <button
+                            type="button"
+                            class="eye-btn"
+                            onclick="togglePassword('loginPassword', this)"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="loginButton"
+                    class="main-btn"
+                    onclick="login()"
+                >
+
+                    Login to Dashboard
+
+                </button>
+
             </div>
 
 
-            <button
-                id="loginButton"
-                class="main-btn"
-                type="button"
-                onclick="login()"
+            <!-- REGISTER -->
+
+            <div
+                id="register"
+                class="section"
             >
-                Login to Dashboard
-            </button>
 
-        </div>
+                <div class="field">
 
-
-        <!-- =================================================
-             REGISTER
-        ================================================== -->
-
-        <div
-            id="register"
-            class="section"
-        >
-
-            <div class="field">
-
-                <label>
-                    Hospital ID
-                </label>
-
-                <input
-                    id="hospitalId"
-                    type="text"
-                    placeholder="HOSP001"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    Hospital Name
-                </label>
-
-                <input
-                    id="hospitalName"
-                    type="text"
-                    placeholder="City Care Hospital"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    Administrator Name
-                </label>
-
-                <input
-                    id="adminName"
-                    type="text"
-                    placeholder="Admin Name"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    Admin Email
-                </label>
-
-                <input
-                    id="regEmail"
-                    type="email"
-                    autocomplete="email"
-                    placeholder="admin@hospital.com"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    Password
-                </label>
-
-                <div class="password-wrap">
+                    <label>
+                        Hospital ID
+                    </label>
 
                     <input
-                        id="regPassword"
-                        type="password"
-                        autocomplete="new-password"
-                        placeholder="Minimum 6 characters"
+                        id="hospitalId"
+                        type="text"
+                        placeholder="HOSP001"
                     >
 
-                    <button
-                        type="button"
-                        class="eye-btn"
-                        onclick="togglePassword('regPassword', this)"
-                    >
-                        👁
-                    </button>
+                </div>
 
+
+                <div class="field">
+
+                    <label>
+                        Hospital Name
+                    </label>
+
+                    <input
+                        id="hospitalName"
+                        type="text"
+                        placeholder="City Care Hospital"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Administrator Name
+                    </label>
+
+                    <input
+                        id="adminName"
+                        type="text"
+                        placeholder="Admin Name"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Admin Email
+                    </label>
+
+                    <input
+                        id="regEmail"
+                        type="email"
+                        autocomplete="email"
+                        placeholder="admin@hospital.com"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Password
+                    </label>
+
+                    <div class="password-wrap">
+
+                        <input
+                            id="regPassword"
+                            type="password"
+                            autocomplete="new-password"
+                            placeholder="Minimum 6 characters"
+                        >
+
+                        <button
+                            type="button"
+                            class="eye-btn"
+                            onclick="togglePassword('regPassword', this)"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="registerButton"
+                    class="main-btn"
+                    onclick="register()"
+                >
+
+                    Create Hospital Account
+
+                </button>
+
+            </div>
+
+
+            <!-- FORGOT -->
+
+            <div
+                id="forgot"
+                class="section"
+            >
+
+                <div class="info-box">
+
+                    Enter your registered hospital admin email.
+                    We will send you a secure password reset link.
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Admin Email
+                    </label>
+
+                    <input
+                        id="forgotEmail"
+                        type="email"
+                        autocomplete="email"
+                        placeholder="admin@hospital.com"
+                    >
+
+                </div>
+
+
+                <button
+                    id="forgotButton"
+                    class="main-btn"
+                    onclick="resetPassword()"
+                >
+
+                    Send Reset Link
+
+                </button>
+
+            </div>
+
+
+            <div id="message"></div>
+
+
+            <div class="form-footer">
+
+                <div>
+                    🔐 Protected by Firebase Authentication.
+                </div>
+
+                <div>
+                    Developed by ⚡
+                    <strong>
+                        RORENS Technologies Pvt. Ltd.
+                    </strong>
+                </div>
+
+                <div class="footer-tagline">
+                    Innovation • Technology • Growth
                 </div>
 
             </div>
 
+        </section>
 
-            <button
-                id="registerButton"
-                class="main-btn"
-                type="button"
-                onclick="register()"
-            >
-                Create Hospital Account
-            </button>
-
-        </div>
-
-
-        <!-- =================================================
-             FORGOT
-        ================================================== -->
-
-        <div
-            id="forgot"
-            class="section"
-        >
-
-            <div class="info-box">
-
-                Enter your registered hospital admin email.
-                We will send you a secure password reset link.
-
-            </div>
-
-
-            <div class="field">
-
-                <label>
-                    Admin Email
-                </label>
-
-                <input
-                    id="forgotEmail"
-                    type="email"
-                    autocomplete="email"
-                    placeholder="admin@hospital.com"
-                >
-
-            </div>
-
-
-            <button
-                id="forgotButton"
-                class="main-btn"
-                type="button"
-                onclick="resetPassword()"
-            >
-                Send Reset Link
-            </button>
-
-        </div>
-
-
-        <div id="message"></div>
-
-
-        <div class="form-footer">
-
-            <div>
-                🔐 Protected by Firebase Authentication.
-            </div>
-
-            <div>
-                Developed by ⚡
-                <strong>
-                    RORENS Technologies Pvt. Ltd.
-                </strong>
-            </div>
-
-            <div class="footer-tagline">
-                Innovation • Technology • Growth
-            </div>
-
-        </div>
-
-    </section>
-
-</div>
-```
+    </div>
 
 </div>
 
 <script type="module">
 
 /* =========================================================
-   FIREBASE IMPORTS
+   FIREBASE
 ========================================================= */
 
 import {
@@ -1512,22 +1408,38 @@ from
 
 
 import {
+
     getAuth,
+
+    setPersistence,
+
+    browserLocalPersistence,
+
     createUserWithEmailAndPassword,
+
     signInWithEmailAndPassword,
+
     sendPasswordResetEmail,
+
     onAuthStateChanged,
+
     signOut
+
 }
 from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
 
 import {
+
     getDatabase,
+
     ref,
+
     set,
+
     get
+
 }
 from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js";
@@ -1563,30 +1475,296 @@ const firebaseConfig = {
 };
 
 
-/* =========================================================
-   INITIALIZE FIREBASE
-========================================================= */
-
 const app =
-    initializeApp(
-        firebaseConfig
-    );
+    initializeApp(firebaseConfig);
 
 
 const auth =
-    getAuth(
-        app
-    );
+    getAuth(app);
 
 
 const db =
-    getDatabase(
-        app
-    );
+    getDatabase(app);
 
 
 /* =========================================================
-   PLANS
+   IMPORTANT
+   KEEP FIREBASE LOGIN PERSISTENT
+========================================================= */
+
+await setPersistence(
+    auth,
+    browserLocalPersistence
+);
+
+
+/* =========================================================
+   SESSION CHECK
+========================================================= */
+
+let sessionRedirecting = false;
+
+
+onAuthStateChanged(
+    auth,
+    async user => {
+
+        const sessionScreen =
+            document.getElementById(
+                "sessionCheck"
+            );
+
+
+        /*
+         * USER ALREADY LOGGED IN
+         */
+
+        if (user) {
+
+            console.log(
+                "Existing Firebase session:",
+                user.uid
+            );
+
+
+            /*
+             * Prevent showing login page
+             */
+
+            if (
+                !sessionRedirecting
+            ) {
+
+                sessionRedirecting = true;
+
+
+                try {
+
+                    /*
+                     * Get fresh Firebase token.
+                     */
+
+                    const token =
+                        await user.getIdToken(
+                            true
+                        );
+
+
+                    /*
+                     * Verify the session
+                     * with your Flask backend.
+                     */
+
+                    const response =
+                        await fetch(
+                            "/login",
+                            {
+
+                                method:
+                                    "POST",
+
+                                headers: {
+
+                                    "Authorization":
+                                        "Bearer " +
+                                        token,
+
+                                    "Content-Type":
+                                        "application/json"
+
+                                }
+
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    /*
+                     * Backend accepted
+                     * the Firebase session.
+                     */
+
+                    if (
+                        response.ok
+                    ) {
+
+                        localStorage.setItem(
+                            "uid",
+                            data.uid ||
+                            user.uid
+                        );
+
+
+                        localStorage.setItem(
+                            "hospitalId",
+                            data.hospitalId ||
+                            ""
+                        );
+
+
+                        localStorage.setItem(
+                            "hospitalName",
+                            data.hospitalName ||
+                            ""
+                        );
+
+
+                        localStorage.setItem(
+                            "firebaseUid",
+                            user.uid
+                        );
+
+
+                        localStorage.setItem(
+                            "statuslyLoggedIn",
+                            "true"
+                        );
+
+
+                        /*
+                         * Check subscription.
+                         */
+
+                        const subscriptionResponse =
+                            await fetch(
+                                "/check-subscription",
+                                {
+
+                                    method:
+                                        "POST",
+
+                                    headers: {
+
+                                        "Authorization":
+                                            "Bearer " +
+                                            token,
+
+                                        "Content-Type":
+                                            "application/json"
+
+                                    }
+
+                                }
+                            );
+
+
+                        const subscriptionData =
+                            await subscriptionResponse.json();
+
+
+                        if (
+                            subscriptionResponse.ok &&
+                            subscriptionData.active === true
+                        ) {
+
+                            window.location.replace(
+                                "/dashboard"
+                            );
+
+                            return;
+
+                        }
+
+
+                        /*
+                         * Logged in but
+                         * subscription inactive.
+                         */
+
+                        sessionRedirecting =
+                            false;
+
+
+                        sessionScreen.style.display =
+                            "none";
+
+
+                        showMessage(
+                            "Your subscription is not active.",
+                            "error"
+                        );
+
+
+                        return;
+
+                    }
+
+
+                    /*
+                     * Backend rejected the
+                     * session.
+                     */
+
+                    await signOut(auth);
+
+                    localStorage.removeItem(
+                        "statuslyLoggedIn"
+                    );
+
+                    localStorage.removeItem(
+                        "firebaseUid"
+                    );
+
+                    sessionRedirecting =
+                        false;
+
+                    sessionScreen.style.display =
+                        "none";
+
+                }
+                catch(error) {
+
+                    console.error(
+                        "SESSION CHECK ERROR:",
+                        error
+                    );
+
+
+                    /*
+                     * Do NOT automatically
+                     * destroy Firebase session
+                     * for a temporary network error.
+                     */
+
+                    sessionRedirecting =
+                        false;
+
+                    sessionScreen.style.display =
+                        "none";
+
+                }
+
+                return;
+
+            }
+
+        }
+
+
+        /*
+         * NO USER LOGGED IN
+         */
+
+        if (!user) {
+
+            sessionScreen.style.display =
+                "none";
+
+            console.log(
+                "No Firebase session."
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   PLAN
 ========================================================= */
 
 const params =
@@ -1600,28 +1778,29 @@ const urlPlan =
 
 
 const allowedPlans = [
+
     "basic",
     "standard",
     "premium"
+
 ];
 
 
 const planNames = {
 
-    basic:
-        "Basic",
+    basic: "Basic",
 
-    standard:
-        "Standard",
+    standard: "Standard",
 
-    premium:
-        "Premium"
+    premium: "Premium"
 
 };
 
 
 if (
-    allowedPlans.includes(urlPlan)
+    allowedPlans.includes(
+        urlPlan
+    )
 ) {
 
     localStorage.setItem(
@@ -1644,24 +1823,22 @@ if (
 ) {
 
     document
-        .getElementById("planBox")
-        .classList.add("show");
+        .getElementById(
+            "planBox"
+        )
+        .classList.add(
+            "show"
+        );
+
 
     document
-        .getElementById("planName")
+        .getElementById(
+            "planName"
+        )
         .textContent =
         planNames[selectedPlan];
 
 }
-
-
-/* =========================================================
-   AUTO LOGIN STATE
-========================================================= */
-
-let sessionCheckFinished = false;
-
-let redirecting = false;
 
 
 /* =========================================================
@@ -1672,7 +1849,9 @@ window.showSection =
 function(id) {
 
     document
-        .querySelectorAll(".section")
+        .querySelectorAll(
+            ".section"
+        )
         .forEach(
             section => {
 
@@ -1685,7 +1864,9 @@ function(id) {
 
 
     document
-        .querySelectorAll(".tab")
+        .querySelectorAll(
+            ".tab"
+        )
         .forEach(
             tab => {
 
@@ -1731,7 +1912,7 @@ function(id) {
 
 
 /* =========================================================
-   PASSWORD VISIBILITY
+   PASSWORD
 ========================================================= */
 
 window.togglePassword =
@@ -1823,6 +2004,7 @@ function setButtonLoading(
         button.disabled =
             true;
 
+
         button.innerHTML =
             '<span class="loader"></span>' +
             loadingText;
@@ -1833,282 +2015,9 @@ function setButtonLoading(
         button.disabled =
             false;
 
+
         button.textContent =
             normalText;
-
-    }
-
-}
-
-
-/* =========================================================
-   SAVE SESSION DATA
-========================================================= */
-
-function saveSessionData(
-    backendData,
-    user
-) {
-
-    localStorage.setItem(
-        "uid",
-        backendData.uid ||
-        user.uid
-    );
-
-
-    localStorage.setItem(
-        "hospitalId",
-        backendData.hospitalId ||
-        ""
-    );
-
-
-    localStorage.setItem(
-        "hospitalName",
-        backendData.hospitalName ||
-        ""
-    );
-
-
-    localStorage.setItem(
-        "firebaseUid",
-        user.uid
-    );
-
-
-    localStorage.setItem(
-        "statuslyLoggedIn",
-        "true"
-    );
-
-}
-
-
-/* =========================================================
-   CLEAR SESSION DATA
-========================================================= */
-
-function clearSessionData() {
-
-    localStorage.removeItem(
-        "uid"
-    );
-
-    localStorage.removeItem(
-        "hospitalId"
-    );
-
-    localStorage.removeItem(
-        "hospitalName"
-    );
-
-    localStorage.removeItem(
-        "firebaseUid"
-    );
-
-    localStorage.removeItem(
-        "statuslyLoggedIn"
-    );
-
-}
-
-
-/* =========================================================
-   BACKEND LOGIN / SESSION CHECK
-========================================================= */
-
-async function verifyBackendSession(
-    user,
-    redirectAfterLogin = true
-) {
-
-    try {
-
-        const token =
-            await user.getIdToken(
-                true
-            );
-
-
-        if (!token) {
-
-            throw new Error(
-                "Authentication token missing."
-            );
-
-        }
-
-
-        const backendResponse =
-            await fetch(
-                "/login",
-                {
-
-                    method:
-                        "POST",
-
-                    headers: {
-
-                        "Authorization":
-                            "Bearer " +
-                            token,
-
-                        "Content-Type":
-                            "application/json"
-
-                    }
-
-                }
-            );
-
-
-        const backendData =
-            await backendResponse.json();
-
-
-        if (
-            !backendResponse.ok
-        ) {
-
-            throw new Error(
-                backendData.error ||
-                "Backend authentication failed."
-            );
-
-        }
-
-
-        saveSessionData(
-            backendData,
-            user
-        );
-
-
-        /* ================================================
-           CHECK SUBSCRIPTION
-        ================================================= */
-
-        const subscriptionResponse =
-            await fetch(
-                "/check-subscription",
-                {
-
-                    method:
-                        "POST",
-
-                    headers: {
-
-                        "Authorization":
-                            "Bearer " +
-                            token,
-
-                        "Content-Type":
-                            "application/json"
-
-                    }
-
-                }
-            );
-
-
-        const subscriptionData =
-            await subscriptionResponse.json();
-
-
-        if (
-            !subscriptionResponse.ok
-        ) {
-
-            throw new Error(
-                subscriptionData.error ||
-                "Unable to check subscription."
-            );
-
-        }
-
-
-        if (
-            subscriptionData.active === true
-        ) {
-
-            if (redirectAfterLogin) {
-
-                redirecting =
-                    true;
-
-                window.location.replace(
-                    "/dashboard"
-                );
-
-            }
-
-            return {
-                success: true,
-                active: true
-            };
-
-        }
-
-
-        /* ================================================
-           NO ACTIVE SUBSCRIPTION
-        ================================================= */
-
-        if (redirectAfterLogin) {
-
-            redirecting =
-                true;
-
-
-            const plan =
-                localStorage.getItem(
-                    "selectedPlan"
-                );
-
-
-            if (
-                allowedPlans.includes(
-                    plan
-                )
-            ) {
-
-                window.location.replace(
-                    "/payment?plan=" +
-                    encodeURIComponent(
-                        plan
-                    )
-                );
-
-            }
-            else {
-
-                window.location.replace(
-                    "/payment"
-                );
-
-            }
-
-        }
-
-
-        return {
-            success: true,
-            active: false
-        };
-
-    }
-    catch(error) {
-
-        console.error(
-            "SESSION VERIFICATION ERROR:",
-            error
-        );
-
-        return {
-            success: false,
-            error: error
-        };
 
     }
 
@@ -2265,10 +2174,6 @@ async function() {
             userCredential.user;
 
 
-        const uid =
-            user.uid;
-
-
         await set(
             hospitalReference,
             {
@@ -2286,7 +2191,7 @@ async function() {
                     email,
 
                 uid:
-                    uid,
+                    user.uid,
 
                 created_at:
                     new Date().toISOString(),
@@ -2309,6 +2214,19 @@ async function() {
         );
 
 
+        /*
+         * Firebase automatically
+         * keeps the newly created
+         * user logged in.
+         *
+         * Sign out here because
+         * registration should return
+         * to the login screen.
+         */
+
+        await signOut(auth);
+
+
         document
             .getElementById(
                 "loginEmail"
@@ -2323,20 +2241,6 @@ async function() {
             )
             .value =
             "";
-
-
-        /*
-         * Firebase automatically signs the newly
-         * created user in.
-         *
-         * We explicitly sign out here because
-         * registration should finish on the
-         * login screen.
-         */
-
-        await signOut(
-            auth
-        );
 
 
         showSection(
@@ -2411,7 +2315,7 @@ async function() {
 
 
 /* =========================================================
-   MANUAL LOGIN
+   LOGIN
 ========================================================= */
 
 window.login =
@@ -2468,9 +2372,13 @@ async function() {
         );
 
 
-        /* ================================================
-           FIREBASE SIGN IN
-        ================================================= */
+        /*
+         * Firebase login.
+         *
+         * Because browserLocalPersistence
+         * is enabled, this session survives
+         * refreshes and browser restarts.
+         */
 
         const userCredential =
             await signInWithEmailAndPassword(
@@ -2484,37 +2392,166 @@ async function() {
             userCredential.user;
 
 
-        /* ================================================
-           BACKEND SESSION
-        ================================================= */
-
-        const result =
-            await verifyBackendSession(
-                user,
-                false
+        const token =
+            await user.getIdToken(
+                true
             );
 
 
-        if (
-            !result.success
-        ) {
+        if (!token) {
 
-            throw result.error;
+            throw new Error(
+                "Firebase authentication token missing."
+            );
 
         }
 
 
-        setButtonLoading(
-            button,
-            false,
-            "Login to Dashboard",
+        /*
+         * Backend login.
+         */
+
+        const backendResponse =
+            await fetch(
+                "/login",
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " +
+                            token,
+
+                        "Content-Type":
+                            "application/json"
+
+                    }
+
+                }
+            );
+
+
+        const backendData =
+            await backendResponse.json();
+
+
+        if (
+            !backendResponse.ok
+        ) {
+
+            throw new Error(
+                backendData.error ||
+                "Backend authentication failed."
+            );
+
+        }
+
+
+        /*
+         * Save basic information.
+         */
+
+        localStorage.setItem(
+            "uid",
+            backendData.uid ||
+            user.uid
+        );
+
+
+        localStorage.setItem(
+            "hospitalId",
+            backendData.hospitalId ||
             ""
         );
 
 
+        localStorage.setItem(
+            "hospitalName",
+            backendData.hospitalName ||
+            ""
+        );
+
+
+        localStorage.setItem(
+            "firebaseUid",
+            user.uid
+        );
+
+
+        /*
+         * This is ONLY a state indicator.
+         *
+         * It is NOT used as a 60-minute
+         * authentication timer.
+         */
+
+        localStorage.setItem(
+            "statuslyLoggedIn",
+            "true"
+        );
+
+
+        /*
+         * Check subscription.
+         */
+
+        const subscriptionResponse =
+            await fetch(
+                "/check-subscription",
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " +
+                            token,
+
+                        "Content-Type":
+                            "application/json"
+
+                    }
+
+                }
+            );
+
+
+        const subscriptionData =
+            await subscriptionResponse.json();
+
+
         if (
-            result.active === true
+            !subscriptionResponse.ok
         ) {
+
+            throw new Error(
+                subscriptionData.error ||
+                "Unable to check subscription."
+            );
+
+        }
+
+
+        /*
+         * ACTIVE SUBSCRIPTION
+         */
+
+        if (
+            subscriptionData.active === true
+        ) {
+
+            setButtonLoading(
+                button,
+                false,
+                "Login to Dashboard",
+                ""
+            );
+
 
             showMessage(
                 "Login successful. Opening dashboard...",
@@ -2522,19 +2559,8 @@ async function() {
             );
 
 
-            redirecting =
-                true;
-
-
-            setTimeout(
-                () => {
-
-                    window.location.replace(
-                        "/dashboard"
-                    );
-
-                },
-                300
+            window.location.replace(
+                "/dashboard"
             );
 
 
@@ -2543,9 +2569,18 @@ async function() {
         }
 
 
-        /* ================================================
-           SUBSCRIPTION NOT ACTIVE
-        ================================================= */
+        /*
+         * LOGIN SUCCESSFUL BUT
+         * SUBSCRIPTION IS INACTIVE.
+         */
+
+        setButtonLoading(
+            button,
+            false,
+            "Login to Dashboard",
+            ""
+        );
+
 
         showMessage(
             "Your subscription is not active. Opening plans...",
@@ -2562,29 +2597,23 @@ async function() {
         setTimeout(
             () => {
 
-                redirecting =
-                    true;
-
-
                 if (
                     allowedPlans.includes(
                         plan
                     )
                 ) {
 
-                    window.location.replace(
+                    window.location.href =
                         "/payment?plan=" +
                         encodeURIComponent(
                             plan
-                        )
-                    );
+                        );
 
                 }
                 else {
 
-                    window.location.replace(
-                        "/payment"
-                    );
+                    window.location.href =
+                        "/payment";
 
                 }
 
@@ -2631,21 +2660,6 @@ async function() {
 
             showMessage(
                 "This email is not registered.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
-        if (
-            error.code ===
-            "auth/wrong-password"
-        ) {
-
-            showMessage(
-                "Email or password is incorrect.",
                 "error"
             );
 
@@ -2748,21 +2762,6 @@ async function() {
         );
 
 
-        if (
-            error.code ===
-            "auth/user-not-found"
-        ) {
-
-            showMessage(
-                "No account was found with this email.",
-                "error"
-            );
-
-            return;
-
-        }
-
-
         showMessage(
             error.message ||
             "Unable to send reset email.",
@@ -2772,240 +2771,6 @@ async function() {
     }
 
 };
-
-
-/* =========================================================
-   AUTOMATIC LOGIN / SESSION RESTORATION
-=========================================================
-
-   IMPORTANT:
-
-   There is NO 60-minute timer here.
-
-   Firebase Auth maintains its own persistent
-   browser session.
-
-   When the user returns to this page:
-
-       Firebase -> user exists
-                    |
-                    v
-               /login backend
-                    |
-                    v
-            check subscription
-                    |
-              +-----+------+
-              |            |
-           ACTIVE       INACTIVE
-              |            |
-              v            v
-         /dashboard     /payment
-
-========================================================= */
-
-onAuthStateChanged(
-    auth,
-    async user => {
-
-        if (
-            redirecting
-        ) {
-
-            return;
-
-        }
-
-
-        /*
-         * Firebase waits until it restores the
-         * saved authentication session.
-         *
-         * If user exists, the user has already
-         * logged in before.
-         */
-
-        if (user) {
-
-            console.log(
-                "ACTIVE FIREBASE SESSION:",
-                user.uid
-            );
-
-
-            /*
-             * Show automatic-login screen.
-             */
-
-            document
-                .getElementById(
-                    "autoLoginScreen"
-                )
-                .style.display =
-                "flex";
-
-
-            /*
-             * Hide normal login page.
-             */
-
-            document
-                .querySelector(
-                    ".page"
-                )
-                .style.display =
-                "none";
-
-
-            const result =
-                await verifyBackendSession(
-                    user,
-                    true
-                );
-
-
-            if (
-                !result.success &&
-                !redirecting
-            ) {
-
-                /*
-                 * Firebase session exists but
-                 * backend authentication failed.
-                 *
-                 * Sign out to avoid a broken
-                 * automatic-login loop.
-                 */
-
-                console.error(
-                    "Automatic login failed:",
-                    result.error
-                );
-
-
-                await signOut(
-                    auth
-                );
-
-
-                clearSessionData();
-
-
-                document
-                    .getElementById(
-                        "autoLoginScreen"
-                    )
-                    .style.display =
-                    "none";
-
-
-                document
-                    .querySelector(
-                        ".page"
-                    )
-                    .style.display =
-                    "flex";
-
-
-                showMessage(
-                    "Your session could not be restored. Please login again.",
-                    "error"
-                );
-
-            }
-
-        }
-        else {
-
-            /*
-             * No Firebase user.
-             *
-             * This is the normal login screen.
-             */
-
-            console.log(
-                "NO ACTIVE FIREBASE SESSION"
-            );
-
-
-            sessionCheckFinished =
-                true;
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   PREVENT FORM ENTER ISSUES
-========================================================= */
-
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key !== "Enter"
-        ) {
-
-            return;
-
-        }
-
-
-        const activeSection =
-            document.querySelector(
-                ".section.active"
-            );
-
-
-        if (
-            !activeSection
-        ) {
-
-            return;
-
-        }
-
-
-        if (
-            activeSection.id ===
-            "login"
-        ) {
-
-            event.preventDefault();
-
-            window.login();
-
-        }
-
-
-        if (
-            activeSection.id ===
-            "register"
-        ) {
-
-            event.preventDefault();
-
-            window.register();
-
-        }
-
-
-        if (
-            activeSection.id ===
-            "forgot"
-        ) {
-
-            event.preventDefault();
-
-            window.resetPassword();
-
-        }
-
-    }
-);
 
 </script>
 
