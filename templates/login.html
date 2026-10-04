@@ -1,1559 +1,1074 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
+```
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <meta
-        name="theme-color"
-        content="#0f766e"
-    >
+<meta
+    name="theme-color"
+    content="#0f766e"
+>
 
-    <meta
-        name="description"
-        content="Statusly.in Hospital Management SaaS"
-    >
+<meta
+    name="description"
+    content="Statusly.in Hospital Management SaaS"
+>
 
-    <title>Statusly.in | Hospital Login</title>
+<title>Statusly.in | Hospital Login</title>
 
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
 
-    <!-- =====================================================
-         FONT
-    ====================================================== -->
+<style>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
 
+    html,
+    body {
+        width: 100%;
+        min-height: 100%;
+    }
 
-    <style>
+    body {
 
-        /* =====================================================
-           RESET
-        ====================================================== */
+        font-family:
+            "Inter",
+            Arial,
+            sans-serif;
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        background:
+            linear-gradient(
+                135deg,
+                #eefcf8 0%,
+                #f2f9ff 55%,
+                #ffffff 100%
+            );
+
+        color: #172033;
+
+        overflow-x: hidden;
+    }
+
+    .bg-circle {
+
+        position: fixed;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .circle-one {
+
+        width: 320px;
+        height: 320px;
+
+        background:
+            rgba(15,118,110,.07);
+
+        top: -150px;
+        right: -120px;
+    }
+
+    .circle-two {
+
+        width: 300px;
+        height: 300px;
+
+        background:
+            rgba(14,116,144,.06);
+
+        bottom: -160px;
+        left: -150px;
+    }
+
+    .page {
+
+        min-height: 100vh;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        padding: 24px;
+
+        position: relative;
+        z-index: 1;
+    }
+
+    .login-shell {
+
+        width: 100%;
+        max-width: 930px;
+
+        display: grid;
+
+        grid-template-columns:
+            .70fr 1.30fr;
+
+        background: #ffffff;
+
+        border:
+            1px solid #e2eaee;
+
+        border-radius: 22px;
+
+        overflow: hidden;
+
+        box-shadow:
+            0 25px 70px
+            rgba(15,23,42,.12);
+    }
+
+    /* =====================================================
+       BRAND
+    ====================================================== */
+
+    .brand-panel {
+
+        position: relative;
+        overflow: hidden;
+
+        color: white;
+
+        background:
+            linear-gradient(
+                145deg,
+                #0f766e,
+                #0e7490
+            );
+
+        padding: 34px 30px;
+    }
+
+    .brand-panel::before {
+
+        content: "";
+
+        position: absolute;
+
+        width: 260px;
+        height: 260px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(255,255,255,.08);
+
+        top: -140px;
+        right: -120px;
+    }
+
+    .brand-panel::after {
+
+        content: "";
+
+        position: absolute;
+
+        width: 190px;
+        height: 190px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(255,255,255,.06);
+
+        bottom: -110px;
+        left: -90px;
+    }
+
+    .brand-content {
+
+        position: relative;
+        z-index: 2;
+    }
+
+    .logo-box {
+
+        width: 58px;
+        height: 58px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 15px;
+
+        background:
+            rgba(255,255,255,.13);
+
+        border:
+            1px solid
+            rgba(255,255,255,.18);
+
+        margin-bottom: 17px;
+    }
+
+    .logo-box img {
+
+        width: 47px;
+        height: 47px;
+
+        object-fit: contain;
+    }
+
+    .brand-name {
+
+        font-size: 27px;
+        font-weight: 800;
+
+        margin-bottom: 7px;
+    }
+
+    .brand-name span {
+        opacity: .72;
+    }
+
+    .brand-title {
+
+        font-size: 23px;
+        font-weight: 800;
+
+        line-height: 1.18;
+
+        margin-bottom: 11px;
+    }
+
+    .brand-text {
+
+        font-size: 12px;
+
+        line-height: 1.6;
+
+        color:
+            rgba(255,255,255,.84);
+    }
+
+    .feature-list {
+
+        margin-top: 22px;
+
+        display: grid;
+        gap: 8px;
+    }
+
+    .feature {
+
+        display: flex;
+        align-items: center;
+
+        gap: 9px;
+
+        font-size: 11px;
+    }
+
+    .feature-icon {
+
+        width: 29px;
+        height: 29px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        flex-shrink: 0;
+
+        border-radius: 8px;
+
+        background:
+            rgba(255,255,255,.12);
+
+        font-size: 14px;
+    }
+
+    /* =====================================================
+       FORM
+    ====================================================== */
+
+    .form-panel {
+
+        background: #ffffff;
+
+        padding: 40px 48px;
+
+        min-width: 0;
+    }
+
+    .top-line {
+
+        display: flex;
+
+        justify-content: space-between;
+        align-items: center;
+
+        gap: 12px;
+
+        margin-bottom: 20px;
+    }
+
+    .security {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 5px;
+
+        padding: 8px 12px;
+
+        border-radius: 999px;
+
+        background: #ecfdf5;
+
+        color: #15803d;
+
+        font-size: 10px;
+
+        font-weight: 800;
+    }
+
+    .home-link {
+
+        text-decoration: none;
+
+        color: #64748b;
+
+        font-size: 12px;
+
+        font-weight: 700;
+    }
+
+    .home-link:hover {
+        color: #0f766e;
+    }
+
+    .heading {
+        margin-bottom: 22px;
+    }
+
+    .heading h1 {
+
+        font-size: 30px;
+
+        line-height: 1.1;
+
+        font-weight: 800;
+
+        margin-bottom: 8px;
+    }
+
+    .heading p {
+
+        color: #64748b;
+
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+    .plan-box {
+
+        display: none;
+
+        margin-bottom: 16px;
+
+        padding: 10px 12px;
+
+        border:
+            1px solid #cdeee7;
+
+        border-radius: 10px;
+
+        background: #effcf9;
+
+        color: #115e59;
+
+        font-size: 11px;
+    }
+
+    .plan-box.show {
+        display: block;
+    }
+
+    .tabs {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 4px;
+
+        padding: 5px;
+
+        background: #f1f5f9;
+
+        border-radius: 12px;
+
+        margin-bottom: 22px;
+    }
+
+    .tab {
+
+        border: none;
+
+        border-radius: 9px;
+
+        padding: 10px 5px;
+
+        background: transparent;
+
+        color: #64748b;
+
+        font-size: 11px;
+
+        font-weight: 750;
+
+        cursor: pointer;
+    }
+
+    .tab.active {
+
+        color: #0f766e;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 2px 8px
+            rgba(15,23,42,.07);
+    }
+
+    .section {
+        display: none;
+    }
+
+    .section.active {
+        display: block;
+    }
+
+    .field {
+        margin-bottom: 14px;
+    }
+
+    .field label {
+
+        display: block;
+
+        margin-bottom: 6px;
+
+        font-size: 11px;
+
+        color: #334155;
+
+        font-weight: 750;
+    }
+
+    input {
+
+        width: 100%;
+
+        height: 47px;
+
+        border:
+            1px solid #d9e4e8;
+
+        border-radius: 10px;
+
+        padding: 0 14px;
+
+        outline: none;
+
+        background: #fbfdfe;
+
+        font-family: inherit;
+
+        font-size: 13px;
+
+        color: #172033;
+    }
+
+    input:focus {
+
+        border-color: #0f766e;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 0 0 3px
+            rgba(15,118,110,.08);
+    }
+
+    .password-wrap {
+        position: relative;
+    }
+
+    .password-wrap input {
+        padding-right: 48px;
+    }
+
+    .eye-btn {
+
+        position: absolute;
+
+        top: 50%;
+        right: 6px;
+
+        transform:
+            translateY(-50%);
+
+        width: 36px;
+        height: 36px;
+
+        border: none;
+
+        border-radius: 8px;
+
+        background: transparent;
+
+        cursor: pointer;
+
+        font-size: 16px;
+    }
+
+    .main-btn {
+
+        width: 100%;
+
+        height: 47px;
+
+        border: none;
+
+        border-radius: 10px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #0f766e,
+                #0e7490
+            );
+
+        color: white;
+
+        font-family: inherit;
+
+        font-size: 13px;
+
+        font-weight: 800;
+
+        cursor: pointer;
+
+        box-shadow:
+            0 9px 22px
+            rgba(15,118,110,.18);
+
+        transition:
+            transform .15s ease;
+    }
+
+    .main-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .main-btn:disabled {
+
+        opacity: .65;
+
+        cursor: not-allowed;
+
+        transform: none;
+    }
+
+    .loader {
+
+        display: inline-block;
+
+        width: 15px;
+        height: 15px;
+
+        border:
+            2px solid
+            rgba(255,255,255,.35);
+
+        border-top-color: #ffffff;
+
+        border-radius: 50%;
+
+        animation:
+            spin .7s linear infinite;
+
+        margin-right: 7px;
+
+        vertical-align: middle;
+    }
+
+    @keyframes spin {
+
+        to {
+            transform: rotate(360deg);
         }
+    }
 
+    .info-box {
 
-        html,
-        body {
-            width: 100%;
-            min-height: 100%;
-        }
+        margin-bottom: 15px;
 
+        padding: 12px;
 
-        body {
+        border-radius: 10px;
 
-            font-family:
-                "Inter",
-                Arial,
-                sans-serif;
+        background: #f8fafc;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #eefcf8 0%,
-                    #f2f9ff 55%,
-                    #ffffff 100%
-                );
+        color: #64748b;
 
-            color:
-                #172033;
+        font-size: 11px;
 
-            overflow-x:
-                hidden;
+        line-height: 1.6;
+    }
 
-        }
+    #message {
 
+        min-height: 20px;
 
-        /* =====================================================
-           DECORATION
-        ====================================================== */
+        margin-top: 12px;
 
-        .bg-circle {
+        text-align: center;
 
-            position:
-                fixed;
+        font-size: 12px;
 
-            border-radius:
-                50%;
+        font-weight: 700;
+    }
 
-            pointer-events:
-                none;
+    #message.success {
+        color: #15803d;
+    }
 
-            z-index:
-                0;
+    #message.error {
+        color: #dc2626;
+    }
 
-        }
+    .form-footer {
 
+        margin-top: 22px;
 
-        .circle-one {
+        padding-top: 15px;
 
-            width:
-                320px;
+        border-top:
+            1px solid #edf2f5;
 
-            height:
-                320px;
+        text-align: center;
 
-            background:
-                rgba(15,118,110,.07);
+        color: #94a3b8;
 
-            top:
-                -150px;
+        font-size: 10px;
 
-            right:
-                -120px;
+        line-height: 1.7;
+    }
 
-        }
+    .form-footer strong {
+        color: #475569;
+    }
 
+    .footer-tagline {
 
-        .circle-two {
+        color: #0f766e;
 
-            width:
-                300px;
+        font-weight: 700;
+    }
 
-            height:
-                300px;
+    /* =====================================================
+       AUTO LOGIN SCREEN
+    ====================================================== */
 
-            background:
-                rgba(14,116,144,.06);
+    #autoLoginScreen {
 
-            bottom:
-                -160px;
+        display: none;
 
-            left:
-                -150px;
+        position: fixed;
 
-        }
+        inset: 0;
 
+        z-index: 9999;
 
-        /* =====================================================
-           PAGE
-        ====================================================== */
+        align-items: center;
+        justify-content: center;
+
+        background:
+            linear-gradient(
+                135deg,
+                #eefcf8,
+                #f2f9ff
+            );
+    }
+
+    .auto-login-card {
+
+        width: min(90%, 380px);
+
+        background: #ffffff;
+
+        border-radius: 18px;
+
+        padding: 32px;
+
+        text-align: center;
+
+        box-shadow:
+            0 20px 60px
+            rgba(15,23,42,.12);
+    }
+
+    .auto-login-icon {
+
+        width: 58px;
+        height: 58px;
+
+        margin: 0 auto 16px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 50%;
+
+        background: #ecfdf5;
+
+        font-size: 25px;
+    }
+
+    .auto-login-card h2 {
+
+        font-size: 20px;
+
+        margin-bottom: 7px;
+    }
+
+    .auto-login-card p {
+
+        color: #64748b;
+
+        font-size: 12px;
+
+        line-height: 1.6;
+
+        margin-bottom: 18px;
+    }
+
+    .auto-spinner {
+
+        width: 25px;
+        height: 25px;
+
+        margin: auto;
+
+        border:
+            3px solid #dbeafe;
+
+        border-top-color: #0f766e;
+
+        border-radius: 50%;
+
+        animation:
+            spin .7s linear infinite;
+    }
+
+    @media (max-width: 900px) {
 
         .page {
 
-            min-height:
-                100vh;
+            display: block;
 
-            display:
-                flex;
-
-            justify-content:
-                center;
-
-            align-items:
-                center;
-
-            padding:
-                24px;
-
-            position:
-                relative;
-
-            z-index:
-                1;
-
+            padding: 12px;
         }
-
-
-        /* =====================================================
-           MAIN CARD
-        ====================================================== */
 
         .login-shell {
 
-            width:
-                100%;
+            width: 100%;
 
-            max-width:
-                930px;
+            max-width: 520px;
 
-            display:
-                grid;
+            margin: 12px auto;
 
-            grid-template-columns:
-                0.70fr 1.30fr;
+            display: flex;
 
-            background:
-                #ffffff;
+            flex-direction: column;
 
-            border:
-                1px solid #e2eaee;
-
-            border-radius:
-                22px;
-
-            overflow:
-                hidden;
-
-            box-shadow:
-                0 25px 70px
-                rgba(15,23,42,.12);
-
+            border-radius: 18px;
         }
-
-
-        /* =====================================================
-           BRAND PANEL
-        ====================================================== */
 
         .brand-panel {
 
-            position:
-                relative;
-
-            overflow:
-                hidden;
-
-            color:
-                white;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #0f766e,
-                    #0e7490
-                );
+            width: 100%;
 
             padding:
-                34px 30px;
-
+                20px 20px 18px;
         }
-
-
-        .brand-panel::before {
-
-            content:
-                "";
-
-            position:
-                absolute;
-
-            width:
-                260px;
-
-            height:
-                260px;
-
-            border-radius:
-                50%;
-
-            background:
-                rgba(255,255,255,.08);
-
-            top:
-                -140px;
-
-            right:
-                -120px;
-
-        }
-
-
-        .brand-panel::after {
-
-            content:
-                "";
-
-            position:
-                absolute;
-
-            width:
-                190px;
-
-            height:
-                190px;
-
-            border-radius:
-                50%;
-
-            background:
-                rgba(255,255,255,.06);
-
-            bottom:
-                -110px;
-
-            left:
-                -90px;
-
-        }
-
-
-        .brand-content {
-
-            position:
-                relative;
-
-            z-index:
-                2;
-
-        }
-
-
-        /* =====================================================
-           LOGO
-        ====================================================== */
 
         .logo-box {
 
-            width:
-                58px;
+            width: 48px;
+            height: 48px;
 
-            height:
-                58px;
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
-
-            border-radius:
-                15px;
-
-            background:
-                rgba(255,255,255,.13);
-
-            border:
-                1px solid
-                rgba(255,255,255,.18);
-
-            margin-bottom:
-                17px;
-
+            margin-bottom: 11px;
         }
-
 
         .logo-box img {
 
-            width:
-                47px;
-
-            height:
-                47px;
-
-            object-fit:
-                contain;
-
+            width: 39px;
+            height: 39px;
         }
-
-
-        /* =====================================================
-           BRAND TEXT
-        ====================================================== */
 
         .brand-name {
 
-            font-size:
-                27px;
+            font-size: 22px;
 
-            font-weight:
-                800;
-
-            margin-bottom:
-                7px;
-
+            margin-bottom: 4px;
         }
-
-
-        .brand-name span {
-
-            opacity:
-                .72;
-
-        }
-
 
         .brand-title {
 
-            font-size:
-                23px;
+            font-size: 18px;
 
-            font-weight:
-                800;
-
-            line-height:
-                1.18;
-
-            margin-bottom:
-                11px;
-
+            margin-bottom: 6px;
         }
-
 
         .brand-text {
 
-            font-size:
-                12px;
+            font-size: 11px;
 
-            line-height:
-                1.6;
+            line-height: 1.5;
 
-            color:
-                rgba(255,255,255,.84);
-
+            max-width: 100%;
         }
-
-
-        /* =====================================================
-           FEATURES
-        ====================================================== */
 
         .feature-list {
-
-            margin-top:
-                22px;
-
-            display:
-                grid;
-
-            gap:
-                8px;
-
+            display: none;
         }
-
-
-        .feature {
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            gap:
-                9px;
-
-            font-size:
-                11px;
-
-        }
-
-
-        .feature-icon {
-
-            width:
-                29px;
-
-            height:
-                29px;
-
-            display:
-                flex;
-
-            justify-content:
-                center;
-
-            align-items:
-                center;
-
-            flex-shrink:
-                0;
-
-            border-radius:
-                8px;
-
-            background:
-                rgba(255,255,255,.12);
-
-            font-size:
-                14px;
-
-        }
-
-
-        /* =====================================================
-           FORM PANEL
-        ====================================================== */
 
         .form-panel {
 
-            background:
-                #ffffff;
+            width: 100%;
+
+            min-width: 0;
 
             padding:
-                40px 48px;
-
-            min-width:
-                0;
-
+                26px 20px 22px;
         }
 
+        .heading h1 {
+            font-size: 27px;
+        }
 
-        /* =====================================================
-           TOP LINE
-        ====================================================== */
+        .heading p {
+            font-size: 12px;
+        }
+    }
+
+    @media (max-width: 480px) {
+
+        .page {
+            padding: 7px;
+        }
+
+        .login-shell {
+
+            max-width: 100%;
+
+            margin: 5px auto;
+
+            border-radius: 16px;
+        }
+
+        .brand-panel {
+
+            padding:
+                18px 16px 16px;
+        }
+
+        .brand-panel::before {
+
+            width: 170px;
+            height: 170px;
+
+            top: -105px;
+            right: -75px;
+        }
+
+        .brand-panel::after {
+
+            width: 130px;
+            height: 130px;
+
+            bottom: -80px;
+            left: -65px;
+        }
+
+        .logo-box {
+
+            width: 44px;
+            height: 44px;
+
+            border-radius: 11px;
+        }
+
+        .logo-box img {
+
+            width: 35px;
+            height: 35px;
+        }
+
+        .brand-name {
+            font-size: 21px;
+        }
+
+        .brand-title {
+            font-size: 17px;
+        }
+
+        .brand-text {
+
+            font-size: 10.5px;
+
+            line-height: 1.45;
+        }
+
+        .form-panel {
+
+            padding:
+                22px 15px 18px;
+        }
 
         .top-line {
-
-            display:
-                flex;
-
-            justify-content:
-                space-between;
-
-            align-items:
-                center;
-
-            gap:
-                12px;
-
-            margin-bottom:
-                20px;
-
+            margin-bottom: 17px;
         }
-
 
         .security {
 
-            display:
-                inline-flex;
-
-            align-items:
-                center;
-
-            gap:
-                5px;
+            font-size: 9px;
 
             padding:
-                8px 12px;
-
-            border-radius:
-                999px;
-
-            background:
-                #ecfdf5;
-
-            color:
-                #15803d;
-
-            font-size:
-                10px;
-
-            font-weight:
-                800;
-
+                7px 9px;
         }
-
 
         .home-link {
-
-            text-decoration:
-                none;
-
-            color:
-                #64748b;
-
-            font-size:
-                12px;
-
-            font-weight:
-                700;
-
+            font-size: 11px;
         }
-
-
-        .home-link:hover {
-            color:
-                #0f766e;
-        }
-
-
-        /* =====================================================
-           HEADING
-        ====================================================== */
 
         .heading {
-
-            margin-bottom:
-                22px;
-
+            margin-bottom: 18px;
         }
-
 
         .heading h1 {
-
-            font-size:
-                30px;
-
-            line-height:
-                1.1;
-
-            font-weight:
-                800;
-
-            margin-bottom:
-                8px;
-
+            font-size: 24px;
         }
-
 
         .heading p {
-
-            color:
-                #64748b;
-
-            font-size:
-                13px;
-
-            line-height:
-                1.6;
-
+            font-size: 11px;
         }
-
-
-        /* =====================================================
-           PLAN
-        ====================================================== */
-
-        .plan-box {
-
-            display:
-                none;
-
-            margin-bottom:
-                16px;
-
-            padding:
-                10px 12px;
-
-            border:
-                1px solid #cdeee7;
-
-            border-radius:
-                10px;
-
-            background:
-                #effcf9;
-
-            color:
-                #115e59;
-
-            font-size:
-                11px;
-
-        }
-
-
-        .plan-box.show {
-            display:
-                block;
-        }
-
-
-        /* =====================================================
-           TABS
-        ====================================================== */
 
         .tabs {
-
-            display:
-                grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap:
-                4px;
-
-            padding:
-                5px;
-
-            background:
-                #f1f5f9;
-
-            border-radius:
-                12px;
-
-            margin-bottom:
-                22px;
-
+            margin-bottom: 20px;
         }
-
 
         .tab {
 
-            border:
-                none;
-
-            border-radius:
-                9px;
+            font-size: 10px;
 
             padding:
-                10px 5px;
-
-            background:
-                transparent;
-
-            color:
-                #64748b;
-
-            font-size:
-                11px;
-
-            font-weight:
-                750;
-
-            cursor:
-                pointer;
-
+                9px 4px;
         }
-
-
-        .tab.active {
-
-            color:
-                #0f766e;
-
-            background:
-                #ffffff;
-
-            box-shadow:
-                0 2px 8px
-                rgba(15,23,42,.07);
-
-        }
-
-
-        /* =====================================================
-           SECTIONS
-        ====================================================== */
-
-        .section {
-            display:
-                none;
-        }
-
-
-        .section.active {
-            display:
-                block;
-        }
-
-
-        /* =====================================================
-           FORM FIELDS
-        ====================================================== */
-
-        .field {
-
-            margin-bottom:
-                14px;
-
-        }
-
-
-        .field label {
-
-            display:
-                block;
-
-            margin-bottom:
-                6px;
-
-            font-size:
-                11px;
-
-            color:
-                #334155;
-
-            font-weight:
-                750;
-
-        }
-
 
         input {
 
-            width:
-                100%;
+            height: 46px;
 
-            height:
-                47px;
-
-            border:
-                1px solid #d9e4e8;
-
-            border-radius:
-                10px;
-
-            padding:
-                0 14px;
-
-            outline:
-                none;
-
-            background:
-                #fbfdfe;
-
-            font-family:
-                inherit;
-
-            font-size:
-                13px;
-
-            color:
-                #172033;
-
+            font-size: 12px;
         }
-
-
-        input:focus {
-
-            border-color:
-                #0f766e;
-
-            background:
-                #ffffff;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(15,118,110,.08);
-
-        }
-
-
-        /* =====================================================
-           PASSWORD
-        ====================================================== */
-
-        .password-wrap {
-
-            position:
-                relative;
-
-        }
-
-
-        .password-wrap input {
-
-            padding-right:
-                48px;
-
-        }
-
-
-        .eye-btn {
-
-            position:
-                absolute;
-
-            top:
-                50%;
-
-            right:
-                6px;
-
-            transform:
-                translateY(-50%);
-
-            width:
-                36px;
-
-            height:
-                36px;
-
-            border:
-                none;
-
-            border-radius:
-                8px;
-
-            background:
-                transparent;
-
-            cursor:
-                pointer;
-
-            font-size:
-                16px;
-
-        }
-
-
-        /* =====================================================
-           MAIN BUTTON
-        ====================================================== */
 
         .main-btn {
 
-            width:
-                100%;
+            height: 46px;
 
-            height:
-                47px;
-
-            border:
-                none;
-
-            border-radius:
-                10px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #0f766e,
-                    #0e7490
-                );
-
-            color:
-                white;
-
-            font-family:
-                inherit;
-
-            font-size:
-                13px;
-
-            font-weight:
-                800;
-
-            cursor:
-                pointer;
-
-            box-shadow:
-                0 9px 22px
-                rgba(15,118,110,.18);
-
+            font-size: 12px;
         }
-
-
-        .main-btn:hover {
-
-            transform:
-                translateY(-1px);
-
-        }
-
-
-        .main-btn:disabled {
-
-            opacity:
-                .65;
-
-            cursor:
-                not-allowed;
-
-        }
-
-
-        /* =====================================================
-           LOADER
-        ====================================================== */
-
-        .loader {
-
-            display:
-                inline-block;
-
-            width:
-                15px;
-
-            height:
-                15px;
-
-            border:
-                2px solid
-                rgba(255,255,255,.35);
-
-            border-top-color:
-                #ffffff;
-
-            border-radius:
-                50%;
-
-            animation:
-                spin .7s linear infinite;
-
-            margin-right:
-                7px;
-
-            vertical-align:
-                middle;
-
-        }
-
-
-        @keyframes spin {
-
-            to {
-                transform:
-                    rotate(360deg);
-            }
-
-        }
-
-
-        /* =====================================================
-           INFO
-        ====================================================== */
-
-        .info-box {
-
-            margin-bottom:
-                15px;
-
-            padding:
-                12px;
-
-            border-radius:
-                10px;
-
-            background:
-                #f8fafc;
-
-            color:
-                #64748b;
-
-            font-size:
-                11px;
-
-            line-height:
-                1.6;
-
-        }
-
-
-        /* =====================================================
-           MESSAGE
-        ====================================================== */
-
-        #message {
-
-            min-height:
-                20px;
-
-            margin-top:
-                12px;
-
-            text-align:
-                center;
-
-            font-size:
-                12px;
-
-            font-weight:
-                700;
-
-        }
-
-
-        #message.success {
-
-            color:
-                #15803d;
-
-        }
-
-
-        #message.error {
-
-            color:
-                #dc2626;
-
-        }
-
-
-        /* =====================================================
-           FOOTER
-        ====================================================== */
 
         .form-footer {
 
-            margin-top:
-                22px;
+            margin-top: 18px;
 
-            padding-top:
-                15px;
+            padding-top: 13px;
 
-            border-top:
-                1px solid #edf2f5;
-
-            text-align:
-                center;
-
-            color:
-                #94a3b8;
-
-            font-size:
-                10px;
-
-            line-height:
-                1.7;
-
+            font-size: 9px;
         }
-
-
-        .form-footer strong {
-
-            color:
-                #475569;
-
-        }
-
 
         .footer-tagline {
-
-            color:
-                #0f766e;
-
-            font-weight:
-                700;
-
+            font-size: 9px;
         }
+    }
 
-
-        /* =====================================================
-           TABLET AND MOBILE
-           IMPORTANT:
-           Force ONE COLUMN.
-        ====================================================== */
-
-        @media (max-width: 900px) {
-
-            .page {
-
-                display:
-                    block;
-
-                padding:
-                    12px;
-
-            }
-
-
-            .login-shell {
-
-                width:
-                    100%;
-
-                max-width:
-                    520px;
-
-                margin:
-                    12px auto;
-
-                display:
-                    flex;
-
-                flex-direction:
-                    column;
-
-                border-radius:
-                    18px;
-
-            }
-
-
-            /* ---------------------------------------------
-               GREEN PANEL
-            --------------------------------------------- */
-
-            .brand-panel {
-
-                width:
-                    100%;
-
-                padding:
-                    20px 20px 18px;
-
-            }
-
-
-            .logo-box {
-
-                width:
-                    48px;
-
-                height:
-                    48px;
-
-                margin-bottom:
-                    11px;
-
-            }
-
-
-            .logo-box img {
-
-                width:
-                    39px;
-
-                height:
-                    39px;
-
-            }
-
-
-            .brand-name {
-
-                font-size:
-                    22px;
-
-                margin-bottom:
-                    4px;
-
-            }
-
-
-            .brand-title {
-
-                font-size:
-                    18px;
-
-                margin-bottom:
-                    6px;
-
-            }
-
-
-            .brand-text {
-
-                font-size:
-                    11px;
-
-                line-height:
-                    1.5;
-
-                max-width:
-                    100%;
-
-            }
-
-
-            /*
-               Keep the green section compact.
-               Features are hidden on mobile.
-            */
-
-            .feature-list {
-
-                display:
-                    none;
-
-            }
-
-
-            /* ---------------------------------------------
-               LOGIN PANEL
-            --------------------------------------------- */
-
-            .form-panel {
-
-                width:
-                    100%;
-
-                min-width:
-                    0;
-
-                padding:
-                    26px 20px 22px;
-
-            }
-
-
-            .heading h1 {
-
-                font-size:
-                    27px;
-
-            }
-
-
-            .heading p {
-
-                font-size:
-                    12px;
-
-            }
-
-        }
-
-
-        /* =====================================================
-           SMALL PHONES
-        ====================================================== */
-
-        @media (max-width: 480px) {
-
-            .page {
-
-                padding:
-                    7px;
-
-            }
-
-
-            .login-shell {
-
-                max-width:
-                    100%;
-
-                margin:
-                    5px auto;
-
-                border-radius:
-                    16px;
-
-            }
-
-
-            .brand-panel {
-
-                padding:
-                    18px 16px 16px;
-
-            }
-
-
-            .brand-panel::before {
-
-                width:
-                    170px;
-
-                height:
-                    170px;
-
-                top:
-                    -105px;
-
-                right:
-                    -75px;
-
-            }
-
-
-            .brand-panel::after {
-
-                width:
-                    130px;
-
-                height:
-                    130px;
-
-                bottom:
-                    -80px;
-
-                left:
-                    -65px;
-
-            }
-
-
-            .logo-box {
-
-                width:
-                    44px;
-
-                height:
-                    44px;
-
-                border-radius:
-                    11px;
-
-            }
-
-
-            .logo-box img {
-
-                width:
-                    35px;
-
-                height:
-                    35px;
-
-            }
-
-
-            .brand-name {
-
-                font-size:
-                    21px;
-
-            }
-
-
-            .brand-title {
-
-                font-size:
-                    17px;
-
-            }
-
-
-            .brand-text {
-
-                font-size:
-                    10.5px;
-
-                line-height:
-                    1.45;
-
-            }
-
-
-            .form-panel {
-
-                padding:
-                    22px 15px 18px;
-
-            }
-
-
-            .top-line {
-
-                margin-bottom:
-                    17px;
-
-            }
-
-
-            .security {
-
-                font-size:
-                    9px;
-
-                padding:
-                    7px 9px;
-
-            }
-
-
-            .home-link {
-
-                font-size:
-                    11px;
-
-            }
-
-
-            .heading {
-
-                margin-bottom:
-                    18px;
-
-            }
-
-
-            .heading h1 {
-
-                font-size:
-                    24px;
-
-            }
-
-
-            .heading p {
-
-                font-size:
-                    11px;
-
-            }
-
-
-            .tabs {
-
-                margin-bottom:
-                    20px;
-
-            }
-
-
-            .tab {
-
-                font-size:
-                    10px;
-
-                padding:
-                    9px 4px;
-
-            }
-
-
-            input {
-
-                height:
-                    46px;
-
-                font-size:
-                    12px;
-
-            }
-
-
-            .main-btn {
-
-                height:
-                    46px;
-
-                font-size:
-                    12px;
-
-            }
-
-
-            .form-footer {
-
-                margin-top:
-                    18px;
-
-                padding-top:
-                    13px;
-
-                font-size:
-                    9px;
-
-            }
-
-
-            .footer-tagline {
-
-                font-size:
-                    9px;
-
-            }
-
-        }
-
-    </style>
+</style>
+```
 
 </head>
 
-
 <body>
 
+<div
+    id="autoLoginScreen"
+>
+
+```
+<div class="auto-login-card">
+
+    <div class="auto-login-icon">
+        🔐
+    </div>
+
+    <h2>
+        Welcome back
+    </h2>
+
+    <p>
+        Your session is still active.
+        Taking you to your hospital dashboard...
+    </p>
+
+    <div class="auto-spinner"></div>
+
+</div>
+```
+
+</div>
 
 <div class="bg-circle circle-one"></div>
 
 <div class="bg-circle circle-two"></div>
 
-
 <div class="page">
 
+```
+<div class="login-shell">
 
-    <!-- =====================================================
-         STATUSLY BRAND
-    ====================================================== -->
+    <!-- =================================================
+         BRAND PANEL
+    ================================================== -->
 
     <section class="brand-panel">
 
         <div class="brand-content">
-
 
             <div class="logo-box">
 
@@ -1564,13 +1079,9 @@
 
             </div>
 
-
             <div class="brand-name">
-
                 Statusly<span>.in</span>
-
             </div>
-
 
             <div class="brand-title">
 
@@ -1578,7 +1089,6 @@
                 made simple.
 
             </div>
-
 
             <p class="brand-text">
 
@@ -1588,9 +1098,7 @@
 
             </p>
 
-
             <div class="feature-list">
-
 
                 <div class="feature">
 
@@ -1602,7 +1110,6 @@
 
                 </div>
 
-
                 <div class="feature">
 
                     <span class="feature-icon">
@@ -1612,7 +1119,6 @@
                     Doctor Management
 
                 </div>
-
 
                 <div class="feature">
 
@@ -1624,7 +1130,6 @@
 
                 </div>
 
-
                 <div class="feature">
 
                     <span class="feature-icon">
@@ -1634,7 +1139,6 @@
                     Follow-up Management
 
                 </div>
-
 
                 <div class="feature">
 
@@ -1646,7 +1150,6 @@
 
                 </div>
 
-
                 <div class="feature">
 
                     <span class="feature-icon">
@@ -1657,7 +1160,6 @@
 
                 </div>
 
-
             </div>
 
         </div>
@@ -1665,19 +1167,17 @@
     </section>
 
 
-    <!-- =====================================================
-         LOGIN / REGISTER / FORGOT
-    ====================================================== -->
+    <!-- =================================================
+         FORM PANEL
+    ================================================== -->
 
     <section class="form-panel">
-
 
         <div class="top-line">
 
             <span class="security">
                 🔒 Secure Login
             </span>
-
 
             <a
                 href="/"
@@ -1702,10 +1202,6 @@
         </div>
 
 
-        <!-- =================================================
-             PLAN
-        ================================================== -->
-
         <div
             id="planBox"
             class="plan-box"
@@ -1723,33 +1219,32 @@
 
         <div class="tabs">
 
-
             <button
                 id="loginTab"
                 class="tab active"
+                type="button"
                 onclick="showSection('login')"
             >
                 Login
             </button>
 
-
             <button
                 id="registerTab"
                 class="tab"
+                type="button"
                 onclick="showSection('register')"
             >
                 Register
             </button>
 
-
             <button
                 id="forgotTab"
                 class="tab"
+                type="button"
                 onclick="showSection('forgot')"
             >
                 Forgot
             </button>
-
 
         </div>
 
@@ -1762,7 +1257,6 @@
             id="login"
             class="section active"
         >
-
 
             <div class="field">
 
@@ -1786,7 +1280,6 @@
                     Password
                 </label>
 
-
                 <div class="password-wrap">
 
                     <input
@@ -1796,16 +1289,10 @@
                         placeholder="Enter password"
                     >
 
-
                     <button
                         type="button"
                         class="eye-btn"
-                        onclick="
-                            togglePassword(
-                                'loginPassword',
-                                this
-                            )
-                        "
+                        onclick="togglePassword('loginPassword', this)"
                     >
                         👁
                     </button>
@@ -1818,11 +1305,11 @@
             <button
                 id="loginButton"
                 class="main-btn"
+                type="button"
                 onclick="login()"
             >
                 Login to Dashboard
             </button>
-
 
         </div>
 
@@ -1835,7 +1322,6 @@
             id="register"
             class="section"
         >
-
 
             <div class="field">
 
@@ -1904,7 +1390,6 @@
                     Password
                 </label>
 
-
                 <div class="password-wrap">
 
                     <input
@@ -1914,16 +1399,10 @@
                         placeholder="Minimum 6 characters"
                     >
 
-
                     <button
                         type="button"
                         class="eye-btn"
-                        onclick="
-                            togglePassword(
-                                'regPassword',
-                                this
-                            )
-                        "
+                        onclick="togglePassword('regPassword', this)"
                     >
                         👁
                     </button>
@@ -1936,24 +1415,23 @@
             <button
                 id="registerButton"
                 class="main-btn"
+                type="button"
                 onclick="register()"
             >
                 Create Hospital Account
             </button>
 
-
         </div>
 
 
         <!-- =================================================
-             FORGOT PASSWORD
+             FORGOT
         ================================================== -->
 
         <div
             id="forgot"
             class="section"
         >
-
 
             <div class="info-box">
 
@@ -1982,21 +1460,17 @@
             <button
                 id="forgotButton"
                 class="main-btn"
+                type="button"
                 onclick="resetPassword()"
             >
                 Send Reset Link
             </button>
-
 
         </div>
 
 
         <div id="message"></div>
 
-
-        <!-- =================================================
-             COMPANY FOOTER
-        ================================================== -->
 
         <div class="form-footer">
 
@@ -2017,14 +1491,14 @@
 
         </div>
 
-
     </section>
 
 </div>
+```
 
+</div>
 
 <script type="module">
-
 
 /* =========================================================
    FIREBASE IMPORTS
@@ -2038,32 +1512,22 @@ from
 
 
 import {
-
     getAuth,
-
     createUserWithEmailAndPassword,
-
     signInWithEmailAndPassword,
-
     sendPasswordResetEmail,
-
-    onAuthStateChanged
-
+    onAuthStateChanged,
+    signOut
 }
 from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
 
 import {
-
     getDatabase,
-
     ref,
-
     set,
-
     get
-
 }
 from
 "https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js";
@@ -2100,7 +1564,7 @@ const firebaseConfig = {
 
 
 /* =========================================================
-   INITIALIZE
+   INITIALIZE FIREBASE
 ========================================================= */
 
 const app =
@@ -2122,7 +1586,7 @@ const db =
 
 
 /* =========================================================
-   PLAN
+   PLANS
 ========================================================= */
 
 const params =
@@ -2132,9 +1596,7 @@ const params =
 
 
 const urlPlan =
-    params.get(
-        "plan"
-    );
+    params.get("plan");
 
 
 const allowedPlans = [
@@ -2159,9 +1621,7 @@ const planNames = {
 
 
 if (
-    allowedPlans.includes(
-        urlPlan
-    )
+    allowedPlans.includes(urlPlan)
 ) {
 
     localStorage.setItem(
@@ -2184,21 +1644,24 @@ if (
 ) {
 
     document
-        .getElementById(
-            "planBox"
-        )
-        .classList.add(
-            "show"
-        );
+        .getElementById("planBox")
+        .classList.add("show");
 
     document
-        .getElementById(
-            "planName"
-        )
+        .getElementById("planName")
         .textContent =
         planNames[selectedPlan];
 
 }
+
+
+/* =========================================================
+   AUTO LOGIN STATE
+========================================================= */
+
+let sessionCheckFinished = false;
+
+let redirecting = false;
 
 
 /* =========================================================
@@ -2208,11 +1671,8 @@ if (
 window.showSection =
 function(id) {
 
-
     document
-        .querySelectorAll(
-            ".section"
-        )
+        .querySelectorAll(".section")
         .forEach(
             section => {
 
@@ -2225,9 +1685,7 @@ function(id) {
 
 
     document
-        .querySelectorAll(
-            ".tab"
-        )
+        .querySelectorAll(".tab")
         .forEach(
             tab => {
 
@@ -2273,12 +1731,11 @@ function(id) {
 
 
 /* =========================================================
-   PASSWORD
+   PASSWORD VISIBILITY
 ========================================================= */
 
 window.togglePassword =
 function(inputId, button) {
-
 
     const input =
         document.getElementById(
@@ -2292,14 +1749,16 @@ function(inputId, button) {
 
         input.type = "text";
 
-        button.textContent = "🙈";
+        button.textContent =
+            "🙈";
 
     }
     else {
 
         input.type = "password";
 
-        button.textContent = "👁";
+        button.textContent =
+            "👁";
 
     }
 
@@ -2339,9 +1798,11 @@ function clearMessage() {
         );
 
 
-    element.textContent = "";
+    element.textContent =
+        "";
 
-    element.className = "";
+    element.className =
+        "";
 
 }
 
@@ -2359,7 +1820,8 @@ function setButtonLoading(
 
     if (loading) {
 
-        button.disabled = true;
+        button.disabled =
+            true;
 
         button.innerHTML =
             '<span class="loader"></span>' +
@@ -2368,10 +1830,285 @@ function setButtonLoading(
     }
     else {
 
-        button.disabled = false;
+        button.disabled =
+            false;
 
         button.textContent =
             normalText;
+
+    }
+
+}
+
+
+/* =========================================================
+   SAVE SESSION DATA
+========================================================= */
+
+function saveSessionData(
+    backendData,
+    user
+) {
+
+    localStorage.setItem(
+        "uid",
+        backendData.uid ||
+        user.uid
+    );
+
+
+    localStorage.setItem(
+        "hospitalId",
+        backendData.hospitalId ||
+        ""
+    );
+
+
+    localStorage.setItem(
+        "hospitalName",
+        backendData.hospitalName ||
+        ""
+    );
+
+
+    localStorage.setItem(
+        "firebaseUid",
+        user.uid
+    );
+
+
+    localStorage.setItem(
+        "statuslyLoggedIn",
+        "true"
+    );
+
+}
+
+
+/* =========================================================
+   CLEAR SESSION DATA
+========================================================= */
+
+function clearSessionData() {
+
+    localStorage.removeItem(
+        "uid"
+    );
+
+    localStorage.removeItem(
+        "hospitalId"
+    );
+
+    localStorage.removeItem(
+        "hospitalName"
+    );
+
+    localStorage.removeItem(
+        "firebaseUid"
+    );
+
+    localStorage.removeItem(
+        "statuslyLoggedIn"
+    );
+
+}
+
+
+/* =========================================================
+   BACKEND LOGIN / SESSION CHECK
+========================================================= */
+
+async function verifyBackendSession(
+    user,
+    redirectAfterLogin = true
+) {
+
+    try {
+
+        const token =
+            await user.getIdToken(
+                true
+            );
+
+
+        if (!token) {
+
+            throw new Error(
+                "Authentication token missing."
+            );
+
+        }
+
+
+        const backendResponse =
+            await fetch(
+                "/login",
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " +
+                            token,
+
+                        "Content-Type":
+                            "application/json"
+
+                    }
+
+                }
+            );
+
+
+        const backendData =
+            await backendResponse.json();
+
+
+        if (
+            !backendResponse.ok
+        ) {
+
+            throw new Error(
+                backendData.error ||
+                "Backend authentication failed."
+            );
+
+        }
+
+
+        saveSessionData(
+            backendData,
+            user
+        );
+
+
+        /* ================================================
+           CHECK SUBSCRIPTION
+        ================================================= */
+
+        const subscriptionResponse =
+            await fetch(
+                "/check-subscription",
+                {
+
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " +
+                            token,
+
+                        "Content-Type":
+                            "application/json"
+
+                    }
+
+                }
+            );
+
+
+        const subscriptionData =
+            await subscriptionResponse.json();
+
+
+        if (
+            !subscriptionResponse.ok
+        ) {
+
+            throw new Error(
+                subscriptionData.error ||
+                "Unable to check subscription."
+            );
+
+        }
+
+
+        if (
+            subscriptionData.active === true
+        ) {
+
+            if (redirectAfterLogin) {
+
+                redirecting =
+                    true;
+
+                window.location.replace(
+                    "/dashboard"
+                );
+
+            }
+
+            return {
+                success: true,
+                active: true
+            };
+
+        }
+
+
+        /* ================================================
+           NO ACTIVE SUBSCRIPTION
+        ================================================= */
+
+        if (redirectAfterLogin) {
+
+            redirecting =
+                true;
+
+
+            const plan =
+                localStorage.getItem(
+                    "selectedPlan"
+                );
+
+
+            if (
+                allowedPlans.includes(
+                    plan
+                )
+            ) {
+
+                window.location.replace(
+                    "/payment?plan=" +
+                    encodeURIComponent(
+                        plan
+                    )
+                );
+
+            }
+            else {
+
+                window.location.replace(
+                    "/payment"
+                );
+
+            }
+
+        }
+
+
+        return {
+            success: true,
+            active: false
+        };
+
+    }
+    catch(error) {
+
+        console.error(
+            "SESSION VERIFICATION ERROR:",
+            error
+        );
+
+        return {
+            success: false,
+            error: error
+        };
 
     }
 
@@ -2384,7 +2121,6 @@ function setButtonLoading(
 
 window.register =
 async function() {
-
 
     clearMessage();
 
@@ -2585,7 +2321,22 @@ async function() {
             .getElementById(
                 "loginPassword"
             )
-            .value = "";
+            .value =
+            "";
+
+
+        /*
+         * Firebase automatically signs the newly
+         * created user in.
+         *
+         * We explicitly sign out here because
+         * registration should finish on the
+         * login screen.
+         */
+
+        await signOut(
+            auth
+        );
 
 
         showSection(
@@ -2597,7 +2348,6 @@ async function() {
             "Registration successful. Please login.",
             "success"
         );
-
 
     }
     catch(error) {
@@ -2661,12 +2411,11 @@ async function() {
 
 
 /* =========================================================
-   LOGIN
+   MANUAL LOGIN
 ========================================================= */
 
 window.login =
 async function() {
-
 
     clearMessage();
 
@@ -2678,7 +2427,6 @@ async function() {
 
 
     try {
-
 
         const email =
             document
@@ -2720,9 +2468,9 @@ async function() {
         );
 
 
-        /* =================================================
-           1. FIREBASE
-        ================================================== */
+        /* ================================================
+           FIREBASE SIGN IN
+        ================================================= */
 
         const userCredential =
             await signInWithEmailAndPassword(
@@ -2736,185 +2484,25 @@ async function() {
             userCredential.user;
 
 
-        const token =
-            await user.getIdToken(
-                true
+        /* ================================================
+           BACKEND SESSION
+        ================================================= */
+
+        const result =
+            await verifyBackendSession(
+                user,
+                false
             );
-
-
-        if (!token) {
-
-            throw new Error(
-                "Firebase authentication token missing."
-            );
-
-        }
-
-
-        /* =================================================
-           2. BACKEND AUTHENTICATION
-        ================================================== */
-
-        const backendResponse =
-            await fetch(
-                "/login",
-                {
-
-                    method:
-                        "POST",
-
-                    headers: {
-
-                        "Authorization":
-                            "Bearer " +
-                            token,
-
-                        "Content-Type":
-                            "application/json"
-
-                    }
-
-                }
-            );
-
-
-        const backendData =
-            await backendResponse.json();
 
 
         if (
-            !backendResponse.ok
+            !result.success
         ) {
 
-            throw new Error(
-                backendData.error ||
-                "Backend authentication failed."
-            );
+            throw result.error;
 
         }
 
-
-        /* =================================================
-           SAVE USER DATA
-        ================================================== */
-
-        localStorage.setItem(
-            "uid",
-            backendData.uid ||
-            user.uid
-        );
-
-
-        localStorage.setItem(
-            "hospitalId",
-            backendData.hospitalId ||
-            ""
-        );
-
-
-        localStorage.setItem(
-            "hospitalName",
-            backendData.hospitalName ||
-            ""
-        );
-
-
-        localStorage.setItem(
-            "statuslyLoggedIn",
-            "true"
-        );
-
-
-        localStorage.setItem(
-            "firebaseUid",
-            user.uid
-        );
-
-
-        /* =================================================
-           3. CHECK SUBSCRIPTION
-        ================================================== */
-
-        const subscriptionResponse =
-            await fetch(
-                "/check-subscription",
-                {
-
-                    method:
-                        "POST",
-
-                    headers: {
-
-                        "Authorization":
-                            "Bearer " +
-                            token,
-
-                        "Content-Type":
-                            "application/json"
-
-                    }
-
-                }
-            );
-
-
-        const subscriptionData =
-            await subscriptionResponse.json();
-
-
-        if (
-            !subscriptionResponse.ok
-        ) {
-
-            throw new Error(
-                subscriptionData.error ||
-                "Unable to check subscription."
-            );
-
-        }
-
-
-        /* =================================================
-           ACTIVE
-        ================================================== */
-
-        if (
-            subscriptionData.active === true
-        ) {
-
-            setButtonLoading(
-                button,
-                false,
-                "Login to Dashboard",
-                ""
-            );
-
-
-            showMessage(
-                "Login successful. Opening dashboard...",
-                "success"
-            );
-
-
-            setTimeout(
-                () => {
-
-                    window.location.href =
-                        "/dashboard";
-
-                },
-                400
-            );
-
-
-            return;
-
-        }
-
-
-        /* =================================================
-           EXPIRED / NO SUBSCRIPTION
-        ================================================== */
 
         setButtonLoading(
             button,
@@ -2923,6 +2511,41 @@ async function() {
             ""
         );
 
+
+        if (
+            result.active === true
+        ) {
+
+            showMessage(
+                "Login successful. Opening dashboard...",
+                "success"
+            );
+
+
+            redirecting =
+                true;
+
+
+            setTimeout(
+                () => {
+
+                    window.location.replace(
+                        "/dashboard"
+                    );
+
+                },
+                300
+            );
+
+
+            return;
+
+        }
+
+
+        /* ================================================
+           SUBSCRIPTION NOT ACTIVE
+        ================================================= */
 
         showMessage(
             "Your subscription is not active. Opening plans...",
@@ -2939,30 +2562,35 @@ async function() {
         setTimeout(
             () => {
 
+                redirecting =
+                    true;
+
+
                 if (
                     allowedPlans.includes(
                         plan
                     )
                 ) {
 
-                    window.location.href =
+                    window.location.replace(
                         "/payment?plan=" +
                         encodeURIComponent(
                             plan
-                        );
+                        )
+                    );
 
                 }
                 else {
 
-                    window.location.href =
-                        "/payment";
+                    window.location.replace(
+                        "/payment"
+                    );
 
                 }
 
             },
             600
         );
-
 
     }
     catch(error) {
@@ -3011,6 +2639,21 @@ async function() {
         }
 
 
+        if (
+            error.code ===
+            "auth/wrong-password"
+        ) {
+
+            showMessage(
+                "Email or password is incorrect.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
         showMessage(
             error.message ||
             "Login failed.",
@@ -3029,7 +2672,6 @@ async function() {
 window.resetPassword =
 async function() {
 
-
     clearMessage();
 
 
@@ -3040,7 +2682,6 @@ async function() {
 
 
     try {
-
 
         const email =
             document
@@ -3090,7 +2731,6 @@ async function() {
             "success"
         );
 
-
     }
     catch(error) {
 
@@ -3108,6 +2748,21 @@ async function() {
         );
 
 
+        if (
+            error.code ===
+            "auth/user-not-found"
+        ) {
+
+            showMessage(
+                "No account was found with this email.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
         showMessage(
             error.message ||
             "Unable to send reset email.",
@@ -3120,19 +2775,161 @@ async function() {
 
 
 /* =========================================================
-   FIREBASE SESSION
+   AUTOMATIC LOGIN / SESSION RESTORATION
+=========================================================
+
+   IMPORTANT:
+
+   There is NO 60-minute timer here.
+
+   Firebase Auth maintains its own persistent
+   browser session.
+
+   When the user returns to this page:
+
+       Firebase -> user exists
+                    |
+                    v
+               /login backend
+                    |
+                    v
+            check subscription
+                    |
+              +-----+------+
+              |            |
+           ACTIVE       INACTIVE
+              |            |
+              v            v
+         /dashboard     /payment
+
 ========================================================= */
 
 onAuthStateChanged(
     auth,
-    user => {
+    async user => {
+
+        if (
+            redirecting
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+         * Firebase waits until it restores the
+         * saved authentication session.
+         *
+         * If user exists, the user has already
+         * logged in before.
+         */
 
         if (user) {
 
             console.log(
-                "FIREBASE SESSION ACTIVE:",
+                "ACTIVE FIREBASE SESSION:",
                 user.uid
             );
+
+
+            /*
+             * Show automatic-login screen.
+             */
+
+            document
+                .getElementById(
+                    "autoLoginScreen"
+                )
+                .style.display =
+                "flex";
+
+
+            /*
+             * Hide normal login page.
+             */
+
+            document
+                .querySelector(
+                    ".page"
+                )
+                .style.display =
+                "none";
+
+
+            const result =
+                await verifyBackendSession(
+                    user,
+                    true
+                );
+
+
+            if (
+                !result.success &&
+                !redirecting
+            ) {
+
+                /*
+                 * Firebase session exists but
+                 * backend authentication failed.
+                 *
+                 * Sign out to avoid a broken
+                 * automatic-login loop.
+                 */
+
+                console.error(
+                    "Automatic login failed:",
+                    result.error
+                );
+
+
+                await signOut(
+                    auth
+                );
+
+
+                clearSessionData();
+
+
+                document
+                    .getElementById(
+                        "autoLoginScreen"
+                    )
+                    .style.display =
+                    "none";
+
+
+                document
+                    .querySelector(
+                        ".page"
+                    )
+                    .style.display =
+                    "flex";
+
+
+                showMessage(
+                    "Your session could not be restored. Please login again.",
+                    "error"
+                );
+
+            }
+
+        }
+        else {
+
+            /*
+             * No Firebase user.
+             *
+             * This is the normal login screen.
+             */
+
+            console.log(
+                "NO ACTIVE FIREBASE SESSION"
+            );
+
+
+            sessionCheckFinished =
+                true;
 
         }
 
@@ -3140,10 +2937,78 @@ onAuthStateChanged(
 );
 
 
-</script>
+/* =========================================================
+   PREVENT FORM ENTER ISSUES
+========================================================= */
 
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key !== "Enter"
+        ) {
+
+            return;
+
+        }
+
+
+        const activeSection =
+            document.querySelector(
+                ".section.active"
+            );
+
+
+        if (
+            !activeSection
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            activeSection.id ===
+            "login"
+        ) {
+
+            event.preventDefault();
+
+            window.login();
+
+        }
+
+
+        if (
+            activeSection.id ===
+            "register"
+        ) {
+
+            event.preventDefault();
+
+            window.register();
+
+        }
+
+
+        if (
+            activeSection.id ===
+            "forgot"
+        ) {
+
+            event.preventDefault();
+
+            window.resetPassword();
+
+        }
+
+    }
+);
+
+</script>
 
 </body>
 
 </html>
-
